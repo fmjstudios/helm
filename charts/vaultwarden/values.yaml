@@ -4,22 +4,40 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# @param kind The kind of Kubernetes resource to deploy Vaultwarden as, either StatefulSet or Deployment are possible
+## @section Vaultwarden Image parameters
+##
 
-kind: StatefulSet
-
-# @param replicaCount The amount of replicas of the chosen 'kind' to let Kubernetes create
-replicaCount: 1
+## Vaultwarden Server Image
+## ref: https://hub.docker.com/r/vaultwarden/server/tags
+## @param image.registry [default: ]
 
 image:
-  repository: nginx
+  registry: docker.io
+  repository: vaultwarden/server
+  tag: "1.30.1-alpine"
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ''
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
 
-imagePullSecrets: []
-nameOverride: ''
-fullnameOverride: ''
+# @param replicas The amount of replicas of the chosen 'kind' to let Kubernetes create
+replicas: 1
+
+# @param nameOverride String to partially override vaultwarden.fullname
+nameOverride: ""
+
+# @param fullnameOverride String to fully override vaultwarden.fullname
+fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -28,7 +46,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ''
+  name: ""
 
 podAnnotations: {}
 
@@ -51,7 +69,7 @@ service:
 
 ingress:
   enabled: false
-  className: ''
+  className: ""
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
@@ -73,7 +91,7 @@ ingress:
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources.limits The resource limits for the Vaultwarden Resources
 ## @param resources.requests The resource requests for the Vaultwarden Resources
-
+##
 resources:
   {}
   # limits:
@@ -99,14 +117,17 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-## @param affinity Kubernetes nodeSelector settings
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##
 nodeSelector: {}
 
-## @param tolerations Kubernetes tolerations settings
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
 tolerations: []
 
-## @param affinity Kubernetes affinity settings
+## @param affinity Affinity for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
 affinity: {}
