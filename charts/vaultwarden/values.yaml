@@ -1,18 +1,25 @@
-# Default values for vaultwarden.
+# Default Helm values for fmjstudios/vaultwarden.
+# Reference: https://github.com/fmjstudios/helm
+
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# @param kind The kind of Kubernetes resource to deploy Vaultwarden as, either StatefulSet or Deployment are possible
+
+kind: StatefulSet
+
+# @param replicaCount The amount of replicas of the chosen 'kind' to let Kubernetes create
 replicaCount: 1
 
 image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: ''
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,14 +28,16 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: ''
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -42,8 +51,9 @@ service:
 
 ingress:
   enabled: false
-  className: ""
-  annotations: {}
+  className: ''
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -56,11 +66,16 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+## @section VaultwardenResources, Resource settings
+##
+
+## FMJStudios VaultwardenResources; resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources.limits The resource limits for the Vaultwarden Resources
+## @param resources.requests The resource requests for the Vaultwarden Resources
+
+resources:
+  {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -68,6 +83,15 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+## @section Autoscaling, Settings
+##
+
+## FMJStudios Autoscaling; autoscaling
+## @param autoscaling.enabled [default: false] Autoscaling; enable autoscaling
+## @param autoscaling.minReplicas [default: 1] Autoscaling; minimum autoscaling replicas
+## @param autoscaling.maxReplicas [default: 100] Autoscaling; maximium autoscaling replicas
+## @param autoscaling.targetCPUUtilizationPercentage [default: 80] Autoscaling; target CPU utilization for the autoscaler to kick in
+## @param autoscaling.targetMemoryUtilizationPercentage [default: 80] Autoscaling; target memory utilization for the autoscaler to kick in
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -75,8 +99,14 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+## @param affinity Kubernetes nodeSelector settings
+##
 nodeSelector: {}
 
+## @param tolerations Kubernetes tolerations settings
+##
 tolerations: []
 
+## @param affinity Kubernetes affinity settings
+##
 affinity: {}

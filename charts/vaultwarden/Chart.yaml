@@ -1,24 +1,18 @@
 apiVersion: v2
 name: vaultwarden
-description: A Helm chart for Kubernetes
-
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+description: Vaultwarden is an open-source, community-supported, Bitwarden-comptabile server written in Rust
 type: application
-
-# This is the chart version. This version number should be incremented each time you make changes
-# to the chart and its templates, including the app version.
-# Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
-
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-# It is recommended to use it with quotes.
-appVersion: "1.16.0"
+keywords:
+  - password-manager
+  - keepass
+  - vaultwarden
+sources:
+  - https://github.com/dani-garcia/vaultwarden
+  - https://github.com/fmjstudios/helm/charts/vaultwarden
+appVersion: '1.30.0'
+maintainers:
+  - name: FMJdev
+    email: info@fmj.studio
+    url: https://github.com/FMJdev
+version: 0.0.1
+kubeVersion: '>=1.26'
