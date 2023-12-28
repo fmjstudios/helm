@@ -11,7 +11,61 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 data:
-# DATA_FOLDER=data
+  DOMAIN: {{ .Values.vaultwarden.domain }}
+  WEB_VAULT_ENABLED: {{ .Values.vaultwarden.web.enabled }}
+  SENDS_ALLOWED: {{ .Values.vaultwarden.allowSends }}
+  EMERGENCY_ACCESS_ALLOWED: {{ .Values.vaultwarden.allowEmergencyAccess }}
+  ORG_EVENTS_ENABLED: {{ .Values.vaultwarden.enableOrgEvents }}
+  EMAIL_CHANGE_ALLOWED: {{ .Values.vaultwarden.allowEmailChange }}
+  DISABLE_ADMIN_TOKEN: {{ .Values.vaultwarden.adminToken.disable }}
+  DATA_FOLDER: {{ .Values.vaultwarden.paths.data }}
+  {{- if .Values.vaultwarden.retainEventsDays -}}
+  EVENTS_DAYS_RETAIN: {{ .Values.vaultwarden.retainEventsDays }}
+  {{- end -}}
+  IP_HEADER: {{ .Values.vaultwarden.ipHeader }}
+  DISABLE_2FA_REMEMBER: {{ .Values.vaultwarden.disable2FARemember }}
+  {{- if .Values.vaultwarden.orgCreationUsers -}}
+  ORG_CREATION_USERS: {{ .Values.vaultwarden.orgCreationUsers | quote }}
+  {{- end -}}
+  {{- if .Values.vaultwarden.allowedIframeAncestors }}
+  ALLOWED_IFRAME_ANCESTORS: {{ .Values.vaultwarden.allowedIframeAncestors }}
+  {{- end -}}
+  EMAIL_ATTEMPTS_LIMIT: {{ .Values.vaultwarden.email.attemptsLimit }}
+  EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime }}
+  EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize }}
+  {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from -}}
+  SMTP_HOST: {{ .Values.vaultwarden.email.smtp.host }}
+  SMTP_FROM: {{ .Values.vaultwarden.email.smtp.from }}
+  SMTP_FROM_NAME: {{ .Values.vaultwarden.email.smtp.fromName | default "Vaultwarden" }}
+  SMTP_SECURITY: {{ .Values.vaultwarden.email.smtp.security }}
+  SMTP_PORT: {{ .Values.vaultwarden.email.smtp.port }}
+  SMTP_USERNAME: {{ .Values.vaultwarden.email.smtp.username }}
+  SMTP_PASSWORD: {{ .Values.vaultwarden.email.smtp.password }}
+  SMTP_TIMEOUT: {{ .Values.vaultwarden.email.smtp.timeout }}
+  SMTP_AUTH_MECHANISM: {{ .Values.vaultwarden.email.smtp.auth }}
+  SMTP_EMBED_IMAGES: {{ .Values.vaultwarden.email.smtp.embedImages }}
+  SMTP_DEBUG: {{ .Values.vaultwarden.email.smtp.debug }}
+  SMTP_ACCEPT_INVALID_HOSTNAMES: {{ .Values.vaultwarden.email.smtp.acceptInvalidHostnames }}
+  SMTP_ACCEPT_INVALID_CERTS: {{ .Values.vaultwarden.email.smtp.acceptInvalidCertificates }}
+  REQUIRE_DEVICE_EMAIL: {{ .Values.vaultwarden.email.smtp.requireDeviceEmail }}
+  HELO_NAME: {{ .Values.vaultwarden.email.smtp.heloName }}
+  {{- end -}}
+  {{- if .Values.vaultwarden.websocket.enabled -}}
+  WEBSOCKET_ENABLED: {{ .Values.vaultwarden.websocket.enabled }}
+  WEBSOCKET_ADDRESS: {{ .Values.vaultwarden.websocket.address }}
+  WEBSOCKET_PORT: {{ .Values.vaultwarden.websocket.port }}
+  {{- end -}}
+  
+
+
+##################### SECRETS
+
+# ADMIN_TOKEN=Vy2VyYTTsKPv8W5aEOWUbB/Bt3DEKePbHmI4m9VcemUMS2rEviDowNAFqYi1xjmp
+
+#####################
+
+
+
 # DATABASE_URL=data/db.sqlite3
 # DATABASE_URL=mysql://user:password@host[:port]/database_name
 # DATABASE_URL=postgresql://user:password@host[:port]/database_name
@@ -22,45 +76,29 @@ data:
 # DATABASE_CONN_INIT=""
 
 
-# RSA_KEY_FILENAME=data/rsa_key
-# ICON_CACHE_FOLDER=data/icon_cache
-# ATTACHMENTS_FOLDER=data/attachments
-# SENDS_FOLDER=data/sends
-# TMP_FOLDER=data/tmp
+
 
 
 # TEMPLATES_FOLDER=/path/to/templates
 
 # RELOAD_TEMPLATES=false
 
-# IP_HEADER=X-Real-IP
 
 # ICON_CACHE_TTL=2592000
 # ICON_CACHE_NEGTTL=259200
 
 
-# WEB_VAULT_FOLDER=web-vault/
-# WEB_VAULT_ENABLED=true
 
-# WEBSOCKET_ENABLED=false
 
-# WEBSOCKET_ADDRESS=0.0.0.0
-# WEBSOCKET_PORT=3012
 
 # PUSH_ENABLED=true
 # PUSH_INSTALLATION_ID=CHANGEME
 # PUSH_INSTALLATION_KEY=CHANGEME
 # PUSH_RELAY_URI=https://push.bitwarden.com
 
-# SENDS_ALLOWED=true
 
-# EMERGENCY_ACCESS_ALLOWED=true
 
-# ORG_EVENTS_ENABLED=false
 
-# EMAIL_CHANGE_ALLOWED=true
-
-# EVENTS_DAYS_RETAIN=
 
 
 # ORG_GROUPS_ENABLED=false
@@ -91,10 +129,8 @@ data:
 # ICON_BLACKLIST_REGEX='^(192\.168\.0\.[0-9]+|192\.168\.1\.[0-9]+)$'
 # ICON_BLACKLIST_NON_GLOBAL_IPS=true
 
-# DISABLE_2FA_REMEMBER=false
-# EMAIL_ATTEMPTS_LIMIT=3
-# EMAIL_EXPIRATION_TIME=600
-# EMAIL_TOKEN_SIZE=6
+
+
 
 # SIGNUPS_ALLOWED=true
 
@@ -106,12 +142,9 @@ data:
 
 # SIGNUPS_DOMAINS_WHITELIST=example.com,example.net,example.org
 
-# ORG_CREATION_USERS=
-# ORG_CREATION_USERS=none
-# ORG_CREATION_USERS=admin1@example.com,admin2@example.com
 
-# ADMIN_TOKEN=Vy2VyYTTsKPv8W5aEOWUbB/Bt3DEKePbHmI4m9VcemUMS2rEviDowNAFqYi1xjmp
-# DISABLE_ADMIN_TOKEN=false
+
+
 # INVITATIONS_ALLOWED=true
 # INVITATION_ORG_NAME=Vaultwarden
 
@@ -128,8 +161,6 @@ data:
 # PASSWORD_HINTS_ALLOWED=true
 # SHOW_PASSWORD_HINT=false
 
-# DOMAIN=https://vw.domain.tld:8443
-# ALLOWED_IFRAME_ANCESTORS=
 
 # LOGIN_RATELIMIT_SECONDS=60
 # LOGIN_RATELIMIT_MAX_BURST=10
@@ -154,26 +185,11 @@ data:
 # ROCKET_TLS={certs="/path/to/certs.pem",key="/path/to/key.pem"}
 
 
-# SMTP_HOST=smtp.domain.tld
-# SMTP_FROM=vaultwarden@domain.tld
-# SMTP_FROM_NAME=Vaultwarden
-# SMTP_SECURITY=starttls # ("starttls", "force_tls", "off") Enable a secure connection. Default is "starttls" (Explicit - ports 587 or 25), "force_tls" (Implicit - port 465) or "off", no encryption (port 25)
-# SMTP_PORT=587          # Ports 587 (submission) and 25 (smtp) are standard without encryption and with encryption via STARTTLS (Explicit TLS). Port 465 (submissions) is used for encrypted submission (Implicit TLS).
-# SMTP_USERNAME=username
-# SMTP_PASSWORD=password
-# SMTP_TIMEOUT=15
+
 
 # USE_SENDMAIL=false
 # SENDMAIL_COMMAND="/path/to/sendmail"
 
-# SMTP_AUTH_MECHANISM="Plain"
 
-
-# HELO_NAME=
-# SMTP_EMBED_IMAGES=false
-# SMTP_DEBUG=false
-# SMTP_ACCEPT_INVALID_HOSTNAMES=false
-# SMTP_ACCEPT_INVALID_CERTS=false
-# REQUIRE_DEVICE_EMAIL=false
 
 # HIBP_API_KEY=

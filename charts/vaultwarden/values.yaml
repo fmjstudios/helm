@@ -142,29 +142,253 @@ vaultwarden:
       name: ""
       key: ""
 
-  ## Login configuration
+  ## Paths to use inside the application container for storage of different files
   ##
-  logins:
-    ## Number of seconds, on average, between login requests from the same IP address before rate limiting kicks in.
+  paths:
+    ## The data folder is used for all files by default
     ##
-    ratelimitSeconds: 60
+    data: /data
 
-    ## Allow a burst of requests of up to this size, while maintaining the average indicated by `LOGIN_RATELIMIT_SECONDS`.
-    ## Note that this applies to both the login and the 2FA, so it's recommended to allow a burst size of at least 2.
+    ## The file path for the RSA key, '/data/rsa_key' by default
     ##
-    ratelimitMaxBurst: 10
+    rsaKey: ""
 
-    ## Number of seconds, on average, between admin login requests from the same IP address before rate limiting kicks in.
+    ## The path for icon cache, '/data/icon_cache' by default
     ##
-    adminRatelimitSeconds: 300
+    iconCache: ""
 
-    ## Allow a burst of requests of up to this size, while maintaining the average indicated by `ADMIN_RATELIMIT_SECONDS`.
+    ## The mail attachments path, '/data/attachments' by default
     ##
-    adminRatelimitMaxBurst: 3
+    attachments: ""
 
-    ## Set the lifetime of admin sessions to this value (in minutes).
+    ## The mail sends path, '/data/sends' by default
     ##
-    adminSessionLifetime: 20
+    sends: ""
+
+    ## The temporary data path, '/data/tmp' by default
+    ##
+    tmp: ""
+
+  ## General email settings
+  ##
+  email:
+    ## Maximum attempts before an email token is reset and a new email will need to be sent.
+    ##
+    attemptsLimit: 3
+    ## Token expiration time
+    ## Maximum time in seconds a token is valid. The time the user has to open email client and copy token.
+    ##
+    tokenExpirationTime: 600
+
+    ## Email token size
+    ## Number of digits in an email 2FA token (min: 6, max: 255).
+    ## Note that the Bitwarden clients are hardcoded to mention 6 digit codes regardless of this setting!
+    tokenSize: 6
+
+    ## SMTP settings
+    ##
+    smtp:
+      ## Hostname of the Mail server
+      ## Example: mx.domain.tld
+      ##
+      host: ""
+
+      ## The from-address for emails sent by Vaultwarden
+      ## Example: vaultwarden@domain.tld
+      ##
+      from: ""
+
+      ## The from-name for emails sent by Vaultwarden
+      ## Example: Vaultwarden
+      ##
+      fromName: ""
+
+      ## Either 'starttls', 'force_tls' or 'off'
+      security: "starttls"
+
+      ## SMTP port used
+      ##
+      port: 587
+
+      ## SMTP user
+      ##
+      username: ""
+
+      ## SMTP password
+      ##
+      password: ""
+
+      ## Defaults for SSL is "Plain" and "Login" and nothing for Non-SSL connections.
+      ## Possible values: ["Plain", "Login", "Xoauth2"].
+      ## Multiple options need to be separated by a comma ','.
+      ##
+      auth: "Plain"
+
+      ## An existing BasicAuth secret containing credentials for the SMTP server
+      ##
+      existingSecret:
+        name: ""
+
+      ## General SMTP settings
+      ##
+      timeout: 15
+
+      ## Whether to send mail via the `sendmail` command
+      ##
+      sendmail:
+        ## False by default since Vaultwarden includes a Rust implementation for SMTP
+        ##
+        enabled: false
+        ## The path to which sendmail binary to use. The one found in the $PATH is used if not specified.
+        ##
+        path: ""
+
+      ## Server name sent during the SMTP HELO
+      ## By default this value should be is on the machine's hostname,
+      ## but might need to be changed in case it trips some anti-spam filters
+      ##
+      heloName: ""
+
+      ## Embed images as email attachments
+      ##
+      embedImages: false
+
+      ## Accept Invalid Hostnames
+      ## DANGEROUS: This option introduces significant vulnerabilities to man-in-the-middle attacks!
+      ## Only use this as a last resort if you are not able to use a valid certificate.
+      ##
+      acceptInvalidHostnames: false
+
+      ## Accept Invalid Certificates
+      ## DANGEROUS: This option introduces significant vulnerabilities to man-in-the-middle attacks!
+      ## Only use this as a last resort if you are not able to use a valid certificate.
+      ## If the Certificate is valid but the hostname doesn't match, please use SMTP_ACCEPT_INVALID_HOSTNAMES instead.
+      ##
+      acceptInvalidCertificates: false
+
+      ## Require new device emails. When a user logs in an email is required to be sent.
+      ## If sending the email fails the login attempt will fail!!
+      ##
+      requireDeviceEmail: false
+
+      ## Enable debug mode
+      ##
+      debug: false
+
+  ## Websocket configuration for push notifications
+  ##
+  websocket:
+    ## Whether to enable the Websocket - disabled by default
+    ##
+    enabled: false
+
+    ## The address to which the Websocket should bind - 0.0.0.0 by default
+    ##
+    address: "0.0.0.0"
+
+    ## The port to which on which the Websocket should be made available - 3012 by default
+    ##
+    port: 3012
+
+  ## Database settings
+  ##
+  database:
+    ## Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'
+    ## Choosing 'sqlite' forces the value 'vaultwarden.paths.data/db.sqlite3' for the database URI
+    ##
+    type: "sqlite"
+
+    ## Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
+    ##
+    user: ""
+
+    ## Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
+    ##
+    password: ""
+
+    ## Provide the host to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
+    ##
+    host: ""
+
+    ## Provide the port to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
+    ##
+    port: ""
+
+    ## Provide the name to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
+    ##
+    name: ""
+
+    ## Manually provide the entire URI to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## Providing an 'existingSecret' overrides the value
+    ##
+    uri: ""
+
+    ## Provide an existing secret containing the entire Database URI at the specified key
+    ##
+    existingSecret:
+      name: ""
+      key: ""
+
+    ## Enable WAL for the DB - only actually used when the database type is 'sqlite'
+    ## Set to false to avoid enabling WAL during startup.
+    ## Note that if the DB already has WAL enabled, you will also need to disable WAL in the DB,
+    ## this setting only prevents Vaultwarden from automatically enabling it on start.
+    ## Please read project wiki page about this setting first before changing the value as it can
+    ## cause performance degradation or might render the service unable to start.
+    ##
+    enableWAL: false
+
+    ## Database connection retries
+    ## Number of times to retry the database connection during startup, with 1 second delay between each retry, set to
+    ## 0 to retry indefinitely
+    ##
+    connectionRetries: 15
+
+  ## Rate Limits
+  ##
+  rateLimits:
+    ## Login configuration
+    ##
+    logins:
+      ## Number of seconds, on average, between login requests from the same IP address before rate limiting kicks in.
+      ##
+      ratelimitSeconds: 60
+
+      ## Allow a burst of requests of up to this size, while maintaining the average indicated by `LOGIN_RATELIMIT_SECONDS`.
+      ## Note that this applies to both the login and the 2FA, so it's recommended to allow a burst size of at least 2.
+      ##
+      ratelimitMaxBurst: 10
+
+      ## Number of seconds, on average, between admin login requests from the same IP address before rate limiting kicks in.
+      ##
+      adminRatelimitSeconds: 300
+
+      ## Allow a burst of requests of up to this size, while maintaining the average indicated by `ADMIN_RATELIMIT_SECONDS`.
+      ##
+      adminRatelimitMaxBurst: 3
+
+      ## Set the lifetime of admin sessions to this value (in minutes).
+      ##
+      adminSessionLifetime: 20
+    ## Attachments settings
+    ##
+    attachments:
+      ## Per-organization attachment storage limit (KB)
+      ## Max kilobytes of attachment storage allowed per organization.
+      ## When this limit is reached, organization members will not be allowed to upload further attachments
+      ## for ciphers owned by that organization.
+      ##
+      orgLimit: ""
+      ## Per-user attachment storage limit (KB)
+      ## Max kilobytes of attachment storage allowed per user.
+      ## When this limit is reached, the user will not be allowed to upload further attachments.
+      ##
+      userLimit: ""
 
   ## Password configuration
   ##
@@ -272,22 +496,6 @@ vaultwarden:
       ##
       host: ""
 
-  ## General email settings
-  ##
-  email:
-    ## Maximum attempts before an email token is reset and a new email will need to be sent.
-    ##
-    attemptsLimit: 3
-    ## Token expiration time
-    ## Maximum time in seconds a token is valid. The time the user has to open email client and copy token.
-    ##
-    tokenExpirationTime: 600
-
-    ## Email token size
-    ## Number of digits in an email 2FA token (min: 6, max: 255).
-    ## Note that the Bitwarden clients are hardcoded to mention 6 digit codes regardless of this setting!
-    tokenSize: 6
-
   ## Invitations settings
   ##
   invitations:
@@ -301,36 +509,6 @@ vaultwarden:
     ## email verification token and deletion request token will expire (must be at least 1)
     ##
     expirationHours: 120
-
-  ## Attachments settings
-  ##
-  attachments:
-    ## Per-organization attachment storage limit (KB)
-    ## Max kilobytes of attachment storage allowed per organization.
-    ## When this limit is reached, organization members will not be allowed to upload further attachments
-    ## for ciphers owned by that organization.
-    ##
-    orgLimit: ""
-    ## Per-user attachment storage limit (KB)
-    ## Max kilobytes of attachment storage allowed per user.
-    ## When this limit is reached, the user will not be allowed to upload further attachments.
-    ##
-    userLimit: ""
-
-  ## Websocket configuration for push notifications
-  ##
-  websocket:
-    ## Whether to enable the Websocket - disabled by default
-    ##
-    enabled: false
-
-    ## The address to which the Websocket should bind - 0.0.0.0 by default
-    ##
-    address: "0.0.0.0"
-
-    ## The port to which on which the Websocket should be made available - 3012 by default
-    ##
-    port: 3012
 
   ## Push notification configuration
   ##
@@ -347,10 +525,10 @@ vaultwarden:
     ##
     installationKey: ""
 
-    ## The relay URI for push notifications - changes to this setting most likely require
-    ## the creation of a custom application image
+    ## Set a custom relay URI for push notifications - defaults to 'https://bitwarden.com/host'
+    ## changes to this setting most likely require the creation of a custom application image
     ##
-    relayUri: "https://push.bitwarden.com"
+    relayUri: ""
 
   ## HaveIBeenPwned API Integration
   ##
@@ -442,33 +620,6 @@ vaultwarden:
     ##
     useSyslog: false
 
-  ## Paths to use inside the application container for storage of different files
-  ##
-  paths:
-    ## The data folder is used for all files by default
-    ##
-    data: data
-
-    ## The file path for the RSA key, 'data/rsa_key' by default
-    ##
-    rsaKey: ""
-
-    ## The path for icon cache, 'data/icon_cache' by default
-    ##
-    iconCache: ""
-
-    ## The mail attachments path, 'data/attachments' by default
-    ##
-    attachments: ""
-
-    ## The mail sends path, 'data/sends' by default
-    ##
-    sends: ""
-
-    ## The temporary data path, 'data/tmp' by default
-    ##
-    tmp: ""
-
   ## Paths from which to use HTML templates for the Web UI
   ##
   templates:
@@ -540,120 +691,7 @@ vaultwarden:
       ## Cache time-to-live for icons which weren't available, in seconds (0 is "forever") - default is 72 days
       negttl: 259200
 
-  ## Database settings
-  ##
-  database:
-    type: "sqlite"
-    user: ""
-    password: ""
-    host: ""
-    port: ""
-    name: ""
-    uri: ""
-    existingSecret:
-      name: ""
-      key: ""
-
-    ## Enable WAL for the DB
-    ## Set to false to avoid enabling WAL during startup.
-    ## Note that if the DB already has WAL enabled, you will also need to disable WAL in the DB,
-    ## this setting only prevents Vaultwarden from automatically enabling it on start.
-    ## Please read project wiki page about this setting first before changing the value as it can
-    ## cause performance degradation or might render the service unable to start.
-    ##
-    enableWAL: false
-
-    ## Database connection retries
-    ## Number of times to retry the database connection during startup, with 1 second delay between each retry, set to
-    ## 0 to retry indefinitely
-    ##
-    connectionRetries: 15
-
-  ## SMTP settings
-  ##
-  smtp:
-    ## Hostname of the Mail server
-    ## Example: mx.domain.tld
-    ##
-    host: ""
-
-    ## The from-address for emails sent by Vaultwarden
-    ## Example: vaultwarden@domain.tld
-    ##
-    from: ""
-
-    ## The from-name for emails sent by Vaultwarden
-    ## Example: Vaultwarden
-    ##
-    fromName: ""
-
-    ## Either 'starttls', 'force_tls' or 'off'
-    security: "starttls"
-
-    ## SMTP port used
-    ##
-    port: 587
-
-    ## SMTP user
-    ##
-    username: ""
-
-    ## SMTP password
-    ##
-    password: ""
-
-    ## Defaults for SSL is "Plain" and "Login" and nothing for Non-SSL connections.
-    ## Possible values: ["Plain", "Login", "Xoauth2"].
-    ## Multiple options need to be separated by a comma ','.
-    ##
-    auth: "Plain"
-
-    ## An existing BasicAuth secret containing credentials for the SMTP server
-    ##
-    existingSecret:
-      name: ""
-
-    ## General SMTP settings
-    ##
-    timeout: 15
-
-    ## Whether to send mail via the `sendmail` command
-    ##
-    sendmail:
-      ## False by default since Vaultwarden includes a Rust implementation for SMTP
-      ##
-      enabled: false
-      ## The path to which sendmail binary to use. The one found in the $PATH is used if not specified.
-      ##
-      path: ""
-
-    ## Server name sent during the SMTP HELO
-    ## By default this value should be is on the machine's hostname,
-    ## but might need to be changed in case it trips some anti-spam filters
-    heloName: ""
-
-    ## Embed images as email attachments
-    embedImages: false
-
-    ## Accept Invalid Hostnames
-    ## DANGEROUS: This option introduces significant vulnerabilities to man-in-the-middle attacks!
-    ## Only use this as a last resort if you are not able to use a valid certificate.
-    ##
-    acceptInvalidHostnames: false
-
-    ## Accept Invalid Certificates
-    ## DANGEROUS: This option introduces significant vulnerabilities to man-in-the-middle attacks!
-    ## Only use this as a last resort if you are not able to use a valid certificate.
-    ## If the Certificate is valid but the hostname doesn't match, please use SMTP_ACCEPT_INVALID_HOSTNAMES instead.
-    ##
-    acceptInvalidCertificates: false
-
-    ## Require new device emails. When a user logs in an email is required to be sent.
-    ## If sending the email fails the login attempt will fail!!
-    ##
-    requireDeviceEmail: false
-
-  ## Rocket specific settings
+  ## Rocket specific settings - these most like require zero changes
   ## ref: https://rocket.rs/v0.4/guide/configuration/ for more details.
   ##
   rocket:
