@@ -60,3 +60,33 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/* 
+Obtain the API version for the Pod Disruption Budget
+*/}}
+{{- define "vaultwarden.pdb.apiVersion" -}}
+  {{- if and (.Capabilities.ApiVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
+    {{- print "policy/v1" -}}
+  {{- else -}}
+    {{- print "policy/v1beta1" -}}  
+  {{- end -}}
+{{- end -}}
+
+{{/* 
+Create the database URI from the received values
+*/}}
+{{- define "vaultwarden.db.uri" -}}
+  {{- $dbUser := .Values.vaultwarden.database.user -}}
+  {{- $dbPass := .Values.vaultwarden.database.password -}}
+  {{- $dbHost := .Values.vaultwarden.database.host -}}
+  {{- $dbPort := .Values.vaultwarden.database.port -}}
+  {{- $dbName := .Values.vaultwarden.database.name -}}
+  {{- if (eq .Values.vaultwarden.database.type "postgresql")  -}}
+    {{- printf "postgresql://%s:%s@%s:%d/%s" $dbUser $dbPass $dbHost $dbPort $dbName -}}
+  {{- else if (eq .Values.vaultwarden.database.type "mysql") -}}
+    {{- printf "mysql://%s:%s@%s:%d/%s" $dbUser $dbPass $dbHost $dbPort $dbName -}}
+  {{- else -}}
+    {{- print "data/db.sqlite3" -}}
+  {{- end -}}
+{{- end -}}
