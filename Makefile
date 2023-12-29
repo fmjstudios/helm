@@ -167,3 +167,4 @@ ifeq (,$(findstring collections, $(WHAT)))
 	$(call log_notice, "Creating distribution directory for Helm charts at: $(COLLECTIONS_OUT_DIR)")
 	@mkdir -p $(CHARTS_OUT_DIR)
 endif
+

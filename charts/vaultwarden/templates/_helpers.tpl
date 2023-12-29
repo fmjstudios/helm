@@ -62,6 +62,41 @@ Create the name of the service account to use
 {{- end }}
 
 
+{{/*
+Set the names of the secrets
+*/}}
+{{- define "vaultwarden.secrets.admin" -}}
+{{ printf "%s-admin" (include "vaultwarden.fullname" .) }}
+{{- end }}
+
+{{- define "vaultwarden.secrets.smtp" -}}
+{{ printf "%s-smtp" (include "vaultwarden.fullname" .) }}
+{{- end }}
+
+{{- define "vaultwarden.secrets.db" -}}
+{{ printf "%s-db" (include "vaultwarden.fullname" .) }}
+{{- end }}
+
+{{- define "vaultwarden.secrets.hibp" -}}
+{{ printf "%s-hibp" (include "vaultwarden.fullname" .) }}
+{{- end }}
+
+{{/*
+Define the PV name
+*/}}
+{{- define "vaultwarden.pv.name" -}}
+{{ printf "%s-pv" (include "vaultwarden.fullname" .)}}
+{{- end -}}
+
+{{/*
+Define the PVC name
+*/}}
+{{- define "vaultwarden.pvc.name" -}}
+{{ printf "%s-pvc" (include "vaultwarden.fullname" .)}}
+{{- end -}}
+
+
+
 {{/* 
 Obtain the API version for the Pod Disruption Budget
 */}}
@@ -89,4 +124,25 @@ Create the database URI from the received values
   {{- else -}}
     {{- print "data/db.sqlite3" -}}
   {{- end -}}
+{{- end -}}
+
+{{/* 
+Database connection initialization statements
+*/}}
+{{- define "vaultwarde.db.conn_init" -}}
+  {{- if (eq .Values.vaultwarden.database.type "sqlite") -}}
+  {{- "PRAGMA busy_timeout = 5000; PRAGMA synchronous = NORMAL;" -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/* 
+Determine which Kubernetes resource to create: StatefulSet or Deployment
+*/}}
+{{- define "vaultwarden.resourceType" -}}
+{{- if eq .Values.vaultwarden.database.type "sqlite" -}}
+{{- "StatefulSet" -}}
+{{- else -}}
+{{- "Deployment" -}}
+{{- end -}}
 {{- end -}}

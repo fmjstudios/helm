@@ -14,10 +14,19 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
     {{- include "vaultwarden.selectorLabels" . | nindent 4 }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.vaultwarden.rocket.port }}
+      protocol: TCP
+      name: http
+    {{- if .Values.vaultwarden.websocket.enabled -}}
+    - port: {{ .Values.vaultwarden.websocket.port }}
+      targetPort: {{ .Values.vaultwarden.websocket.port }}
+      protocol: TCP
+      name: websocket
+    {{- end -}}
+  {{- if .Values.service.ipFamilyPolicy -}}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+  {{- end -}}

@@ -1,17 +1,18 @@
-{{- if eq (include "vaultwarden.resourceType" .) "Deployment" -}}
+{{- if eq (include "vaultwarden.resourceType" .) "StatefulSet" -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "vaultwarden.fullname" . }}
   labels:
     {{- include "vaultwarden.labels" . | nindent 4 }}
 spec:
+  serviceName: {{ include "vaultwarden.fullname" . }}
   replicas: 1
   selector:
     matchLabels:
       {{- include "vaultwarden.selectorLabels" . | nindent 6 }}
   {{- if .Values.strategy -}}
-  strategy:
+  updateStrategy:
   {{- toYaml .Values.strategy | nindent 4 }}
   {{- end -}}
   template:
@@ -153,4 +154,7 @@ spec:
       initContainers:
         {{- toYaml .Values.initContainers | nindent 8 }}
       {{- end -}}
+persistentVolumeClaimRetentionPolicy:
+  whenDeleted: {{ .Values.vaultwarden.paths.reclaimPolicy }}
+  whenScaled: {{ .Values.vaultwarden.paths.reclaimPolicy }}
 {{- end -}}
