@@ -151,48 +151,42 @@ vaultwarden:
 
   ## Paths to use inside the application container for storage of different files
   ##
-  data:
+  paths:
     ## The data folder is used for all files by default
     ##
-    rootPath: /data
+    data: /data
 
-    ## Determine storage paths within the container rootPath
+    ## The file path for the RSA key, '/data/rsa_key' by default
     ##
-    paths:
-      ## The file path for the RSA key, '/data/rsa_key' by default
-      ##
-      rsaKey: ""
+    rsaKey: ""
 
-      ## The path for icon cache, '/data/icon_cache' by default
-      ##
-      iconCache: ""
-
-      ## The mail attachments path, '/data/attachments' by default
-      ##
-      attachments: ""
-
-      ## The mail sends path, '/data/sends' by default
-      ##
-      sends: ""
-
-      ## The temporary data path, '/data/tmp' by default
-      ##
-      tmp: ""
-
-    ## Kubernetes PVC settings
+    ## The path for icon cache, '/data/icon_cache' by default
     ##
-    pvc:
-      ## The size given to PVCs created from the above data
-      ##
-      size: 5Gi
+    iconCache: ""
 
-      ## The storageClass given to PVCs created from the above data
-      ##
-      storageClass: standard
+    ## The mail attachments path, '/data/attachments' by default
+    ##
+    attachments: ""
 
-      ## The resourcePolicy given to PVCs created from the above data
-      ##
-      reclaimPolicy: Retain
+    ## The mail sends path, '/data/sends' by default
+    ##
+    sends: ""
+
+    ## The temporary data path, '/data/tmp' by default
+    ##
+    tmp: ""
+
+    ## The size given to PVCs created from the above data
+    ##
+    size: 5Gi
+
+    ## The storageClass given to PVCs created from the above data
+    ##
+    storageClass: standard
+
+    ## The resourcePolicy given to PVCs created from the above data
+    ##
+    reclaimPolicy: Retain
 
   ## General email settings
   ##
@@ -321,32 +315,32 @@ vaultwarden:
     ## Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'
     ## Choosing 'sqlite' forces the value 'vaultwarden.paths.data/db.sqlite3' for the database URI
     ##
-    type: "sqlite"
+    type: "postgresql"
 
     ## Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
-    user: ""
+    user: "postgresql"
 
     ## Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
-    password: ""
+    password: "dbpass"
 
     ## Provide the host to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
-    host: ""
+    host: "localhost"
 
     ## Provide the port to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
-    port: ""
+    port: "5432"
 
     ## Provide the name to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
-    name: ""
+    name: "vaultwarden"
 
     ## Manually provide the entire URI to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value

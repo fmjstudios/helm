@@ -84,6 +84,6 @@ spec:
               serviceName: {{ include "vaultwarden.fullname" . }}
               servicePort: {{ .Values.vaultwarden.w.port }}
               {{- end }}
-          {{- end -}}
+          {{- end }}
     {{- end }}
 {{- end }}

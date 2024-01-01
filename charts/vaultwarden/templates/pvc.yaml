@@ -7,13 +7,13 @@ metadata:
   annotations:
     meta.helm.sh/release-name: {{ $.Release.Name | quote }}
     meta.helm.sh/release-namespace: {{ $.Release.Namespace | quote }}
-    {{- if (eq .Values.vaultwarden.paths.reclaimPolicy "Retain") }}
+    {{- if (eq .Values.vaultwarden.data.pvc.reclaimPolicy "Retain") }}
     helm.sh/resource-policy: keep
     {{- end }}
 spec:
-  storageClassName: {{ .Values.vaultwarden.paths.storageClass }}
+  storageClassName: {{ .Values.vaultwarden.data.pvc.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.vaultwarden.paths.size }}
+      storage: {{ .Values.vaultwarden.data.pvc.size }}

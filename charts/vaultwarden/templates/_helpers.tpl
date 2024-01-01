@@ -66,33 +66,33 @@ Create the name of the service account to use
 Set the names of the secrets
 */}}
 {{- define "vaultwarden.secrets.admin" -}}
-{{ printf "%s-admin" (include "vaultwarden.fullname" .) }}
+{{- printf "%s-admin" (include "vaultwarden.fullname" .) }}
 {{- end }}
 
 {{- define "vaultwarden.secrets.smtp" -}}
-{{ printf "%s-smtp" (include "vaultwarden.fullname" .) }}
+{{- printf "%s-smtp" (include "vaultwarden.fullname" .) }}
 {{- end }}
 
 {{- define "vaultwarden.secrets.db" -}}
-{{ printf "%s-db" (include "vaultwarden.fullname" .) }}
+{{- printf "%s-db" (include "vaultwarden.fullname" .) }}
 {{- end }}
 
 {{- define "vaultwarden.secrets.hibp" -}}
-{{ printf "%s-hibp" (include "vaultwarden.fullname" .) }}
+{{- printf "%s-hibp" (include "vaultwarden.fullname" .) }}
 {{- end }}
 
 {{/*
 Define the PV name
 */}}
 {{- define "vaultwarden.pv.name" -}}
-{{ printf "%s-pv" (include "vaultwarden.fullname" .)}}
+{{- printf "%s-pv" (include "vaultwarden.fullname" .)}}
 {{- end -}}
 
 {{/*
 Define the PVC name
 */}}
 {{- define "vaultwarden.pvc.name" -}}
-{{ printf "%s-pvc" (include "vaultwarden.fullname" .)}}
+{{- printf "%s-pvc" (include "vaultwarden.fullname" .)}}
 {{- end -}}
 
 
@@ -101,48 +101,48 @@ Define the PVC name
 Obtain the API version for the Pod Disruption Budget
 */}}
 {{- define "vaultwarden.pdb.apiVersion" -}}
-  {{- if and (.Capabilities.ApiVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
-    {{- print "policy/v1" -}}
-  {{- else -}}
-    {{- print "policy/v1beta1" -}}  
-  {{- end -}}
+{{- if and (.Capabilities.ApiVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
+{{- print "policy/v1" }}
+{{- else -}}
+{{- print "policy/v1beta1" }}  
+{{- end -}}
 {{- end -}}
 
 {{/* 
 Create the database URI from the received values
 */}}
 {{- define "vaultwarden.db.uri" -}}
-  {{- $dbUser := .Values.vaultwarden.database.user -}}
-  {{- $dbPass := .Values.vaultwarden.database.password -}}
-  {{- $dbHost := .Values.vaultwarden.database.host -}}
-  {{- $dbPort := .Values.vaultwarden.database.port -}}
-  {{- $dbName := .Values.vaultwarden.database.name -}}
-  {{- if (eq .Values.vaultwarden.database.type "postgresql")  -}}
-    {{- printf "postgresql://%s:%s@%s:%d/%s" $dbUser $dbPass $dbHost $dbPort $dbName -}}
-  {{- else if (eq .Values.vaultwarden.database.type "mysql") -}}
-    {{- printf "mysql://%s:%s@%s:%d/%s" $dbUser $dbPass $dbHost $dbPort $dbName -}}
-  {{- else -}}
-    {{- print "data/db.sqlite3" -}}
-  {{- end -}}
+{{- $dbUser := .Values.vaultwarden.database.user }}
+{{- $dbPass := .Values.vaultwarden.database.password }}
+{{- $dbHost := .Values.vaultwarden.database.host }}
+{{- $dbPort := .Values.vaultwarden.database.port }}
+{{- $dbName := .Values.vaultwarden.database.name }}
+{{- if (eq .Values.vaultwarden.database.type "postgresql")  -}}
+{{- printf "postgresql://%s:%s@%s:%d/%s" $dbUser $dbPass $dbHost $dbPort $dbName }}
+{{- else if (eq .Values.vaultwarden.database.type "mysql") -}}
+{{- printf "mysql://%s:%s@%s:%d/%s" $dbUser $dbPass $dbHost $dbPort $dbName }}
+{{- else -}}
+{{- print "data/db.sqlite3" }}
+{{- end -}}
 {{- end -}}
 
 {{/* 
 Database connection initialization statements
 */}}
-{{- define "vaultwarde.db.conn_init" -}}
-  {{- if (eq .Values.vaultwarden.database.type "sqlite") -}}
-  {{- "PRAGMA busy_timeout = 5000; PRAGMA synchronous = NORMAL;" -}}
-  {{- end -}}
-{{- end -}}
+{{- define "vaultwarden.db.conn_init" -}}
+{{- if (eq .Values.vaultwarden.database.type "sqlite") }}
+{{- "PRAGMA busy_timeout = 5000; PRAGMA synchronous = NORMAL;" }}
+{{- end }}
+{{- end }}
 
 
 {{/* 
 Determine which Kubernetes resource to create: StatefulSet or Deployment
 */}}
 {{- define "vaultwarden.resourceType" -}}
-{{- if eq .Values.vaultwarden.database.type "sqlite" -}}
-{{- "StatefulSet" -}}
-{{- else -}}
-{{- "Deployment" -}}
-{{- end -}}
-{{- end -}}
+{{- if eq .Values.vaultwarden.database.type "sqlite" }}
+{{- "StatefulSet" }}
+{{- else }}
+{{- "Deployment" }}
+{{- end }}
+{{- end }}
