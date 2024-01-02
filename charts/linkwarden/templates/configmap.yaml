@@ -1,0 +1,577 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "linkwarden.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: linkwarden
+  {{- include "linkwarden.labels" . | nindent 4 }}
+  {{- if .Values.configMapLabels }}
+    {{- toYaml .Values.configMapLabels | nindent 4 }}
+  {{- end }}
+  {{- if .Values.configMapAnnotations }}
+  annotations:
+    {{- toYaml .Values.configMapAnnotations | nindent 4 }}
+  {{- end }}
+data:
+  {{- /* 
+    General configuration 
+  */}}
+  NEXTAUTH_URL: {{ .Values.linkwarden.domain }}
+  {{- if and .Values.linkwarden.nextAuthSecret.value (not .Values.linkwarden.nextAuthSecret.existingSecret.name) }}
+  NEXTAUTH_SECRET: {{ .Values.linkwarden.nextAuthSecret.value }}
+  {{- end }}
+  {{- if not .Values.linkwarden.database.existingSecret.name }}
+  DATABASE_URL: {{ include "linkwarden.db.uri" . }}
+  {{- end }}
+  PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount }}
+  STORAGE_FOLDER: {{ .Values.linkwarden.data.filesystem.rootPath }}
+  AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout }}
+  RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit }}
+  {{- if .Values.linkwarden.maxFileSize }}
+  NEXT_PUBLIC_MAX_FILE_SIZE: {{ .Values.linkwarden.maxFileSize }}
+  {{- end }}
+  {{- if .Values.linkwarden.maxLinksPerUser }}
+  MAX_LINKS_PER_USER: {{ .Values.linkwarden.maxLinksPerUser }}
+  {{- end }}
+  {{- if .Values.linkwarden.archiveTakeCount }}
+  ARCHIVE_TAKE_COUNT: {{ .Values.linkwarden.archiveTakeCount }}
+  {{- end }}
+  {{- if .Values.linkwarden.browserTimeout }}
+  BROWSER_TIMEOUT: {{ .Values.linkwarden.browserTimeout }}
+  {{- end }}
+  {{- if .Values.linkwarden.ignoreUnauthorizedCA }}
+  IGNORE_UNAUTHORIZED_CA: {{ .Values.linkwarden.ignoreUnauthorizedCA }}
+  {{- end }}
+  {{- /* 
+    S3 configuration 
+  */}}
+  {{- if eq .Values.linkwarden.data.storageType "s3" }}
+  SPACES_ENDPOINT: {{ .Values.linkwarden.data.s3.endpoint }}
+  SPACES_BUCKET_NAME: {{ .Values.linkwarden.data.s3.bucketName }}
+  SPACES_REGION: {{ .Values.linkwarden.data.s3.region }}
+  SPACES_FORCE_PATH_STYLE: {{ .Values.linkwarden.data.s3.forcePathStyle }}
+  {{- if not .Values.linkwarden.data.s3.accessKey.existingSecret.name }}
+  SPACES_KEY: {{ .Values.linkwarden.data.s3.accessKey.value }}
+  {{- end }}
+  {{- if not .Values.linkwarden.data.s3.secretKey.existingSecret.name }}
+  SPACES_SECRET: {{ .Values.linkwarden.data.s3.secretKey.value }}
+  {{- end }}
+  {{- end }}
+  {{- /* 
+    SMTP configuration 
+  */}}
+  {{- if .Values.linkwarden.smtp.enabled }}
+  NEXT_PUBLIC_EMAIL_PROVIDER: {{ .Values.linkwarden.smtp.enabled }}
+  EMAIL_FROM: {{ .Values.linkwarden.smtp.fromAddress }}
+  EMAIL_SERVER: {{ .Values.linkwarden.smtp.server }}
+  {{- end }}
+  {{- /* 
+    Authentication configuration 
+  */}}
+  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.linkwarden.auth.disableRegistration }}
+  NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ .Values.linkwarden.auth.enableCredentials }}
+  DISABLE_NEW_SSO_USERS: {{ .Values.linkwarden.auth.disableNewSSOUsers }}
+  {{/* 42 School */}}
+  {{- if and .Values.linkwarden.auth.sso.42school.enabled }}
+  NEXT_PUBLIC_FORTYTWO_ENABLED: {{ .Values.linkwarden.auth.sso.42school.enabled }}
+  FORTYTWO_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.42school.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.42school.existingSecret) }}
+  FORTYTWO_CLIENT_ID: {{ .Values.linkwarden.auth.sso.42school.clientId }}
+  FORTYTWO_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.42school.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Apple */}}
+  {{- if and .Values.linkwarden.auth.sso.apple.enabled }}
+  NEXT_PUBLIC_APPLE_ENABLED: {{ .Values.linkwarden.auth.sso.apple.enabled }}
+  APPLE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.apple.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.apple.existingSecret) -}}
+  APPLE_ID: {{ .Values.linkwarden.auth.sso.apple.clientId }}
+  APPLE_SECRET: {{ .Values.linkwarden.auth.sso.apple.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Atlassian */}}
+  {{- if and .Values.linkwarden.auth.sso.atlassian.enabled }}
+  NEXT_PUBLIC_ATLASSIAN_ENABLED: {{ .Values.linkwarden.auth.sso.atlassian.enabled }}
+  ATLASSIAN_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.atlassian.customName }}
+  ATLASSIAN_SCOPE: {{ .Values.linkwarden.auth.sso.atlassian.scope }}
+  {{- if (not .Values.linkwarden.auth.sso.atlassian.existingSecret) -}}
+  ATLASSIAN_CLIENT_ID: {{ .Values.linkwarden.auth.sso.atlassian.clientId }}
+  ATLASSIAN_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.atlassian.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Auth0 */}}
+  {{- if and .Values.linkwarden.auth.sso.auth0.enabled }}
+  NEXT_PUBLIC_AUTH0_ENABLED: {{ .Values.linkwarden.auth.sso.auth0.enabled }}
+  AUTH0_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.auth0.customName }}
+  AUTH0_ISSUER: {{ .Values.linkwarden.auth.sso.auth0.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.auth0.existingSecret) }}
+  AUTH0_CLIENT_ID: {{ .Values.linkwarden.auth.sso.auth0.clientId }}
+  AUTH0_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.auth0.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Authentik */}}
+  {{- if and .Values.linkwarden.auth.sso.authentik.enabled }}
+  NEXT_PUBLIC_AUTHENTIK_ENABLED: {{ .Values.linkwarden.auth.sso.authentik.enabled }}
+  AUTHENTIK_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.authentik.customName }}
+  AUTHENTIK_ISSUER: {{ .Values.linkwarden.auth.sso.authentik.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.authentik.existingSecret) }}
+  AUTHENTIK_CLIENT_ID: {{ .Values.linkwarden.auth.sso.authentik.clientId }}
+  AUTHENTIK_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.authentik.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Battle.net */}}
+  {{- if and .Values.linkwarden.auth.sso.battleNet.enabled }}
+  NEXT_PUBLIC_BATTLENET_ENABLED: {{ .Values.linkwarden.auth.sso.battleNet.enabled }}
+  BATTLENET_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.battleNet.customName }}
+  BATLLENET_ISSUER: {{ .Values.linkwarden.auth.sso.battleNet.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.battleNet.existingSecret) -}}
+  BATTLENET_CLIENT_ID: {{ .Values.linkwarden.auth.sso.battleNet.clientId }}
+  BATTLENET_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.battleNet.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Box */}}
+  {{- if and .Values.linkwarden.auth.sso.box.enabled }}
+  NEXT_PUBLIC_BOX_ENABLED: {{ .Values.linkwarden.auth.sso.box.enabled }}
+  BOX_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.box.customName }}
+  {{ if (not .Values.linkwarden.auth.sso.box.existingSecret) }}
+  BOX_CLIENT_ID: {{ .Values.linkwarden.auth.sso.box.clientId }}
+  BOX_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.box.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Bungie */}}
+  {{- if and .Values.linkwarden.auth.sso.bungie.enabled }}
+  NEXT_PUBLIC_BUNGIE_ENABLED: {{ .Values.linkwarden.auth.sso.bungie.enabled }}
+  BUNGIE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.bungie.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.bungie.existingSecret) }}
+  BUNGIE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.bungie.clientId }}
+  BUNGIE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.bungie.clientSecret }}
+  BUNGIE_API_KEY: {{ .Values.linkwarden.auth.sso.bungie.apiKey }}
+  {{- end }}
+  {{- end }}
+  {{/* Cognito */}}
+  {{- if and .Values.linkwarden.auth.sso.cognito.enabled }}
+  NEXT_PUBLIC_COGNITO_ENABLED: {{ .Values.linkwarden.auth.sso.cognito.enabled }}
+  COGNITO_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.cognito.customName }}
+  COGNITO_ISSUER: {{ .Values.linkwarden.auth.sso.cognito.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.cognito.existingSecret) -}}
+  COGNITO_CLIENT_ID: {{ .Values.linkwarden.auth.sso.cognito.clientId }}
+  COGNITO_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.cognito.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Coinbase */}}
+  {{- if and .Values.linkwarden.auth.sso.coinbase.enabled }}
+  NEXT_PUBLIC_COINBASE_ENABLED: {{ .Values.linkwarden.auth.sso.coinbase.enabled }}
+  COINBASE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.coinbase.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.coinbase.existingSecret) -}}
+  COINBASE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.coinbase.clientId }}
+  COINBASE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.coinbase.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Discord */}}
+  {{- if and .Values.linkwarden.auth.sso.discord.enabled }}
+  NEXT_PUBLIC_DISCORD_ENABLED: {{ .Values.linkwarden.auth.sso.discord.enabled }}
+  DISCORD_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.discord.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.discord.existingSecret) -}}
+  DISCORD_CLIENT_ID: {{ .Values.linkwarden.auth.sso.discord.clientId }}
+  DISCORD_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.discord.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Dropbox */}}
+  {{- if and .Values.linkwarden.auth.sso.dropbox.enabled }}
+  NEXT_PUBLIC_DROPBOX_ENABLED: {{ .Values.linkwarden.auth.sso.dropbox.enabled }}
+  DROPBOX_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.dropbox.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.dropbox.existingSecret) -}}
+  DROPBOX_CLIENT_ID: {{ .Values.linkwarden.auth.sso.dropbox.clientId }}
+  DROPBOX_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.dropbox.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Duende IdentityServer 6 */}}
+  {{- if and .Values.linkwarden.auth.sso.duende6.enabled }}
+  NEXT_PUBLIC_DUENDE_IDS6_ENABLED: {{ .Values.linkwarden.auth.sso.duende6.enabled }}
+  DUENDE_IDS6_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.duende6.customName }}
+  DUENDE_IDS6_ISSUER: {{ .Values.linkwarden.auth.sso.duende6.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.duende6.existingSecret) -}}
+  DUENDE_IDS6_CLIENT_ID: {{ .Values.linkwarden.auth.sso.duende6.clientId }}
+  DUENDE_IDS6_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.duende6.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* EVE Online */}}
+  {{- if and .Values.linkwarden.auth.sso.eve.enabled }}
+  NEXT_PUBLIC_EVEONLINE_ENABLED: {{ .Values.linkwarden.auth.sso.eve.enabled }}
+  EVEONLINE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.eve.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.eve.existingSecret) -}}
+  EVEONLINE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.eve.clientId }}
+  EVEONLINE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.eve.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Facebook */}}
+  {{- if and .Values.linkwarden.auth.sso.facebook.enabled }}
+  NEXT_PUBLIC_FACEBOOK_ENABLED: {{ .Values.linkwarden.auth.sso.facebook.enabled }}
+  FACEBOOK_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.facebook.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.facebook.existingSecret) -}}
+  FACEBOOK_CLIENT_ID: {{ .Values.linkwarden.auth.sso.facebook.clientId }}
+  FACEBOOK_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.facebook.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* FACEIT */}}
+  {{- if and .Values.linkwarden.auth.sso.faceit.enabled }}
+  NEXT_PUBLIC_FACEIT_ENABLED: {{ .Values.linkwarden.auth.sso.faceit.enabled }}
+  FACEIT_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.faceit.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.faceit.existingSecret) -}}
+  FACEIT_CLIENT_ID: {{ .Values.linkwarden.auth.sso.faceit.clientId }}
+  FACEIT_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.faceit.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Foursquare */}}
+  {{- if and .Values.linkwarden.auth.sso.foursquare.enabled }}
+  NEXT_PUBLIC_FOURSQUARE_ENABLED: {{ .Values.linkwarden.auth.sso.foursquare.enabled }}
+  FOURSQUARE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.foursquare.customName }}
+  FOURSQUARE_APIVERSION: {{ .Values.linkwarden.auth.sso.foursquare.apiVersion }}
+  {{- if (not .Values.linkwarden.auth.sso.foursquare.existingSecret) -}}
+  FOURSQUARE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.foursquare.clientId }}
+  FOURSQUARE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.foursquare.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Freshbooks */}}
+  {{- if and .Values.linkwarden.auth.sso.freshbooks.enabled }}
+  NEXT_PUBLIC_FRESHBOOKS_ENABLED: {{ .Values.linkwarden.auth.sso.freshbooks.enabled }}
+  FRESHBOOKS_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.freshbooks.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.freshbooks.existingSecret) -}}
+  FRESHBOOKS_CLIENT_ID: {{ .Values.linkwarden.auth.sso.freshbooks.clientId }}
+  FRESHBOOKS_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.freshbooks.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* FusionAuth */}}
+  {{- if and .Values.linkwarden.auth.sso.fusionauth.enabled }}
+  NEXT_PUBLIC_FUSIONAUTH_ENABLED: {{ .Values.linkwarden.auth.sso.fusionauth.enabled }}
+  FUSIONAUTH_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.fusionauth.customName }}
+  FUSIONAUTH_ISSUER: {{ .Values.linkwarden.auth.sso.fusionauth.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.fusionauth.existingSecret) -}}
+  FUSIONAUTH_CLIENT_ID: {{ .Values.linkwarden.auth.sso.fusionauth.clientId }}
+  FUSIONAUTH_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.fusionauth.clientSecret }}
+  FUSIONAUTH_TENANT_ID: {{ .Values.linkwarden.auth.sso.fusionauth.tenantId }}
+  {{- end }}
+  {{- end }}
+  {{/* GitHub */}}
+  {{- if and .Values.linkwarden.auth.sso.github.enabled }}
+  NEXT_PUBLIC_GITHUB_ENABLED: {{ .Values.linkwarden.auth.sso.github.enabled }}
+  GITHUB_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.github.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.github.existingSecret) -}}
+  GITHUB_CLIENT_ID: {{ .Values.linkwarden.auth.sso.github.clientId }}
+  GITHUB_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.github.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* GitLab */}}
+  {{- if and .Values.linkwarden.auth.sso.gitlab.enabled }}
+  NEXT_PUBLIC_GITLAB_ENABLED: {{ .Values.linkwarden.auth.sso.gitlab.enabled }}
+  GITLAB_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.gitlab.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.gitlab.existingSecret) -}}
+  GITLAB_CLIENT_ID: {{ .Values.linkwarden.auth.sso.gitlab.clientId }}
+  GITLAB_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.gitlab.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Google */}}
+  {{- if and .Values.linkwarden.auth.sso.google.enabled }}
+  NEXT_PUBLIC_GOOGLE_ENABLED: {{ .Values.linkwarden.auth.sso.google.enabled }}
+  GOOGLE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.google.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.google.existingSecret) -}}
+  GOOGLE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.google.clientId }}
+  GOOGLE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.google.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* HubSpot */}}
+  {{- if and .Values.linkwarden.auth.sso.hubspot.enabled }}
+  NEXT_PUBLIC_HUBSPOT_ENABLED: {{ .Values.linkwarden.auth.sso.hubspot.enabled }}
+  HUBSPOT_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.hubspot.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.hubspot.existingSecret) -}}
+  HUBSPOT_CLIENT_ID: {{ .Values.linkwarden.auth.sso.hubspot.clientId }}
+  HUBSPOT_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.hubspot.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Duende IdentityServer 4 */}}
+  {{- if and .Values.linkwarden.auth.sso.duende4.enabled }}
+  NEXT_PUBLIC_IDS4_ENABLED: {{ .Values.linkwarden.auth.sso.duende4.enabled }}
+  IDS4_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.duende4.customName }}
+  IDS4_ISSUER: {{ .Values.linkwarden.auth.sso.duende4.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.duende4.existingSecret) -}}
+  IDS4_CLIENT_ID: {{ .Values.linkwarden.auth.sso.duende4.clientId }}
+  IDS4_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.duende4.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Kakao */}}
+  {{- if and .Values.linkwarden.auth.sso.kakao.enabled }}
+  NEXT_PUBLIC_KAKAO_ENABLED: {{ .Values.linkwarden.auth.sso.kakao.enabled }}
+  KAKAO_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.kakao.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.kakao.existingSecret) -}}
+  KAKAO_CLIENT_ID: {{ .Values.linkwarden.auth.sso.kakao.clientId }}
+  KAKAO_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.kakao.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Keycloak */}}
+  {{- if and .Values.linkwarden.auth.sso.keycloak.enabled }}
+  NEXT_PUBLIC_KEYCLOAK_ENABLED: {{ .Values.linkwarden.auth.sso.keycloak.enabled }}
+  KEYCLOAK_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.keycloak.customName }}
+  KEYCLOAK_ISSUER: {{ .Values.linkwarden.auth.sso.keycloak.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.keycloak.existingSecret) -}}
+  KEYCLOAK_CLIENT_ID: {{ .Values.linkwarden.auth.sso.keycloak.clientId }}
+  KEYCLOAK_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.keycloak.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* LINE */}}
+  {{- if and .Values.linkwarden.auth.sso.line.enabled }}
+  NEXT_PUBLIC_LINE_ENABLED: {{ .Values.linkwarden.auth.sso.line.enabled }}
+  LINE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.line.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.line.existingSecret) -}}
+  LINE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.line.clientId }}
+  LINE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.line.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* LinkedIn */}}
+  {{- if and .Values.linkwarden.auth.sso.linkedIn.enabled }}
+  NEXT_PUBLIC_LINKEDIN_ENABLED: {{ .Values.linkwarden.auth.sso.linkedIn.enabled }}
+  LINKEDIN_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.linkedIn.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.linkedIn.existingSecret) -}}
+  LINKEDIN_CLIENT_ID: {{ .Values.linkwarden.auth.sso.linkedIn.clientId }}
+  LINKEDIN_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.linkedIn.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Mailchimp */}}
+  {{- if and .Values.linkwarden.auth.sso.mailchimp.enabled }}
+  NEXT_PUBLIC_MAILCHIMP_ENABLED: {{ .Values.linkwarden.auth.sso.mailchimp.enabled }}
+  MAILCHIMP_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.mailchimp.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.mailchimp.existingSecret) -}}
+  MAILCHIMP_CLIENT_ID: {{ .Values.linkwarden.auth.sso.mailchimp.clientId }}
+  MAILCHIMP_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.mailchimp.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Mail.ru */}}
+  {{- if and .Values.linkwarden.auth.sso.mailru.enabled }}
+  NEXT_PUBLIC_MAILRU_ENABLED: {{ .Values.linkwarden.auth.sso.mailru.enabled }}
+  MAILRU_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.mailru.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.mailru.existingSecret) -}}
+  MAILRU_CLIENT_ID: {{ .Values.linkwarden.auth.sso.mailru.clientId }}
+  MAILRU_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.mailru.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Naver */}}
+  {{- if and .Values.linkwarden.auth.sso.naver.enabled }}
+  NEXT_PUBLIC_NAVER_ENABLED: {{ .Values.linkwarden.auth.sso.naver.enabled }}
+  NAVER_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.naver.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.naver.existingSecret) -}}
+  NAVER_CLIENT_ID: {{ .Values.linkwarden.auth.sso.naver.clientId }}
+  NAVER_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.naver.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Netlify */}}
+  {{- if and .Values.linkwarden.auth.sso.netlify.enabled }}
+  NEXT_PUBLIC_NETLIFY_ENABLED: {{ .Values.linkwarden.auth.sso.netlify.enabled }}
+  NETLIFY_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.netlify.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.netlify.existingSecret) -}}
+  NETLIFY_CLIENT_ID: {{ .Values.linkwarden.auth.sso.netlify.clientId }}
+  NETLIFY_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.netlify.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Okta */}}
+  {{- if and .Values.linkwarden.auth.sso.okta.enabled }}
+  NEXT_PUBLIC_OKTA_ENABLED: {{ .Values.linkwarden.auth.sso.okta.enabled }}
+  OKTA_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.okta.customName }}
+  OKTA_ISSUER: {{ .Values.linkwarden.auth.sso.okta.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.okta.existingSecret) -}}
+  OKTA_CLIENT_ID: {{ .Values.linkwarden.auth.sso.okta.clientId }}
+  OKTA_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.okta.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* OneLogin */}}
+  {{- if and .Values.linkwarden.auth.sso.onelogin.enabled }}
+  NEXT_PUBLIC_ONELOGIN_ENABLED: {{ .Values.linkwarden.auth.sso.onelogin.enabled }}
+  ONELOGIN_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.onelogin.customName }}
+  ONELOGIN_ISSUER: {{ .Values.linkwarden.auth.sso.onelogin.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.onelogin.existingSecret) -}}
+  ONELOGIN_CLIENT_ID: {{ .Values.linkwarden.auth.sso.onelogin.clientId }}
+  ONELOGIN_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.onelogin.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* OSSO */}}
+  {{- if and .Values.linkwarden.auth.sso.osso.enabled }}
+  NEXT_PUBLIC_OSSO_ENABLED: {{ .Values.linkwarden.auth.sso.osso.enabled }}
+  OSSO_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.osso.customName }}
+  OSSO_ISSUER: {{ .Values.linkwarden.auth.sso.osso.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.osso.existingSecret) -}}
+  OSSO_CLIENT_ID: {{ .Values.linkwarden.auth.sso.osso.clientId }}
+  OSSO_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.osso.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* osu! */}}
+  {{- if and .Values.linkwarden.auth.sso.osu.enabled }}
+  NEXT_PUBLIC_OSU_ENABLED: {{ .Values.linkwarden.auth.sso.osu.enabled }}
+  OSU_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.osu.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.osu.existingSecret) -}}
+  OSU_CLIENT_ID: {{ .Values.linkwarden.auth.sso.osu.clientId }}
+  OSU_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.osu.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Patreon */}}
+  {{- if and .Values.linkwarden.auth.sso.patreon.enabled }}
+  NEXT_PUBLIC_PATREON_ENABLED: {{ .Values.linkwarden.auth.sso.patreon.enabled }}
+  PATREON_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.patreon.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.patreon.existingSecret) -}}
+  PATREON_CLIENT_ID: {{ .Values.linkwarden.auth.sso.patreon.clientId }}
+  PATREON_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.patreon.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Pinterest */}}
+  {{- if and .Values.linkwarden.auth.sso.pinterest.enabled }}
+  NEXT_PUBLIC_PINTEREST_ENABLED: {{ .Values.linkwarden.auth.sso.pinterest.enabled }}
+  PINTEREST_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.pinterest.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.pinterest.existingSecret) -}}
+  PINTEREST_CLIENT_ID: {{ .Values.linkwarden.auth.sso.pinterest.clientId }}
+  PINTEREST_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.pinterest.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Pipedrive */}}
+  {{- if and .Values.linkwarden.auth.sso.pipedrive.enabled }}
+  NEXT_PUBLIC_PIPEDRIVE_ENABLED: {{ .Values.linkwarden.auth.sso.pipedrive.enabled }}
+  PIPEDRIVE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.pipedrive.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.pipedrive.existingSecret) -}}
+  PIPEDRIVE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.pipedrive.clientId }}
+  PIPEDRIVE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.pipedrive.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Reddit */}}
+  {{- if and .Values.linkwarden.auth.sso.reddit.enabled }}
+  NEXT_PUBLIC_REDDIT_ENABLED: {{ .Values.linkwarden.auth.sso.reddit.enabled }}
+  REDDIT_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.reddit.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.reddit.existingSecret) -}}
+  REDDIT_CLIENT_ID: {{ .Values.linkwarden.auth.sso.reddit.clientId }}
+  REDDIT_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.reddit.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Salesforce */}}
+  {{- if and .Values.linkwarden.auth.sso.salesforce.enabled }}
+  NEXT_PUBLIC_SALESFORCE_ENABLED: {{ .Values.linkwarden.auth.sso.salesforce.enabled }}
+  SALESFORCE_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.salesforce.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.salesforce.existingSecret) -}}
+  SALESFORCE_CLIENT_ID: {{ .Values.linkwarden.auth.sso.salesforce.clientId }}
+  SALESFORCE_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.salesforce.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Slack */}}
+  {{- if and .Values.linkwarden.auth.sso.slack.enabled }}
+  NEXT_PUBLIC_SLACK_ENABLED: {{ .Values.linkwarden.auth.sso.slack.enabled }}
+  SLACK_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.slack.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.slack.existingSecret) -}}
+  SLACK_CLIENT_ID: {{ .Values.linkwarden.auth.sso.slack.clientId }}
+  SLACK_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.slack.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Spotify */}}
+  {{- if and .Values.linkwarden.auth.sso.spotify.enabled }}
+  NEXT_PUBLIC_SPOTIFY_ENABLED: {{ .Values.linkwarden.auth.sso.spotify.enabled }}
+  SPOTIFY_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.spotify.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.spotify.existingSecret) -}}
+  SPOTIFY_CLIENT_ID: {{ .Values.linkwarden.auth.sso.spotify.clientId }}
+  SPOTIFY_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.spotify.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Strava */}}
+  {{- if and .Values.linkwarden.auth.sso.strava.enabled }}
+  NEXT_PUBLIC_STRAVA_ENABLED: {{ .Values.linkwarden.auth.sso.strava.enabled }}
+  STRAVA_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.strava.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.strava.existingSecret) -}}
+  STRAVA_CLIENT_ID: {{ .Values.linkwarden.auth.sso.strava.clientId }}
+  STRAVA_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.strava.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Todoist */}}
+  {{- if and .Values.linkwarden.auth.sso.todoist.enabled }}
+  NEXT_PUBLIC_TODOIST_ENABLED: {{ .Values.linkwarden.auth.sso.todoist.enabled }}
+  TODOIST_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.todoist.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.todoist.existingSecret) -}}
+  TODOIST_CLIENT_ID: {{ .Values.linkwarden.auth.sso.todoist.clientId }}
+  TODOIST_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.todoist.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Twitch */}}
+  {{- if and .Values.linkwarden.auth.sso.twitch.enabled }}
+  NEXT_PUBLIC_TWITCH_ENABLED: {{ .Values.linkwarden.auth.sso.twitch.enabled }}
+  TWITCH_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.twitch.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.twitch.existingSecret) -}}
+  TWITCH_CLIENT_ID: {{ .Values.linkwarden.auth.sso.twitch.clientId }}
+  TWITCH_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.twitch.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* United Effects */}}
+  {{- if and .Values.linkwarden.auth.sso.unitedEffects.enabled }}
+  NEXT_PUBLIC_UNITED_EFFECTS_ENABLED: {{ .Values.linkwarden.auth.sso.unitedEffects.enabled }}
+  UNITED_EFFECTS_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.unitedEffects.customName }}
+  UNITED_EFFECTS_ISSUER: {{ .Values.linkwarden.auth.sso.unitedEffects.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.unitedEffects.existingSecret) -}}
+  UNITED_EFFECTS_CLIENT_ID: {{ .Values.linkwarden.auth.sso.unitedEffects.clientId }}
+  UNITED_EFFECTS_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.unitedEffects.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* VK */}}
+  {{- if and .Values.linkwarden.auth.sso.vk.enabled }}
+  NEXT_PUBLIC_VK_ENABLED: {{ .Values.linkwarden.auth.sso.vk.enabled }}
+  VK_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.vk.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.vk.existingSecret) -}}
+  VK_CLIENT_ID: {{ .Values.linkwarden.auth.sso.vk.clientId }}
+  VK_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.vk.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Wikimedia */}}
+  {{- if and .Values.linkwarden.auth.sso.wikimedia.enabled }}
+  NEXT_PUBLIC_WIKIMEDIA_ENABLED: {{ .Values.linkwarden.auth.sso.wikimedia.enabled }}
+  WIKIMEDIA_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.wikimedia.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.wikimedia.existingSecret) -}}
+  WIKIMEDIA_CLIENT_ID: {{ .Values.linkwarden.auth.sso.wikimedia.clientId }}
+  WIKIMEDIA_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.wikimedia.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Worpress.com */}}
+  {{- if and .Values.linkwarden.auth.sso.wordpress.enabled }}
+  NEXT_PUBLIC_WORDPRESS_ENABLED: {{ .Values.linkwarden.auth.sso.wordpress.enabled }}
+  WORDPRESS_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.wordpress.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.wordpress.existingSecret) -}}
+  WORDPRESS_CLIENT_ID: {{ .Values.linkwarden.auth.sso.wordpress.clientId }}
+  WORDPRESS_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.wordpress.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Yandex */}}
+  {{- if and .Values.linkwarden.auth.sso.yandex.enabled }}
+  NEXT_PUBLIC_YANDEX_ENABLED: {{ .Values.linkwarden.auth.sso.yandex.enabled }}
+  YANDEX_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.yandex.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.yandex.existingSecret) -}}
+  YANDEX_CLIENT_ID: {{ .Values.linkwarden.auth.sso.yandex.clientId }}
+  YANDEX_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.yandex.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Zitadel */}}
+  {{- if and .Values.linkwarden.auth.sso.zitadel.enabled }}
+  NEXT_PUBLIC_ZITADEL_ENABLED: {{ .Values.linkwarden.auth.sso.zitadel.enabled }}
+  ZITADEL_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.zitadel.customName }}
+  ZITADEL_ISSUER: {{ .Values.linkwarden.auth.sso.zitadel.issuer }}
+  {{- if (not .Values.linkwarden.auth.sso.zitadel.existingSecret) -}}
+  ZITADEL_CLIENT_ID: {{ .Values.linkwarden.auth.sso.zitadel.clientId }}
+  ZITADEL_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.zitadel.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Zoho */}}
+  {{- if and .Values.linkwarden.auth.sso.zoho.enabled }}
+  NEXT_PUBLIC_ZOHO_ENABLED: {{ .Values.linkwarden.auth.sso.zoho.enabled }}
+  ZOHO_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.zoho.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.zoho.existingSecret) -}}
+  ZOHO_CLIENT_ID: {{ .Values.linkwarden.auth.sso.zoho.clientId }}
+  ZOHO_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.zoho.clientSecret }}
+  {{- end }}
+  {{- end }}
+  {{/* Zoom */}}
+  {{- if and .Values.linkwarden.auth.sso.zoom.enabled }}
+  NEXT_PUBLIC_ZOOM_ENABLED: {{ .Values.linkwarden.auth.sso.zoom.enabled }}
+  ZOOM_CUSTOM_NAME: {{ .Values.linkwarden.auth.sso.zoom.customName }}
+  {{- if (not .Values.linkwarden.auth.sso.zoom.existingSecret) -}}
+  ZOOM_CLIENT_ID: {{ .Values.linkwarden.auth.sso.zoom.clientId }}
+  ZOOM_CLIENT_SECRET: {{ .Values.linkwarden.auth.sso.zoom.clientSecret }}
+  {{- end }}
+  {{- end }}
