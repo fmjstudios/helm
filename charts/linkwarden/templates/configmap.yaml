@@ -67,7 +67,9 @@ data:
   EMAIL_SERVER: {{ .Values.linkwarden.smtp.server }}
   {{- end }}
   {{- /* 
-    Authentication configuration 
+    Authentication configuration
+    TODO(FMJdev): Delete Client ID/Client Secrets vars since they will be read from
+    secrets
   */}}
   NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.linkwarden.auth.disableRegistration }}
   NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ .Values.linkwarden.auth.enableCredentials }}
