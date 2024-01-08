@@ -1635,3 +1635,13 @@ configMapAnnotations: {}
 ## @param configMapLabels Define extra labels for the Linkwarden ConfigMap
 ##
 configMapLabels: {}
+
+## @section Linkwarden Secret parameters
+##
+
+## @param secretAnnotations Define extra annoations for the created Kubernetes secrets
+##
+secretAnnotations: {}
+
+## @param secretLabels Define extra Labels for the created Kubernetes secrets
+secretLabels: {}

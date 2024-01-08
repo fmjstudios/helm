@@ -1,0 +1,10 @@
+{{- if eq (include "linkwarden.resourceType" .) "Deployment" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "linkwarden.fullname" . }}
+  labels:
+    {{- include "linkwarden.labels" . | nindent 4 }}
+spec:
+  {{- include "linkwarden.podSpec" . | nindent 2}}
+{{- end -}}

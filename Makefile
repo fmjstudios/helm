@@ -21,18 +21,17 @@ else
 MAKEFLAGS += -s
 endif
 
-# #####################################
-# CONFIGURATION
-# #####################################
+# -------------------------------------
+# Configuration
+# -------------------------------------
 
 SHELL := /bin/bash
 
-
 export ROOT_DIR = $(shell git rev-parse --show-toplevel)
 
-# #####################################
-# SOURCES
-# #####################################
+# ---------------------------
+# Sources
+# ---------------------------
 FIND_FLAGS := -mindepth 1 -maxdepth 1 -type d
 
 CHARTS := $(shell find $(ROOT_DIR)/charts $(FIND_FLAGS))
@@ -43,27 +42,35 @@ SOURCES := $(CHARTS)
 # Makfile's notion of 'SOURCES' with the different sub-makes
 export
 
-# BUILD OUTPUT
+# ---------------------------
+# Constants
+# ---------------------------
+
+# Build output
 OUT_DIR := $(ROOT_DIR)/dist
 CHARTS_OUT_DIR := $(OUT_DIR)/charts
 
-
 SCRIPT_DIR := $(ROOT_DIR)/scripts
 
+# Documentation
 DOCS_DIR := $(ROOT_DIR)/docs
 GIT_CLIFF_CONFIG := $(DOCS_DIR)/cliff.toml
 
 DATE := $(shell date '+%d.%m.%y-%T')
 
-# #####################################
-# GENERAL VARIABLES
-# #####################################
+# Development
+KIND_CLUSTER_CONFIG := $(ROOT_DIR)/config/kind-config.yaml
+
+
+# ---------------------------
+# User-defined variables
+# ---------------------------
 PRINT_HELP ?=
 WHAT ?=
 
-# #####################################
-# CUSTOM FUNCTIONS
-# #####################################
+# ---------------------------
+# Custom functions
+# ---------------------------
 
 define log
  @case ${2} in \
@@ -92,9 +99,35 @@ define log_attention
 endef
 
 
-# #####################################
-# TARGETS
-# #####################################
+# -------------------------------------
+# Targets
+# -------------------------------------
+
+
+
+# ---------------------------
+#   Development Cluster
+# ---------------------------
+define DEV_CLUSTER_INFO
+# Create a local development Kubernetes cluster using 'kind'. This will also
+# create a network within the Docker Engine named 'kind'.
+#
+# Arguments:
+# 	PRINT_HELP: 'y' or 'n'
+endef
+.PHONY: dev-cluster
+ifeq ($(PRINT_HELP),y)
+dev-cluster:
+	echo "$$DEV_CLUSTER_INFO"
+else
+dev-cluster: dev-cluster-networks
+	$(call log_success, "Creating local 'kind' Kubernetes cluster using configuration in: $(KIND_CLUSTER_CONFIG)!")
+	$(kind) create cluster \
+		--config $(KIND_CLUSTER_CONFIG) \
+		--name $(PROJ_NAME) \
+		--wait 15s
+endif
+
 
 # make / make all - Build code
 define ALL_HELP_INFO

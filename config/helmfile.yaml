@@ -1,0 +1,46 @@
+releases:
+  - chart: ingress-nginx/ingress-nginx
+    name: ingress-nginx
+    labels:
+      type: core
+      component: ingress-nginx
+    namespace: ingress-nginx
+    version: 4.9.0
+    installed: true
+    values:
+      - controller:
+          updateStrategy:
+            type: RollingUpdate
+            rollingUpdate:
+              maxUnavailable: 1
+          hostPort:
+            enabled: true
+          terminationGracePeriodSeconds: 0
+          service:
+            type: NodePort
+          watchIngressWithoutClass: true
+          nodeSelector:
+            ingress-ready: "true"
+          tolerations:
+            - key: "node-role.kubernetes.io/master"
+              operator: "Equal"
+              effect: "NoSchedule"
+            - key: "node-role.kubernetes.io/control-plane"
+              operator: "Equal"
+              effect: "NoSchedule"
+          extraArgs:
+            publish-status-address: localhost
+
+  - chart: jetstack/cert-manager
+    name: cert-manager
+    labels:
+      type: core
+      component: cert-manager
+    namespace: cert-manager
+    version: v1.13.3
+    installed: true
+    disableValidationOnInstall: true # required due to how CRDs are handled, see: https://github.com/roboll/helmfile/issues/1353
+    values:
+      - installCRDs: true
+        ingressShim:
+          defaultIssuerKind: ClusterIssuer

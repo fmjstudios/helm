@@ -4,9 +4,9 @@
 [changelog]
 # changelog header
 header = """
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Ansible_logo.svg/195px-Ansible_logo.svg.png" alt="Ansible Logo" align="right" height="240" width="195"/>
+<img src="https://seeklogo.com/images/H/helm-logo-9208DB3EE5-seeklogo.com.png" alt="Helm Logo" align="right" height="300" width="260"/>
 
-# `ops.delta4x4.dev` - CHANGELOG\n
+# `Helm Charts` - CHANGELOG\n
 """
 # template for the changelog body
 # https://tera.netlify.app/docs/#introduction
@@ -29,13 +29,13 @@ trim = true
 footer = """
 ---
 
-* **Source**: [](https://github.com/delta4x4/ops.delta4x4.dev/tree/main)
-* **License**: GPL 2.0
-* **Author**: delta4x4 Geländesport und Zubehör Handels GmbH
+* **Source**: [](https://github.com/fmjstudios/helm)
+* **License**: MIT
+* **Author**: FMJ Studios Helm Authors
 
 <div align="center">
 
-  **[delta4x4.com](https://delta4x4.com)**
+  **[fmj.studio](https://fmj.studio)**
 
 </div>
 """
