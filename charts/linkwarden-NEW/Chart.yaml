@@ -1,0 +1,21 @@
+apiVersion: v2
+name: linkwarden
+description: Linkwarden is open-source collaborative link management and web page archival software
+type: application
+keywords:
+  - link-management
+  - archive
+  - linkace
+  - linkding
+  - archivebox
+  - linkwarden
+sources:
+  - https://github.com/linkwarden/linkwarden
+  - https://github.com/fmjstudios/helm/charts/linkwarden
+appVersion: "2.4.7"
+maintainers:
+  - name: FMJdev
+    email: info@fmj.studio
+    url: https://github.com/FMJdev
+version: 0.0.1
+kubeVersion: ">=1.26"
