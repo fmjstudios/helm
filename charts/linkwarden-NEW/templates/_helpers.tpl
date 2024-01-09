@@ -75,6 +75,17 @@ Create the database URI from the received values
 {{- end -}}
 
 {{/*
+Set the names for the ConfigMaps
+*/}}
+{{- define "linkwarden.configmaps.general" }}
+{{- printf "%s-general" (include "linkwarden.fullname" .) }}
+{{- end }}
+
+{{- define "linkwarden.configmaps.auth" }}
+{{- printf "%s-auth" (include "linkwarden.fullname" .) }}
+{{- end }}
+
+{{/*
 Set the names of the secrets
 */}}
 {{- define "linkwarden.secrets.nextAuth" -}}
@@ -93,10 +104,14 @@ Set the names of the secrets
   SSO Authentication providers 
 */}}
 {{- define "linkwarden.auth.providers" -}}
-{{-
-  list "42school" "apple" "atlassian" "auth0" "authentik" "battleNet" "box" "bungie" "cognito" "coinbase" "discord" "dropbox" "ids6" "eveOnline" "facebook" "faceit" "foursquare" "freshbooks" "fusionauth" "freshbooks" "github" "gitlab" "google" "hubspot" "isd4" "kakao" "keycloak" "line" "linkedin" "mailchimp" "mailru" "naver" "netlify" "okta" "onelogin" "osso" "osu!" "patreon" "pinterest" "pipedrive" "reddit" "salesforce" "slack" "spotify" "strava" "todoist" "twitch" "unitedEffects" "vk" "wikimedia" "wordpress" "yandex" "zitadel" "zoho" "zoom"
--}}
+{{- list "fortytwo" "apple" "atlassian" "auth0" "authentik" "battleNet" "box" "bungie" "cognito" "coinbase" "discord" "dropbox" "ids6" "eveOnline" "facebook" "faceit" "foursquare" "freshbooks" "fusionauth" "freshbooks" "github" "gitlab" "google" "hubspot" "ids4" "kakao" "keycloak" "line" "linkedin" "mailchimp" "mailru" "naver" "netlify" "okta" "onelogin" "osso" "osu!" "patreon" "pinterest" "pipedrive" "reddit" "salesforce" "slack" "spotify" "strava" "todoist" "twitch" "unitedEffects" "vk" "wikimedia" "wordpress" "yandex" "zitadel" "zoho" "zoom" -}}
 {{- end }}
+
+{{- define "linkwarden.auth.providers.withIssuers" -}}
+{{- $issuerList := list "auth0" "authentik" "battleNet" "box" "cognito" "ids6" "fusionauth" "ids4" "keycloak" "okta" "onelogin" "osso" "unitedEffects" "zitadel" -}}
+{{- -}}
+{{- end }}
+
 
 {{/* 
   Define reusable environment variables for SSO configuration

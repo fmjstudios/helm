@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "linkwarden.fullname" . }}
+  name: {{ include "linkwarden.configmaps.general" . }}
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: linkwarden
@@ -14,9 +14,7 @@ metadata:
     {{- toYaml .Values.configMapAnnotations | nindent 4 }}
   {{- end }}
 data:
-  {{/* 
-    General configuration 
-  */}}
+  {{/* General configuration */}}
   NEXTAUTH_URL: {{ .Values.linkwarden.domain }}
   {{- if and .Values.linkwarden.nextAuthSecret.value (not .Values.linkwarden.nextAuthSecret.existingSecret.name) }}
   NEXTAUTH_SECRET: {{ .Values.linkwarden.nextAuthSecret.value }}
@@ -43,13 +41,47 @@ data:
   {{- if .Values.linkwarden.ignoreUnauthorizedCA }}
   IGNORE_UNAUTHORIZED_CA: {{ .Values.linkwarden.ignoreUnauthorizedCA }}
   {{- end }}
-  {{ range $_, $v := .Values.linkwarden.auth.sso }}
-  {{- $providerArg := (dict "provider" $v.provider) }}
-  {{- include "linkwarden.auth.envs.nextPublicEnable" $providerArg }}: "true"
+---
+{{- range $_, $v := .Values.linkwarden.auth.sso }}
+{{- $providerArg := (dict "provider" $v.provider) }}
+{{- $provider := $v.provider }}
+{{- $issuer := $v.issuer }}
+{{- $issuerList := list (include "linkwarden.auth.providers.withIssuers" $) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s" (include "linkwarden.configmaps.auth" $) $v.provider }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: linkwarden
+  {{- include "linkwarden.labels" $ | nindent 4 }}
+  {{- if $.Values.configMapLabels }}
+    {{- toYaml $.Values.configMapLabels | nindent 4 }}
+  {{- end }}
+  {{- if $.Values.configMapAnnotations }}
+  annotations:
+    {{- toYaml $.Values.configMapAnnotations | nindent 4 }}
+  {{- end }}
+data:
+  {{ include "linkwarden.auth.envs.nextPublicEnable" $providerArg }}: "true"
   {{- if $v.customName }}
   {{ include "linkwarden.auth.envs.customName" $providerArg }}: {{ $v.customName }}
   {{- end }}
-  {{- if $v.issuer }}
-  {{ include "linkwarden.auth.envs.issuer" $providerArg }}: {{ $v.issuer }}
+  {{- if has $issuer $issuerList }}
+  {{- if $v.issuer -}}
+  {{ include "linkwarden.auth.envs.issuer" $providerArg }}: {{ $issuer }}
   {{- end }}
   {{- end }}
+  {{- if (eq $provider "atlassian") }}
+  {{- if $v.scope }}
+  {{ printf "%s_SCOPE" $provider | upper }}: {{ $v.scope }}
+  {{- end }}
+  {{- end }}
+  {{- if (eq $provider "foursquare") }}
+  {{- if $v.apiVersion }}
+  {{ printf "%s_APIVERSION" $provider | upper }}: {{ $v.apiVersion }}
+  {{- end }}
+  {{- end }}
+  TEST: {{ $issuerList | squote }}
+---
+{{- end }}

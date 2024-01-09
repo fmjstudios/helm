@@ -12,7 +12,7 @@ keywords:
 sources:
   - https://github.com/linkwarden/linkwarden
   - https://github.com/fmjstudios/helm/charts/linkwarden
-appVersion: "2.4.7"
+appVersion: "2.4.8"
 maintainers:
   - name: FMJdev
     email: info@fmj.studio

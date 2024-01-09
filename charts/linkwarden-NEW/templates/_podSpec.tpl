@@ -37,6 +37,11 @@ template:
         envFrom:
           - configMapRef:
               name: {{ include "linkwarden.fullname" . }}
+          {{- range $_, $v := .Values.linkwarden.auth.sso }}
+          {{- $providerArg := (dict "provider" $v.provider) }}
+          - configMapRef:
+              name: {{ printf "%s-%s" (include "linkwarden.configmaps.auth" $) $providerArg }}
+          {{- end }}        
         env:
           {{- if or .Values.linkwarden.nextAuthSecret.value .Values.linkwarden.nextAuthSecret.existingSecret.name }}
           - name: NEXTAUTH_SECRET
