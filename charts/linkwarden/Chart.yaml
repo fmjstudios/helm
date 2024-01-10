@@ -1,20 +1,40 @@
+# Copyright FMJ Studios
+# SPDX-License-Identifier: MIT
+
+annotations:
+  artifacthub.io/category: storage
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
+    - name: FMJdev
+      email: info@fmj.dev
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/links: |
+    - name: Source
+      url: https://github.com/fmjstudios/helm
+    - name: Linkwarden Homepage
+      url: https://linkwarden.app/
+    - name: Linkwarden Documentation
+      url: https://docs.linkwarden.app/
 apiVersion: v2
+appVersion: 2.4.8
+kubeVersion: ">=1.26"
 name: linkwarden
-description: Linkwarden is an open-source link management and web page archival software
-type: application
+version: 0.0.1
+dependencies:
+  - name: postgresql
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: postgresql.enabled
+    version: ~13.2
+description: Linkwarden is an open-source collaborative bookmark manager to collect, organize and preserve webpages
+home: https://linkwarden.app/
+icon: https://linkwarden.app/linkwarden.png
 keywords:
-  - link-management
-  - archive
-  - linkace
+  - bookmarks
+  - archival
+  - collaboration
   - linkding
-  - linkwarden
-sources:
-  - https://github.com/linkwarden/linkwarden
-  - https://github.com/fmjstudios/helm/charts/linkwarden
-appVersion: "2.4.7"
+  - linkace
+  - archivebox
 maintainers:
   - name: FMJdev
-    email: info@fmj.studio
-    url: https://github.com/FMJdev
-version: 0.0.1
-kubeVersion: ">=1.26"
+    email: info@fmj.dev

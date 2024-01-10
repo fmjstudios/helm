@@ -19,7 +19,7 @@
 image:
   registry: ghcr.io
   repository: linkwarden/linkwarden
-  tag: "v2.4.7"
+  tag: "v2.4.8"
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -46,12 +46,15 @@ nameOverride: ""
 ##
 fullnameOverride: ""
 
-## @section Linkwarden Configuration parameters
+## @section Linkwarden configuration parameters
 ##
 
 ## Linkwarden configuration
 ## ref: https://github.com/dani-garcia/linkwarden/wiki/Configuration-overview
 ## @param linkwarden.domain [string] The domain name to give to Linkwarden
+## @param linkwarden.nextAuthSecret.value [string] A secret string to encrypt JWTs and hash email verification tokens
+## @param linkwarden.nextAuthSecret.name [string] The name of an existing secret containing the secret string
+## @param linkwarden.nextAuthSecret.key [string] The key within before mentioned secret containing the actual string
 
 linkwarden:
   ## The domain of the Linkwarden installation, to be re-used as the NextAuth URL
@@ -198,12 +201,12 @@ linkwarden:
     ## Provide the username to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
     ## since the secret has to contain the entire database URI
     ##
-    user: ""
+    user: "linkwarden"
 
     ## Provide the password to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
     ## since the secret has to contain the entire database URI
     ##
-    password: ""
+    password: "linkwarden"
 
     ## Provide the host to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
     ## since the secret has to contain the entire database URI
@@ -213,12 +216,12 @@ linkwarden:
     ## Provide the port to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
     ## since the secret has to contain the entire database URI
     ##
-    port: ""
+    port: 5432
 
     ## Provide the name to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
     ## since the secret has to contain the entire database URI
     ##
-    name: ""
+    name: "linkwarden"
 
     ## Manually provide the entire URI to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides
     ## the value
@@ -252,1360 +255,11 @@ linkwarden:
     ## ref: https://docs.linkwarden.app/self-hosting/sso-oauth
     ##
     sso:
-      ## Authentik SSO
-      ##
-      authentik:
-        ## Enable Authentik SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Authentik provider name
-        ##
-        customName: ""
-
-        ## Set the Authentik OIDC Issuer
-        ##
-        issuer: ""
-
-        ## Set the Authentik OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Authentik OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Keycloak SSO
-      ##
-      keycloak:
-        ## Enable Keycloak SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Keycloak provider name
-        ##
-        customName: ""
-
-        ## Set the Keycloak OIDC Issuer
-        ##
-        issuer: ""
-
-        ## Set the Keycloak OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Keycloak OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## 42School SSO
-      ##
-      42school:
-        ## Enable 42School SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom 42School provider name
-        ##
-        customName: ""
-
-        ## Set the 42School OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the 42School OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Apple SSO
-      ##
-      apple:
-        ## Enable Apple SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Apple provider name
-        ##
-        customName: ""
-
-        ## Set the Apple OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Apple OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Atlassian SSO
-      ##
-      atlassian:
-        ## Enable Atlassian SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Atlassian provider name
-        ##
-        customName: ""
-
-        ## Optionally set a custom Atlassian provider scope
-        ##
-        scope: ""
-
-        ## Set the Atlassian OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Atlassian OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Auth0 SSO
-      ##
-      auth0:
-        ## Enable Auth0 SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Auth0 provider name
-        ##
-        customName: ""
-
-        ## Set the Auth0 OIDC Issuer
-        ##
-        issuer: ""
-
-        ## Set the Auth0 OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Auth0 OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Battle.net SSO
-      ##
-      battleNet:
-        ## Enable Battle.net SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Battle.net provider name
-        ##
-        customName: ""
-
-        ## Set the Battle.net OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Battle.net OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Box SSO
-      ##
-      box:
-        ## Enable Box SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Box provider name
-        ##
-        customName: ""
-
-        ## Set the Box OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Box OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Bungie SSO
-      ##
-      bungie:
-        ## Enable Bungie SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Bungie provider name
-        ##
-        customName: ""
-
-        ## Set the Bungie OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Bungie OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Set the Bungie API Key
-        ##
-        apiKey: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId', 'clientSecret' and 'apiKey'
-        ##
-        existingSecret: ""
-
-      ## Cognito SSO
-      ##
-      cognito:
-        ## Enable Cognito SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Cognito provider name
-        ##
-        customName: ""
-
-        ## Set the Cognito issuer
-        ##
-        issuer: ""
-
-        ## Set the Cognito OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Cognito OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Coinbase SSO
-      ##
-      coinbase:
-        ## Enable Coinbase SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Coinbase provider name
-        ##
-        customName: ""
-
-        ## Set the Coinbase OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Coinbase OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Discord SSO
-      ##
-      discord:
-        ## Enable Discord SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Discord provider name
-        ##
-        customName: ""
-
-        ## Set the Discord OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Discord OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Dropbox SSO
-      ##
-      dropbox:
-        ## Enable Dropbox SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Dropbox provider name
-        ##
-        customName: ""
-
-        ## Set the Dropbox OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Dropbox OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Duende Identity Server 6 SSO
-      ##
-      duende6:
-        ## Enable Duende Identity Server 6 SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Duende Identity Server 6 provider name
-        ##
-        customName: ""
-
-        ## Set the Duende Identity Server 6 OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Duende Identity Server 6 OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## EVE Online SSO
-      ##
-      eve:
-        ## Enable EVE Online SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom EVE Online provider name
-        ##
-        customName: ""
-
-        ## Set the EVE Online OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the EVE Online OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Facebook SSO
-      ##
-      facebook:
-        ## Enable Facebook SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Facebook provider name
-        ##
-        customName: ""
-
-        ## Set the Facebook OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Facebook OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## FACEIT SSO
-      ##
-      faceit:
-        ## Enable FACEIT SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom FACEIT provider name
-        ##
-        customName: ""
-
-        ## Set the FACEIT OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the FACEIT OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Freshbooks SSO
-      ##
-      freshbooks:
-        ## Enable Freshbooks SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Freshbooks provider name
-        ##
-        customName: ""
-
-        ## Set the Freshbooks OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Freshbooks OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Foursquare SSO
-      ##
-      foursquare:
-        ## Enable Foursquare SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Foursquare provider name
-        ##
-        customName: ""
-
-        ## Set the Foursquare API version
-        ##
-        apiVersion: ""
-
-        ## Set the Foursquare OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Foursquare OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## FusionAuth SSO
-      ##
-      fusionauth:
-        ## Enable FusionAuth SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom FusionAuth provider name
-        ##
-        customName: ""
-
-        ## Set the FusionAuth issuer
-        ##
-        issuer: ""
-
-        ## Set the FusionAuth OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the FusionAuth OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Set the FusionAuth Tenant ID
-        ##
-        tenantId: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId', 'clientSecret' and 'tenantId'
-        ##
-        existingSecret: ""
-
-      ## GitHub SSO
-      ##
-      github:
-        ## Enable GitHub SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom GitHub provider name
-        ##
-        customName: ""
-
-        ## Set the GitHub OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the GitHub OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## GitLab SSO
-      ##
-      gitlab:
-        ## Enable GitLab SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom GitLab provider name
-        ##
-        customName: ""
-
-        ## Set the GitLab OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the GitLab OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Google SSO
-      ##
-      google:
-        ## Enable Google SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Google provider name
-        ##
-        customName: ""
-
-        ## Set the Google OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Google OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Hubspot SSO
-      ##
-      hubspot:
-        ## Enable Hubspot SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Hubspot provider name
-        ##
-        customName: ""
-
-        ## Set the Hubspot OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Hubspot OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Duende Identity Server 4 (pre Duende) SSO
-      ##
-      duende4:
-        ## Enable Duende Identity Server 4 SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Duende Identity Server 4 provider name
-        ##
-        customName: ""
-
-        ## Set the Duende Identity Server 4 OIDC issuer
-        ##
-        issuer: ""
-
-        ## Set the Duende Identity Server 4 OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Duende Identity Server 4 OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Kakao SSO
-      ##
-      kakao:
-        ## Enable Kakao SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Kakao provider name
-        ##
-        customName: ""
-
-        ## Set the Kakao OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Kakao OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Line SSO
-      ##
-      line:
-        ## Enable Line SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Line provider name
-        ##
-        customName: ""
-
-        ## Set the Line OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Line OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## LinkedIn SSO
-      ##
-      linkedIn:
-        ## Enable LinkedIn SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom LinkedIn provider name
-        ##
-        customName: ""
-
-        ## Set the LinkedIn OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the LinkedIn OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Mailchimp SSO
-      ##
-      mailchimp:
-        ## Enable Mailchimp SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Mailchimp provider name
-        ##
-        customName: ""
-
-        ## Set the Mailchimp OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Mailchimp OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Mailru SSO
-      ##
-      mailru:
-        ## Enable Mailru SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Mailru provider name
-        ##
-        customName: ""
-
-        ## Set the Mailru OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Mailru OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Naver SSO
-      ##
-      naver:
-        ## Enable Naver SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Naver provider name
-        ##
-        customName: ""
-
-        ## Set the Naver OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Naver OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Netlify SSO
-      ##
-      netlify:
-        ## Enable Netlify SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Netlify provider name
-        ##
-        customName: ""
-
-        ## Set the Netlify OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Netlify OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Okta SSO
-      ##
-      okta:
-        ## Enable Okta SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Okta provider name
-        ##
-        customName: ""
-
-        ## Set the Okta OIDC issuer
-        ##
-        issuer: ""
-
-        ## Set the Okta OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Okta OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## OneLogin SSO
-      ##
-      onelogin:
-        ## Enable OneLogin SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom OneLogin provider name
-        ##
-        customName: ""
-
-        ## Set the OneLogin OIDC issuer
-        ##
-        issuer: ""
-
-        ## Set the OneLogin OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the OneLogin OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## OSSO SSO
-      ##
-      osso:
-        ## Enable OSSO SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom OSSO provider name
-        ##
-        customName: ""
-
-        ## Set the OSSO OIDC issuer
-        ##
-        issuer: ""
-
-        ## Set the OSSO OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the OSSO OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## osu! SSO
-      ##
-      osu:
-        ## Enable osu! SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom osu! provider name
-        ##
-        customName: ""
-
-        ## Set the osu! OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the osu! OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Patreon SSO
-      ##
-      patreon:
-        ## Enable Patreon SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Patreon provider name
-        ##
-        customName: ""
-
-        ## Set the Patreon OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Patreon OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Pinterest SSO
-      ##
-      pinterest:
-        ## Enable Pinterest SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Pinterest provider name
-        ##
-        customName: ""
-
-        ## Set the Pinterest OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Pinterest OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Pipedrive SSO
-      ##
-      pipedrive:
-        ## Enable Pipedrive SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Pipedrive provider name
-        ##
-        customName: ""
-
-        ## Set the Pipedrive OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Pipedrive OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Reddit SSO
-      ##
-      reddit:
-        ## Enable Reddit SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Reddit provider name
-        ##
-        customName: ""
-
-        ## Set the Reddit OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Reddit OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Salesforce SSO
-      ##
-      salesforce:
-        ## Enable Salesforce SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Salesforce provider name
-        ##
-        customName: ""
-
-        ## Set the Salesforce OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Salesforce OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Slack SSO
-      ##
-      slack:
-        ## Enable Slack SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Slack provider name
-        ##
-        customName: ""
-
-        ## Set the Slack OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Slack OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Spotify SSO
-      ##
-      spotify:
-        ## Enable Spotify SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Spotify provider name
-        ##
-        customName: ""
-
-        ## Set the Spotify OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Spotify OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Strava SSO
-      ##
-      strava:
-        ## Enable Strava SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Strava provider name
-        ##
-        customName: ""
-
-        ## Set the Strava OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Strava OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Todoist SSO
-      ##
-      todoist:
-        ## Enable Todoist SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Todoist provider name
-        ##
-        customName: ""
-
-        ## Set the Todoist OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Todoist OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Twitch SSO
-      ##
-      twitch:
-        ## Enable Twitch SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Twitch provider name
-        ##
-        customName: ""
-
-        ## Set the Twitch OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Twitch OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## United Effects SSO
-      ##
-      unitedEffects:
-        ## Enable United Effects SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom United Effects provider name
-        ##
-        customName: ""
-
-        ## Set the United Effects OIDC
-        ##
-        issuer: ""
-
-        ## Set the United Effects OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the United Effects OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## VK SSO
-      ##
-      vk:
-        ## Enable VK SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom VK provider name
-        ##
-        customName: ""
-
-        ## Set the VK OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the VK OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Wikimedia SSO
-      ##
-      wikimedia:
-        ## Enable Wikimedia SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Wikimedia provider name
-        ##
-        customName: ""
-
-        ## Set the Wikimedia OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Wikimedia OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Wordpress.com SSO
-      ##
-      wordpress:
-        ## Enable Wordpress.com SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Wordpress.com provider name
-        ##
-        customName: ""
-
-        ## Set the Wordpress.com OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Wordpress.com OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Yandex SSO
-      ##
-      yandex:
-        ## Enable Yandex SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Yandex provider name
-        ##
-        customName: ""
-
-        ## Set the Yandex OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Yandex OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Zitadel SSO
-      ##
-      zitadel:
-        ## Enable Zitadel SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Zitadel provider name
-        ##
-        customName: ""
-
-        ## Set the Zitadel OIDC issuer
-        ##
-        issuer: ""
-
-        ## Set the Zitadel OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Zitadel OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Zoho SSO
-      ##
-      zoho:
-        ## Enable Zoho SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Zoho provider name
-        ##
-        customName: ""
-
-        ## Set the Zoho OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Zoho OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
-        existingSecret: ""
-
-      ## Zoom SSO
-      ##
-      zoom:
-        ## Enable Zoom SSO
-        ##
-        enabled: false
-
-        ## Optionally set a custom Zoom provider name
-        ##
-        customName: ""
-
-        ## Set the Zoom OIDC Client ID
-        ##
-        clientId: ""
-
-        ## Set the Zoom OIDC Secret
-        ##
-        clientSecret: ""
-
-        ## Retrieve the OIDC Client ID and Client Secret from a Kubernetes Secret
-        ## The secret must contain the keys: 'clientId' and 'clientSecret'
-        ##
+      - provider: "authentik"
+        customName: "authentik-custom"
+        issuer: "authentik"
+        clientId: "test"
+        clientSecret: "test"
         existingSecret: ""
 
   ## SMTP settings
@@ -1645,3 +299,134 @@ secretAnnotations: {}
 
 ## @param secretLabels Define extra Labels for the created Kubernetes secrets
 secretLabels: {}
+
+## @section RBAC parameters
+##
+
+## Linkwarden RBAC settings
+## ref:
+rbac:
+  create: false
+  enablePSP: false
+  rules: []
+
+## @section Linkwarden Service Account parameters
+##
+
+## FMJ Studios Linkwarden Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.annotations [object] Annotations to add to the service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise linkwarden.fullname is used
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # The list of secrets mountable by this service account.
+  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
+  secrets: []
+
+## @section Linkwarden Probes
+##
+
+## Linkwarden Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  enabled: false
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 10
+
+## Linkwarden Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  enabled: false
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+## Linkwarden Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  enabled: false
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 10
+
+## @section Bitnami&reg; PostgreSQL parameters
+##
+
+## PostgreSQL configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  ## Enable or disable the PostgreSQL subchart
+  ##
+  enabled: true
+  ## Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-user-on-first-run
+  ##
+  auth:
+    ## @param auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    ##
+    enablePostgresUser: true
+    ## @param auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
+    ##
+    postgresPassword: "postgres"
+    ## @param auth.username Name for a custom user to create
+    ##
+    username: "linkwarden"
+    ## @param auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
+    ##
+    password: "linkwarden"
+    ## @param auth.database Name for a custom database to create
+    ##
+    database: "linkwarden"
+    ## @param auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
+    ##
+    usePasswordFiles: false
+  ## @section PostgreSQL Primary parameters
+  ##
+  primary:
+    ## @param primary.name Name of the primary database (eg primary, master, leader, ...)
+    ##
+    name: primary
+    ## PostgreSQL Primary persistence configuration
+    ##
+    persistence:
+      ## @param primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
+      ##
+      enabled: true
+      ## @param primary.persistence.existingClaim Name of an existing PVC to use
+      ##
+      existingClaim: ""
+      ## @param primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      storageClass: ""
+      ## @param primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+      ##
+      accessModes:
+        - ReadWriteOnce
+      ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ##
+      size: 5Gi

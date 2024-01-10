@@ -6,5 +6,5 @@ metadata:
   labels:
     {{- include "linkwarden.labels" . | nindent 4 }}
 spec:
-  {{- include "linkwarden.podSpec" . | nindent 2}}
+  {{- include "linkwarden.podSpec" . | nindent 2 }}
 {{- end -}}
