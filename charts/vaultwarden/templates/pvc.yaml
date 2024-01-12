@@ -11,7 +11,7 @@ metadata:
     helm.sh/resource-policy: keep
     {{- end }}
 spec:
-  storageClassName: {{ .Values.vaultwarden.data.pvc.storageClass }}
+  storageClassName: {{ .Values.vaultwarden.data.pvc.storageClass | default "standard" }}
   accessModes:
     - ReadWriteOnce
   resources:

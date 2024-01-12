@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "linkwarden.fullname" . }}
+  labels:
+    {{- include "linkwarden.labels" . | nindent 4 }}
+    {{- if .Values.service.labels }}
+    {{- toYaml .Values.service.labels -}}
+    {{- end }}
+  {{- if .Values.service.annotations -}}
+  annotations:
+  {{- toYaml .Values.service.annotations }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "linkwarden.selectorLabels" . | nindent 4 }}

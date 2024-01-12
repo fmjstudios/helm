@@ -28,6 +28,8 @@ endif
 SHELL := /bin/bash
 
 export ROOT_DIR = $(shell git rev-parse --show-toplevel)
+export ROOT_DIR_NAME = $(shell basename "$(ROOT_DIR)")
+export PROJ_NAME = $(shell printf "%s-%s" $(ROOT_DIR_NAME) charts)
 
 # ---------------------------
 # Sources
@@ -61,12 +63,21 @@ DATE := $(shell date '+%d.%m.%y-%T')
 # Development
 KIND_CLUSTER_CONFIG := $(ROOT_DIR)/config/kind-config.yaml
 
+# Executables
+helm := helm
+helmfile := helmfile
+kind := kind
+
+EXECUTABLES := $(helm) $(helmfile) $(kind)
+
 
 # ---------------------------
 # User-defined variables
 # ---------------------------
 PRINT_HELP ?=
-WHAT ?=
+
+CHART ?=
+FILES ?=
 
 # ---------------------------
 # Custom functions
@@ -103,11 +114,11 @@ endef
 # Targets
 # -------------------------------------
 
-
-
 # ---------------------------
 #   Development Cluster
 # ---------------------------
+
+# Cluster Creation
 define DEV_CLUSTER_INFO
 # Create a local development Kubernetes cluster using 'kind'. This will also
 # create a network within the Docker Engine named 'kind'.
@@ -128,62 +139,51 @@ dev-cluster: dev-cluster-networks
 		--wait 15s
 endif
 
-
-# make / make all - Build code
-define ALL_HELP_INFO
-# Build all or some Helm charts.
+# Cluster Cleanup
+define DEV_CLEANUP_INFO
+# Remove the local development Kubernetes cluster.
 #
 # Arguments:
-#   WHAT: The chart names to build. Directly analogous to the directory names
-# 	in the charts directory.
+# 	PRINT_HELP: 'y' or 'n'
 endef
-.PHONY: all
-ifeq ($(PRINT_HELP),1)
-all:
-	echo "$$ALL_HELP_INFO"
+.PHONY: dev-cleanup
+ifeq ($(PRINT_HELP),y)
+dev-cleanup:
+	echo "$$DEV_CLEANUP_INFO"
 else
-all: create-dist
-	$(call log_notice, "Building artifact for: $(WHAT)")
-	$(MAKE) -C $(WHAT) build
-	$(call log_success, "Built artifact for $(WHAT)!")
+dev-cleanup:
+	$(call log_attention, "Removing local 'kind' Kubernetes cluster!")
+	$(kind) delete cluster \
+		--name $(PROJ_NAME)
 endif
 
-# make test - Test code
-define TEST_HELP_INFO
-# Test all or some Ansible collections/roles.
+# ---------------------------
+#   Charts
+# ---------------------------
+define TEMPLATE_INFO
+# Run Helm's template engine on some or all files of a Helm chart. 
+# The chart may be picked with the 'CHART' make variable whereas 'FILES'
+# controls which files should be templated.
 #
 # Arguments:
-#   WHAT: ...
-#   TESTS: ...
+#   PRINT_HELP: 'y' or 'n'
+# 	CHART: charts/.. (any subdirectory)
+# 	FILES: ... (e.g. configmap.yaml)
 endef
-.PHONY: test
-ifeq ($(PRINT_HELP),1)
-test:
-	echo "$$TEST_HELP_INFO"
+.PHONY: template
+ifeq ($(PRINT_HELP), y)
+template:
+	echo "$$TEMPLATE_INFO"
 else
-test:
-	$(call log_notice, "Testing $(WHAT)")
-	$(MAKE) -C $(WHAT) test
-	$(call log_success, "Test for $(WHAT) succeeded!")
+template:
+	$(call log_info, "Templating files: $(FILES) for chart: $(CHART)")
+	$(helm) template $(CHART) \
+	ifdef FILES
+		-s $(FILES) \
+	endif
+		--debug
 endif
 
-# make changelog - Generate CHANGELOG documents
-define CHANGELOG_HELP_INFO
-# Generate CHANGELOG documents for all or some Ansible collections/roles.
-#
-# Arguments:
-#   WHAT: ...
-endef
-.PHONY: changelog
-ifeq ($(PRINT_HELP),1)
-changelog:
-	echo "$$CHANGELOG_HELP_INFO"
-else
-changelog:
-	$(call log_notice, "Generating CHANGELOG's for: $(WHAT)")
-	$(MAKE) -C $(WHAT) changelog
-	$(call log_success, "CHANGELOG generation for $(WHAT) succeeded!")
-endif
 
 # make clean - Clean up after builds
 .PHONY: clean
@@ -191,9 +191,12 @@ clean:
 	@echo Removing temporary distribution directories..
 	@rm -rf $(OUT_DIR)
 
-# #####################################
-# DEPENDANT RECIPES
-# #####################################
+# ---------------------------
+# Dependant recipes
+# ---------------------------
+.PHONY: tools-check
+tools-check:
+	$(foreach exe,$(EXECUTABLES), $(if $(shell command -v $(exe) 2> /dev/null), $(info Found $(exe)), $(info Please install $(exe))))
 
 create-dist:
 ifeq (,$(findstring collections, $(WHAT)))

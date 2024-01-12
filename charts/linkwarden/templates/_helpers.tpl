@@ -87,36 +87,6 @@ Set the names of the secrets
 {{- printf "%s-db" (include "linkwarden.fullname" .) }}
 {{- end }}
 
-{{/* 
-  Define reusable environment variables for SSO configuration
-*/}}
-{{- define "linkwarden.auth.envs.nextPublicEnable" -}}
-{{ printf "NEXT_PUBLIC_%s_ENABLED" .provider | upper }}
-{{- end }}
-
-{{- define "linkwarden.auth.envs.customName" -}}
-{{ printf "%s_CUSTOM_NAME" .provider | upper }}
-{{- end }}
-
-{{- define "linkwarden.auth.envs.clientId" -}}
-{{ printf "%s_CLIENT_ID" .provider | upper }}
-{{- end }}
-
-{{- define "linkwarden.auth.envs.clientSecret" -}}
-{{ printf "%s_CLIENT_SECRET" .provider | upper }}
-{{- end }}
-
-{{- define "linkwarden.auth.envs.issuer" -}}
-{{ printf "%s_ISSUER" .provider | upper }}
-{{- end }}
-
-{{/*
-  Authentication secret base name - will be suffixed with the configured provider
-*/}}
-{{- define "linkwarden.auth.secrets.base" -}}
-{{- printf "%s-auth" (include "linkwarden.fullname" .) }}
-{{- end }}
-
 {{/*
 Define the PV name
 */}}

@@ -789,9 +789,11 @@ service:
 ##
 
 ## Vaultwarden RBAC settings
+## @param rbac.create [default: false] Whether or not to create RBAC resources
+## @param rbac.rules [array] Extra rules to add to the Role
+##
 rbac:
   create: false
-  enablePSP: false
   rules: []
 
 ## @section Vaultwarden Service Account parameters

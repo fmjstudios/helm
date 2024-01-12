@@ -51,231 +51,199 @@ fullnameOverride: ""
 
 ## Linkwarden configuration
 ## ref: https://github.com/dani-garcia/linkwarden/wiki/Configuration-overview
-## @param linkwarden.domain [string] The domain name to give to Linkwarden
-## @param linkwarden.nextAuthSecret.value [string] A secret string to encrypt JWTs and hash email verification tokens
-## @param linkwarden.nextAuthSecret.name [string] The name of an existing secret containing the secret string
-## @param linkwarden.nextAuthSecret.key [string] The key within before mentioned secret containing the actual string
 
 linkwarden:
-  ## The domain of the Linkwarden installation, to be re-used as the NextAuth URL
+  ## @param linkwarden.domain [string] The domain name to assign to Linkwarden, to be re-used as the NextAuth URL
   ##
   domain: ""
-
   ## Used to encrypt the NextAuth.js JWT, and to hash email verification tokens.
   ##
   nextAuthSecret:
-    ## The value for the NextAuth secret
+    ## @param linkwarden.nextAuthSecret.value [string] A secret string to encrypt JWTs and hash email verification tokens
     ##
     value: ""
-
     ## Fetch the NextAuth secret from an existing Secret
     ##
     existingSecret:
-      ## The name of the existing Secret from which to fetch the secret
+      ## @param linkwarden.nextAuthSecret.existingSecret.name [string] The name of an existing secret containing the secret string
       ##
       name: ""
-
-      ## The name of the key within the Secret which contains the NextAuth Secret
+      ## @param linkwarden.nextAuthSecret.existingSecret.key [string] The key within before mentioned secret containing the actual string
       ##
       key: ""
-
-  ## The number of links to fetch every time you reach the bottom of the webpage
+  ## @param linkwarden.paginationTakeCount [default: 20] The number of links to fetch every time you reach the bottom of the webpage
   ##
   paginationTakeCount: 20
-
-  ## The amount of time to wait for the website to be archived (in seconds).
+  ## @param linkwarden.autoscrollTimeout [default: 30] The amount of time to wait for the website to be archived (in seconds).
   ##
   autoscrollTimeout: 30
-
-  ## Adjusts how often a user can trigger a new archive for each link (in minutes).
+  ## @param linkwarden.rearchiveLimit [default: 5] Adjusts how often a user can trigger a new archive for each link (in minutes).
   ##
   rearchiveLimit: 5
-
-  ## Optionally set a maximum file size
+  ## @param linkwarden.maxFileSize [string] Optionally set a maximum file size
   ##
   maxFileSize: ""
-
-  ## Optionally set the maximum amount of links a single user can create
+  ## @param linkwarden.maxLinksPerUser [string] Optionally set the maximum amount of links a single user can create
   ##
   maxLinksPerUser: ""
-
-  ## Optionally set the number of archives to fetch
+  ## @param linkwarden.archiveTakeCount [string] Optionally set the number of archives to fetch
   ##
   archiveTakeCount: ""
-
-  ## Optionally set timeout duration for the browser
+  ## @param linkwarden.browserTimeout [string] Optionally set timeout duration for the browser
   ##
   browserTimeout: ""
-
-  ## Optionally ignore unauthorized Certificate Authorities
+  ## @param linkwarden.ignoreUnauthorizedCA [default: false] Optionally ignore unauthorized Certificate Authorities
   ## (Allow inscure TLS connections)
   ##
   ignoreUnauthorizedCA: false
-
   ## Paths to use inside tha applications container for file storage.
   ##
   data:
-    ## The storage type to use for data, can be either 'filesystem' or 's3'
+    ## @param linkwarden.data.storageType [default: filesystem] The storage type to use for data, can be either 'filesystem' or 's3'
     ##
     storageType: filesystem
-
     ## Filesystem data settings
     ##
     filesystem:
-      ## The root path for data be stored in.
+      ## @param linkwarden.data.filesystem.rootPath [default: /data] The root path for data be stored in.
       ##
       rootPath: /data
-
       ## Kubernetes PVC settings
       ##
       pvc:
-        ## The size given to the PVC for the above data paths
+        ## @param linkwarden.data.filesystem.pvc.size [default: 5Gi] The size given to the PVC for the above data paths
         ##
         size: 5Gi
-
-        ## The storageClass given to PVCs created from the above data
+        ## @param linkwarden.data.filesystem.pvc.storageClass [default: standard] The storageClass given to PVCs
         ##
         storageClass: standard
-
-        ## The resourcePolicy given to PVCs created from the above data
+        ## @param linkwarden.data.filesystem.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs
         ##
         reclaimPolicy: Retain
 
     ## S3 data settings
     ##
     s3:
-      ## The name of the S3 bucket to be used for the Linkwarden files
+      ## @param linkwarden.data.s3.bucketName [string] The name of the S3 bucket to be used for the Linkwarden files
       ##
-      bucketName: linkwarden
-
-      ## The S3 endpoint to use for uploading and modifying data within before
-      ## mentioned bucket
+      bucketName: ""
+      ## @param linkwarden.data.s3.endpoint [string] The S3 endpoint to use
       ##
-      endpoint: s3.eu-central-1.amazonaws.com
-
-      ## The AWS region the S3 bucket is located in
+      endpoint: ""
+      ## @param linkwarden.data.s3.region [string] The AWS region the S3 bucket is located in
       ##
-      region: eu-central-1
-
-      ## Use path-style bucket addresses instead of AWS' DNS subdomain style
+      region: ""
+      ## @param linkwarden.data.s3.forcePathStyle [default: false] Use path-style bucket addresses instead of AWS' DNS subdomain style
       ##
       forcePathStyle: false
-
       ## The S3 Access Key for before mentioned bucket
       ##
       accessKey:
-        ## The value for the S3 Access Key, to be used within a Kubernetes secret
+        ## @param linkwarden.data.s3.accessKey.value [string] The value for the S3 Access Key, to be used within a Kubernetes secret
         ##
         value: ""
-
         ## Use an existing Secret for the S3 Access Key
         ##
         existingSecret:
-          ## The name of the existing secret
+          ## @param linkwarden.data.s3.accessKey.existingSecret.name [string] The name of the existing secret
           ##
           name: ""
-          ## The key name within the existing Secret containing the S3 Access Key
+          ## @param linkwarden.data.s3.accessKey.existingSecret.key [string] The key name within the existing Secret
           ##
           key: ""
-
       ## The S3 Secret Key for before mentioned bucket
       ##
       secretKey:
-        ## The value for the S3 Secret Key, to be used within a Kubernetes secret
+        ## @param linkwarden.data.s3.secretKey.value [string] The value for the S3 Secret Key, to be used within a Kubernetes secret
         ##
         value: ""
-
         ## Use an existing Secret for the S3 Secret Key
         ##
         existingSecret:
-          ## The name of the existing secret
+          ## @param linkwarden.data.s3.secretKey.existingSecret.name [string] The name of the existing secret
           ##
           name: ""
-          ## The key name within the existing Secret containing the S3 Secret Key
+          ## @param linkwarden.data.s3.secretKey.existingSecret.key [string] The key name within the existing Secret
           ##
           key: ""
 
-  ## Database settings
+  ## Linkwarden Database settings
   ##
   database:
-    ## Provide the username to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
-    ## since the secret has to contain the entire database URI
+    ## @param linkwarden.database.user [default: linkwarden] The user for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
     ##
     user: "linkwarden"
-
-    ## Provide the password to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
-    ## since the secret has to contain the entire database URI
+    ## @param linkwarden.database.password [default: linkwarden] The password to the aforementioned user - ignored if 'existingSecret' or 'uri' is set
     ##
     password: "linkwarden"
-
-    ## Provide the host to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
-    ## since the secret has to contain the entire database URI
+    ## @param linkwarden.database.host [string] The hostname for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
     ##
     host: ""
-
-    ## Provide the port to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
-    ## since the secret has to contain the entire database URI
+    ## @param linkwarden.database.port [default: 5432] The port for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
     ##
     port: 5432
-
-    ## Provide the name to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides the value
-    ## since the secret has to contain the entire database URI
+    ## @param linkwarden.database.name [default: linkwarden] The name for the PostgreSQL database - ignored if 'existingSecret' or 'uri' is set
     ##
     name: "linkwarden"
-
-    ## Manually provide the entire URI to the Linkwarden PostgreSQL database. Providing an 'existingSecret' overrides
-    ## the value
+    ## @param linkwarden.database.uri [string] The URI for the PostgreSQL database - ignored if existingSecret is set
     ##
     uri: ""
-
     ## Provide an existing secret containing the entire Database URI at the specified key
     ##
     existingSecret:
+      ## @param linkwarden.database.uri [string] The name of the existing secret
+      ##
       name: ""
+      ## @param linkwarden.database.uri [string] The name of the key within the aforementioned existing secret
+      ##
       key: ""
 
   ## Authentication settings
   ##
   auth:
-    ## Disable registration for Linkwarden
+    ## @param linkwarden.auth.disableRegistration [default: false] Disable registration for Linkwarden
     ##
     disableRegistration: false
 
-    ## Enable credential logins for Linkwarden
+    ## @param linkwarden.auth.enableCredentials [default: true] Enable credential logins for Linkwarden
     ##
     enableCredentials: true
 
-    ## Disable new SSO users
+    ## @param linkwarden.auth.disableNewSSOUsers [default: false] Disable new SSO users
     ##
     disableNewSSOUsers: false
 
     ## SSO Providers
-    ## Officially supported and tested are only Authentik and Keycloak other SSO
-    ## providers are solely provided for completeness
+    ## Officially supported and tested are only Authentik and Keycloak other SSO providers are solely provided for completeness
     ## ref: https://docs.linkwarden.app/self-hosting/sso-oauth
+    ## @param linkwarden.auth.sso [array] A list of SSO providers to enable within Linkwarden
     ##
     sso:
-      - provider: "authentik"
-        customName: "authentik-custom"
-        issuer: "authentik"
-        clientId: "test"
-        clientSecret: "test"
-        existingSecret: ""
+      []
+      # - provider: "authentik"
+      #   customName: "authentik-custom"
+      #   issuer: "authentik"
+      #   clientId: "someId"
+      #   clientSecret: "someSecret"
+      # - provider: "keycloak"
+      #   customName: "keycloak-custom"
+      #   issuer: "keycloak"
+      #   existingSecret: "keycloak-creds"
 
   ## SMTP settings
   ##
   smtp:
-    ## Enable E-mail integration within Linkwarden
+    ## @param linkwarden.smtp.enabled [default: false] Enable E-mail integration within Linkwarden
     ##
     enabled: false
 
-    ## The email address from which Linkwarden will send mails
-    ## e.g.: "vaultwarden@domain.tld"
+    ## The email address from which Linkwarden will send mails e.g.: "vaultwarden@domain.tld"
+    ## @param linkwarden.smtp.fromAddress [string] The address from which Linkwarden should send emails
     ##
     fromAddress: ""
 
-    ## The mail server from which Linkwarden will send mails
-    ## e.g.: "mx.domain.tld"
+    ## The mail server from which Linkwarden will send mails e.g.: "mx.domain.tld"
+    ## @param linkwarden.smtp.server [string] The server from which Linkwarden should send emails
     ##
     server: ""
 
@@ -300,14 +268,61 @@ secretAnnotations: {}
 ## @param secretLabels Define extra Labels for the created Kubernetes secrets
 secretLabels: {}
 
+## @section Ingress parameters
+##
+
+## Linkwarden Ingress settings
+## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+## @param ingress.enabled Enable or disable the creation of Ingress resources
+## @param ingress.className [string] Specify an Ingress class for the resource
+## @param ingress.annotations [object] Define extra annotations for the Ingress resource
+## @param ingress.hosts [array] Define hostnames & paths for the Ingress resource
+## @param ingress.tls [array] Define TLS settings for the Ingress resource
+##
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    []
+    # - host: domain.tld
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: domain-tld-tls
+  #    hosts:
+  #      - domain.tld
+
+## @section Service parameters
+##
+
+## Linkwarden service settings
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+## @param service.type [string] The type of service resource to create
+## @param service.port [int] The port number to assign to the service
+## @param service.annotations [object] Define extra annotations for the Service resource
+## @param service.labels [object] Define extra labels for the Service resource
+##
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+  labels: {}
+
 ## @section RBAC parameters
 ##
 
 ## Linkwarden RBAC settings
-## ref:
+## ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+## @param rbac.create [default: false] Enable or disable the creation of RBAC resources
+## @param rbac.rules [array] Define extra rules to be added to the Role resource
+##
 rbac:
   create: false
-  enablePSP: false
   rules: []
 
 ## @section Linkwarden Service Account parameters
@@ -316,12 +331,16 @@ rbac:
 ## FMJ Studios Linkwarden Service Account settings
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 ## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.automount [default: true] Whether or not to automatically mount API credentials
 ## @param serviceAccount.annotations [object] Annotations to add to the service account
 ## @param serviceAccount.name [string] A custom name for the service account, otherwise linkwarden.fullname is used
+## @param serviceAccount.secrets [array] A list of secrets mountable by this service account
 ##
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -338,34 +357,84 @@ serviceAccount:
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
   enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
   initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
   timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
   periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
   successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
   failureThreshold: 10
 
 ## Linkwarden Readiness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
   enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
   initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
   timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
   periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
   successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
   failureThreshold: 3
 
 ## Linkwarden Startup Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
   enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
   initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
   timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
   periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ##
   successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
   failureThreshold: 10
+
+## @section Pod Disruption Budget parameters
+##
+
+## FMJ Studios Linkwarden pod disruption budget settings
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: false] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable The minium amount of pods which need to be available
+## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
+
+podDisruptionBudget:
+  enabled: false
+  minAvailable:
+  maxUnavailable:
 
 ## @section Bitnami&reg; PostgreSQL parameters
 ##
@@ -373,7 +442,7 @@ startupProbe:
 ## PostgreSQL configuration
 ## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
 postgresql:
-  ## Enable or disable the PostgreSQL subchart
+  ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
   ##
   enabled: true
   ## Authentication parameters
@@ -382,40 +451,40 @@ postgresql:
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-user-on-first-run
   ##
   auth:
-    ## @param auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    ## @param postgresql.auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
     ##
     enablePostgresUser: true
-    ## @param auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
+    ## @param postgresql.auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
     ##
     postgresPassword: "postgres"
-    ## @param auth.username Name for a custom user to create
+    ## @param postgresql.auth.username Name for a custom user to create
     ##
     username: "linkwarden"
-    ## @param auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
+    ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
     ##
     password: "linkwarden"
-    ## @param auth.database Name for a custom database to create
+    ## @param postgresql.auth.database Name for a custom database to create
     ##
     database: "linkwarden"
-    ## @param auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
+    ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
     ##
     usePasswordFiles: false
   ## @section PostgreSQL Primary parameters
   ##
   primary:
-    ## @param primary.name Name of the primary database (eg primary, master, leader, ...)
+    ## @param postgresql.primary.name Name of the primary database (eg primary, master, leader, ...)
     ##
     name: primary
     ## PostgreSQL Primary persistence configuration
     ##
     persistence:
-      ## @param primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
+      ## @param postgresql.primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
       ##
       enabled: true
-      ## @param primary.persistence.existingClaim Name of an existing PVC to use
+      ## @param postgresql.primary.persistence.existingClaim Name of an existing PVC to use
       ##
       existingClaim: ""
-      ## @param primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+      ## @param postgresql.primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
       ## If defined, storageClassName: <storageClass>
       ## If set to "-", storageClassName: "", which disables dynamic provisioning
       ## If undefined (the default) or set to null, no storageClassName spec is
@@ -423,10 +492,10 @@ postgresql:
       ##   GKE, AWS & OpenStack)
       ##
       storageClass: ""
-      ## @param primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+      ## @param postgresql.primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
       ##
       accessModes:
         - ReadWriteOnce
-      ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
       ##
       size: 5Gi
