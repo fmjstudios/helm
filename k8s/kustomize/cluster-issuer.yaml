@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  labels:
+    delta4x4.io/component: cert-manager
+    delta4x4.io/env: dev
+  name: mkcert-development-issuer
+  namespace: cert-manager
+spec:
+  ca:
+    secretName: mkcert-root-ca

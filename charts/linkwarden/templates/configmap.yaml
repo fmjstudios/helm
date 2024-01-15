@@ -14,29 +14,25 @@ metadata:
     {{- toYaml .Values.configMapAnnotations | nindent 4 }}
   {{- end }}
 data:
-  {{/* General configuration */}}
-  NEXTAUTH_URL: {{ .Values.linkwarden.domain }}
-  {{- if and .Values.linkwarden.nextAuthSecret.value (not .Values.linkwarden.nextAuthSecret.existingSecret.name) }}
-  NEXTAUTH_SECRET: {{ .Values.linkwarden.nextAuthSecret.value }}
-  {{- end }}
-  PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount }}
-  STORAGE_FOLDER: {{ .Values.linkwarden.data.filesystem.rootPath }}
-  AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout }}
-  RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit }}
+  NEXTAUTH_URL: {{ (include "linkwarden.ingress.url" .) | quote }}
+  PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount | quote }}
+  STORAGE_FOLDER: {{ .Values.linkwarden.data.filesystem.rootPath | quote }}
+  AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout | quote }}
+  RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit | quote }}
   {{- if .Values.linkwarden.maxFileSize }}
-  NEXT_PUBLIC_MAX_FILE_SIZE: {{ .Values.linkwarden.maxFileSize }}
+  NEXT_PUBLIC_MAX_FILE_SIZE: {{ .Values.linkwarden.maxFileSize | quote }}
   {{- end }}
   {{- if .Values.linkwarden.maxLinksPerUser }}
-  MAX_LINKS_PER_USER: {{ .Values.linkwarden.maxLinksPerUser }}
+  MAX_LINKS_PER_USER: {{ .Values.linkwarden.maxLinksPerUser | quote }}
   {{- end }}
   {{- if .Values.linkwarden.archiveTakeCount }}
-  ARCHIVE_TAKE_COUNT: {{ .Values.linkwarden.archiveTakeCount }}
+  ARCHIVE_TAKE_COUNT: {{ .Values.linkwarden.archiveTakeCount | quote }}
   {{- end }}
   {{- if .Values.linkwarden.browserTimeout }}
-  BROWSER_TIMEOUT: {{ .Values.linkwarden.browserTimeout }}
+  BROWSER_TIMEOUT: {{ .Values.linkwarden.browserTimeout | quote }}
   {{- end }}
   {{- if .Values.linkwarden.ignoreUnauthorizedCA }}
-  IGNORE_UNAUTHORIZED_CA: {{ .Values.linkwarden.ignoreUnauthorizedCA }}
+  IGNORE_UNAUTHORIZED_CA: {{ .Values.linkwarden.ignoreUnauthorizedCA | quote }}
   {{- end }}
 ---
 {{- range $_, $v := .Values.linkwarden.auth.sso }}

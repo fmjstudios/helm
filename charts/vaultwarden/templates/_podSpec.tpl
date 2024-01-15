@@ -66,12 +66,12 @@ template:
                 name: {{ .Values.vaultwarden.database.existingSecret.name | default (include "vaultwarden.secrets.db" .) }}
                 key: {{ .Values.vaultwarden.database.existingSecret.key | default "uri" }}
           {{- end }}
-          {{- if .Values.vaultwarden.hibpApiKey.existingSecret.name }}
+          {{- if or .Values.vaultwarden.hibpApiKey.existingSecret.name .Values.vaultwarden.hibpApiKey.value }}
           - name: HIBP_API_KEY
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.vaultwarden.hibpApiKey.existingSecret.name | default (include "vaultwarden.secrets.hibp" .) }}
-                key: {{ .Values.vaultwarden.hibpApiKey.existingSecret.key | default "token" }}
+                key: {{ .Values.vaultwarden.hibpApiKey.existingSecret.key | default "apiKey" }}
           {{- end }}
         ports:
           - name: http

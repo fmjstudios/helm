@@ -1,9 +1,10 @@
+environments:
+  default:
+    values: []
+---
 releases:
   - chart: ingress-nginx/ingress-nginx
     name: ingress-nginx
-    labels:
-      type: core
-      component: ingress-nginx
     namespace: ingress-nginx
     version: 4.9.0
     installed: true
@@ -28,18 +29,25 @@ releases:
             - key: "node-role.kubernetes.io/control-plane"
               operator: "Equal"
               effect: "NoSchedule"
+          config:
+            enable-real-ip: "true"
+            # forwarded-for-header: "X-Real-IP"
+            allow-snippet-annotations: true
+          publishService:
+            enabled: false
           extraArgs:
-            publish-status-address: localhost
+            publish-status-address: "localhost"
 
   - chart: jetstack/cert-manager
     name: cert-manager
-    labels:
-      type: core
-      component: cert-manager
     namespace: cert-manager
     version: v1.13.3
     installed: true
-    disableValidationOnInstall: true # required due to how CRDs are handled, see: https://github.com/roboll/helmfile/issues/1353
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: "kubectl"
+        args: ["apply", "-k", "kustomize"]
     values:
       - installCRDs: true
         ingressShim:

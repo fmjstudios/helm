@@ -76,7 +76,7 @@ Set the names for the ConfigMaps
 Set the names of the secrets
 */}}
 {{- define "linkwarden.secrets.nextAuth" -}}
-{{- printf "%s-nextAuth" (include "linkwarden.fullname" .) }}
+{{- printf "%s-next-auth" (include "linkwarden.fullname" .) }}
 {{- end }}
 
 {{- define "linkwarden.secrets.s3" -}}

@@ -55,7 +55,7 @@ fullnameOverride: ""
 
 vaultwarden:
   ## The domain of the Vaultwarden installation
-  domain: "subdomain.domain.tld"
+  domain: ""
 
   ## Web UI configuration
   ##
@@ -92,10 +92,10 @@ vaultwarden:
   ##
   retainEventsDays:
 
-  ## Client IP Header, used to identify the IP of the client, defaults to "X-Real-IP"
+  ## Client IP Header, used to identify the IP of the client, defaults to "X-Forwarded-For"
   ## Set to the string "none" (without quotes), to disable any headers and just use the remote IP
   ##
-  ipHeader: X-Real-IP
+  ipHeader: X-Forwarded-For
 
   ## Disable 2FA remember
   ## Enabling this would force the users to use a second factor to login every time.
@@ -159,23 +159,23 @@ vaultwarden:
     ## Determine storage paths within the container rootPath
     ##
     paths:
-      ## The file path for the RSA key, '/data/rsa_key' by default
+      ## The file path for the RSA key, 'data/rsa_key' by default
       ##
       rsaKey: ""
 
-      ## The path for icon cache, '/data/icon_cache' by default
+      ## The path for icon cache, 'data/icon_cache' by default
       ##
       iconCache: ""
 
-      ## The mail attachments path, '/data/attachments' by default
+      ## The mail attachments path, 'data/attachments' by default
       ##
       attachments: ""
 
-      ## The mail sends path, '/data/sends' by default
+      ## The mail sends path, 'data/sends' by default
       ##
       sends: ""
 
-      ## The temporary data path, '/data/tmp' by default
+      ## The temporary data path, 'data/tmp' by default
       ##
       tmp: ""
 
@@ -216,12 +216,12 @@ vaultwarden:
       ## Hostname of the Mail server
       ## Example: mx.domain.tld
       ##
-      host: "mx.domain.tld"
+      host: ""
 
       ## The from-address for emails sent by Vaultwarden
       ## Example: vaultwarden@domain.tld
       ##
-      from: "vaultwarden@domain.tld"
+      from: ""
 
       ## The from-name for emails sent by Vaultwarden
       ## Example: Vaultwarden
@@ -237,11 +237,11 @@ vaultwarden:
 
       ## SMTP user
       ##
-      username: "smtp-user"
+      username: ""
 
       ## SMTP password
       ##
-      password: "smtp-password"
+      password: ""
 
       ## Defaults for SSL is "Plain" and "Login" and nothing for Non-SSL connections.
       ## Possible values: ["Plain", "Login", "Xoauth2"].
@@ -272,7 +272,7 @@ vaultwarden:
       ## By default this value should be is on the machine's hostname,
       ## but might need to be changed in case it trips some anti-spam filters
       ##
-      heloName: "subdomain.domain.tld"
+      heloName: ""
 
       ## Embed images as email attachments
       ##
@@ -762,12 +762,16 @@ ingress:
   annotations: {}
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  hostnames: []
-  # - subdomain.domain.tld
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+  extraHosts:
+    []
+    # - host: domain.tld
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
 
 ## @section Service parameters
 ##

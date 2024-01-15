@@ -20,8 +20,6 @@ metadata:
   labels:
     {{- include "vaultwarden.labels" . | nindent 4 }}
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/configuration-snippet: |
       more_set_headers "Request-Id: $req_id";
     nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
@@ -37,9 +35,9 @@ metadata:
   {{- if .Values.ingress.whitelist }}
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.ingress.whitelist }}
   {{- end }}
-  {{- with .Values.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-  {{- end -}}
+  {{- if .Values.ingress.annotations }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+  {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
@@ -55,8 +53,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hostnames }}
-    - host: {{ . | quote }}
+    - host: {{ .Values.vaultwarden.domain | quote }}
       http:
         paths:
           - path: /
@@ -64,25 +61,45 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ include "vaultwarden.fullname" . }}
+                name: {{ include "vaultwarden.fullname" $ }}
                 port:
-                  number: {{ .Values.vaultwarden.rocket.port }}
+                  number: {{ $.Values.vaultwarden.rocket.port }}
               {{- else }}
-              serviceName: {{ include "vaultwarden.fullname" . }}
-              servicePort: {{ .Values.vaultwarden.rocket.port }}
+              serviceName: {{ include "vaultwarden.fullname" $ }}
+              servicePort: {{ $.Values.vaultwarden.rocket.port }}
               {{- end }}
-          {{- if .Values.vaultwarden.websocket.enabled -}}
-          - path: "/notifications/hub"
+          {{- if $.Values.vaultwarden.websocket.enabled }}
+          - path: /notifications/hub
             pathType: Exact
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ include "vaultwarden.fullname" . }}
+                name: {{ include "vaultwarden.fullname" $ }}
                 port:
-                  number: {{ .Values.vaultwarden.websocket.port }}
+                  number: {{ $.Values.vaultwarden.websocket.port }}
               {{- else }}
-              serviceName: {{ include "vaultwarden.fullname" . }}
-              servicePort: {{ .Values.vaultwarden.w.port }}
+              serviceName: {{ include "vaultwarden.fullname" $ }}
+              servicePort: {{ $.Values.vaultwarden.websocket.port }}
+              {{- end }}
+          {{- end }}
+    {{- range .Values.ingress.extraHosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
     {{- end }}

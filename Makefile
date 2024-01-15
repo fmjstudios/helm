@@ -50,9 +50,9 @@ export
 
 # Build output
 OUT_DIR := $(ROOT_DIR)/dist
-CHARTS_OUT_DIR := $(OUT_DIR)/charts
-
 SCRIPT_DIR := $(ROOT_DIR)/scripts
+CONFIG_DIR := $(ROOT_DIR)/config
+K8S_DIR := $(ROOT_DIR)/k8s
 
 # Documentation
 DOCS_DIR := $(ROOT_DIR)/docs
@@ -60,16 +60,22 @@ GIT_CLIFF_CONFIG := $(DOCS_DIR)/cliff.toml
 
 DATE := $(shell date '+%d.%m.%y-%T')
 
-# Development
-KIND_CLUSTER_CONFIG := $(ROOT_DIR)/config/kind-config.yaml
-
 # Executables
 helm := helm
 helmfile := helmfile
 kind := kind
+npx := npx
 
-EXECUTABLES := $(helm) $(helmfile) $(kind)
+EXECUTABLES := $(helm) $(helmfile) $(kind) $(npx)
 
+# Packages
+README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
+
+# Internal Helm variables
+ifdef CHART
+CHART_NAME := $(shell basename $(CHART))
+RELEASE_NAME := $(shell printf "%s-%s" $(CHART_NAME) test)
+endif
 
 # ---------------------------
 # User-defined variables
@@ -77,7 +83,8 @@ EXECUTABLES := $(helm) $(helmfile) $(kind)
 PRINT_HELP ?=
 
 CHART ?=
-FILES ?=
+VALUES ?=
+FILE ?=
 
 # ---------------------------
 # Custom functions
@@ -118,6 +125,23 @@ endef
 #   Development Cluster
 # ---------------------------
 
+# Development environment setup
+define DEV_INFO
+# Create a local development environment for Helm charts. This is a wrapper
+# target which requires the 'dev-cluster' and 'dev-cluster-bootstrap' Make
+# targets.
+#
+# Arguments
+endef
+.PHONY: dev
+ifeq ($(PRINT_HELP), y)
+dev:
+	echo "$$DEV_INFO"
+else
+dev: dev-cluster dev-cluster-bootstrap
+endif
+
+
 # Cluster Creation
 define DEV_CLUSTER_INFO
 # Create a local development Kubernetes cluster using 'kind'. This will also
@@ -131,13 +155,31 @@ ifeq ($(PRINT_HELP),y)
 dev-cluster:
 	echo "$$DEV_CLUSTER_INFO"
 else
-dev-cluster: dev-cluster-networks
+dev-cluster:
 	$(call log_success, "Creating local 'kind' Kubernetes cluster using configuration in: $(KIND_CLUSTER_CONFIG)!")
 	$(kind) create cluster \
-		--config $(KIND_CLUSTER_CONFIG) \
+		--config $(K8S_DIR)/cluster/kind-config.yaml \
 		--name $(PROJ_NAME) \
 		--wait 15s
 endif
+
+# Cluster Bootstrap
+define DEV_CLUSTER_BOOTSTRAP_INFO
+# Bootstrap the development cluster for proper testing of Helm charts.
+# Creates a Kubernetes secret containing CA information for cert-manager
+# and installs Ingress-Nginx.
+endef
+.PHONY: dev-cluster-bootstrap
+ifeq ($(PRINT_HELP), y)
+dev-cluster-bootstrap:
+	echo "$$DEV_CLUSTER_BOOTSTRAP_INFO"
+else
+dev-cluster-bootstrap:
+	$(call log_success, "Bootstrapping development cluster")
+	$(SCRIPT_DIR)/secrets.sh certs
+	$(helmfile) apply -f $(K8S_DIR)/helmfile.yaml
+endif
+
 
 # Cluster Cleanup
 define DEV_CLEANUP_INFO
@@ -152,7 +194,7 @@ dev-cleanup:
 	echo "$$DEV_CLEANUP_INFO"
 else
 dev-cleanup:
-	$(call log_attention, "Removing local 'kind' Kubernetes cluster!")
+	$(call log_attention, "Deleting local 'kind' Kubernetes cluster!")
 	$(kind) delete cluster \
 		--name $(PROJ_NAME)
 endif
@@ -160,10 +202,55 @@ endif
 # ---------------------------
 #   Charts
 # ---------------------------
+define BUILD_INFO
+# Package a Helm Chart and put it into the repository's output directory
+# at: ($(OUT_DIR)). The chart may be picked with the 'CHART' Make variable.
+#
+# Arguments:
+#   PRINT_HELP: 'y' or 'n'
+# 	CHART: charts/.. (any subdirectory)
+endef
+.PHONY: build
+ifeq ($(PRINT_HELP), y)
+build:
+	echo "$$BUILD_INFO"
+else
+build: create-dist
+	$(call log_success, "Building Helm Chart $(CHART_NAME) into $(OUT_DIR)")
+	$(helm) package $(CHART) --destination $(OUT_DIR)
+endif
+
+define INSTALL_INFO
+# Install a Helm Chart onto the currently configured cluster. The chart may
+# be picked with the 'CHART' Make variable. By default the default values are
+# used but they may be configured with the 'VALUES' Make variable. The variable
+# however is restricted to chart-local files.
+#
+# Arguments:
+#   PRINT_HELP: 'y' or 'n'
+# 	CHART: charts/.. (any subdirectory)
+# 	VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
+endef
+.PHONY: install
+ifeq ($(PRINT_HELP), y)
+install:
+	echo "$$INSTALL_INFO"
+else
+install:
+	$(call log_success, "Installing Helm Chart $(CHART_NAME) using values: $(VALUES)")
+ifdef VALUES
+	$(helm) install $(CHART_NAME) $(CHART) --values $(CHART)/$(VALUES)
+else
+	$(helm) install $(CHART)
+endif
+endif
+
+
 define TEMPLATE_INFO
-# Run Helm's template engine on some or all files of a Helm chart. 
-# The chart may be picked with the 'CHART' make variable whereas 'FILES'
-# controls which files should be templated.
+# Run Helm's template engine on some or all files of a Helm Chart.
+# The chart may be picked with the 'CHART' Make variable whereas 'FILE'
+# controls which file should be templated. Omitting a value for the Make
+# variable 'FILE' runs the template engine for all chart contents.
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
@@ -176,14 +263,51 @@ template:
 	echo "$$TEMPLATE_INFO"
 else
 template:
-	$(call log_info, "Templating files: $(FILES) for chart: $(CHART)")
-	$(helm) template $(CHART) \
-	ifdef FILES
-		-s $(FILES) \
-	endif
-		--debug
+	$(call log_success, "Templating file: $(FILE) for chart: $(CHART)")
+ifdef FILES
+	$(helm) template $(CHART) -s $(foreach file,$(FILE),templates/$(FILE)) --debug
+else
+	$(helm) template $(CHART) --debug
+endif
 endif
 
+define DRY_INSTALL_INFO
+# Run a Helm "dry" installation for the specified Helm Chart.
+# The chart may be picked with the 'CHART' Make variable. Since Helm
+# requires a release name to perform the dry installation the chart name
+# will be suffixed with '-test' to satisfy this requirement.
+#
+# Arguments:
+#   PRINT_HELP: 'y' or 'n'
+# 	CHART: charts/.. (any subdirectory)
+endef
+.PHONY: dry-install
+ifeq ($(PRINT_HELP), y)
+dry-install:
+	echo "$$DRY_INSTALL_INFO"
+else
+dry-install:
+	$(call log_success, "Running Helm dry installation for chart: $(CHART)")
+	$(helm) install $(RELEASE_NAME) $(CHART) --debug --dry-run
+endif
+
+define GENERATE_README_INFO
+# Run Bitnami's (VMware) README generator for Helm chart on the specified Chart.
+# The generator will use the configuration file 'reamde-gen.json' in the 'config'
+# subdirectory. The chart may be picked with the 'CHART' Make variable.
+endef
+.PHONY: readme-gen
+ifeq ($(PRINT_HELP), y)
+readme-gen:
+	echo "$$GENERATE_README_INFO"
+else
+readme-gen:
+	$(call log_success, "Generating README Helm Chart table for chart: $(CHART)")
+	$(npx) $(README_GEN_PACKAGE) \
+		-c $(CONFIG_DIR)/readme-gen.json \
+		-v $(CHART)/values.yaml \
+		-r $(CHART)/README.md
+endif
 
 # make clean - Clean up after builds
 .PHONY: clean
@@ -191,16 +315,15 @@ clean:
 	@echo Removing temporary distribution directories..
 	@rm -rf $(OUT_DIR)
 
-# ---------------------------
-# Dependant recipes
-# ---------------------------
 .PHONY: tools-check
 tools-check:
 	$(foreach exe,$(EXECUTABLES), $(if $(shell command -v $(exe) 2> /dev/null), $(info Found $(exe)), $(info Please install $(exe))))
 
+# ---------------------------
+# Dependant recipes
+# ---------------------------
+.PHONY: create-dist
 create-dist:
-ifeq (,$(findstring collections, $(WHAT)))
-	$(call log_notice, "Creating distribution directory for Helm charts at: $(COLLECTIONS_OUT_DIR)")
-	@mkdir -p $(CHARTS_OUT_DIR)
-endif
+	$(call log_notice, "Creating distribution directory for Helm charts at: $(OUT_DIR)")
+	@mkdir -p $(OUT_DIR)
 

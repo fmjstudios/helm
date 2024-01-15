@@ -1,0 +1,50 @@
+vaultwarden:
+  domain: "vaultwarden.helm.private"
+  adminToken:
+    value: "PretendThisIsAnAdminToken"
+
+    smtp:
+      host: ""
+      from: ""
+      fromName: "Vaultwarden"
+      security: "starttls"
+      port: 587
+      username: ""
+      password: ""
+      auth: "Plain"
+      heloName: "vaultwarden.helm.private"
+      acceptInvalidHostnames: true
+      acceptInvalidCertificates: true
+
+  websocket:
+    enabled: true
+    address: "0.0.0.0"
+    port: 3012
+
+  database:
+    type: "sqlite"
+    enableWAL: true
+
+  signup:
+    allowed: true
+    verify: false
+    domainWhitelist: "fmj.dev,fmj.studio"
+
+  logs:
+    level: debug
+    extended: true
+
+ingress:
+  enabled: true
+  className: "nginx"
+  whitelist: ""
+  annotations:
+    cert-manager.io/cluster-issuer: mkcert-development-issuer
+  tls:
+    - secretName: vaultwarden-ingress-tls
+      hosts:
+        - "vaultwarden.helm.private"
+
+rbac:
+  create: false
+  rules: []

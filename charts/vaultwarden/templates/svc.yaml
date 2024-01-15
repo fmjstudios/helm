@@ -7,7 +7,7 @@ metadata:
   {{- if .Values.service.labels -}}
   labels:
     {{- toYaml .Values.service.labels | nindent 4 }}
-  {{- end -}}
+  {{- end }}
   {{- if .Values.service.annotations -}}
   annotations:
     {{- toYaml .Values.service.annotations | nindent 4 }}
@@ -21,12 +21,12 @@ spec:
       targetPort: {{ .Values.vaultwarden.rocket.port }}
       protocol: TCP
       name: http
-    {{- if .Values.vaultwarden.websocket.enabled -}}
+    {{- if .Values.vaultwarden.websocket.enabled }}
     - port: {{ .Values.vaultwarden.websocket.port }}
       targetPort: {{ .Values.vaultwarden.websocket.port }}
       protocol: TCP
       name: websocket
-    {{- end -}}
+    {{- end }}
   {{- if .Values.service.ipFamilyPolicy -}}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
-  {{- end -}}
+  {{- end }}

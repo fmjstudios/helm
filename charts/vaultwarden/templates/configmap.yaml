@@ -12,177 +12,162 @@ metadata:
   {{- end }}
 data:
   {{- /* 
-    General configuration 
+    General configuration
   */}}
-  DOMAIN: {{ .Values.vaultwarden.domain }}
-  WEB_VAULT_ENABLED: {{ .Values.vaultwarden.web.enabled }}
-  SENDS_ALLOWED: {{ .Values.vaultwarden.allowSends }}
-  EMERGENCY_ACCESS_ALLOWED: {{ .Values.vaultwarden.allowEmergencyAccess }}
-  ORG_EVENTS_ENABLED: {{ .Values.vaultwarden.enableOrgEvents }}
-  ORG_GROUPS_ENABLED: {{ .Values.vaultwarden.enableOrgGroups }}
-  EMAIL_CHANGE_ALLOWED: {{ .Values.vaultwarden.allowEmailChange }}
-  DISABLE_ADMIN_TOKEN: {{ .Values.vaultwarden.adminToken.disable }}
+  DOMAIN: {{ include "vaultwarden.ingress.url" . | quote }}
+  WEB_VAULT_ENABLED: {{ .Values.vaultwarden.web.enabled | quote }}
+  SENDS_ALLOWED: {{ .Values.vaultwarden.allowSends | quote }}
+  EMERGENCY_ACCESS_ALLOWED: {{ .Values.vaultwarden.allowEmergencyAccess | quote }}
+  ORG_EVENTS_ENABLED: {{ .Values.vaultwarden.enableOrgEvents | quote }}
+  ORG_GROUPS_ENABLED: {{ .Values.vaultwarden.enableOrgGroups | quote }}
+  EMAIL_CHANGE_ALLOWED: {{ .Values.vaultwarden.allowEmailChange | quote }}
+  DISABLE_ADMIN_TOKEN: {{ .Values.vaultwarden.adminToken.disable | quote }}
   DATA_FOLDER: {{ .Values.vaultwarden.data.rootPath | quote }}
   {{- if .Values.vaultwarden.data.paths.rsaKey }}
-  RSA_KEY_FILENAME: {{ .Values.vaultwarden.data.paths.rsaKey }}
+  RSA_KEY_FILENAME: {{ .Values.vaultwarden.data.paths.rsaKey | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.data.paths.iconCache }}
-  ICON_CACHE_FOLDER: {{ .Values.vaultwarden.data.paths.iconCache }}
+  ICON_CACHE_FOLDER: {{ .Values.vaultwarden.data.paths.iconCache | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.data.paths.attachments }}
-  ATTACHMENTS_FOLDER: {{ .Values.vaultwarden.data.paths.attachments }}
+  ATTACHMENTS_FOLDER: {{ .Values.vaultwarden.data.paths.attachments | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.data.paths.sends }}
-  SENDS_FOLDER: {{ .Values.vaultwarden.data.paths.sends }}
+  SENDS_FOLDER: {{ .Values.vaultwarden.data.paths.sends | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.data.paths.tmp }}
-  TMP_FOLDER: {{ .Values.vaultwarden.data.paths.tmp }}
+  TMP_FOLDER: {{ .Values.vaultwarden.data.paths.tmp | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.retainEventsDays }}
-  EVENTS_DAYS_RETAIN: {{ .Values.vaultwarden.retainEventsDays }}
+  EVENTS_DAYS_RETAIN: {{ .Values.vaultwarden.retainEventsDays | quote }}
   {{- end }}
-  IP_HEADER: {{ .Values.vaultwarden.ipHeader }}
-  DISABLE_2FA_REMEMBER: {{ .Values.vaultwarden.disable2FARemember }}
+  IP_HEADER: {{ .Values.vaultwarden.ipHeader | quote }}
+  DISABLE_2FA_REMEMBER: {{ .Values.vaultwarden.disable2FARemember | quote }}
   {{- if .Values.vaultwarden.orgCreationUsers }}
   ORG_CREATION_USERS: {{ .Values.vaultwarden.orgCreationUsers | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.allowedIframeAncestors }}
-  ALLOWED_IFRAME_ANCESTORS: {{ .Values.vaultwarden.allowedIframeAncestors }}
+  ALLOWED_IFRAME_ANCESTORS: {{ .Values.vaultwarden.allowedIframeAncestors | quote }}
   {{- end }}
   {{- /* 
     Database configuration 
   */}}
-  {{- if not .Values.vaultwarden.database.existingSecret.name }}
-  DATABASE_URL: {{ include "vaultwarden.db.uri" . | quote }}
+  {{- if not (eq .Values.vaultwarden.database.type "sqlite") }}
+  DATABASE_MAX_CONNS: {{ .Values.vaultwarden.database.maxConnections | quote }}
+  DATABASE_TIMEOUT: {{ .Values.vaultwarden.database.timeout | quote }}
+  DB_CONNECTION_RETRIES: {{ .Values.vaultwarden.database.connectionRetries | quote }}
   {{- end }}
-  DATABASE_MAX_CONNS: {{ .Values.vaultwarden.database.maxConnections }}
-  DATABASE_TIMEOUT: {{ .Values.vaultwarden.database.timeout }}
-  DB_CONNECTION_RETRIES: {{ .Values.vaultwarden.database.connectionRetries }}
   {{- if (eq .Values.vaultwarden.database.type "sqlite") }}
   DATABASE_CONN_INIT: {{ include "vaultwarden.db.conn_init" . | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.database.enableWAL }}
-  ENABLE_DB_WAL: {{ .Values.vaultwarden.database.enableWAL }}
+  ENABLE_DB_WAL: {{ .Values.vaultwarden.database.enableWAL | quote }}
   {{- end }}
   {{- /* 
     EMail and SMTP configuration 
   */}}
-  EMAIL_ATTEMPTS_LIMIT: {{ .Values.vaultwarden.email.attemptsLimit }}
-  EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime }}
-  EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize }}
-  {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from }}
-  SMTP_HOST: {{ .Values.vaultwarden.email.smtp.host }}
-  SMTP_FROM: {{ .Values.vaultwarden.email.smtp.from }}
-  SMTP_FROM_NAME: {{ .Values.vaultwarden.email.smtp.fromName | default "Vaultwarden" }}
-  SMTP_SECURITY: {{ .Values.vaultwarden.email.smtp.security }}
-  SMTP_PORT: {{ .Values.vaultwarden.email.smtp.port }}
-  {{- end }}
-  {{- if not .Values.vaultwarden.email.smtp.existingSecret.name }}
-  {{- if .Values.vaultwarden.email.smtp.username }}
-  SMTP_USERNAME: {{ .Values.vaultwarden.email.smtp.username }}
-  {{- end }}
-  {{- if .Values.vaultwarden.email.smtp.password }}
-  SMTP_PASSWORD: {{ .Values.vaultwarden.email.smtp.password }}
-  {{- end }}
-  {{- end }}
-  SMTP_TIMEOUT: {{ .Values.vaultwarden.email.smtp.timeout }}
-  SMTP_AUTH_MECHANISM: {{ .Values.vaultwarden.email.smtp.auth }}
-  SMTP_EMBED_IMAGES: {{ .Values.vaultwarden.email.smtp.embedImages }}
-  SMTP_DEBUG: {{ .Values.vaultwarden.email.smtp.debug }}
-  SMTP_ACCEPT_INVALID_HOSTNAMES: {{ .Values.vaultwarden.email.smtp.acceptInvalidHostnames }}
-  SMTP_ACCEPT_INVALID_CERTS: {{ .Values.vaultwarden.email.smtp.acceptInvalidCertificates }}
-  REQUIRE_DEVICE_EMAIL: {{ .Values.vaultwarden.email.smtp.requireDeviceEmail }}
-  {{- if .Values.vaultwarden.email.smtp.heloName }}
-  HELO_NAME: {{ .Values.vaultwarden.email.smtp.heloName }}
-  {{- end }}
-  {{- if .Values.vaultwarden.email.smtp.sendmail.enabled }}
-  {{- with .Values.vaultwarden.email.smtp.sendmail }}
-  USE_SENDMAIL: {{ .enabled }}
-  {{- if .path }}
-  SENDMAIL_COMMAND: {{ .path }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
+  # EMAIL_ATTEMPTS_LIMIT: {{ .Values.vaultwarden.email.attemptsLimit | quote }}
+  # EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime | quote }}
+  # EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize | quote }}
+  # {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from }}
+  # SMTP_HOST: {{ .Values.vaultwarden.email.smtp.host | quote }}
+  # SMTP_FROM: {{ .Values.vaultwarden.email.smtp.from | quote }}
+  # SMTP_FROM_NAME: {{ .Values.vaultwarden.email.smtp.fromName | default "Vaultwarden" | quote }}
+  # SMTP_SECURITY: {{ .Values.vaultwarden.email.smtp.security | quote }}
+  # SMTP_PORT: {{ .Values.vaultwarden.email.smtp.port | quote }}
+  # SMTP_TIMEOUT: {{ .Values.vaultwarden.email.smtp.timeout | quote }}
+  # SMTP_AUTH_MECHANISM: {{ .Values.vaultwarden.email.smtp.auth | quote }}
+  # SMTP_EMBED_IMAGES: {{ .Values.vaultwarden.email.smtp.embedImages | quote }}
+  # SMTP_DEBUG: {{ .Values.vaultwarden.email.smtp.debug | quote }}
+  # SMTP_ACCEPT_INVALID_HOSTNAMES: {{ .Values.vaultwarden.email.smtp.acceptInvalidHostnames | quote }}
+  # SMTP_ACCEPT_INVALID_CERTS: {{ .Values.vaultwarden.email.smtp.acceptInvalidCertificates | quote }}
+  # REQUIRE_DEVICE_EMAIL: {{ .Values.vaultwarden.email.smtp.requireDeviceEmail | quote }}
+  # {{- if .Values.vaultwarden.email.smtp.heloName }}
+  # HELO_NAME: {{ .Values.vaultwarden.email.smtp.heloName | quote }}
+  # {{- end }}
+  # {{- if .Values.vaultwarden.email.smtp.sendmail.enabled }}
+  # {{- with .Values.vaultwarden.email.smtp.sendmail }}
+  # USE_SENDMAIL: {{ .enabled | quote }}
+  # {{- if .path }}
+  # SENDMAIL_COMMAND: {{ .path | quote }}
+  # {{- end }}
+  # {{- end }}
+  # {{- end }}
+  # {{- end }}
   {{- /* 
     Websocket configuration 
   */}}
   {{- if .Values.vaultwarden.websocket.enabled }}
-  WEBSOCKET_ENABLED: {{ .Values.vaultwarden.websocket.enabled }}
-  WEBSOCKET_ADDRESS: {{ .Values.vaultwarden.websocket.address }}
-  WEBSOCKET_PORT: {{ .Values.vaultwarden.websocket.port }}
+  WEBSOCKET_ENABLED: {{ .Values.vaultwarden.websocket.enabled | quote }}
+  WEBSOCKET_ADDRESS: {{ .Values.vaultwarden.websocket.address | quote }}
+  WEBSOCKET_PORT: {{ .Values.vaultwarden.websocket.port | quote }}
   {{- end }}
   {{- /* 
     Rate limits configuration 
   */}}
-  LOGIN_RATELIMIT_SECONDS: {{ .Values.vaultwarden.limits.logins.ratelimitSeconds }}
-  LOGIN_RATELIMIT_MAX_BURST: {{ .Values.vaultwarden.limits.logins.ratelimitMaxBurst }}
-  ADMIN_RATELIMIT_SECONDS: {{ .Values.vaultwarden.limits.logins.adminRatelimitSeconds }}
-  ADMIN_RATELIMIT_MAX_BURST: {{ .Values.vaultwarden.limits.logins.adminRatelimitMaxBurst }}
-  ADMIN_SESSION_LIFETIME: {{ .Values.vaultwarden.limits.logins.adminSessionLifetime }}
+  LOGIN_RATELIMIT_SECONDS: {{ .Values.vaultwarden.limits.logins.ratelimitSeconds | quote }}
+  LOGIN_RATELIMIT_MAX_BURST: {{ .Values.vaultwarden.limits.logins.ratelimitMaxBurst | quote }}
+  ADMIN_RATELIMIT_SECONDS: {{ .Values.vaultwarden.limits.logins.adminRatelimitSeconds | quote }}
+  ADMIN_RATELIMIT_MAX_BURST: {{ .Values.vaultwarden.limits.logins.adminRatelimitMaxBurst | quote }}
+  ADMIN_SESSION_LIFETIME: {{ .Values.vaultwarden.limits.logins.adminSessionLifetime | quote }}
   {{- if .Values.vaultwarden.limits.attachments.orgLimit }}
-  ORG_ATTACHMENT_LIMIT: {{ .Values.vaultwarden.limits.attachments.orgLimit }}
+  ORG_ATTACHMENT_LIMIT: {{ .Values.vaultwarden.limits.attachments.orgLimit | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.limits.attachments.userLimit }}
-  USER_ATTACHMENT_LIMIT: {{ .Values.vaultwarden.limits.attachments.userLimit }}
+  USER_ATTACHMENT_LIMIT: {{ .Values.vaultwarden.limits.attachments.userLimit | quote }}
   {{- end }}
   {{- /* 
     Password configuration 
   */}}
-  PASSWORD_ITERATIONS: {{ .Values.vaultwarden.passwords.iterations }}
-  PASSWORD_HINTS_ALLOWED: {{ .Values.vaultwarden.passwords.hintsAllowed }}
-  SHOW_PASSWORD_HINT: {{ .Values.vaultwarden.passwords.showHint }}
+  PASSWORD_ITERATIONS: {{ .Values.vaultwarden.passwords.iterations | quote }}
+  PASSWORD_HINTS_ALLOWED: {{ .Values.vaultwarden.passwords.hintsAllowed | quote }}
+  SHOW_PASSWORD_HINT: {{ .Values.vaultwarden.passwords.showHint | quote }}
   {{- /* 
     Signup configuration 
   */}}
-  SIGNUPS_ALLOWED: {{ .Values.vaultwarden.signup.allowed }}
-  SIGNUPS_VERIFY: {{ .Values.vaultwarden.signup.verify }}
-  SIGNUPS_VERIFY_RESEND_TIME: {{ .Values.vaultwarden.signup.verifyResendTime }}
-  SIGNUPS_VERIFY_RESEND_LIMIT: {{ .Values.vaultwarden.signup.verifyResendLimit }}
+  SIGNUPS_ALLOWED: {{ .Values.vaultwarden.signup.allowed | quote }}
+  SIGNUPS_VERIFY: {{ .Values.vaultwarden.signup.verify | quote }}
+  SIGNUPS_VERIFY_RESEND_TIME: {{ .Values.vaultwarden.signup.verifyResendTime | quote }}
+  SIGNUPS_VERIFY_RESEND_LIMIT: {{ .Values.vaultwarden.signup.verifyResendLimit | quote }}
   {{- if .Values.vaultwarden.signup.domainWhitelist }}
-  SIGNUPS_DOMAINS_WHITELIST: {{ .Values.vaultwarden.signup.domainWhitelist }}
+  SIGNUPS_DOMAINS_WHITELIST: {{ .Values.vaultwarden.signup.domainWhitelist | quote }}
   {{- end }}
   {{- /* 
     Authentication configuration 
   */}}
-  AUTHENTICATOR_DISABLE_TIME_DRIFT: {{ .Values.vaultwarden.auth.authenticatorDisableTimeDrift }}
-  INCOMPLETE_2FA_TIME_LIMIT: {{ .Values.vaultwarden.auth.incomplete2FATimeLimit }}
+  AUTHENTICATOR_DISABLE_TIME_DRIFT: {{ .Values.vaultwarden.auth.authenticatorDisableTimeDrift | quote }}
+  INCOMPLETE_2FA_TIME_LIMIT: {{ .Values.vaultwarden.auth.incomplete2FATimeLimit | quote }}
   {{- if .Values.vaultwarden.auth.yubikey.enable }}
-  YUBICO_CLIENT_ID: {{ .Values.vaultwarden.auth.yubikey.clientId }}
-  YUBICO_SECRET_KEY: {{ .Values.vaultwarden.auth.yubikey.clientSecret }}
-  YUBICO_SERVER: {{ .Values.vaultwarden.auth.yubikey.server }}
+  YUBICO_CLIENT_ID: {{ .Values.vaultwarden.auth.yubikey.clientId | quote }}
+  YUBICO_SECRET_KEY: {{ .Values.vaultwarden.auth.yubikey.clientSecret | quote }}
+  YUBICO_SERVER: {{ .Values.vaultwarden.auth.yubikey.server | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.auth.duo.enable }}
-  DUO_IKEY: {{ .Values.vaultwarden.auth.duo.integrationKey }}
-  DUO_SKEY: {{ .Values.vaultwarden.auth.duo.secretKey }}
-  DUO_HOST: {{ .Values.vaultwarden.auth.duo.host }}
+  DUO_IKEY: {{ .Values.vaultwarden.auth.duo.integrationKey | quote }}
+  DUO_SKEY: {{ .Values.vaultwarden.auth.duo.secretKey | quote }}
+  DUO_HOST: {{ .Values.vaultwarden.auth.duo.host | quote }}
   {{- end }}
   {{- /* 
     Invitation configuration 
   */}}
-  INVITATIONS_ALLOWED: {{ .Values.vaultwarden.invitations.allowed }}
-  INVITATION_ORG_NAME: {{ .Values.vaultwarden.invitations.orgName }}
-  INVITATION_EXPIRATION_HOURS: {{ .Values.vaultwarden.invitations.expirationHours }}
+  INVITATIONS_ALLOWED: {{ .Values.vaultwarden.invitations.allowed | quote }}
+  INVITATION_ORG_NAME: {{ .Values.vaultwarden.invitations.orgName | quote }}
+  INVITATION_EXPIRATION_HOURS: {{ .Values.vaultwarden.invitations.expirationHours | quote }}
   {{- /* 
     Push notifications configuration 
   */}}
   {{- if .Values.vaultwarden.pushNotifications.enabled }}
-  PUSH_ENABLED: {{ .Values.vaultwarden.pushNotifications.enabled }}
-  PUSH_INSTALLATION_ID: {{ .Values.vaultwarden.pushNotifications.installationId }}
-  PUSH_INSTALLATION_KEY: {{ .Values.vaultwarden.pushNotifications.installationKey }}
+  PUSH_ENABLED: {{ .Values.vaultwarden.pushNotifications.enabled | quote }}
+  PUSH_INSTALLATION_ID: {{ .Values.vaultwarden.pushNotifications.installationId | quote }}
+  PUSH_INSTALLATION_KEY: {{ .Values.vaultwarden.pushNotifications.installationKey | quote }}
   {{- if .Values.vaultwarden.pushNotifications.relayUri }}
-  PUSH_RELAY_URI: {{ .Values.vaultwarden.pushNotifications.relayUri }}
+  PUSH_RELAY_URI: {{ .Values.vaultwarden.pushNotifications.relayUri | quote }}
   {{- end }}
-  {{- end }}
-  {{- /* 
-    HIBP integration configuration 
-  */}}
-  {{- if (and .Values.vaultwarden.hibpApiKey.value (not .Values.vaultwarden.hibpApiKey.existingSecret.name)) }}
-  HIBP_API_KEY: {{ .Values.vaultwarden.hibpApiKey.value }}
   {{- end }}
   {{- /* 
     Job scheduler configuration 
   */}}
-  JOB_POLL_INTERVAL_MS: {{ .Values.vaultwarden.jobScheduler.pollIntervalMS }}
+  JOB_POLL_INTERVAL_MS: {{ .Values.vaultwarden.jobScheduler.pollIntervalMS | quote }}
   SEND_PURGE_SCHEDULE: {{ .Values.vaultwarden.jobScheduler.sendPurgeSchedule | quote }}
   TRASH_PURGE_SCHEDULE: {{ .Values.vaultwarden.jobScheduler.trashPurgeSchedule | quote }}
   INCOMPLETE_2FA_SCHEDULE: {{ .Values.vaultwarden.jobScheduler.incomplete2FASchedule | quote }}
@@ -190,44 +175,44 @@ data:
   EMERGENCY_REQUEST_TIMEOUT_SCHEDULE: {{ .Values.vaultwarden.jobScheduler.emergencyRequestTimeout | quote }}
   EVENT_CLEANUP_SCHEDULE: {{ .Values.vaultwarden.jobScheduler.eventCleanup | quote }}
   {{- if .Values.vaultwarden.jobScheduler.trashAutoDeleteDays }}
-  TRASH_AUTO_DELETE_DAYS: {{ .Values.vaultwarden.jobScheduler.trashAutoDeleteDays }}
+  TRASH_AUTO_DELETE_DAYS: {{ .Values.vaultwarden.jobScheduler.trashAutoDeleteDays | quote }}
   {{- end }}
   {{- /* 
     Logging configuration 
   */}}
-  LOG_LEVEL: {{ .Values.vaultwarden.logs.level }}
-  EXTENDED_LOGGING: {{ .Values.vaultwarden.logs.extended }}
+  LOG_LEVEL: {{ .Values.vaultwarden.logs.level | quote }}
+  EXTENDED_LOGGING: {{ .Values.vaultwarden.logs.extended | quote }}
   LOG_TIMESTAMP_FORMAT: {{ .Values.vaultwarden.logs.timestampFormat | squote }}
-  USE_SYSLOG: {{ .Values.vaultwarden.logs.useSyslog }}
+  USE_SYSLOG: {{ .Values.vaultwarden.logs.useSyslog | quote }}
   {{- if .Values.vaultwarden.logs.file }}
-  LOG_FILE: {{ .Values.vaultwarden.logs.file }}
+  LOG_FILE: {{ .Values.vaultwarden.logs.file | quote }}
   {{- end }}
   {{- /* 
     Template configuration 
   */}}
   {{- if .Values.vaultwarden.templates.folder }}
-  TEMPLATES_FOLDER: {{ .Values.vaultwarden.templates.folder }}
-  RELOAD_TEMPLATES: {{ .Values.vaultwarden.templates.reload }}
+  TEMPLATES_FOLDER: {{ .Values.vaultwarden.templates.folder | quote }}
+  RELOAD_TEMPLATES: {{ .Values.vaultwarden.templates.reload | quote }}
   {{- end }}
   {{- /* 
     Icon configuration 
   */}}
   {{- if not .Values.vaultwarden.icons.disableDownloading }}
-  DISABLE_ICON_DOWNLOAD: {{ .Values.vaultwarden.icons.disableDownloading }}
-  ICON_SERVICE: {{ .Values.vaultwarden.icons.service }}
-  ICON_REDIRECT_CODE: {{ .Values.vaultwarden.icons.redirectCode }}
-  ICON_DOWNLOAD_TIMEOUT: {{ .Values.vaultwarden.icons.downloadTimeout }}
+  DISABLE_ICON_DOWNLOAD: {{ .Values.vaultwarden.icons.disableDownloading | quote }}
+  ICON_SERVICE: {{ .Values.vaultwarden.icons.service | quote }}
+  ICON_REDIRECT_CODE: {{ .Values.vaultwarden.icons.redirectCode | quote }}
+  ICON_DOWNLOAD_TIMEOUT: {{ .Values.vaultwarden.icons.downloadTimeout | quote }}
   ICON_BLACKLIST_REGEX: {{ .Values.vaultwarden.icons.blacklistRegex | squote }}
-  ICON_BLACKLIST_NON_GLOBAL_IPS: {{ .Values.vaultwarden.icons.blacklistNonGlobalIPs }}
-  ICON_CACHE_TTL: {{ .Values.vaultwarden.icons.cache.ttl }}
-  ICON_CACHE_NEGTTL: {{ .Values.vaultwarden.icons.cache.negttl }}
+  ICON_BLACKLIST_NON_GLOBAL_IPS: {{ .Values.vaultwarden.icons.blacklistNonGlobalIPs | quote }}
+  ICON_CACHE_TTL: {{ .Values.vaultwarden.icons.cache.ttl | quote }}
+  ICON_CACHE_NEGTTL: {{ .Values.vaultwarden.icons.cache.negttl | quote }}
   {{- end }}
   {{- /* 
     Underlying Rust 'rocket' configuration 
   */}}
-  ROCKET_ADDRESS: {{ .Values.vaultwarden.rocket.address }}
-  ROCKET_PORT: {{ .Values.vaultwarden.rocket.port }}
-  ROCKET_WORKERS: {{ .Values.vaultwarden.rocket.workers }}
+  ROCKET_ADDRESS: {{ .Values.vaultwarden.rocket.address | quote }}
+  ROCKET_PORT: {{ .Values.vaultwarden.rocket.port | quote }}
+  ROCKET_WORKERS: {{ .Values.vaultwarden.rocket.workers | quote }}
   {{- if .Values.vaultwarden.rocket.tls }}
-  ROCKET_TLS: {{ .Values.vaultwarden.rocket.tls }}
+  ROCKET_TLS: {{ .Values.vaultwarden.rocket.tls | quote }}
   {{- end }}
