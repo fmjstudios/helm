@@ -91,9 +91,9 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-          # volumeMounts:
-          #   - name: {{ include "linkwarden.pv.name" . }}
-          #     mountPath: {{ .Values.linkwarden.data.filesystem.rootPath | default "/data" }}   
+          volumeMounts:
+            - name: {{ include "linkwarden.pv.name" . }}
+              mountPath: {{ include "linkwarden.paths.data" .  }}   
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -139,7 +139,7 @@ spec:
       volumes:
         - name: {{ include "linkwarden.pv.name" . }}
           persistentVolumeClaim:
-            claimName: {{ include "linkwarden.pvc.name" . }}
+            claimName: {{ .Values.linkwarden.data.filesystem.pvc.existingClaim | default (include "linkwarden.pvc.name" .) }}
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:

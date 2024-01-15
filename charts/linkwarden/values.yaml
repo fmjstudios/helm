@@ -106,9 +106,9 @@ linkwarden:
     ## Filesystem data settings
     ##
     filesystem:
-      ## @param linkwarden.data.filesystem.rootPath [default: /data] The root path for data be stored in.
+      ## @param linkwarden.data.filesystem.dataPath [default: data] The relative path for data to be stored in
       ##
-      rootPath: /data
+      dataPath: data
       ## Kubernetes PVC settings
       ##
       pvc:
@@ -121,6 +121,9 @@ linkwarden:
         ## @param linkwarden.data.filesystem.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs
         ##
         reclaimPolicy: Retain
+        ## @param linkwarden.data.filessystem.pvc.existingClaim [string] Provide the name to an existing PVC
+        ##
+        existingClaim: ""
 
     ## S3 data settings
     ##

@@ -1,0 +1,35 @@
+# Copyright FMJ Studios
+# SPDX-License-Identifier: MIT
+
+annotations:
+  artifacthub.io/category: monitoring-logging
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
+    - name: FMJdev
+      email: info@fmj.dev
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/links: |
+    - name: Source
+      url: https://github.com/fmjstudios/helm
+    - name: Uptime-Kuma Homepage
+      url: https://uptime.kuma.pet/
+    - name: Uptime-Kuma Documentation
+      url: https://github.com/louislam/uptime-kuma/wiki
+apiVersion: v2
+appVersion: 1.23.11
+kubeVersion: ">=1.26"
+name: uptime-kuma
+version: 0.0.1
+description: Uptime-Kuma is an open-source, self-hosted fancy uptime monitoring tool
+home: https://uptime.kuma.pet/
+icon: https://uptime.kuma.pet/img/icon.svg
+keywords:
+  - uptime
+  - monitoring
+  - website
+  - database
+  - tls
+  - uptime-robot
+maintainers:
+  - name: FMJdev
+    email: info@fmj.dev

@@ -51,71 +51,67 @@ fullnameOverride: ""
 
 ## Vaultwarden configuration
 ## ref: https://github.com/dani-garcia/vaultwarden/wiki/Configuration-overview
-## @param vaultwarden.domain [string] The domain name to give to Vaultwarden
 
 vaultwarden:
-  ## The domain of the Vaultwarden installation
+  ## @param vaultwarden.domain [string] The domain of the Vaultwarden installation
+  ##
   domain: ""
 
   ## Web UI configuration
   ##
   web:
-    ## Whether to enable the Vaultwarden Web UI - enabled by default
+    ## @param vaultwarden.web.enabled [default: true] Whether or not to enable the Vaultwarden Web UI - enabled by default
     ##
     enabled: true
-    ## A custom folder from which to load assets for the Web UI - defaults to 'web-vault/'
+    ## @param vaultwarden.web.folder [string] A custom folder from which to load assets for the Web UI - defaults to 'web-vault/'
     ##
     folder: ""
 
-  ## Controls whether users are allowed to create Bitwarden Sends.
-  ## This setting applies globally to all users.
+  ## @param vaultwarden.allowSends Controls whether users are allowed to create Bitwarden Sends. Applies globally to all users.
   ##
   allowSends: true
 
-  ## Controls whether users can enable emergency access to their accounts.
-  ## This setting applies globally to all users.
+  ## @param vaultwarden.allowEmergencyAccess [default: true] Controls whether users can enable emergency access to their accounts. Applies globally to all users.
   ##
   allowEmergencyAccess: true
 
-  ## Controls whether users can change their email.
-  ## This setting applies globally to all users
+  ## @param vaultwarden.allowEmailChange [default: true] Controls whether users can change their email. Applies globally to all users.
   ##
   allowEmailChange: true
 
-  ## Controls whether event logging is enabled for organizations
-  ## This setting applies to organizations.
+  ## @param vaultwarden.enableOrgEvents [default: false] Controls whether event logging is enabled for organizations. Applies to organizations.
   ##
   enableOrgEvents: false
 
-  ## Number of days to retain events stored in the database.
+  ## @param vaultwarden.retainEventsDays [string] Number of days to retain events stored in the database.
   ## If unset (the default), events are kept indefinitely and the scheduled job is disabled!
   ##
-  retainEventsDays:
+  retainEventsDays: ""
 
-  ## Client IP Header, used to identify the IP of the client, defaults to "X-Forwarded-For"
-  ## Set to the string "none" (without quotes), to disable any headers and just use the remote IP
+  ## @param vaultwarden.ipHeader [default: X-Forwarded-For] The Client IP Header, defaults to "X-Forwarded-For".
+  ## Set to the string "none" to disable any headers and just use the remote IP
   ##
   ipHeader: X-Forwarded-For
 
-  ## Disable 2FA remember
+  ## @param vaultwarden.disable2FARemember [default: false] Disable 2FA remembrance.
   ## Enabling this would force the users to use a second factor to login every time.
   ## Note that the checkbox would still be present, but ignored.
+  ##
   disable2FARemember: false
 
-  ## Controls which users can create new orgs.
+  ## @param vaultwarden.orgCreationUsers [string] Controls which users can create new orgs.
   ## Blank or 'all' means all users can create orgs (this is the default)
   ## - 'none' means no users can create orgs
   ## - a comma-separated list means only those users can create orgs (admin1@example.com,admin2@example.com)
   orgCreationUsers: ""
 
   ## BETA FEATURE: Groups
-  ## Controls whether group support is enabled for organizations
-  ## This setting applies to organizations.
-  ## Disabled by default because this is a beta feature, it contains known issues!
+  ## @param vaultwarden.enableOrgGroups [default: false] Controls whether group support is enabled for organizations
+  ## This setting applies to organizations. Disabled by default because this is a beta feature, it contains known issues!
   ## KNOW WHAT YOU ARE DOING!
   enableOrgGroups: false
 
-  ## Allowed iframe ancestors (Know the risks!)
+  ## @param vaultwarden.allowedIframeAncestors [string] Allowed iframe ancestors (Know the risks!)
   ## https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
   ## Allows other domains to embed the web vault into an iframe, useful for embedding into secure intranets
   ## This adds the configured value to the 'Content-Security-Policy' headers 'frame-ancestors' value.
@@ -128,6 +124,7 @@ vaultwarden:
   ## If not set, the admin panel is disabled
   ##
   adminToken:
+    ## @param vaultwarden.adminToken.value [string] The value for the Vaultwarden admin token
     ## New Argon2 PHC string
     ## Note that for some environments, like docker-compose you need to escape all the dollar signs `$` with an extra dollar sign like `$$`
     ## Also, use single quotes (') instead of double quotes (") to enclose the string when needed
@@ -136,8 +133,9 @@ vaultwarden:
     ## Old plain text string (Will generate warnings in favor of Argon2)
     ## value: "Vy2VyYTTsKPv8W5aEOWUbB/Bt3DEKePbHmI4m9VcemUMS2rEviDowNAFqYi1xjmp"
     ##
-    value: "CHANGEME"
+    value: "ChangeMe"
 
+    ## @param vaultwarden.adminToken.disable [default: false] Disable token authentication for the admin panel
     ## Enable this to bypass the admin panel security. This option is only
     ## meant to be used with the use of a separate auth layer in front
     ##
@@ -146,209 +144,204 @@ vaultwarden:
     ## Specify an existing secret to grab the admin token from
     ##
     existingSecret:
+      ## @param vaultwarden.adminToken.existingSecret.name [string] The name of an existing Secret containing the admin token
+      ##
       name: ""
+      ## @param vaultwarden.adminToken.existingSecret.key [string] The key name within the previously named existingSecret
+      ##
       key: ""
 
   ## Paths to use inside the application container for storage of different files
   ##
   data:
-    ## The data folder is used for all files by default
+    ## @param vaultwarden.data.rootPath [default: /data] The data folder is used for all files by default
     ##
     rootPath: /data
 
     ## Determine storage paths within the container rootPath
     ##
     paths:
-      ## The file path for the RSA key, 'data/rsa_key' by default
+      ## @param vaultwarden.data.paths.rsaKey [string] The file path for the RSA key, 'data/rsa_key' by default
       ##
       rsaKey: ""
 
-      ## The path for icon cache, 'data/icon_cache' by default
+      ## @param vaultwarden.data.paths.iconCache [string] The path for icon cache, 'data/icon_cache' by default
       ##
       iconCache: ""
 
-      ## The mail attachments path, 'data/attachments' by default
+      ## @param vaultwarden.data.paths.attachments [string] The mail attachments path, 'data/attachments' by default
       ##
       attachments: ""
 
-      ## The mail sends path, 'data/sends' by default
+      ## @param vaultwarden.data.paths.sends [string] The mail sends path, 'data/sends' by default
       ##
       sends: ""
 
-      ## The temporary data path, 'data/tmp' by default
+      ## @param vaultwarden.data.paths.tmp [string] The temporary data path, 'data/tmp' by default
       ##
       tmp: ""
 
     ## Kubernetes PVC settings
     ##
     pvc:
-      ## The size given to PVCs created from the above data
+      ## @param vaultwarden.data.pvc.size [default: 5Gi] The size given to PVCs created from the above data
       ##
       size: 5Gi
-
-      ## The storageClass given to PVCs created from the above data
+      ## @param vaultwarden.data.pvc.storageClass [default: standard] The storageClass given to PVCs created from the above data
       ##
       storageClass: standard
-
-      ## The resourcePolicy given to PVCs created from the above data
+      ## @param vaultwarden.data.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs created from the above data
       ##
       reclaimPolicy: Retain
+      ## @param vaultwarden.data.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
 
   ## General email settings
   ##
   email:
-    ## Maximum attempts before an email token is reset and a new email will need to be sent.
+    ## @param vaultwarden.email.attemptsLimit [default: 3] Maximum attempts before an email token is reset requiring a new email
     ##
     attemptsLimit: 3
-    ## Token expiration time
+    ## @param vaultwarden.email.tokenExpirationTime [default: 600] Token expiration time
     ## Maximum time in seconds a token is valid. The time the user has to open email client and copy token.
     ##
     tokenExpirationTime: 600
-
-    ## Email token size
+    ## @param vaultwarden.email.tokenSize [default: 6] Email token size
     ## Number of digits in an email 2FA token (min: 6, max: 255).
     ## Note that the Bitwarden clients are hardcoded to mention 6 digit codes regardless of this setting!
+    ##
     tokenSize: 6
 
     ## SMTP settings
     ##
     smtp:
-      ## Hostname of the Mail server
+      ## @param vaultwarden.email.smtp.host [string] Hostname of the Mail server
       ## Example: mx.domain.tld
       ##
       host: ""
-
-      ## The from-address for emails sent by Vaultwarden
+      ## @param vaultwarden.email.smtp.from [string] The from-address for emails sent by Vaultwarden
       ## Example: vaultwarden@domain.tld
       ##
       from: ""
-
-      ## The from-name for emails sent by Vaultwarden
+      ## @param vaultwarden.email.smtp.fromName [default: Vaultwarden] The from-name for emails sent by Vaultwarden
       ## Example: Vaultwarden
       ##
-      fromName: "Vaultwarden"
-
-      ## Either 'starttls', 'force_tls' or 'off'
-      security: "starttls"
-
-      ## SMTP port used
+      fromName: Vaultwarden
+      ## @param vaultwarden.email.smtp.security [default: starttls] Either 'starttls', 'force_tls' or 'off'
+      ##
+      security: starttls
+      ## @param vaultwarden.email.smtp.port [default: 587] SMTP port used
       ##
       port: 587
-
-      ## SMTP user
+      ## @param vaultwarden.email.smtp.username [string] SMTP user
       ##
       username: ""
-
-      ## SMTP password
+      ## @param vaultwarden.email.smtp.password [string] SMTP password
       ##
       password: ""
-
-      ## Defaults for SSL is "Plain" and "Login" and nothing for Non-SSL connections.
-      ## Possible values: ["Plain", "Login", "Xoauth2"].
-      ## Multiple options need to be separated by a comma ','.
+      ## @param vaultwarden.email.smtp.auth [default: Plain] Defaults for SSL is "Plain" and "Login" and nothing for Non-SSL connections.
+      ## Possible values: ["Plain", "Login", "Xoauth2"]. Multiple options need to be separated by a comma ','.
       ##
-      auth: "Plain"
-
+      auth: Plain
       ## An existing BasicAuth secret containing credentials for the SMTP server
       ##
       existingSecret:
+        ## @param vaultwarden.email.smtp.existingSecret.name [string] The name of an existing BasicAuth secret
+        ##
         name: ""
-
-      ## General SMTP settings
+      ## @param vaultwarden.email.smtp.timeout [default: 15] General SMTP settings
       ##
       timeout: 15
 
       ## Whether to send mail via the `sendmail` command
       ##
       sendmail:
+        ## @param vaultwarden.email.smtp.sendmail.enabled [default: false] Whether or not to use sendmail for sending emails
         ## False by default since Vaultwarden includes a Rust implementation for SMTP
         ##
         enabled: false
-        ## The path to which sendmail binary to use. The one found in the $PATH is used if not specified.
+        ## @param vaultwarden.email.smtp.sendmail.path [string] The path to which sendmail binary to use.
+        ## The one found in the $PATH is used if not specified.
         ##
         path: ""
 
-      ## Server name sent during the SMTP HELO
+      ## @param vaultwarden.email.smtp.heloName [string] Server name sent during the SMTP HELO
       ## By default this value should be is on the machine's hostname,
       ## but might need to be changed in case it trips some anti-spam filters
       ##
       heloName: ""
-
-      ## Embed images as email attachments
+      ## @param vaultwarden.email.smtp.embedImages [default: false] Embed images as email attachments
       ##
       embedImages: false
-
-      ## Accept Invalid Hostnames
+      ## @param vaultwarden.email.smtp.acceptInvalidHostnames [default: false] Accept Invalid Hostnames
       ## DANGEROUS: This option introduces significant vulnerabilities to man-in-the-middle attacks!
       ## Only use this as a last resort if you are not able to use a valid certificate.
       ##
       acceptInvalidHostnames: false
-
-      ## Accept Invalid Certificates
+      ## @param vaultwarden.email.smtp.acceptInvalidCertificates [default: false] Accept Invalid Certificates
       ## DANGEROUS: This option introduces significant vulnerabilities to man-in-the-middle attacks!
       ## Only use this as a last resort if you are not able to use a valid certificate.
       ## If the Certificate is valid but the hostname doesn't match, please use SMTP_ACCEPT_INVALID_HOSTNAMES instead.
       ##
       acceptInvalidCertificates: false
-
-      ## Require new device emails. When a user logs in an email is required to be sent.
-      ## If sending the email fails the login attempt will fail!!
+      ## @param vaultwarden.email.smtp.requireDeviceEmail [default: false] Require new device emails.
+      ## When a user logs in an email is required to be sent. If sending the email fails the login attempt will fail!!
       ##
       requireDeviceEmail: false
-
-      ## Enable debug mode
+      ## @param vaultwarden.email.smtp.debug [default: false] Enable debug mode
       ##
       debug: false
 
   ## Websocket configuration for push notifications
   ##
   websocket:
-    ## Whether to enable the Websocket - disabled by default
+    ## @param vaultwarden.websocket.enabled [default: false] Whether to enable the Websocket - disabled by default
     ##
     enabled: false
 
-    ## The address to which the Websocket should bind - 0.0.0.0 by default
+    ## @param vaultwarden.websocket.address [default: "0.0.0.0"] The address to which the Websocket should bind
     ##
     address: "0.0.0.0"
 
-    ## The port to which on which the Websocket should be made available - 3012 by default
+    ## @param vaultwarden.websocket.port [default: 3012] The port to which on which the Websocket should be made available
     ##
     port: 3012
 
   ## Database settings
   ##
   database:
-    ## Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'
+    ## @param vaultwarden.database.type [default: "sqlite"] Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'
     ## Choosing 'sqlite' forces the value 'vaultwarden.paths.data/db.sqlite3' for the database URI
     ##
     type: "sqlite"
 
-    ## Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## @param vaultwarden.database.user [string] Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
     user: ""
 
-    ## Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## @param vaultwarden.database.password [string] Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
     password: ""
 
-    ## Provide the host to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## @param vaultwarden.database.host [string] Provide the host to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
     host: ""
 
-    ## Provide the port to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## @param vaultwarden.database.port [string] Provide the port to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
     port: ""
 
-    ## Provide the name to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## @param vaultwarden.database.name [string] Provide the name to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value since the secret has to contain the entire database URI
     ##
     name: ""
 
-    ## Manually provide the entire URI to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
+    ## @param vaultwarden.database.uri [string] Manually provide the entire URI to the (external) Vaultwarden database - ignored if the database type is 'sqlite'
     ## Providing an 'existingSecret' overrides the value
     ##
     uri: ""
@@ -356,9 +349,14 @@ vaultwarden:
     ## Provide an existing secret containing the entire Database URI at the specified key
     ##
     existingSecret:
+      ## @param vaultwarden.database.existingSecret.name [string] The name of an existing secret
+      ##
       name: ""
+      ## @param vaultwarden.database.existingSecret.key [string] The key within the existing secret
+      ##
       key: ""
 
+    ## @param vaultarden.database.enableWAL [default: false] Enable write-ahead logging
     ## Enable WAL for the DB - only actually used when the database type is 'sqlite'
     ## Set to false to avoid enabling WAL during startup.
     ## Note that if the DB already has WAL enabled, you will also need to disable WAL in the DB,
@@ -368,15 +366,15 @@ vaultwarden:
     ##
     enableWAL: false
 
-    ## Database max connections
+    ## @param vaultarden.database.maxConnections [default: 10] Maximum database connections
     ## Define the size of the connection pool used for connecting to the database.
     maxConnections: 10
 
-    ## Database timeout
+    ## @param vaultarden.database.timeout [default: 30] Database timeout
     ## Timeout when acquiring database connection
     timeout: 30
 
-    ## Database connection retries
+    ## @param vaultarden.database.connectionRetries [default: 15] Database connection retries
     ## Number of times to retry the database connection during startup, with 1 second delay between each retry, set to
     ## 0 to retry indefinitely
     ##
@@ -388,36 +386,37 @@ vaultwarden:
     ## Login configuration
     ##
     logins:
+      ## @param vaultwarden.limits.logins.ratelimitSeconds [default: 60] Number of seconds between login requests
       ## Number of seconds, on average, between login requests from the same IP address before rate limiting kicks in.
       ##
       ratelimitSeconds: 60
-
-      ## Allow a burst of requests of up to this size, while maintaining the average indicated by `LOGIN_RATELIMIT_SECONDS`.
+      ## @param vaultwarden.limits.logins.ratelimitMaxBurst [default: 10] Allow bursts of requests up to this amount
+      ## Allow a burst of requests of up to this amount, while maintaining the average indicated by `LOGIN_RATELIMIT_SECONDS`.
       ## Note that this applies to both the login and the 2FA, so it's recommended to allow a burst size of at least 2.
       ##
       ratelimitMaxBurst: 10
-
+      ## @param vaultwarden.limits.logins.adminRatelimitSeconds [default: 300] Number of seconds between admin login requests
       ## Number of seconds, on average, between admin login requests from the same IP address before rate limiting kicks in.
       ##
       adminRatelimitSeconds: 300
-
-      ## Allow a burst of requests of up to this size, while maintaining the average indicated by `ADMIN_RATELIMIT_SECONDS`.
+      ## @param vaultwarden.limits.logins.adminRatelimitMaxBurst [default: 300] Allow bursts of admin requests up to this amount
+      ## Allow a burst of requests of up to this amount, while maintaining the average indicated by `adminRatelimitSeconds`.
       ##
       adminRatelimitMaxBurst: 3
-
+      ## @param vaultwarden.limits.logins.adminSessionLifetime [default: 20] The lifetime of an admin session
       ## Set the lifetime of admin sessions to this value (in minutes).
       ##
       adminSessionLifetime: 20
     ## Attachments settings
     ##
     attachments:
-      ## Per-organization attachment storage limit (KB)
+      ## @param vaultwarden.limits.attachments.orgLimit [string] Per-organization attachment storage limit (KB)
       ## Max kilobytes of attachment storage allowed per organization.
       ## When this limit is reached, organization members will not be allowed to upload further attachments
       ## for ciphers owned by that organization.
       ##
       orgLimit: ""
-      ## Per-user attachment storage limit (KB)
+      ## @param vaultwarden.limits.attachments.userLimit [string] Per-user attachment storage limit (KB)
       ## Max kilobytes of attachment storage allowed per user.
       ## When this limit is reached, the user will not be allowed to upload further attachments.
       ##
@@ -426,15 +425,16 @@ vaultwarden:
   ## Password configuration
   ##
   passwords:
+    ## @param vaultwarden.passwords.iterations [default: 350000] Number of password hash iterations
     ## Number of server-side passwords hashing iterations for the password hash.
     ## The default for new users. If changed, it will be updated during login for existing users.
     ##
     iterations: 350000
-
+    ## @param vaultwarden.passwords.hintsAllowed [default: false] Allow sending of password hints
     ## Controls whether users can set password hints. This setting applies globally to all users.
     ##
     hintsAllowed: false
-
+    ## @param vaultwarden.passwords.showHint [default: false] Show hints directly on login page - disabled by default
     ## Controls whether a password hint should be shown directly in the web page if
     ## SMTP service is not configured. Not recommended for publicly-accessible instances
     ## as this provides unauthenticated access to potentially sensitive data.
@@ -443,10 +443,10 @@ vaultwarden:
 
   ## Signup settings
   signup:
-    ## Controls if new users can register
-    #
+    ## @param vaultwarden.signup.allowed [default: true] Whether or not new users can register
+    ##
     allowed: true
-
+    ## @param vaultwarden.signup.verify [default: true] Whether email verification is need to sign up
     ## Controls if new users need to verify their email address upon registration
     ## Note that setting this option to true prevents logins until the email address has been verified!
     ## The welcome email will include a verification link, and login attempts will periodically
@@ -454,22 +454,26 @@ vaultwarden:
     ##
     verify: true
 
+    ## @param vaultwarden.signup.verify [default: 3600] How many seconds to wait to resend a verification email
     ## If signups.verify is set to true, this limits how many seconds after the last time
     ## an email verification link has been sent another verification email will be sent
     ##
     verifyResendTime: 3600
 
+    ## @param vaultwarden.signup.verifyResendLimit [default: 6] How many verificatione mails will be sent in total
     ## If signups.verify is set to true, this limits how many times an email verification
     ## email will be re-sent upon an attempted login.
     verifyResendLimit: 6
 
+    ## @param vaultwarden.signup.domainWhitelist [string] A comma-separated list of domains which can always register
     ## Controls if new users from a list of comma-separated domains can register
-    ## even if signups.verify is set to false
+    ## even if signups.allowed is set to false
     domainWhitelist: ""
 
   ## Authentication settings
   ##
   auth:
+    ## @param vaultwarden.auth.authenticatorDisableTimeDrift [default: false] Allow 2FA time drift
     ## According to the RFC6238 (https://tools.ietf.org/html/rfc6238),
     ## we allow by default the TOTP code which was valid one step back and one in the future.
     ## This can however allow attackers to be a bit more lucky with there attempts because there are 3 valid codes.
@@ -478,6 +482,7 @@ vaultwarden:
     ## In any case, if a code has been used it can not be used again, also codes which predates it will be invalid.
     authenticatorDisableTimeDrift: false
 
+    ## @param vaultwarden.auth.incomplete2FATimeLimit [default: 3] Minutes to wait before a 2FA login is considere incomplete
     ## Number of minutes to wait before a 2FA-enabled login is considered incomplete,
     ## resulting in an email notification. An incomplete 2FA login is one where the correct
     ## master password was provided but the required 2FA step was not completed, which
@@ -491,19 +496,19 @@ vaultwarden:
     ## You can generate it here: https://upgrade.yubico.com/getapikey/
     ## You can optionally specify a custom OTP server
     yubikey:
-      ## Whether to enable authentication via YubiKeys
+      ## @param vaultwarden.auth.yubikey.enable [default: false] Whether to enable authentication via YubiKeys
       ##
       enable: false
 
-      ## Yubikey client ID
+      ## @param vaultwarden.auth.yubikey.clientId [string] Yubikey client ID
       ##
       clientId: ""
 
-      ## Yubikey client Secret
+      ## @param vaultwarden.auth.yubikey.clientSecret [string] Yubikey client Secret
       ##
       clientSecret: ""
 
-      ## Yubikey server
+      ## @param vaultwarden.auth.yubikey.server [string] Yubikey server
       ##
       server: ""
 
@@ -513,31 +518,30 @@ vaultwarden:
     ## https://help.bitwarden.com/article/setup-two-step-login-duo/#create-a-duo-security-account
     ## Then set the following options, based on the values obtained from the last step:
     duo:
-      ## Whether to enable authentication via Duo
+      ## @param vaultwarden.auth.duo.enable [default: false] Whether to enable authentication via Duo
       ##
       enable: false
-
-      ## Duo integration key
+      ## @param vaultwarden.auth.duo.integrationKey [string] Duo integration key
       ##
       integrationKey: ""
-
-      ## Duo secret key
+      ## @param vaultwarden.auth.duo.secretKey [string] Duo secret key
       ##
       secretKey: ""
-
-      ## Duo host
+      ## @param vaultwarden.auth.duo.host [string] Duo host
       ##
       host: ""
 
   ## Invitations settings
   ##
   invitations:
-    ## Invitations org admins to invite users, even when signups are disabled
+    ## @param vaultwarden.invitations.allowed [default: true] Invitations org admins to invite users, even when signups are disabled
     ##
     allowed: true
+    ## @param vaultwarden.invitations.orgName [default: Vaultwarden] Generic organization name for Emails
     ## Name shown in the invitation emails that don't come from a specific organization
     ##
     orgName: Vaultwarden
+    ## @param vaultwarden.invitations.expirationHours [default: 120] Number of hours which an email invitation lasts
     ## The number of hours after which an organization invite token, emergency access invite token,
     ## email verification token and deletion request token will expire (must be at least 1)
     ##
@@ -546,19 +550,18 @@ vaultwarden:
   ## Push notification configuration
   ##
   pushNotifications:
-    ## Whether to enable push notifications (requires key and id from https://bitwarden.com/host)
+    ## @param vaultwarden.pushNotifications.enabled [default: false] Whether to enable push notifications
+    ## (requires key and id from https://bitwarden.com/host)
     ##
     enabled: false
-
-    ## Installation ID from 'https://bitwarden.com/host'
+    ## @param vaultwarden.pushNotifications.installationId [string] Installation ID from 'https://bitwarden.com/host'
     ##
     installationId: ""
-
-    ## Installation Key from 'https://bitwarden.com/host'
+    ## @param vaultwarden.pushNotifications.installationKey [string] Installation Key from 'https://bitwarden.com/host'
     ##
     installationKey: ""
-
-    ## Set a custom relay URI for push notifications - defaults to 'https://bitwarden.com/host'
+    ## @param vaultwarden.pushNotifications.relayUri [string] Set a custom relay URI for push notifications
+    ## defaults to 'https://bitwarden.com/host'
     ## changes to this setting most likely require the creation of a custom application image
     ##
     relayUri: ""
@@ -568,12 +571,18 @@ vaultwarden:
   ## HaveIBeenPwned API Key, request it here: https://haveibeenpwned.com/API/Key
   ##
   hibpApiKey:
+    ## @param vaultwarden.hibpApiKey.value [string] The HIBP API key value
+    ##
     value: ""
 
     ## Specify an existing secret to grab the admin token from
     ##
     existingSecret:
+      ## @param vaultwarden.hibpApiKey.existingSecret.name [string] The name of an existing Secret containing the HIBP API key
+      ##
       name: ""
+      ## @param vaultwarden.hibpApiKey.existingSecret.key [string] The key within an existing Secret which contains the key
+      ##
       key: ""
 
   ## Settings for the job scheduler
@@ -585,42 +594,42 @@ vaultwarden:
   ## You can test the the format here: https://crontab.guru, but remove the first digit!
   ##
   jobScheduler:
+    ## @param vaultwarden.jobScheduler.pollIntervalMS [default: 30000] The poll interval for the job schedular in milliseconds
     ## How often (in ms) the job scheduler thread checks for jobs that need running.
     ## Set to 0 to globally disable scheduled jobs.
     ##
     pollIntervalMS: 30000
-
+    ## @param vaultwarden.jobScheduler.sendPurgeSchedule [default: '0 5 * * * *'] Cron schedule to purge outdated Bitwarden Sends
     ## Cron schedule of the job that checks for Sends past their deletion date.
     ## Defaults to hourly (5 minutes after the hour). Set blank to disable this job.
     ##
     sendPurgeSchedule: "0 5 * * * *"
-
+    ## @param vaultwarden.jobScheduler.trashPurgeSchedule [default: '0 5 0 * * *'] Cron schedule to purge trashed items
     ## Cron schedule of the job that checks for trashed items to delete permanently.
     ## Defaults to daily (5 minutes after midnight). Set blank to disable this job.
     ##
     trashPurgeSchedule: "0 5 0 * * *"
-
+    ## @param vaultwarden.jobScheduler.incomplete2FASchedule [default: '0 5 0 * * *'] Cron schedule to check for incomplete 2FA logins
     ## Cron schedule of the job that checks for incomplete 2FA logins.
     ## Defaults to once every minute. Set blank to disable this job.
     ##
     incomplete2FASchedule: "30 * * * * *"
-
+    ## @param vaultwarden.jobScheduler.emergencyNotificationReminder [default: '0 3 * * * *'] Cron schedule for expiration reminders
     ## Cron schedule of the job that sends expiration reminders to emergency access grantors.
     ## Defaults to hourly (3 minutes after the hour). Set blank to disable this job.
     ##
     emergencyNotificationReminder: "0 3 * * * *"
-
+    ## @param vaultwarden.jobScheduler.emergencyRequestTimeout [default: '0 7 * * * *'] Cron schedule for emergency access requests
     ## Cron schedule of the job that grants emergency access requests that have met the required wait time.
     ## Defaults to hourly (7 minutes after the hour). Set blank to disable this job.
     ##
     emergencyRequestTimeout: "0 7 * * * *"
-
+    ## @param vaultwarden.jobScheduler.emergencyRequestTimeout [default: '0 10 0 * * *'] Cron schedule for event cleanups
     ## Cron schedule of the job that cleans old events from the event table.
     ## Defaults to daily. Set blank to disable this job. Also without EVENTS_DAYS_RETAIN set, this job will not start.
     ##
     eventCleanup: "0 10 0 * * *"
-
-    ## Number of days to wait before auto-deleting a trashed item.
+    ## @param vaultwarden.jobScheduler.trashAutoDeleteDays [string] Number of days to wait before auto-deleting a trashed item.
     ## If unset (the default), trashed items are not auto-deleted.
     ## This setting applies globally, so make sure to inform all users of any changes to this setting.
     ##
@@ -629,26 +638,24 @@ vaultwarden:
   ## Settings for the logging configuration
   ##
   logs:
+    ## @param vaultwarden.logs.level [default: info] The configured logging level
     ## Change the verbosity of the log output
     ## Valid values are "trace", "debug", "info", "warn", "error" and "off"
     ## Setting it to "trace" or "debug" would also show logs for mounted
     ## routes and static file, websocket and alive requests
     ##
     level: info
-
+    ## @param vaultwarden.logs.extended [default: true] Configure extended logging
     ## Enable extended logging, which shows timestamps and targets in the logs
     ##
     extended: true
-
-    ## Timestamp format used in extended logging.
+    ## @param vaultwarden.logs.timestampFormat [default: "%Y-%m-%d %H:%M:%S.%3f"] Timestamp format used in extended logging.
     ## Format specifiers: https://docs.rs/chrono/latest/chrono/format/strftime
     timestampFormat: "%Y-%m-%d %H:%M:%S.%3f"
-
-    ## Logging to a file
+    ## @param vaultwarden.logs.file [default: /var/log/vaultwarden.log] Logging to a file
     ##
-    file: ""
-
-    ## Logging to Syslog
+    file: /var/log/vaultwarden.log
+    ## @param vaultwarden.logs.useSyslog [default: false] Logging to Syslog
     ## This requires extended logging
     ##
     useSyslog: false
@@ -656,16 +663,18 @@ vaultwarden:
   ## Paths from which to use HTML templates for the Web UI
   ##
   templates:
-    ## Templates data folder, by default embedded templates are used
+    ## @param vaultwarden.templates.folder [string] Templates data folder, by default embedded templates are used
     ##
     folder: ""
-    ## Automatically reload the templates for every request, slow, use only for development
+    ## @param vaultwarden.templates.reload [default: false] Automatically reload the templates for every request
+    ## slow, use only for development
     ##
     reload: false
 
   ## Icons settings
   ##
   icons:
+    ## @param vaultwarden.icons.service [default: internal] Which service to use for fetching icons
     ## Icon service
     ## The predefined icon services are: internal, bitwarden, duckduckgo, google.
     ## To specify a custom icon service, set a URL template with exactly one instance of `{}`,
@@ -679,7 +688,7 @@ vaultwarden:
     ## for certain sites have been cached.
     ##
     service: internal
-
+    ## @param vaultwarden.icons.redirectCode [default: 302] The HTTP code to use for redirects to external services
     ## Icon redirect code
     ## The HTTP status code to use for redirects to an external icon service.
     ## The supported codes are 301 (legacy permanent), 302 (legacy temporary), 307 (temporary), and 308 (permanent).
@@ -688,29 +697,25 @@ vaultwarden:
     ## are currently better supported by the Bitwarden clients.
     ##
     redirectCode: 302
-
-    ## Disable icon downloading
+    ## @param vaultwarden.icons.disableDownloading [default: false] Disable icon downloading
     ## Set to true to disable icon downloading in the internal icon service.
     ## This still serves existing icons from $ICON_CACHE_FOLDER, without generating any external
     ## network requests. $ICON_CACHE_TTL must also be set to 0; otherwise, the existing icons
     ## will be deleted eventually, but won't be downloaded again.
     ##
     disableDownloading: false
-
-    ## Icon download timeout
+    ## @param vaultwarden.icons.downloadTimeout [default: 10] Icon download timeout
     ## Configure the timeout value when downloading the favicons.
     ## The default is 10 seconds, but this could be to low on slower network connections
     ##
     downloadTimeout: 10
-
-    ## Icon blacklist Regex
+    ## @param vaultwarden.icons.blacklistRegex [default: '^(192\.168\.0\.[0-9]+|192\.168\.1\.[0-9]+)$'] Icon blacklist Regex
     ## Any domains or IPs that match this regex won't be fetched by the icon service.
     ## Useful to hide other servers in the local network. Check the WIKI for more details
     ## NOTE: Always enclose this regex withing single quotes!
     ##
     blacklistRegex: '^(192\.168\.0\.[0-9]+|192\.168\.1\.[0-9]+)$'
-
-    ## Any IP which is not defined as a global IP will be blacklisted.
+    ## @param vaultwarden.icons.blacklistNonGlobalIPs [default: true] Any IP which is not defined as a global IP will be blacklisted.
     ## Useful to secure your internal environment: See https://en.wikipedia.org/wiki/Reserved_IP_addresses for a list of IPs
     ## which it will block
     ##
@@ -719,29 +724,27 @@ vaultwarden:
     ## Settings for the Favicon cache
     ##
     cache:
-      ## Cache time-to-live for successfully obtained icons, in seconds (0 is "forever") - default is 72 days
+      ## @param vaultwarden.cache.ttl [default: 259200] Cache time-to-live for successfully obtained icons, in seconds
+      ## (0 is "forever") - default is 72 days
       ttl: 259200
-      ## Cache time-to-live for icons which weren't available, in seconds (0 is "forever") - default is 72 days
+      ## @param vaultwarden.cache.negttl [default: 259200] Cache time-to-live for icons which weren't available, in seconds
+      ## (0 is "forever") - default is 72 days
       negttl: 259200
 
   ## Rocket specific settings - these most like require zero changes
   ## ref: https://rocket.rs/v0.4/guide/configuration/ for more details.
   ##
   rocket:
-    ## The address rocket should bind to
+    ## @param vaultwarden.rocket.address [default: "0.0.0.0"] The address Rocket should bind to
     ##
     address: "0.0.0.0"
-
-    ## The port rocket should bind to
+    ## @param vaultwarden.rocket.port [default: 80] The port rocket should bind to
     ##
     port: 80
-
-    ## The amount of rocket workers to create
+    ## @param vaultwarden.rocket.workers [default: 10] The amount of rocket workers to create
     ##
     workers: 10
-
-    ## Rocket TLS configuration
-    ## e.g.: "{certs="/path/to/certs.pem",key="/path/to/key.pem"}"
+    ## @param vaultwarden.rocket.tls [string] Rocket TLS configuration e.g.: "{certs="/path/to/certs.pem",key="/path/to/key.pem"}"
     ##
     tls: ""
 
@@ -828,40 +831,77 @@ serviceAccount:
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
   enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
   initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
   timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
   periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
   successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
   failureThreshold: 10
 
 ## Vaultwarden Readiness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
   enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
   initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
   timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
   periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
   successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
   failureThreshold: 3
 
 ## Vaultwarden Startup Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
   enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
   initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
   timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
   periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ##
   successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
   failureThreshold: 10
 
 ## @section Vaultwarden initContainers
 ##
 
 ## Vaultwarden init Containers
-## ref:
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers [array] Define initContainers for the main Vaultwarden server
 initContainers: []
 
 ## @section Vaultwarden resource settings
@@ -869,8 +909,7 @@ initContainers: []
 
 ## FMJStudios Vaultwarden resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources.limits The resource limits for the Vaultwarden Resources
-## @param resources.requests The resource requests for the Vaultwarden Resources
+## @param resources The resource limits/requests for the Vaultwarden pod
 ##
 resources:
   {}
@@ -906,7 +945,7 @@ nodeSelector: {}
 tolerations: []
 
 ## @param affinity Affinity for pod assignment
-## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
 affinity: {}
 

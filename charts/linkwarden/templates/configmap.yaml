@@ -16,7 +16,7 @@ metadata:
 data:
   NEXTAUTH_URL: {{ (include "linkwarden.ingress.url" .) | quote }}
   PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount | quote }}
-  STORAGE_FOLDER: {{ .Values.linkwarden.data.filesystem.rootPath | quote }}
+  STORAGE_FOLDER: {{ include "linkwarden.paths.data" . | quote }}
   AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout | quote }}
   RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit | quote }}
   {{- if .Values.linkwarden.maxFileSize }}

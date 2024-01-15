@@ -4,13 +4,9 @@ linkwarden:
     value: "PretendThisIsARandomString"
   ignoreUnauthorizedCA: true
   data:
-    storageType: filesystem
     filesystem:
-      rootPath: /data
       pvc:
-        size: 5Gi
-        storageClass: standard
-        reclaimPolicy: Retain
+        existingClaim: linkwarden-pvc
 
   database:
     user: "linkwarden"
@@ -42,7 +38,7 @@ ingress:
         - "linkwarden.helm.private"
 
 rbac:
-  create: false
+  create: true
   rules: []
 
 serviceAccount:
@@ -53,7 +49,7 @@ serviceAccount:
   secrets: []
 
 livenessProbe:
-  enabled: false
+  enabled: true
   initialDelaySeconds: 5
   timeoutSeconds: 1
   periodSeconds: 10
@@ -61,7 +57,7 @@ livenessProbe:
   failureThreshold: 10
 
 readinessProbe:
-  enabled: false
+  enabled: true
   initialDelaySeconds: 5
   timeoutSeconds: 1
   periodSeconds: 10
@@ -69,7 +65,7 @@ readinessProbe:
   failureThreshold: 3
 
 startupProbe:
-  enabled: false
+  enabled: true
   initialDelaySeconds: 5
   timeoutSeconds: 1
   periodSeconds: 10

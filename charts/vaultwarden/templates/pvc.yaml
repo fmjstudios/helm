@@ -1,3 +1,4 @@
+{{- if not .Values.vaultwarden.data.pvc.existingClaim }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -17,3 +18,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.vaultwarden.data.pvc.size }}
+{{- end }}      

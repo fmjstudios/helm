@@ -66,34 +66,34 @@ data:
   {{- /* 
     EMail and SMTP configuration 
   */}}
-  # EMAIL_ATTEMPTS_LIMIT: {{ .Values.vaultwarden.email.attemptsLimit | quote }}
-  # EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime | quote }}
-  # EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize | quote }}
-  # {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from }}
-  # SMTP_HOST: {{ .Values.vaultwarden.email.smtp.host | quote }}
-  # SMTP_FROM: {{ .Values.vaultwarden.email.smtp.from | quote }}
-  # SMTP_FROM_NAME: {{ .Values.vaultwarden.email.smtp.fromName | default "Vaultwarden" | quote }}
-  # SMTP_SECURITY: {{ .Values.vaultwarden.email.smtp.security | quote }}
-  # SMTP_PORT: {{ .Values.vaultwarden.email.smtp.port | quote }}
-  # SMTP_TIMEOUT: {{ .Values.vaultwarden.email.smtp.timeout | quote }}
-  # SMTP_AUTH_MECHANISM: {{ .Values.vaultwarden.email.smtp.auth | quote }}
-  # SMTP_EMBED_IMAGES: {{ .Values.vaultwarden.email.smtp.embedImages | quote }}
-  # SMTP_DEBUG: {{ .Values.vaultwarden.email.smtp.debug | quote }}
-  # SMTP_ACCEPT_INVALID_HOSTNAMES: {{ .Values.vaultwarden.email.smtp.acceptInvalidHostnames | quote }}
-  # SMTP_ACCEPT_INVALID_CERTS: {{ .Values.vaultwarden.email.smtp.acceptInvalidCertificates | quote }}
-  # REQUIRE_DEVICE_EMAIL: {{ .Values.vaultwarden.email.smtp.requireDeviceEmail | quote }}
-  # {{- if .Values.vaultwarden.email.smtp.heloName }}
-  # HELO_NAME: {{ .Values.vaultwarden.email.smtp.heloName | quote }}
-  # {{- end }}
-  # {{- if .Values.vaultwarden.email.smtp.sendmail.enabled }}
-  # {{- with .Values.vaultwarden.email.smtp.sendmail }}
-  # USE_SENDMAIL: {{ .enabled | quote }}
-  # {{- if .path }}
-  # SENDMAIL_COMMAND: {{ .path | quote }}
-  # {{- end }}
-  # {{- end }}
-  # {{- end }}
-  # {{- end }}
+  {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from }} 
+  SMTP_HOST: {{ .Values.vaultwarden.email.smtp.host | quote }}
+  SMTP_FROM: {{ .Values.vaultwarden.email.smtp.from | quote }}
+  SMTP_FROM_NAME: {{ .Values.vaultwarden.email.smtp.fromName | default "Vaultwarden" | quote }}
+  SMTP_SECURITY: {{ .Values.vaultwarden.email.smtp.security | quote }}
+  SMTP_PORT: {{ .Values.vaultwarden.email.smtp.port | quote }}
+  SMTP_TIMEOUT: {{ .Values.vaultwarden.email.smtp.timeout | quote }}
+  SMTP_AUTH_MECHANISM: {{ .Values.vaultwarden.email.smtp.auth | quote }}
+  SMTP_EMBED_IMAGES: {{ .Values.vaultwarden.email.smtp.embedImages | quote }}
+  SMTP_DEBUG: {{ .Values.vaultwarden.email.smtp.debug | quote }}
+  SMTP_ACCEPT_INVALID_HOSTNAMES: {{ .Values.vaultwarden.email.smtp.acceptInvalidHostnames | quote }}
+  SMTP_ACCEPT_INVALID_CERTS: {{ .Values.vaultwarden.email.smtp.acceptInvalidCertificates | quote }}
+  REQUIRE_DEVICE_EMAIL: {{ .Values.vaultwarden.email.smtp.requireDeviceEmail | quote }}
+  {{- if .Values.vaultwarden.email.smtp.heloName }}
+  HELO_NAME: {{ .Values.vaultwarden.email.smtp.heloName | quote }}
+  {{- end }}
+  {{- if .Values.vaultwarden.email.smtp.sendmail.enabled }}
+  {{- with .Values.vaultwarden.email.smtp.sendmail }}
+  USE_SENDMAIL: {{ .enabled | quote }}
+  {{- if .path }}
+  SENDMAIL_COMMAND: {{ .path | quote }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  EMAIL_ATTEMPTS_LIMIT: {{ .Values.vaultwarden.email.attemptsLimit | quote }}
+  EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime | quote }}
+  EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize | quote }}
+  {{- end }}
   {{- /* 
     Websocket configuration 
   */}}

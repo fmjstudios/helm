@@ -9,10 +9,10 @@ keywords:
 sources:
   - https://github.com/dani-garcia/vaultwarden
   - https://github.com/fmjstudios/helm/charts/vaultwarden
-appVersion: '1.30.0'
+appVersion: "1.30.0"
 maintainers:
   - name: FMJdev
     email: info@fmj.studio
     url: https://github.com/FMJdev
 version: 0.0.1
-kubeVersion: '>=1.26'
+kubeVersion: ">=1.26"

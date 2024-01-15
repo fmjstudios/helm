@@ -129,7 +129,7 @@ template:
     volumes:
       - name: {{ include "vaultwarden.pv.name" . }}
         persistentVolumeClaim:
-          claimName: {{ include "vaultwarden.pvc.name" . }}
+          claimName: {{ .Values.vaultwarden.data.pvc.existingClaim | default (include "vaultwarden.pvc.name" .) }}
     {{- if .Values.nodeSelector }}
     nodeSelector:
       {{- toYaml .Values.nodeSelector | nindent 8 }}
