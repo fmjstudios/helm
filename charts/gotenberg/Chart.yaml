@@ -1,0 +1,35 @@
+# Copyright FMJ Studios
+# SPDX-License-Identifier: MIT
+
+annotations:
+  artifacthub.io/category: streaming-messaging
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
+    - name: FMJdev
+      email: info@fmj.dev
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/links: |
+    - name: Source
+      url: https://github.com/fmjstudios/helm
+    - name: Gotenberg Homepage
+      url: https://gotenberg.dev/
+    - name: Gotenberg Documentation
+      url: https://gotenberg.dev/docs/getting-started/introduction
+apiVersion: v2
+appVersion: 8.0.1
+kubeVersion: ">=1.26"
+name: gotenbeg
+version: 0.0.1
+description: Gotenberg is a Docker-powered stateless API for PDF files.
+home: https://gotenberg.dev/
+icon: https://gotenberg.dev/img/logo.png
+keywords:
+  - documents
+  - conversion
+  - pdf
+  - office
+  - html
+  - markdown
+maintainers:
+  - name: FMJdev
+    email: info@fmj.dev

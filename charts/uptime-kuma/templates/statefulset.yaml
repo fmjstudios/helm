@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "uptimeKuma.fullname" . }}
+  labels:
+    {{- include "uptimeKuma.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "uptimeKuma.fullname" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "uptimeKuma.selectorLabels" . | nindent 6 }}
+  {{- if .Values.strategy -}}
+  updateStrategy:
+  {{- toYaml .Values.strategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- if .Values.podAnnotations }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "uptimeKuma.selectorLabels" . | nindent 8 }}
+      {{- if .Values.podLabels -}}
+        {{- toYaml .Values.podLabels | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "uptimeKuma.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "uptimeKuma.fullname" . }}
+          env:
+            {{- if or .Values.uptimeKuma.certs.passphrase.value .Values.uptimeKuma.certs.passphrase.existingSecret.name }}
+            - name: UPTIME_KUMA_SSL_KEY_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.uptimeKuma.certs.passphrase.existingSecret.name | default (include "uptimeKuma.secrets.tls-passphrase" .) }}
+                  key: {{ .Values.uptimeKuma.certs.passphrase.existingSecret.key | default "passphrase" }}
+            {{- end }}
+            {{- if or .Values.uptimeKuma.cloudflaredToken.value .Values.uptimeKuma.cloudflaredToken.existingSecret.name }}
+            - name: UPTIME_KUMA_CLOUDFLARED_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.uptimeKuma.cloudflaredToken.existingSecret.name | default (include "uptimeKuma.secrets.cloudflared-token" .) }}
+                  key: {{ .Values.uptimeKuma.cloudflaredToken.existingSecret.key | default "token" }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.uptimeKuma.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: {{ include "uptimeKuma.pv.name" . }}
+              mountPath: {{ .Values.uptimeKuma.data.rootPath | default "/data" }}
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.startupProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: http
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          {{- end }}
+      volumes:
+        - name: {{ include "uptimeKuma.pv.name" . }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.uptimeKuma.data.pvc.existingClaim | default (include "uptimeKuma.pvc.name" .) }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+      {{- if .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      {{- if .Values.initContainers }}
+      initContainers:
+        {{- toYaml .Values.initContainers | nindent 8 }}
+      {{- end }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: {{ .Values.uptimeKuma.data.pvc.reclaimPolicy }}

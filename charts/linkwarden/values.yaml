@@ -326,7 +326,7 @@ service:
 ## @param rbac.rules [array] Define extra rules to be added to the Role resource
 ##
 rbac:
-  create: false
+  create: true
   rules: []
 
 ## @section Linkwarden Service Account parameters
@@ -431,14 +431,14 @@ startupProbe:
 
 ## FMJ Studios Linkwarden pod disruption budget settings
 ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-## @param podDisruptionBudget.enabled [default: false] Enable the pod disruption budget
-## @param podDisruptionBudget.minAvailable The minium amount of pods which need to be available
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
 ## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
 
 podDisruptionBudget:
-  enabled: false
-  minAvailable:
-  maxUnavailable:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
 
 ## @section Bitnami&reg; PostgreSQL parameters
 ##

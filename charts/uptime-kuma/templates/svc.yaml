@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "uptimeKuma.fullname" . }}
+  labels:
+    {{- include "uptimeKuma.labels" . | nindent 4 }}
+  {{- if .Values.service.labels -}}
+  labels:
+    {{- toYaml .Values.service.labels | nindent 4 }}
+  {{- end }}
+  {{- if .Values.service.annotations -}}
+  annotations:
+    {{- toYaml .Values.service.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "uptimeKuma.selectorLabels" . | nindent 4 }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.uptimeKuma.port }}
+      protocol: TCP
+      name: http

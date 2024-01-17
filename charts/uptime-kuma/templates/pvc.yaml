@@ -1,0 +1,21 @@
+{{- if not .Values.uptimeKuma.data.pvc.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "uptimeKuma.pvc.name" . }}
+  labels:
+    {{- include "uptimeKuma.labels" . | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name | quote }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace | quote }}
+    {{- if (eq .Values.uptimeKuma.data.pvc.reclaimPolicy "Retain") }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+spec:
+  storageClassName: {{ .Values.uptimeKuma.data.pvc.storageClass | default "standard" }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.uptimeKuma.data.pvc.size }}
+{{- end }}      

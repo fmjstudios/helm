@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "linkwarden.name" -}}
+{{- define "uptimeKuma.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "linkwarden.fullname" -}}
+{{- define "uptimeKuma.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "linkwarden.chart" -}}
+{{- define "uptimeKuma.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "linkwarden.labels" -}}
-helm.sh/chart: {{ include "linkwarden.chart" . }}
-{{ include "linkwarden.selectorLabels" . }}
+{{- define "uptimeKuma.labels" -}}
+helm.sh/chart: {{ include "uptimeKuma.chart" . }}
+{{ include "uptimeKuma.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,66 +45,52 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "linkwarden.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "linkwarden.name" . }}
+{{- define "uptimeKuma.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "uptimeKuma.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "linkwarden.serviceAccountName" -}}
+{{- define "uptimeKuma.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "linkwarden.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "uptimeKuma.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
-{{/*
-Set the names for the ConfigMaps
-*/}}
-{{- define "linkwarden.configmaps.general" }}
-{{- printf "%s-general" (include "linkwarden.fullname" .) }}
-{{- end }}
-
-{{- define "linkwarden.configmaps.auth" }}
-{{- printf "%s-auth" (include "linkwarden.fullname" .) }}
-{{- end }}
 
 {{/*
 Set the names of the secrets
 */}}
-{{- define "linkwarden.secrets.nextAuth" -}}
-{{- printf "%s-next-auth" (include "linkwarden.fullname" .) }}
+{{- define "uptimeKuma.secrets.tls-passphrase" -}}
+{{- printf "%s-tls" (include "uptimeKuma.fullname" .) }}
 {{- end }}
 
-{{- define "linkwarden.secrets.s3" -}}
-{{- printf "%s-s3" (include "linkwarden.fullname" .) }}
-{{- end }}
-
-{{- define "linkwarden.secrets.db" -}}
-{{- printf "%s-db" (include "linkwarden.fullname" .) }}
+{{- define "uptimeKuma.secrets.cloudflared-token" -}}
+{{- printf "%s-cf-tunnel-token" (include "uptimeKuma.fullname" .) }}
 {{- end }}
 
 {{/*
 Define the PV name
 */}}
-{{- define "linkwarden.pv.name" -}}
-{{- printf "%s-pv" (include "linkwarden.fullname" .)}}
+{{- define "uptimeKuma.pv.name" -}}
+{{- printf "%s-pv" (include "uptimeKuma.fullname" .)}}
 {{- end -}}
 
 {{/*
 Define the PVC name
 */}}
-{{- define "linkwarden.pvc.name" -}}
-{{- printf "%s-pvc" (include "linkwarden.fullname" .)}}
+{{- define "uptimeKuma.pvc.name" -}}
+{{- printf "%s-pvc" (include "uptimeKuma.fullname" .)}}
 {{- end -}}
 
 {{/* 
 Obtain the API version for the Pod Disruption Budget
 */}}
-{{- define "linkwarden.pdb.apiVersion" -}}
+{{- define "uptimeKuma.pdb.apiVersion" -}}
 {{- if and (.Capabilities.APIVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
 {{- print "policy/v1" }}
 {{- else -}}
@@ -116,6 +102,6 @@ Obtain the API version for the Pod Disruption Budget
 {{/*
 Define the absolute data path
 */}}
-{{- define "linkwarden.paths.data" -}}
-{{- printf "/data/%s" .Values.linkwarden.data.filesystem.dataPath }}
+{{- define "uptimeKuma.paths.data" -}}
+{{- printf "/app/%s" .Values.uptimeKuma.data.path }}
 {{- end -}}

@@ -1,0 +1,35 @@
+{{- if .Values.rbac.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "uptimeKuma.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{ include "uptimeKuma.labels" . | nindent 4 }}
+    app.kubernetes.io/component: uptime-kuma
+rules:
+  {{- if .Values.rbac.rules }}
+  {{ toYaml .Values.rbac.rules | nindent 2 }}
+  {{- end }}
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "uptimeKuma.fullname" . }}
+  labels:
+  {{ include "uptimeKuma.labels" . | nindent 4 }}
+    app.kubernetes.io/component: uptime-kuma
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "uptimeKuma.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "uptimeKuma.serviceAccountName" . }}
+{{- end -}}

@@ -1,0 +1,390 @@
+# Default Helm values for fmjstudios/uptimeKuma.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Uptime-Kuma Image parameters
+##
+
+## Uptime-Kuma Server Image
+## ref: https://hub.docker.com/r/louislam/uptime-kuma
+## @param image.registry [default: docker.io] The Docker registry to pull the image from
+## @param image.repository [default: louislam/uptimeKuma] The registry repository to pull the image from
+## @param image.tag [string, default: '1.23.11'] The image tag to pull
+## @param image.digest [string] The image digest to pull
+## @param image.pullPolicy [string, default: IfNotPresent] The Kubernetes image pull policy
+## @param image.pullSecrets [array] A list of secrets to use for pulling images from private registries
+
+image:
+  registry: docker.io
+  repository: louislam/uptime-kuma
+  tag: 1.23.11
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## @section Uptime-Kuma Name overrides
+##
+
+## @param nameOverride String to partially override uptimeKuma.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override uptimeKuma.fullname
+##
+fullnameOverride: ""
+
+## @section Uptime-Kuma Configuration parameters
+##
+
+## Uptime-Kuma configuration
+## ref: https://github.com/louislam/uptime-kuma/wiki/Environment-Variables
+
+uptimeKuma:
+  ## @param uptimeKuma.host [default: "::"] The host address to bind Uptime-Kuma to
+  ##
+  host: "0.0.0.0"
+  ## @param uptimeKuma.port [default: 3001] The port for Uptime-Kuma to listen on
+  ##
+  port: 3001
+  ## @param uptimeKuma.disableFrameSameOrigin [default: false] Allow Uptime-Kuma to be embedded inside HTML 'iframes' of other origins
+  ##
+  disableFrameSameOrigin: false
+  ## @param uptimeKuma.websocketOriginCheck [default: "cors-like"] Configures Uptime-Kuma to check whether the websocket 'ORIGIN' header matches the server's hostname
+  ## Set to 'bypass' if this protection is not needed
+  ##
+  websocketOriginCheck: cors-like
+  ## @param uptimeKuma.allowAllChromeExecutables [default: "0"] Allow to specify any executables as Chromium
+  ##
+  allowAllChromeExecutables: "0"
+
+  ## Data configuration
+  ##
+  data:
+    ## @param uptimeKuma.data.path [default: data] The relative path to store data in
+    ## This will be prefixed by the root path within the default Docker Image ("/app" by default)
+    ##
+    path: data
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param uptimeKuma.data.pvc.size [default: 5Gi] The size given to PVCs created from the above data
+      ##
+      size: 5Gi
+      ## @param uptimeKuma.data.pvc.storageClass [default: standard] The storageClass given to PVCs created from the above data
+      ##
+      storageClass: standard
+      ## @param uptimeKuma.data.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs created from the above data
+      ##
+      reclaimPolicy: Retain
+      ## @param uptimeKuma.data.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
+
+  ## Certificate configuration
+  ##
+  certs:
+    ## @param uptimeKuma.certs.key [string] The path to an TLS certificate key - ignored if 'existingSecret' is set
+    ##
+    key: ""
+    ## @param uptimeKuma.certs.cert [string] The path to an TLS certificate cert - ignored if 'existingSecret' is set
+    ##
+    cert: ""
+
+    ## TLS passphrase configuration
+    ##
+    passphrase:
+      ## @param uptimeKuma.certs.passphrase.value [string] The passphrase for the TLS certificate key
+      ##
+      value: ""
+
+      ## TLS passphrase Kubernetes secret
+      ##
+      existingSecret:
+        ## @param uptimeKuma.certs.passphrase.existingSecret.name [string] The name of an existing Kubernetes secret
+        ##
+        name: ""
+        ## @param uptimeKuma.certs.passphrase.existingSecret.key [string] The key within the existing Kubernetes secret
+        ##
+        key: ""
+
+  ## Cloudflare Tunnel configuration
+  ##
+  cloudflaredToken:
+    ## @param uptimeKuma.cloudflaredToken.value [string] The Cloudflare Tunnel token
+    ##
+    value: ""
+
+    ## Cloudflare Tunnel Kubernetes secret
+    ##
+    existingSecret:
+      ## @param uptimeKuma.cloudflaredToken.existingSecret.name [string] The name of an existing Kubernetes secret
+      ##
+      name: ""
+      ## @param uptimeKuma.cloudflaredToken.existingSecret.key [string] The key within the existing Kubernetes secret
+      ##
+      key: ""
+
+  ## Node.js configuration
+  ##
+  node:
+    ## @param uptimeKuma.node.extraCaCerts [string] The path to CA bundle for Node.js to use - in order to verify self-signed certificates
+    ##
+    extraCaCerts: ""
+    ## @param uptimeKuma.node.tlsRejectUnauthorized [string] Ignore all TLS verification errors
+    ##
+    tlsRejectUnauthorized: "0"
+    ## @param uptimeKuma.node.options [array] Specify extra CLI options to pass to Node.js
+    ##
+    options: []
+
+## @section Ingress parameters
+##
+
+## Uptime-Kuma Ingress settings
+## @param ingress.enabled [default: false] Whether to enable Ingress
+## @param ingress.className [string] The IngressClass to use for the pod's ingress
+## @param ingress.annotations [object] Annotations for the Ingress resource
+## @param ingress.hosts [array] A list of hosts for the Ingress resource
+## @param ingress.tls [array] A list of hostnames and secret names to use for TLS
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  hosts:
+    []
+    # - host: domain.tld
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: uptime-kuma-ingress-tls
+  #    hosts:
+  #      - domain.tld
+
+## @section Service parameters
+##
+
+## Uptime-Kuma Service settings
+## @param service.type [default: ClusterIP] The type of service to create for the deployment
+## @param service.port [default: 80] The port to use on the service
+## @param service.annotations [object] Annotations for the service resource
+## @param service.labels [object] Labels for the service resource
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+  labels: {}
+
+## @section RBAC parameters
+##
+
+## Uptime-Kuma RBAC settings
+## @param rbac.create [default: false] Whether or not to create RBAC resources
+## @param rbac.rules [array] Extra rules to add to the Role
+##
+rbac:
+  create: true
+  rules: []
+
+## @section Uptime-Kuma Service Account parameters
+##
+
+## FMJ Studios Uptime-Kuma Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.annotations [object] Annotations to add to the service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise uptimeKuma.fullname is used
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # The list of secrets mountable by this service account.
+  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
+  secrets: []
+
+## @section Uptime-Kuma Probes
+##
+
+## Uptime-Kuma Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
+  failureThreshold: 10
+
+## Uptime-Kuma Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
+  failureThreshold: 3
+
+## Uptime-Kuma Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: true
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
+  failureThreshold: 10
+
+## @section Uptime-Kuma initContainers
+##
+
+## Uptime-Kuma init Containers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers [array] Define initContainers for the Uptime-Kuma pod
+initContainers: []
+
+## @section Uptime-Kuma resource settings
+##
+
+## FMJStudios Uptime-Kuma resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the Uptime-Kuma pod
+##
+resources:
+  {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+## @section Pod disruption budget parameters
+##
+
+## FMJ Studios Uptime-Kuma pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
+
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
+## @param strategy [object] Specify a deployment strategy for the Uptime-Kuma pod
+##
+strategy:
+  {}
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #    maxUnavailable: 1
+
+## @param podAnnotations [object] Extra annotations for the Uptime-Kuma pod
+##
+podAnnotations: {}
+
+## @param podLabels [object] Extra labels for the Uptime-Kuma pod
+##
+podLabels: {}
+
+## @param podSecurityContext [object] Security context settings for the Uptime-Kuma pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext:
+  {}
+  # fsGroup: 1001
+  # supplementalGroups:
+  #   - 1001
+
+## @param securityContext [object] General security context settings for
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext:
+  {}
+  # allowPrivilegeEscalation: false
+  # privileged: false
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsGroup: 1001
+  # runAsUser: 1001
+  # capabilities:
+  #   drop:
+  #     - ALL

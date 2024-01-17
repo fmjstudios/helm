@@ -800,7 +800,7 @@ service:
 ## @param rbac.rules [array] Extra rules to add to the Role
 ##
 rbac:
-  create: false
+  create: true
   rules: []
 
 ## @section Vaultwarden Service Account parameters
@@ -925,14 +925,14 @@ resources:
 
 ## FMJ Studios Vaultwarden pod disruption budget settings
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-## @param podDisruptionBudget.enabled [default: false] Enable the pod disruption budget
-## @param podDisruptionBudget.minAvailable The minium amount of pods which need to be available
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
 ## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
 
 podDisruptionBudget:
-  enabled: false
-  minAvailable:
-  maxUnavailable:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/

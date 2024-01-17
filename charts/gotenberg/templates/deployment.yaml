@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gotenberg.fullname" . }}
+  labels:
+    {{- include "gotenberg.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "gotenberg.selectorLabels" . | nindent 6 }}
+  {{- if .Values.strategy -}}
+  updateStrategy:
+  {{- toYaml .Values.strategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- if .Values.podAnnotations }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "gotenberg.selectorLabels" . | nindent 8 }}
+      {{- if .Values.podLabels -}}
+        {{- toYaml .Values.podLabels | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "gotenberg.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+          - gotenberg
+          {{- /*
+            API settings
+          */}}
+          - --api-port={{ .Values.gotenberg.api.port }}
+          {{- if .Values.gotenberg.api.startTimeout }}
+          - --api-start-timeout={{ .Values.gotenberg.api.startTimeout }}
+          {{- end }}
+          {{- if .Values.gotenberg.api.timeout }}
+          - --api-timeout={{ .Values.gotenberg.api.timeout }}
+          {{- end }}
+          {{- if .Values.gotenberg.api.rootPath }}
+          - --api-root-path={{ .Values.gotenberg.api.rootPath }}
+          {{- end }}
+          {{- if .Values.gotenberg.api.traceHeader }}
+          - --api-trace-header={{ .Values.gotenberg.api.traceHeader }}
+          {{- end }}
+          {{- if .Values.gotenberg.api.disableHealthCheckLogging }}
+          - --api-disable-health-check-logging={{ .Values.gotenberg.api.disableHealthCheckLogging }}
+          {{- end }}
+          {{- /*
+            Chromium settings
+          */}}
+          {{- if .Values.gotenberg.chromium.restartAfter }}
+          - --chromium-restart-after={{ .Values.gotenberg.chromium.restartAfter }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.autoStart }}
+          - --chromium-auto-start={{ .Values.gotenberg.chromium.autoStart }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.startTimeout }}
+          - --chromium-start-timeout={{ .Values.gotenberg.chromium.startTimeout }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.allowFileAccessFromFiles }}
+          - --chromium-allow-file-access-from-files={{ .Values.gotenberg.chromium.allowFileAccessFromFiles }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.allowInsecureLocalhost }}
+          - --chromium-allow-insecure-localhost={{ .Values.gotenberg.chromium.allowInsecureLocalhost }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.allowList }}
+          - --chromium-allow-list={{ .Values.gotenberg.chromium.allowList }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.denyList }}
+          - --chromium-deny-list={{ .Values.gotenberg.chromium.denyList }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.ignoreCertificateErrors }}
+          - --chromium-ignore-certificate-errors={{ .Values.gotenberg.chromium.ignoreCertificateErrors }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.disableWebSecurity }}
+          - --chromium-disable-web-security={{ .Values.gotenberg.chromium.disableWebSecurity }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.incognito }}
+          - --chromium-incognito={{ .Values.gotenberg.chromium.incognito }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.hostResolverRules }}
+          - --chromium-host-resolver-rules={{ .Values.gotenberg.chromium.hostResolverRules }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.proxyServer }}
+          - --chromium-proxy-server={{ .Values.gotenberg.chromium.proxyServer }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.clearCache }}
+          - --chromium-clear-cache={{ .Values.gotenberg.chromium.clearCache }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.clearCookies }}
+          - --chromium-clear-cookies={{ .Values.gotenberg.chromium.clearCookies }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.disableJavaScript }}
+          - --chromium-disable-javascript={{ .Values.gotenberg.chromium.disableJavaScript }}
+          {{- end }}
+          {{- if .Values.gotenberg.chromium.disableRoutes }}
+          - --chromium-disable-routes={{ .Values.gotenberg.chromium.disableRoutes }}
+          {{- end }}
+          {{- /*
+            LibreOffice settings
+          */}}
+          {{- if .Values.gotenberg.libreOffice.restartAfter }}
+          - --libreoffice-restart-after={{ .Values.gotenberg.libreOffice.restartAfter }}
+          {{- end }}
+          {{- if .Values.gotenberg.libreOffice.autoStart }}
+          - --libreoffice-auto-start={{ .Values.gotenberg.libreOffice.autoStart }}
+          {{- end }}
+          {{- if .Values.gotenberg.libreOffice.startTimeout }}
+          - --libreoffice-start-timeout={{ .Values.gotenberg.libreOffice.startTimeout }}
+          {{- end }}
+          {{- if .Values.gotenberg.libreOffice.disableRoutes }}
+          - --libreoffice-disable-routes={{ .Values.gotenberg.libreOffice.disableRoutes }}
+          {{- end }}
+          {{- /*
+            PDF settings
+          */}}
+          {{- if .Values.gotenberg.pdf.engines }}
+          - --pdfengines-engines={{ .Values.gotenberg.pdf.engines }}
+          {{- end }}
+          {{- if .Values.gotenberg.pdf.disableRoutes }}
+          - --pdfengines-disable-routes={{ .Values.gotenberg.pdf.disableRoutes }}
+          {{- end }}
+          {{- /*
+            Webhook settings
+          */}}
+          {{- if .Values.gotenberg.webhook.allowList }}
+          - --webhook-allow-list={{ .Values.gotenberg.webhook.allowList }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.denyList }}
+          - --webhook-deny-list={{ .Values.gotenberg.webhook.denyList }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.errorAllowList }}
+          - --webhook-error-allow-list={{ .Values.gotenberg.webhook.errorAllowList }}
+          {{- end }}

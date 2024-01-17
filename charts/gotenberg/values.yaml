@@ -1,0 +1,455 @@
+# Default Helm values for fmjstudios/gotenberg.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Gotenberg Image parameters
+##
+
+## Gotenberg Server Image
+## ref: https://hub.docker.com/r/gotenberg/gotenberg
+## @param image.registry [default: docker.io] The Docker registry to pull the image from
+## @param image.repository [default: gotenberg/gotenberg] The registry repository to pull the image from
+## @param image.tag [string, default: '8.0.1'] The image tag to pull
+## @param image.digest [string] The image digest to pull
+## @param image.pullPolicy [string, default: IfNotPresent] The Kubernetes image pull policy
+## @param image.pullSecrets [array] A list of secrets to use for pulling images from private registries
+
+image:
+  registry: docker.io
+  repository: gotenberg/gotenberg
+  tag: 8.0.1
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## @section Gotenberg Name overrides
+##
+
+## @param nameOverride String to partially override gotenberg.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override gotenberg.fullname
+##
+fullnameOverride: ""
+
+## @section Gotenberg Configuration parameters
+##
+
+## Gotenberg configuration
+## ref: https://gotenberg.dev/docs/configuration
+gotenberg:
+  ## API configuration
+  ##
+  api:
+    ## @param gotenberg.api.port [default: 3000] The port the API should listen on
+    ##
+    port: 3000
+    ## @param gotenberg.api.startTimeout [default: 30s] Set the time limit for the API to start
+    ##
+    startTimeout: "30s"
+    ## @param gotenberg.api.timeout [default: 30s] Set the time limit for requests
+    ##
+    timeout: "30s"
+    ## @param gotenberg.api.rootPath [default: "/"] Set the root path of the API
+    ##
+    rootPath: /
+    ## @param gotenberg.api.traceHeader [string] Set the header name to use for identifying requests
+    ##
+    traceHeader: ""
+    ## @param gotenberg.api.disableHealthCheckLogging [default: false] Disable health check logging
+    ##
+    disableHealthCheckLogging: false
+
+  ## Chromium configuration
+  ##
+  chromium:
+    ## @param gotenberg.chromium.restartAfter [default: 0] Number of conversions after which Chromium will auto-restart
+    ## Set to 0 to disable this feature
+    ##
+    restartAfter: 0
+    ## @param gotenberg.chromium.autoStart [default: false] Automatically launch Chromium upon initialization if set to true
+    ## Otherwise, Chromium will start at the time of the first conversion
+    ##
+    autoStart: false
+    ## @param gotenberg.chromium.startTimeout [default: 20s] Maximum duration to wait for Chromium to start or restart
+    ##
+    startTimeout: "20s"
+    ## @param gotenberg.chromium.allowFileAccessFromFiles [default: false] Allow file:// URIs to read other file:// URIs
+    ##
+    allowFileAccessFromFiles: false
+    ## @param gotenberg.chromium.allowInsecureLocalhost [default: false] Ignore TLS/SSL errors on localhost
+    ##
+    allowInsecureLocalhost: false
+    ## @param gotenberg.chromium.allowList [string] Set the allowed URLs for Chromium using a regular expression - defaults to 'All'
+    ##
+    allowList: ""
+    ## @param gotenberg.chromium.denyList [string] Set the denied URLs for Chromium using a regular expression
+    ##
+    denyList: ""
+    ## @param gotenberg.chromium.ignoreCertificateErrors [default: false] Ignore the certificate errors
+    ##
+    ignoreCertificateErrors: false
+    ## @param gotenberg.chromium.disableWebSecurity [default: false] Don't enforce the same-origin policy
+    ##
+    disableWebSecurity: false
+    ## @param gotenberg.chromium.incognito [default: false] Start Chromium with incognito mode
+    ##
+    incognito: false
+    ## @param gotenberg.chromium.hostResolverRules [string] Set custom mappings to the host resolver
+    ##
+    hostResolverRules: ""
+    ## @param gotenberg.chromium.proxyServer [string] Set the outbound proxy server; this switch only affects HTTP and HTTPS requests
+    ##
+    proxyServer: ""
+    ## @param gotenberg.chromium.clearCache [default: false] Clear Chromium cache between each conversion
+    ##
+    clearCache: false
+    ## @param gotenberg.chromium.clearCookies [default: false] Clear Chromium cookies between each conversion
+    ##
+    clearCookies: false
+    ## @param gotenberg.chromium.disableJavaScript [default: false] Disable JavaScript
+    ##
+    disableJavaScript: false
+    ## @param gotenberg.chromium.disableRoutes [default: false] Disable the routes
+    ##
+    disableRoutes: false
+
+  ## LibreOffice configuration
+  ##
+  libreOffice:
+    ## @param gotenberg.libreOffice.restartAfter [default: 10] Number of conversions after which LibreOffice will automatically restart
+    ## Set to 0 to disable this feature
+    ##
+    restartAfter: 10
+    ## @param gotenberg.libreOffice.autoStart [default: false] Automatically launch LibreOffice upon initialization if set to true
+    ## Otherwise, LibreOffice will start at the time of the first conversion
+    ##
+    autoStart: false
+    ## @param gotenberg.libreOffice.startTimeout [default: 20s] Maximum duration to wait for LibreOffice to start or restart
+    ##
+    startTimeout: "20s"
+    ## @param gotenberg.libreOffice.disableRoutes [default: false] Disable the route
+    ##
+    disableRoutes: false
+
+  ## PDF Engines configuration
+  ##
+  pdf:
+    ## @param gotenberg.pdf.engines [string] Set the PDF engines and their order - defaults to 'All'
+    ##
+    engines: ""
+    ## @param gotenberg.pdf.disableRoutes [default: false] Disable the routes
+    ##
+    disableRoutes: false
+
+  ## Webhook configuration
+  ##
+  webhook:
+    ## @param gotenberg.webhook.allowList [string] Set the allowed URLs for the webhook feature using a regular expression
+    ## Defaults to 'All'
+    ##
+    allowList: ""
+    ## @param gotenberg.webhook.denyList [string] Set the denied URLs for the webhook feature using a regular expression
+    ## Defaults to 'None'
+    ##
+    denyList: ""
+    ## @param gotenberg.webhook.errorAllowList [string] Set the allowed URLs in case of an error using a regular expression
+    ## Defaults to 'All'
+    ##
+    errorAllowList: ""
+    ## @param gotenberg.webhook.errorDenyList [string] Set the denied URLs in case of an error using a regular expression
+    ## Defaults to 'None'
+    ##
+    errorDenyList: ""
+    ## @param gotenberg.webhook.maxRetry [default: 4]  Set the maximum number of retries
+    ##
+    maxRetry: 4
+    ## @param gotenberg.webhook.retryMinWait [default: 1s]  Set the minimum duration to wait before trying to call the webhook again
+    ##
+    retryMinWait: "1s"
+    ## @param gotenberg.webhook.retryMinWait [default: 30s] Set the maximum duration to wait before trying to call the webhook again
+    ##
+    retryMaxWait: "30s"
+    ## @param gotenberg.webhook.clientTimeout [default: 30s] Set the time limit for requests to the webhook
+    ##
+    clientTimeout: "30s"
+    ## @param gotenberg.webhook.disable [default: false] Disable the webhook feature
+    ##
+    disable: false
+
+  ## Prometheus configuration
+  ##
+  prometheus:
+    ## @param gotenberg.prometheus.collectInterval [default: 1s] Set the interval for collecting modules' metrics
+    ##
+    collectInterval: "1s"
+    ## @param gotenberg.prometheus.namespace [default: gotenberg] Set the namespace of modules' metrics
+    ##
+    namespace: gotenberg
+    ## @param gotenberg.prometheus.disableCollect [default: false] Disable the collect of metrics
+    ##
+    disableCollect: false
+    ## @param gotenberg.prometheus.disableRouteLogging [default: false] Disable the route logging
+    ##
+    disableRouteLogging: false
+
+  ## Logging configuration
+  ##
+  logging:
+    ## @param gotenberg.logging.format [default: auto] Specify the format of logging
+    ## Options include auto, json, or text
+    ##
+    format: auto
+    ## @param gotenberg.logging.level [default: info] Choose the level of logging detail
+    ## Options include error, warn, info, or debug
+    ##
+    level: info
+    ## @param gotenberg.logging.fieldsPrefix [string] Prepend a specified prefix to each field in the logs
+    ##
+    fieldsPrefix: ""
+
+  ## Shutdown configuration
+  ##
+  shutdown:
+    ## @param gotenberg.shutdown.duration [default: 30s] Set the graceful shutdown duration
+    ##
+    duration: "30s"
+
+## @section Ingress parameters
+##
+
+## Gotenberg Ingress settings
+## @param ingress.enabled [default: false] Whether to enable Ingress
+## @param ingress.className [string] The IngressClass to use for the pod's ingress
+## @param ingress.annotations [object] Annotations for the Ingress resource
+## @param ingress.hosts [array] A list of hosts for the Ingress resource
+## @param ingress.tls [array] A list of hostnames and secret names to use for TLS
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    []
+    # - host: domain.tld
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: gotenberg-ingress-tls
+  #    hosts:
+  #      - domain.tld
+
+## @section Service parameters
+##
+
+## Gotenberg Service settings
+## @param service.type [default: ClusterIP] The type of service to create for the deployment
+## @param service.port [default: 80] The port to use on the service
+## @param service.annotations [object] Annotations for the service resource
+## @param service.labels [object] Labels for the service resource
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+  labels: {}
+
+## @section Gotenberg Service Account parameters
+##
+
+## FMJ Studios Gotenberg Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.annotations [object] Annotations to add to the service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise gotenberg.fullname is used
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # The list of secrets mountable by this service account.
+  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
+  secrets: []
+
+## @section Gotenberg Probes
+##
+
+## Gotenberg Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
+  failureThreshold: 10
+
+## Gotenberg Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
+  failureThreshold: 3
+
+## Gotenberg Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: true
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
+  failureThreshold: 10
+
+## @section Gotenberg initContainers
+##
+
+## Gotenberg init Containers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers [array] Define initContainers for the Gotenberg pod
+initContainers: []
+
+## @section Gotenberg resource settings
+##
+
+## FMJStudios Gotenberg resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the Gotenberg pod
+##
+resources:
+  {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+## @section Pod disruption budget parameters
+##
+
+## FMJ Studios Gotenberg pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
+
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
+## @param strategy [object] Specify a deployment strategy for the Gotenberg pod
+##
+strategy:
+  {}
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #    maxUnavailable: 1
+
+## @param podAnnotations [object] Extra annotations for the Gotenberg pod
+##
+podAnnotations: {}
+
+## @param podLabels [object] Extra labels for the Gotenberg pod
+##
+podLabels: {}
+
+## @param podSecurityContext [object] Security context settings for the Gotenberg pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext:
+  {}
+  # fsGroup: 1001
+  # supplementalGroups:
+  #   - 1001
+
+## @param securityContext [object] General security context settings for
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext:
+  runAsGroup: 1001
+  runAsUser: 1001
+  # allowPrivilegeEscalation: false
+  # privileged: false
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # capabilities:
+  #   drop:
+  #     - ALL
