@@ -362,14 +362,6 @@ startupProbe:
   ##
   failureThreshold: 10
 
-## @section Gotenberg initContainers
-##
-
-## Gotenberg init Containers
-## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers [array] Define initContainers for the Gotenberg pod
-initContainers: []
-
 ## @section Gotenberg resource settings
 ##
 
@@ -399,6 +391,14 @@ podDisruptionBudget:
   enabled: true
   minAvailable: 1
   # maxUnavailable:
+
+## @section Pod settings
+##
+
+## Gotenberg init Containers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers [array] Define initContainers for the Gotenberg pod
+initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -440,16 +440,32 @@ podSecurityContext:
   # supplementalGroups:
   #   - 1001
 
-## @param securityContext [object] General security context settings for
+## @section Security context settings
+##
+
+## @param securityContext [object] General security context settings for Gotenberg
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
 securityContext:
+  privileged: true
   runAsGroup: 1001
   runAsUser: 1001
   # allowPrivilegeEscalation: false
-  # privileged: false
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # capabilities:
   #   drop:
   #     - ALL
+
+## @section Autoscaling settings
+##
+
+## @param autoscaling [object] Autoscaling settings
+## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+##
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80

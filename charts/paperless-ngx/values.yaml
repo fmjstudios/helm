@@ -1,0 +1,170 @@
+# Default Helm values for fmjstudios/paperless-ngx.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Paperless Image parameters
+##
+
+## Paperless Server Image
+## ref: https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx
+## @param image.registry [string, default: docker.io] The Docker registry to pull the image from
+## @param image.repository [string, default: paperless-ngx/paperless-ngx] The registry repository to pull the image from
+## @param image.tag [string, default: '1.30.1-alpine'] The image tag to pull
+## @param image.digest [string] The image digest to pull
+## @param image.pullPolicy [string, default: IfNotPresent] The Kubernetes image pull policy
+## @param image.pullSecrets [array] A list of secrets to use for pulling images from private registries
+
+image:
+  registry: ghcr.io
+  repository: paperless-ngx/paperless-ngx
+  tag: "2.3.3"
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## @section Paperless Name overrides
+##
+
+## @param nameOverride String to partially override paperless.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override paperless.fullname
+##
+fullnameOverride: ""
+## @section Paperless Configuration parameters
+##
+
+## Paperless configuration
+## ref: https://docs.paperless-ngx.com/configuration/
+
+#####
+
+## @section Bitnami&reg; PostgreSQL parameters
+##
+
+## PostgreSQL configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
+  ##
+  enabled: true
+  ## Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-user-on-first-run
+  ##
+  auth:
+    ## @param postgresql.auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    ##
+    enablePostgresUser: true
+    ## @param postgresql.auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
+    ##
+    postgresPassword: "postgres"
+    ## @param postgresql.auth.username Name for a custom user to create
+    ##
+    username: "linkwarden"
+    ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
+    ##
+    password: "linkwarden"
+    ## @param postgresql.auth.database Name for a custom database to create
+    ##
+    database: "linkwarden"
+    ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
+    ##
+    usePasswordFiles: false
+  ## @section PostgreSQL Primary parameters
+  ##
+  primary:
+    ## @param postgresql.primary.name Name of the primary database (eg primary, master, leader, ...)
+    ##
+    name: primary
+    ## PostgreSQL Primary persistence configuration
+    ##
+    persistence:
+      ## @param postgresql.primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
+      ##
+      enabled: true
+      ## @param postgresql.primary.persistence.existingClaim Name of an existing PVC to use
+      ##
+      existingClaim: ""
+      ## @param postgresql.primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      storageClass: ""
+      ## @param postgresql.primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+      ##
+      accessModes:
+        - ReadWriteOnce
+      ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ##
+      size: 5Gi
+
+## @section Bitnami&reg; Redis parameters
+##
+
+## Redis configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    password: "paperless"
+
+## @section Apache&reg; Tika parameters
+##
+
+## Tika configuration
+## ref: https://github.com/apache/tika-helm/blob/main/values.yaml
+tika:
+  ## @param tika.enabled Enable or disable the Apache Tika subchart
+  ##
+  enabled: true
+
+## @section FMJ Studios Gotenberg parameters
+##
+
+## Gotenberg configuration
+## ref: https://github.com/fmjstudios/helm/blob/main/charts/gotenberg/values.yaml
+gotenberg:
+  ## @param gotenberg.enabled Enable or disable the Gotenberg subchart
+  ##
+  enabled: true
+
+  ## Gotenberg configuration
+  ## ref: https://gotenberg.dev/docs/configuration
+  gotenberg:
+    ## Chromium configuration
+    ##
+    chromium:
+      ## @param gotenberg.chromium.disableJavaScript [default: false] Disable JavaScript
+      ##
+      disableJavaScript: true
+      ## @param gotenberg.chromium.allowList [string] Set the allowed URLs for Chromium using a regular expression - defaults to 'All'
+      ##
+      allowList: "file:///tmp/.*"
+
+    ## Logging configuration
+    ##
+    logging:
+      ## @param gotenberg.logging.level [default: info] Choose the level of logging detail
+      ## Options include error, warn, info, or debug
+      ##
+      level: warn

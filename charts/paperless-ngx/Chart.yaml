@@ -1,0 +1,52 @@
+# Copyright FMJ Studios
+# SPDX-License-Identifier: MIT
+
+annotations:
+  artifacthub.io/category: storage
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
+    - name: FMJdev
+      email: info@fmj.dev
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/links: |
+    - name: Source
+      url: https://github.com/fmjstudios/helm
+    - name: Paperless-NGX GitHub Repository
+      url: https://github.com/paperless-ngx/paperless-ngx
+    - name: Paperless-NGX Documentation
+      url: https://docs.paperless-ngx.com/
+apiVersion: v2
+appVersion: 2.3.3
+kubeVersion: ">=1.26"
+name: paperless-ngx
+version: 0.0.1
+dependencies:
+  - name: postgresql
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: postgresql.enabled
+    version: ~13.2
+  - name: redis
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: redis.enabled
+    version: ~7.2
+  - name: tika
+    repository: https://apache.jfrog.io/artifactory/tika
+    condition: tika.enabled
+    version: ~2.9
+  - name: gotenberg
+    repository: oci://ghcr.io/fmjstudios/helm/gotenberg
+    condition: gotenberg.enabled
+    version: ~0.0.1
+description: Paperless-NGX is a community-supported supercharged version of paperless - scan, index and archive all your physical documents
+home: https://github.com/paperless-ngx/paperless-ngx
+icon: https://docs.paperless-ngx.com/
+keywords:
+  - documents
+  - archival
+  - ocr
+  - conversion
+  - paper
+  - paperless
+maintainers:
+  - name: FMJdev
+    email: info@fmj.dev

@@ -27,11 +27,6 @@ ingress:
   className: "nginx"
   annotations:
     cert-manager.io/cluster-issuer: mkcert-development-issuer
-  # hosts:
-  #   - host: "linkwarden.helm.private"
-  #     paths:
-  #       - path: /
-  #         pathType: Prefix
   tls:
     - secretName: linkwarden-ingress-tls
       hosts:

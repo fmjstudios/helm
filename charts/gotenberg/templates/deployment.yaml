@@ -144,3 +144,54 @@ spec:
           {{- if .Values.gotenberg.webhook.errorAllowList }}
           - --webhook-error-allow-list={{ .Values.gotenberg.webhook.errorAllowList }}
           {{- end }}
+          {{- if .Values.gotenberg.webhook.errorDenyList }}
+          - --webhook-error-deny-list={{ .Values.gotenberg.webhook.errorDenyList }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.maxRetry }}
+          - --webhook-max-retry={{ .Values.gotenberg.webhook.maxRetry }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.retryMinWait }}
+          - --webhook-retry-min-wait={{ .Values.gotenberg.webhook.retryMinWait }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.retryMaxWait }}
+          - --webhook-retry-max-wait={{ .Values.gotenberg.webhook.retryMaxWait }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.clientTimeout }}
+          - --webhook-client-timeout={{ .Values.gotenberg.webhook.clientTimeout }}
+          {{- end }}
+          {{- if .Values.gotenberg.webhook.disable }}
+          - --webhook-disable={{ .Values.gotenberg.webhook.disable }}
+          {{- end }}
+          {{- /*
+            Prometheus settings
+          */}}
+          {{- if .Values.gotenberg.prometheus.collectInterval }}
+          - --prometheus-collect-interval={{ .Values.gotenberg.prometheus.collectInterval }}
+          {{- end }}
+          {{- if .Values.gotenberg.prometheus.namespace }}
+          - --prometheus-namespace={{ .Values.gotenberg.prometheus.namespace }}
+          {{- end }}
+          {{- if .Values.gotenberg.prometheus.disableCollect }}
+          - --prometheus-disable-collect={{ .Values.gotenberg.prometheus.disableCollect }}
+          {{- end }}
+          {{- if .Values.gotenberg.prometheus.disableRouteLogging }}
+          - --prometheus-disable-route-logging={{ .Values.gotenberg.prometheus.disableRouteLogging }}
+          {{- end }}
+          {{- /*
+            Logging settings
+          */}}
+          {{- if .Values.gotenberg.logging.format }}
+          - --log-format={{ .Values.gotenberg.logging.format }}
+          {{- end }}
+          {{- if .Values.gotenberg.logging.level }}
+          - --log-level={{ .Values.gotenberg.logging.level }}
+          {{- end }}
+          {{- if .Values.gotenberg.logging.fieldsPrefix }}
+          - --log-fields-prefix={{ .Values.gotenberg.logging.fieldsPrefix }}
+          {{- end }}
+          {{- /*
+            Shutdown settings
+          */}}
+          {{- if .Values.gotenberg.shutdown.duration }}
+          - --gotenberg-graceful-shutdown-duration={{ .Values.gotenberg.shutdown.duration }}
+          {{- end }}

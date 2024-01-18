@@ -1,18 +1,34 @@
+# Copyright FMJ Studios
+# SPDX-License-Identifier: MIT
+
+annotations:
+  artifacthub.io/category: security
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
+    - name: FMJdev
+      email: info@fmj.dev
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/links: |
+    - name: Source
+      url: https://github.com/fmjstudios/helm
+    - name: Vaultwarden GitHub Repository
+      url: https://github.com/dani-garcia/vaultwarden
+    - name: Vaultwarden Documentation
+      url: https://github.com/dani-garcia/vaultwarden/wiki
 apiVersion: v2
+appVersion: 1.30.1
+kubeVersion: ">=1.26"
 name: vaultwarden
+version: 0.0.1
 description: Vaultwarden is an open-source, community-supported, Bitwarden-comptabile server written in Rust
-type: application
+home: https://github.com/dani-garcia/vaultwarden
+icon: https://raw.githubusercontent.com/dani-garcia/vaultwarden/main/resources/vaultwarden-icon.svg
 keywords:
+  - passwords
   - password-manager
+  - bitwarden
   - keepass
   - vaultwarden
-sources:
-  - https://github.com/dani-garcia/vaultwarden
-  - https://github.com/fmjstudios/helm/charts/vaultwarden
-appVersion: "1.30.0"
 maintainers:
   - name: FMJdev
-    email: info@fmj.studio
-    url: https://github.com/FMJdev
-version: 0.0.1
-kubeVersion: ">=1.26"
+    email: info@fmj.dev

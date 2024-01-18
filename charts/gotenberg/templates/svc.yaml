@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "gotenberg.fullname" . }}
+  labels:
+    {{- include "gotenberg.labels" . | nindent 4 }}
+    {{- if .Values.service.labels }}
+    {{- toYaml .Values.service.labels -}}
+    {{- end }}
+  {{- if .Values.service.annotations -}}
+  annotations:
+  {{- toYaml .Values.service.annotations }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.gotenberg.api.port }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "gotenberg.selectorLabels" . | nindent 4 }}

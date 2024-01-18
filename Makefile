@@ -130,8 +130,6 @@ define DEV_INFO
 # Create a local development environment for Helm charts. This is a wrapper
 # target which requires the 'dev-cluster' and 'dev-cluster-bootstrap' Make
 # targets.
-#
-# Arguments
 endef
 .PHONY: dev
 ifeq ($(PRINT_HELP), y)
@@ -148,7 +146,7 @@ define DEV_CLUSTER_INFO
 # create a network within the Docker Engine named 'kind'.
 #
 # Arguments:
-# 	PRINT_HELP: 'y' or 'n'
+#   PRINT_HELP: 'y' or 'n'
 endef
 .PHONY: dev-cluster
 ifeq ($(PRINT_HELP),y)
@@ -186,7 +184,7 @@ define DEV_CLEANUP_INFO
 # Remove the local development Kubernetes cluster.
 #
 # Arguments:
-# 	PRINT_HELP: 'y' or 'n'
+#   PRINT_HELP: 'y' or 'n'
 endef
 .PHONY: dev-cleanup
 ifeq ($(PRINT_HELP),y)
@@ -208,7 +206,7 @@ define BUILD_INFO
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
-# 	CHART: charts/.. (any subdirectory)
+#   CHART: charts/.. (any subdirectory)
 endef
 .PHONY: build
 ifeq ($(PRINT_HELP), y)
@@ -228,8 +226,8 @@ define INSTALL_INFO
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
-# 	CHART: charts/.. (any subdirectory)
-# 	VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
+#   CHART: charts/.. (any subdirectory)
+#   VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
 endef
 .PHONY: install
 ifeq ($(PRINT_HELP), y)
@@ -254,8 +252,8 @@ define TEMPLATE_INFO
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
-# 	CHART: charts/.. (any subdirectory)
-# 	FILES: ... (e.g. configmap.yaml)
+#   CHART: charts/.. (any subdirectory)
+#   FILES: ... (e.g. configmap.yaml)
 endef
 .PHONY: template
 ifeq ($(PRINT_HELP), y)
@@ -279,7 +277,8 @@ define DRY_INSTALL_INFO
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
-# 	CHART: charts/.. (any subdirectory)
+#   CHART: charts/.. (any subdirectory)
+#   VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
 endef
 .PHONY: dry-install
 ifeq ($(PRINT_HELP), y)
@@ -288,7 +287,11 @@ dry-install:
 else
 dry-install:
 	$(call log_success, "Running Helm dry installation for chart: $(CHART)")
+ifdef VALUES
+	$(helm) install $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug --dry-run
+else
 	$(helm) install $(RELEASE_NAME) $(CHART) --debug --dry-run
+endif
 endif
 
 define GENERATE_README_INFO
