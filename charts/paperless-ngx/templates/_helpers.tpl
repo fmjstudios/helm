@@ -73,21 +73,6 @@ Set the names for the ConfigMaps
 {{- end }}
 
 {{/*
-Set the names of the secrets
-*/}}
-{{- define "paperless.secrets.nextAuth" -}}
-{{- printf "%s-next-auth" (include "paperless.fullname" .) }}
-{{- end }}
-
-{{- define "paperless.secrets.s3" -}}
-{{- printf "%s-s3" (include "paperless.fullname" .) }}
-{{- end }}
-
-{{- define "paperless.secrets.db" -}}
-{{- printf "%s-db" (include "paperless.fullname" .) }}
-{{- end }}
-
-{{/*
 Define the PV name
 */}}
 {{- define "paperless.pv.name" -}}
@@ -110,11 +95,4 @@ Obtain the API version for the Pod Disruption Budget
 {{- else -}}
 {{- print "policy/v1beta1" }}  
 {{- end -}}
-{{- end -}}
-
-{{/*
-Define the absolute data path
-*/}}
-{{- define "paperless.paths.data" -}}
-{{- printf "/data/%s" .Values.paperless.data.filesystem.dataPath }}
 {{- end -}}

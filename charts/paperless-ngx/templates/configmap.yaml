@@ -1,0 +1,189 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paperless.configmaps.general" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+  {{- include "paperless.labels" . | nindent 4 }}
+  {{- if .Values.configMapLabels }}
+    {{- toYaml .Values.configMapLabels | nindent 4 }}
+  {{- end }}
+  {{- if .Values.configMapAnnotations }}
+  annotations:
+    {{- toYaml .Values.configMapAnnotations | nindent 4 }}
+  {{- end }}
+data:
+  {{- /* 
+    General configuration
+  */}}
+  PAPERLESS_URL: {{ include "paperless.ingress.url" . | quote }}
+  {{- /* 
+    Hosting configuration
+  */}}
+  {{- if .Values.paperless.hosting.trustedOrigins }}
+  PAPERLESS_CSRF_TRUSTED_ORIGINS: {{ .Values.paperless.hosting.trustedOrigins | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.allowedHosts }}
+  PAPERLESS_ALLOWED_HOSTS: {{ .Values.paperless.hosting.allowedHosts | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.corsAllowedHosts }}
+  PAPERLESS_CORS_ALLOWED_HOSTS: {{ .Values.paperless.hosting.corsAllowedHosts | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.trustedProxies }}
+  PAPERLESS_TRUSTED_PROXIES: {{ .Values.paperless.hosting.trustedProxies | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.forceScriptName }}
+  PAPERLESS_FORCE_SCRIPT_NAME: {{ .Values.paperless.hosting.forceScriptName | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.staticURL }}
+  PAPERLESS_STATIC_URL: {{ .Values.paperless.hosting.staticURL | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.cookiePrefix }}
+  PAPERLESS_COOKIE_PREFIX: {{ .Values.paperless.hosting.cookiePrefix | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.enableHTTPRemoteUser }}
+  PAPERLESS_ENABLE_HTTP_REMOTE_USER: {{ .Values.paperless.hosting.enableHTTPRemoteUser | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.HTTPRemoteUserHeaderName }}
+  PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: {{ .Values.paperless.hosting.HTTPRemoteUserHeaderName | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.logoutRedirectURL }}
+  PAPERLESS_LOGOUT_REDIRECT_URL: {{ .Values.paperless.hosting.logoutRedirectURL | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.useXForwardHost }}
+  PAPERLESS_USE_X_FORWARD_HOST: {{ .Values.paperless.hosting.useXForwardHost | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.useXForwardPort }}
+  PAPERLESS_USE_X_FORWARD_PORT: {{ .Values.paperless.hosting.useXForwardPort | quote }}
+  {{- end }}
+  {{- if .Values.paperless.hosting.proxySSLHeader }}
+  PAPERLESS_PROXY_SSL_HEADER: {{ .Values.paperless.hosting.proxySSLHeader | quote }}
+  {{- end }}
+  {{- /* 
+    Authentication configuration
+  */}}
+  {{- if .Values.paperless.auth.autoLoginUsername }}
+  PAPERLESS_AUTO_LOGIN_USERNAME: {{ .Values.paperless.auth.autoLoginUsername | quote }}
+  {{- end }}
+  {{- if .Values.paperless.auth.adminMail }}
+  PAPERLESS_ADMIN_MAIL: {{ .Values.paperless.auth.adminMail | quote }}
+  {{- end }}
+  {{- /*
+    Redis configuration
+  */}}
+  PAPERLESS_REDIS_PREFIX: {{ .Values.paperless.redis.prefix | quote }}
+  {{- /*
+    Database (PostgreSQL) configuration
+  */}}
+  PAPERLESS_DBENGINE: "postgresql"
+  PAPERLESS_DBHOST: {{ .Values.paperless.postgresql.host | quote }}
+  PAPERLESS_DBPORT: {{ .Values.paperless.postgresql.port | quote }}
+  PAPERLESS_DBNAME: {{ .Values.paperless.postgresql.name | quote }}
+  {{- if .Values.paperless.postgresql.sslMode }}
+  PAPERLESS_DBSSLMODE: {{ .Values.paperless.postgresql.sslMode | quote }}
+  {{- end }}
+  {{- if .Values.paperless.postgresql.certs.rootCert }}
+  PAPERLESS_DBSSLROOTCERT: {{ .Values.paperless.postgresql.certs.rootCert | quote }}
+  {{- end }}
+  {{- if .Values.paperless.postgresql.certs.cert }}
+  PAPERLESS_DBSSLCERT: {{ .Values.paperless.postgresql.certs.cert | quote }}
+  {{- end }}
+  {{- if .Values.paperless.postgresql.certs.key }}
+  PAPERLESS_DBSSLKEY: {{ .Values.paperless.postgresql.certs.key | quote }}
+  {{- end }}
+  {{- /*
+    Tika configuration
+  */}}
+  {{- if .Values.paperless.tika.enabled }}
+  PAPERLESS_TIKA_ENABLED: {{ .Values.paperless.tika.enabled | quote }}
+  PAPERLESS_TIKA_ENDPOINT: {{ .Values.paperless.tika.endpoint | quote }}
+  {{- end }}
+  {{- /*
+    Gotenberg configuration
+  */}}
+  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ .Values.paperless.gotenberg.endpoint }}
+  {{- /*
+    Paths configuration
+  */}}
+  {{- if .Values.paperless.data.paths.consumptionDir }}
+  PAPERLESS_CONSUMPTION_DIR: {{ .Values.paperless.data.paths.consumptionDir | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.dataDir }}
+  PAPERLESS_DATA_DIR: {{ .Values.paperless.data.paths.dataDir | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.trashDir }}
+  PAPERLESS_TRASH_DIR: {{ .Values.paperless.data.paths.trashDir | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.mediaRoot }}
+  PAPERLESS_MEDIA_ROOT: {{ .Values.paperless.data.paths.mediaRoot | quote }}
+  {{- end }}
+  {{- if .Values.paperless.paths.data.staticDir }}
+  PAPERLESS_STATICDIR: {{ .Values.paperless.data.paths.staticDir | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.filenameFormat }}
+  PAPERLESS_FILENAME_FORMAT: {{ .Values.paperless.data.paths.filenameFormat | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.filenameFormatRemoveNone }}
+  PAPERLESS_FILENAME_FORMAT_REMOVE_NONE: {{ .Values.paperless.data.paths.filenameFormatRemoveNone | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.loggingDir }}
+  PAPERLESS_LOGGING_DIR: {{ .Values.paperless.data.paths.loggingDir | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.nltkDir }}
+  PAPERLESS_NLTK_DIR: {{ .Values.paperless.data.paths.nltkDir | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.emailCertificateLocation }}
+  PAPERLESS_EMAIL_CERTIFICATE_LOCATION: {{ .Values.paperless.data.paths.emailCertificateLocation | quote }}
+  {{- end }}
+  {{- /*
+    Logging configuration
+  */}}
+  {{- if .Values.paperless.logging.logrotateMaxSize }}
+  PAPERLESS_LOGROTATE_MAX_SIZE: {{ .Values.paperless.logging.logrotateMaxSize | quote }}
+  {{- end }}
+  {{- if .Values.paperless.logging.logrotateMaxBackups }}
+  PAPERLESS_LOGROTATE_MAX_BACKUPS: {{ .Values.paperless.logging.logrotateMaxBackups | quote }}
+  {{- end }}
+  {{- /*
+    OCR configuration
+  */}}
+  {{- if .Values.paperless.ocr.language }}
+  PAPERLESS_OCR_LANGUAGE: {{ .Values.paperless.ocr.language | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.mode }}
+  PAPERLESS_OCR_MODE: {{ .Values.paperless.ocr.mode | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.skipArchiveFile }}
+  PAPERLESS_OCR_SKIP_ARCHIVE_FILE: {{ .Values.paperless.ocr.skipArchiveFile | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.clean }}
+  PAPERLESS_OCR_CLEAN: {{ .Values.paperless.ocr.clean | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.deskew }}
+  PAPERLESS_OCR_DESKEW: {{ .Values.paperless.ocr.deskew | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.rotatePages }}
+  PAPERLESS_OCR_ROTATE_PAGES: {{ .Values.paperless.ocr.rotatePages | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.rotatePagesThreshold }}
+  PAPERLESS_OCR_ROTATE_PAGES_THRESHOLD: {{ .Values.paperless.ocr.rotatePagesThreshold | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.outputType }}
+  PAPERLESS_OCR_OUTPUT_TYPE: {{ .Values.paperless.ocr.outputType | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.pages }}
+  PAPERLESS_OCR_PAGES: {{ .Values.paperless.ocr.pages | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.imageDPI }}
+  PAPERLESS_OCR_IMAGE_DPI: {{ .Values.paperless.ocr.imageDPI | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.maxImagePixels }}
+  PAPERLESS_OCR_MAX_IMAGE_PIXELS: {{ .Values.paperless.ocr.maxImagePixels | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.colorConversionStrategy }}
+  PAPERLESS_OCR_COLOR_CONVERSION_STRATEGY: {{ .Values.paperless.ocr.colorConversionStrategy | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.userArgs }}
+  PAPERLESS_OCR_USER_ARGS: {{ .Values.paperless.ocr.userArgs | quote }}
+  {{- end }}

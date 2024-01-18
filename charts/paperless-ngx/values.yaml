@@ -45,13 +45,459 @@ nameOverride: ""
 ## @param fullnameOverride String to fully override paperless.fullname
 ##
 fullnameOverride: ""
+
 ## @section Paperless Configuration parameters
 ##
 
 ## Paperless configuration
 ## ref: https://docs.paperless-ngx.com/configuration/
+paperless:
+  ##
+  ##
+  domain: ""
+  ## Secret Key settings
+  ##
+  secretKey:
+    ##
+    ##
+    value: ""
+    ##
+    ##
+    existingSecret:
+      name: ""
+      key: ""
 
-#####
+  ## @param paperless.address [default: "::"] The address Paperless should bind to
+  ##
+  address: "::"
+  ## @param paperless.port [default: 8000] The port Paperless should bind to
+  ##
+  port: 8000
+  ## @param paperless.uid [default: 1000] The user ID Paperless should use
+  ##
+  uid: 1000
+  ## @param paperless.gid [default: 1000] The group ID Paperless should use
+  ##
+  gid: 1000
+  ## @param paperless.enableFlower [default: false] Enable the 'Flower' monitoring tool for 'Celery' (Paperless' task queue)
+  ## ref: https://flower.readthedocs.io/en/latest/index.html
+  ##
+  enableFlower: false
+  ## @param paperless.webserverWorkers [default: 1] The amount for workers process to spawn for the Nginx server within the container
+  ##
+  webserverWorkers: 1
+  ##
+  ##
+  taskWorkers: ""
+  ##
+  ##
+  threadsPerWorker: ""
+  ##
+  ##
+  workerTimeout: ""
+  ##
+  ##
+  timeZone: ""
+  ##
+  ##
+  enableNLTK: ""
+  ##
+  ##
+  enableAuditLog: false
+
+  ## Authentication configuration
+  ##
+  auth:
+    ##
+    ##
+    autoLoginUsername: ""
+    ##
+    ##
+    adminUser: ""
+    ##
+    ##
+    adminPassword: ""
+    ##
+    ##
+    existingSecret: ""
+    ##
+    ##
+    adminMail: ""
+
+  ## Hosting configuration
+  ##
+  hosting:
+    ##
+    ##
+    trustedOrigins: ""
+    ##
+    ##
+    allowedHosts: ""
+    ##
+    ##
+    corsAllowedHosts: ""
+    ##
+    ##
+    trustedProxies: ""
+    ##
+    ##
+    forceScriptName: ""
+    ##
+    ##
+    staticURL: ""
+    ##
+    ##
+    cookiePrefix: ""
+    ##
+    ##
+    enableHTTPRemoteUser: false
+    ##
+    ##
+    HTTPRemoteUserHeaderName: ""
+    ##
+    ##
+    logoutRedirectURL: ""
+    ##
+    ##
+    useXForwardHost: false
+    ##
+    ##
+    useXForwardPort: false
+    ##
+    ##
+    proxySSLHeader: ""
+
+  ## Redis configuration
+  ##
+  redis:
+    ## @param paperless.redis.host [string] The hostname for the Redis instance
+    ##
+    host: ""
+    ## @param paperless.redis.password [string] The password for the Redis instance
+    ##
+    password: ""
+    ## Redis existing secret
+    ##
+    existingSecret:
+      ## @param paperless.redis.existingSecret.name [string] Provide the name to an existing Secret containing the Redis password
+      ##
+      name: ""
+      ## @param paperless.redis.existingSecret.key [string] Provide the key within the existing Secret containing the Redis password
+      ##
+      key: ""
+    ## @param paperless.redis.prefix [string]
+    ##
+    prefix: ""
+
+  ## PostgreSQL configuration
+  ##
+  postgresql:
+    ## @param paperless.postgresql.host [string] The hostname for the PostgreSQL database
+    ##
+    host: ""
+    ## @param paperless.postgresql.port [default: 5432] The port for the PostgreSQL database
+    ##
+    port: 5432
+    ## @param paperless.postgresql.name [string] The database name for the PostgreSQL database
+    ##
+    name: ""
+    ## @param paperless.postgresql.user [string] The username for the PostgreSQL database
+    ##
+    user: ""
+    ## @param paperless.postgresql.password [string] The password for the PostgreSQL database
+    ##
+    password: ""
+    ## @param paperless.postgresql.existingSecret [string] An existing BasicAuth secret containing the PostgreSQL credentials
+    ##
+    existingSecret: ""
+    ## @param paperless.postgresql.sslMode [default: prefer] The SSL Mode for the PostgreSQL database
+    ##
+    sslMode: "prefer"
+    ## @param paperless.postgresql.timeout [string] Define a timeout for the database connection
+    ##
+    timeout: ""
+
+    ## PostgreSQL certificates configuration
+    ##
+    certs:
+      ## @param paperless.postgresql.rootCert [string] The path to a mounted TLS root certificate
+      ##
+      rootCert: ""
+      ## @param paperless.postgresql.cert [string] The path to a mounted TLS certificate
+      ##
+      cert: ""
+      ## @param paperless.postgresql.key [string] The path to a mounted TLS certificate key
+      ##
+      key: ""
+
+  ## Tika configuration
+  ##
+  tika:
+    ## @param paperless.tika.enabled [default: true] Enable or disable the Apache&reg; integration
+    ##
+    enabled: true
+    ## @param paperless.tika.endpoint [string] Define the Apache Tika endpoint
+    ##
+    endpoint: ""
+
+  ## Gotenberg configuration
+  ##
+  gotenberg:
+    ## @param paperless.gotenberg.endpoint [string] Define the Apache Gotenberg endpoint
+    ##
+    endpoint: ""
+
+  ## SMTP configuration
+  ##
+  smtp:
+    ##
+    ##
+    host: ""
+    ##
+    ##
+    port: ""
+    ##
+    ##
+    user: ""
+    ##
+    ##
+    password: ""
+    ##
+    ##
+    existingSecret: ""
+    ##
+    ##
+    from: ""
+    ##
+    ##
+    useTLS: false
+    ##
+    ##
+    useSSL: false
+
+  ## Application data (paths/filenames) configuration
+  ##
+  data:
+    ## Paths configuration
+    ##
+    paths:
+      ## @param paperless.data.paths.consumptionDir [string] Define a custom consumption directory
+      ##
+      consumptionDir: ""
+      ## @param paperless.data.paths.dataDir [string] Define a custom data directory
+      ##
+      dataDir: ""
+      ## @param paperless.data.paths.trashDir [string] Define a custom trash directory
+      ##
+      trashDir: ""
+      ## @param paperless.data.paths.mediaRoot [string] Define a custom media directory
+      ##
+      mediaRoot: ""
+      ## @param paperless.data.paths.staticDir [string] Define a custom static directory
+      ##
+      staticDir: ""
+      ## @param paperless.data.paths.filenameFormat [string] Define a custom filename format
+      ##
+      filenameFormat: ""
+      ## @param paperless.data.paths.filenameFormatRemoveNone [default: false] Omit placeholders that would resolve to 'none' in filenameFormat
+      ##
+      filenameFormatRemoveNone: false
+      ## @param paperless.paths.loggingDir [string] Define a custom logging directory
+      ##
+      loggingDir: ""
+      ## @param paperless.data.paths.nltkDir [string] Define a custom NLTK processing directory
+      ##
+      nltkDir: ""
+      ## @param paperless.data.paths.emailCertificateLocation [string] Define a path to a certificate (chain) for TLS verification for mail servers
+      ##
+      emailCertificateLocation: ""
+
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param paperless.data.pvc.size [default: 5Gi] The size given to PVCs created from the above data
+      ##
+      size: 5Gi
+      ## @param paperless.data.pvc.storageClass [default: standard] The storageClass given to PVCs created from the above data
+      ##
+      storageClass: standard
+      ## @param paperless.data.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs created from the above data
+      ##
+      reclaimPolicy: Retain
+      ## @param paperless.data.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
+
+  ## Logging configuration
+  ##
+  logging:
+    ## @param paperless.logging.logrotateMaxSize [string] Maximum file size for log files before they're rotated
+    ##
+    logrotateMaxSize: ""
+    ## @param paperless.logging.logrotateMaxBackups [string] The number of rotated log files to keep
+    ##
+    logrotateMaxBackups: ""
+
+  ## OCR configuration
+  ##
+  ocr:
+    ##
+    ##
+    language: ""
+    ##
+    ##
+    mode: ""
+    ##
+    ##
+    skipArchiveFile: ""
+    ##
+    ##
+    clean: ""
+    ##
+    ##
+    deskew: ""
+    ##
+    ##
+    rotatePages: ""
+    ##
+    ##
+    rotatePagesThreshold: ""
+    ##
+    ##
+    outputType: ""
+    ##
+    ##
+    pages: ""
+    ##
+    ##
+    imageDPI: ""
+    ##
+    ##
+    maxImagePixels: ""
+    ##
+    ##
+    colorConversionStrategy: ""
+    ##
+    ##
+    userArgs: ""
+
+  ## Conversion configuration
+  ##
+  convesion:
+    ##
+    ##
+    memoryLimit: ""
+    ##
+    ##
+    tmpDir: ""
+
+  ## Consumption configuration
+  ##
+  consume:
+    ##
+    ##
+    deleteDuplicates: ""
+    ##
+    ##
+    recursive: ""
+    ##
+    ##
+    subdirsAsTags: false
+    ##
+    ##
+    ignorePatterns: ""
+    ##
+    ##
+    barcodeScanner: ""
+    ##
+    ##
+    preConsumeScript: ""
+    ##
+    ##
+    postConsumeScript: ""
+    ##
+    ##
+    filenameDateOrder: ""
+    ##
+    ##
+    numberOfSuggestedDates: ""
+    ##
+    ##
+    thumbnailFontName: ""
+    ##
+    ##
+    ignoreDates: ""
+    ##
+    ##
+    dateOrder: ""
+
+    ## Polling configuration
+    ##
+    polling:
+      ##
+      ##
+      enabled: false
+      ##
+      ##
+      retryCount: ""
+      ##
+      ##
+      delay: ""
+
+    ## iNotify configuration
+    ##
+    iNotify:
+      ##
+      ##
+      delay: ""
+
+    ## Barcodes configuration
+    ##
+    barcodes:
+      ##
+      ##
+      enabled: false
+      ##
+      ##
+      tiffSupport: false
+      ##
+      ##
+      string: ""
+      ##
+      ##
+      enableASNBarcode: ""
+      ##
+      ##
+      ASNBarcodePrefix: ""
+      ##
+      ##
+      upscale: ""
+      ##
+      ##
+      dpi: ""
+
+    ## Collation configuration
+    ##
+    collate:
+      ##
+      ##
+      enableDoubleSided: ""
+      ##
+      ##
+      doubleSidedSubdir: ""
+      ##
+      ##
+      doubleSidedTiffSupport: false
+
+  ## Binaries configuration
+  ##
+  binaries:
+    ##
+    ##
+    convert: ""
+    ##
+    ##
+    gs: ""
 
 ## @section Bitnami&reg; PostgreSQL parameters
 ##
@@ -76,13 +522,13 @@ postgresql:
     postgresPassword: "postgres"
     ## @param postgresql.auth.username Name for a custom user to create
     ##
-    username: "linkwarden"
+    username: "paperless"
     ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
     ##
-    password: "linkwarden"
+    password: "paperless"
     ## @param postgresql.auth.database Name for a custom database to create
     ##
-    database: "linkwarden"
+    database: "paperless"
     ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
     ##
     usePasswordFiles: false
@@ -123,9 +569,18 @@ postgresql:
 ## Redis configuration
 ## ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
 redis:
+  ## @param redis.enabled Enable or disable the Redis&reg; subchart
+  ##
   enabled: true
+  ## @param architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
+  ##
   architecture: standalone
+
+  ## Redis&reg; Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/redis#setting-the-server-password-on-first-run
+  ##
   auth:
+    ## @param redis.auth.password Redis&reg; password
     password: "paperless"
 
 ## @section Apache&reg; Tika parameters
