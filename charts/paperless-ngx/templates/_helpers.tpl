@@ -15,7 +15,7 @@ If release name contains chart name it will be used as a full name.
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
+{{- if or (contains $name .Release.Name) (contains .Release.Name $name) }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
@@ -71,20 +71,6 @@ Set the names for the ConfigMaps
 {{- define "paperless.configmaps.auth" }}
 {{- printf "%s-auth" (include "paperless.fullname" .) }}
 {{- end }}
-
-{{/*
-Define the PV name
-*/}}
-{{- define "paperless.pv.name" -}}
-{{- printf "%s-pv" (include "paperless.fullname" .)}}
-{{- end -}}
-
-{{/*
-Define the PVC name
-*/}}
-{{- define "paperless.pvc.name" -}}
-{{- printf "%s-pvc" (include "paperless.fullname" .)}}
-{{- end -}}
 
 {{/* 
 Obtain the API version for the Pod Disruption Budget

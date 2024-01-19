@@ -1,0 +1,21 @@
+{{- if not .Values.paperless.data.pvc.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "paperless.pvc.data.name" . }}
+  labels:
+    {{- include "paperless.labels" . | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ $.Release.Name | quote }}
+    meta.helm.sh/release-namespace: {{ $.Release.Namespace | quote }}
+    {{- if (eq .Values.paperless.data.pvc.reclaimPolicy "Retain") }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+spec:
+  storageClassName: {{ .Values.paperless.data.pvc.storageClass | default "standard" }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.paperless.data.pvc.size | quote }}
+{{- end }}

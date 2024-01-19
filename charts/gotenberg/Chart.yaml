@@ -18,7 +18,7 @@ annotations:
 apiVersion: v2
 appVersion: 8.0.1
 kubeVersion: ">=1.26"
-name: gotenbeg
+name: gotenberg
 version: 0.0.1
 description: Gotenberg is a Docker-powered stateless API for PDF files.
 home: https://gotenberg.dev/

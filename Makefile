@@ -72,10 +72,7 @@ EXECUTABLES := $(helm) $(helmfile) $(kind) $(npx)
 README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
 
 # Internal Helm variables
-ifdef CHART
 CHART_NAME := $(shell basename $(CHART))
-RELEASE_NAME := $(shell printf "%s-%s" $(CHART_NAME) test)
-endif
 
 # ---------------------------
 # User-defined variables
@@ -84,6 +81,7 @@ PRINT_HELP ?=
 
 CHART ?=
 VALUES ?=
+RELEASE_NAME ?= $(shell printf "%s-%s" $(CHART_NAME) test)
 FILE ?=
 
 # ---------------------------
@@ -237,9 +235,9 @@ else
 install:
 	$(call log_success, "Installing Helm Chart $(CHART_NAME) using values: $(VALUES)")
 ifdef VALUES
-	$(helm) install $(CHART_NAME) $(CHART) --values $(CHART)/$(VALUES)
+	$(helm) install $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES)
 else
-	$(helm) install $(CHART)
+	$(helm) install $(RELEASE_NAME) $(CHART)
 endif
 endif
 

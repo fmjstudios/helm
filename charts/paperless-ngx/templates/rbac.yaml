@@ -1,0 +1,35 @@
+{{- if .Values.rbac.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "paperless.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{ include "paperless.labels" . | nindent 4 }}
+    app.kubernetes.io/component: paperless-ngx
+rules:
+  {{- if .Values.rbac.rules }}
+  {{ toYaml .Values.rbac.rules | nindent 2 }}
+  {{- end }}
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "paperless.fullname" . }}
+  labels:
+    {{ include "paperless.labels" . | nindent 4 }}
+    app.kubernetes.io/component: paperless
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "paperless.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "paperless.serviceAccountName" . }}
+{{- end -}}

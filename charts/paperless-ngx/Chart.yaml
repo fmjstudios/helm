@@ -28,13 +28,13 @@ dependencies:
   - name: redis
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: redis.enabled
-    version: ~7.2
+    version: ~18.7
   - name: tika
     repository: https://apache.jfrog.io/artifactory/tika
     condition: tika.enabled
     version: ~2.9
   - name: gotenberg
-    repository: oci://ghcr.io/fmjstudios/helm/gotenberg
+    repository: oci://ghcr.io/fmjstudios/helm
     condition: gotenberg.enabled
     version: ~0.0.1
 description: Paperless-NGX is a community-supported supercharged version of paperless - scan, index and archive all your physical documents

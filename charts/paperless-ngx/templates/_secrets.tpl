@@ -38,3 +38,4 @@ Build connection URI's
 {{- $secretKey := randAlphaNum 32 -}}
 {{- printf "%s" $secretKey }}
 {{- end }}
+{{- end }}

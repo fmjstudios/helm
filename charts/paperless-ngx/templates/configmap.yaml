@@ -17,7 +17,39 @@ data:
   {{- /* 
     General configuration
   */}}
+  PAPERLESS_PORT: {{ .Values.paperless.port | quote }}
+  USERMAP_UID: {{ .Values.paperless.uid | quote }}
+  USERMAP_GID: {{ .Values.paperless.gid | quote }}
+  {{- if .Values.paperless.domain }}
   PAPERLESS_URL: {{ include "paperless.ingress.url" . | quote }}
+  {{- end }}
+  {{- if .Values.paperless.address }}
+  PAPERLESS_BIND_ADDR: {{ .Values.paperless.address | quote }}
+  {{- end }}
+  {{- if .Values.paperless.taskWorkers }}
+  PAPERLESS_TASK_WORKERS: {{ .Values.paperless.taskWorkers | quote }}
+  {{- end }}
+  {{- if .Values.paperless.threadsPerWorker }}
+  PAPERLESS_THREADS_PER_WORKER: {{ .Values.paperless.threadsPerWorker | quote }}
+  {{- end }}
+  {{- if .Values.paperless.workerTimeout }}
+  PAPERLESS_WORKER_TIMEOUT: {{ .Values.paperless.workerTimeout | quote }}
+  {{- end }}
+  {{- if .Values.paperless.timeZone }}
+  PAPERLESS_TIME_ZONE: {{ .Values.paperless.timeZone | quote }}
+  {{- end }}
+  {{- if .Values.paperless.enableNLTK }}
+  PAPERLESS_ENABLE_NLTK: {{ .Values.paperless.enableNLTK | quote }}
+  {{- end }}
+  {{- if .Values.paperless.enableCompression }}
+  PAPERLESS_ENABLE_COMPRESSION: {{ .Values.paperless.enableCompression | quote }}
+  {{- end }}
+  {{- if .Values.paperless.enableAuditLog }}
+  PAPERLESS_ENABLE_COMPRESSION: {{ .Values.paperless.enableAuditLog | quote }}
+  {{- end }}
+  {{- if .Values.paperless.enableFlower }}
+  PAPERLESS_ENABLE_FLOWER: {{ .Values.paperless.enableFlower | quote }}
+  {{- end }}
   {{- /* 
     Hosting configuration
   */}}
@@ -59,6 +91,21 @@ data:
   {{- end }}
   {{- if .Values.paperless.hosting.proxySSLHeader }}
   PAPERLESS_PROXY_SSL_HEADER: {{ .Values.paperless.hosting.proxySSLHeader | quote }}
+  {{- end }}
+  {{- /* 
+    Cron configuration
+  */}}
+  {{- if .Values.paperless.cron.emailTask }}
+  PAPERLESS_EMAIL_TASK_CRON: {{ .Values.paperless.cron.emailTask | quote }}
+  {{- end }}
+  {{- if .Values.paperless.cron.trainTask }}
+  PAPERLESS_TRAIN_TASK_CRON: {{ .Values.paperless.cron.trainTask | quote }}
+  {{- end }}
+  {{- if .Values.paperless.cron.indexTask }}
+  PAPERLESS_INDEX_TASK_CRON: {{ .Values.paperless.cron.indexTask | quote }}
+  {{- end }}
+  {{- if .Values.paperless.cron.sanityTask }}
+  PAPERLESS_SANITY_TASK_CRON: {{ .Values.paperless.cron.sanityTask | quote }}
   {{- end }}
   {{- /* 
     Authentication configuration
@@ -104,6 +151,24 @@ data:
   */}}
   PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ .Values.paperless.gotenberg.endpoint }}
   {{- /*
+    SMTP configuration
+  */}}
+  {{- if .Values.paperless.smtp.host }}
+  PAPERLESS_EMAIL_HOST: {{ .Values.paperless.smtp.host | quote }}
+  {{- end }}
+  {{- if .Values.paperless.smtp.port }}
+  PAPERLESS_EMAIL_PORT: {{ .Values.paperless.smtp.port | quote }}
+  {{- end }}
+  {{- if .Values.paperless.smtp.from }}
+  PAPERLESS_EMAIL_FROM: {{ .Values.paperless.smtp.from | quote }}
+  {{- end }}
+  {{- if .Values.paperless.smtp.useTLS }}
+  PAPERLESS_EMAIL_USE_TLS: {{ .Values.paperless.smtp.useTLS | quote }}
+  {{- end }}
+  {{- if .Values.paperless.smtp.useSSL }}
+  PAPERLESS_EMAIL_USE_SSL: {{ .Values.paperless.smtp.useSSL | quote }}
+  {{- end }}
+  {{- /*
     Paths configuration
   */}}
   {{- if .Values.paperless.data.paths.consumptionDir }}
@@ -118,7 +183,7 @@ data:
   {{- if .Values.paperless.data.paths.mediaRoot }}
   PAPERLESS_MEDIA_ROOT: {{ .Values.paperless.data.paths.mediaRoot | quote }}
   {{- end }}
-  {{- if .Values.paperless.paths.data.staticDir }}
+  {{- if .Values.paperless.data.paths.staticDir }}
   PAPERLESS_STATICDIR: {{ .Values.paperless.data.paths.staticDir | quote }}
   {{- end }}
   {{- if .Values.paperless.data.paths.filenameFormat }}
@@ -150,6 +215,9 @@ data:
   */}}
   {{- if .Values.paperless.ocr.language }}
   PAPERLESS_OCR_LANGUAGE: {{ .Values.paperless.ocr.language | quote }}
+  {{- end }}
+  {{- if .Values.paperless.ocr.additionalLanguages }}
+  PAPERLESS_OCR_LANGUAGES: {{ .Values.paperless.ocr.additionalLanguages | quote }}
   {{- end }}
   {{- if .Values.paperless.ocr.mode }}
   PAPERLESS_OCR_MODE: {{ .Values.paperless.ocr.mode | quote }}
@@ -186,4 +254,106 @@ data:
   {{- end }}
   {{- if .Values.paperless.ocr.userArgs }}
   PAPERLESS_OCR_USER_ARGS: {{ .Values.paperless.ocr.userArgs | quote }}
+  {{- end }}
+  {{- /* 
+    Conversion configuration
+  */}}
+  {{- if .Values.paperless.conversion.memoryLimit }}
+  PAPERLESS_CONVERT_MEMORY_LIMIT: {{ .Values.paperless.conversion.memoryLimit | quote }}
+  {{- end }}
+  {{- if .Values.paperless.conversion.tmpDir }}
+  PAPERLESS_CONVERT_TMPDIR: {{ .Values.paperless.conversion.tmpDir | quote }}
+  {{- end }}
+  {{- /* 
+    Document consumption configuration
+  */}}
+  {{- if .Values.paperless.consume.deleteDuplicates }}
+  PAPERLESS_CONSUMER_DELETE_DUPLICATES: {{ .Values.paperless.consume.deleteDuplicates | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.recursive }}
+  PAPERLESS_CONSUMER_RECURSIVE: {{ .Values.paperless.consume.recursive | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.subdirsAsTags }}
+  PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: {{ .Values.paperless.consume.subdirsAsTags | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.ignorePatterns }}
+  PAPERLESS_CONSUMER_IGNORE_PATTERNS: {{ .Values.paperless.consume.ignorePatterns | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodeScanner }}
+  PAPERLESS_CONSUMER_BARCODE_SCANNER: {{ .Values.paperless.consume.barcodeScanner | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.preConsumeScript }}
+  PAPERLESS_PRE_CONSUME_SCRIPT: {{ .Values.paperless.consume.preConsumeScript | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.postConsumeScript }}
+  PAPERLESS_POST_CONSUME_SCRIPT: {{ .Values.paperless.consume.postConsumeScript | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.filenameDateOrder }}
+  PAPERLESS_FILENAME_DATE_ORDER: {{ .Values.paperless.consume.filenameDateOrder | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.numberOfSuggestedDates }}
+  PAPERLESS_NUMBER_OF_SUGGESTED_DATES: {{ .Values.paperless.consume.numberOfSuggestedDates | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.thumbnailFontName }}
+  PAPERLESS_THUMBNAIL_FONT_NAME: {{ .Values.paperless.consume.thumbnailFontName | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.ignoreDates }}
+  PAPERLESS_IGNORE_DATES: {{ .Values.paperless.consume.ignoreDates | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.dateOrder }}
+  PAPERLESS_DATE_ORDER: {{ .Values.paperless.consume.dateOrder | quote }}
+  {{- end }}
+  {{/* Polling */}}
+  {{- if .Values.paperless.consume.polling.enabled }}
+  PAPERLESS_CONSUMER_POLLING: {{ .Values.paperless.consume.polling.enabled | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.polling.retryCount }}
+  PAPERLESS_CONSUMER_POLLING_RETRY_COUNT: {{ .Values.paperless.consume.polling.retryCount | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.polling.delay }}
+  PAPERLESS_CONSUMER_POLLING_DELAY: {{ .Values.paperless.consume.polling.delay | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.iNotify.delay }}
+  PAPERLESS_CONSUMER_INOTIFY_DELAY: {{ .Values.paperless.consume.iNotify.delay | quote }}
+  {{- end }}
+  {{/* Barcodes */}}
+  {{- if .Values.paperless.consume.barcodes.enabled }}
+  PAPERLESS_CONSUMER_ENABLE_BARCODES: {{ .Values.paperless.barcodes.enabled | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodes.tiffSupport }}
+  PAPERLESS_CONSUMER_BARCODE_TIFF_SUPPORT: {{ .Values.paperless.barcodes.tiffSupport | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodes.string }}
+  PAPERLESS_CONSUMER_BARCODE_STRING: {{ .Values.paperless.barcodes.string | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodes.enableASNBarcode }}
+  PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE: {{ .Values.paperless.barcodes.enableASNBarcode | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodes.ASNBarcodePrefix }}
+  PAPERLESS_CONSUMER_ASN_BARCODE_PREFIX: {{ .Values.paperless.barcodes.ASNBarcodePrefix | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodes.upscale }}
+  PAPERLESS_CONSUMER_BARCODE_UPSCALE: {{ .Values.paperless.barcodes.upscale | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.barcodes.dpi }}
+  PAPERLESS_CONSUMER_BARCODE_DPI: {{ .Values.paperless.barcodes.dpi | quote }}
+  {{- end }}
+  {{/* Collation */}}
+  {{- if .Values.paperless.consume.collate.enableDoubleSided }}
+  PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: {{ .Values.paperless.collate.enableDoubleSided | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.collate.doubleSidedSubdirName }}
+  PAPERLESS_CONSUMER_COLLATE_DOUBLE_SIDED_SUBDIR_NAME: {{ .Values.paperless.collate.doubleSidedSubdirName | quote }}
+  {{- end }}
+  {{- if .Values.paperless.consume.collate.doubleSidedTiffSupport }}
+  PAPERLESS_CONSUMER_COLLATE_DOUBLE_SIDED_TIFF_SUPPORT: {{ .Values.paperless.collate.doubleSidedTiffSupport | quote }}
+  {{- end }}
+  {{- /* 
+    Binaries configuration
+  */}}
+  {{- if .Values.paperless.binaries.convert }}
+  PAPERLESS_CONVERT_BINARY: {{ .Values.paperless.binaries.convert | quote }}
+  {{- end }}
+  {{- if .Values.paperless.binaries.gs }}
+  PAPERLESS_GS_BINARY: {{ .Values.paperless.binaries.gs | quote }}
   {{- end }}

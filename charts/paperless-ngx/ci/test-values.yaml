@@ -1,0 +1,93 @@
+paperless:
+  domain: paperless.helm.private
+  secretKey:
+    value: "PretendThisIsASecretKey"
+
+  auth:
+    autoLoginUsername: ""
+    adminUser: "admin"
+    adminPassword: "admin-pass"
+
+  redis:
+    host: paperless-redis-master
+    password: "paperless"
+
+  postgresql:
+    host: "paperless-postgresql"
+    port: 5432
+    name: "paperless"
+    user: "paperless"
+    password: "paperless"
+
+  tika:
+    enabled: true
+    endpoint: "http://paperless-ngx-tika:9998"
+
+  gotenberg:
+    endpoint: "http://paperless-ngx-gotenberg"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: mkcert-development-issuer
+  tls:
+    - secretName: domain-tld-tls
+      hosts:
+        - paperless.helm.private
+  extraHosts:
+    - host: paperless.helm.private
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+livenessProbe:
+  enabled: true
+
+readinessProbe:
+  enabled: true
+
+startupProbe:
+  enabled: true
+
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: true
+    postgresPassword: "postgres"
+    username: "paperless"
+    password: "paperless"
+    database: "paperless"
+    usePasswordFiles: false
+
+  primary:
+    name: primary
+    persistence:
+      enabled: true
+      storageClass: "standard"
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    password: "paperless"
+
+tika:
+  enabled: true
+
+gotenberg:
+  enabled: true
+  gotenberg:
+    chromium:
+      disableJavaScript: true
+      allowList: "file:///tmp/.*"
+
+    logging:
+      level: warn

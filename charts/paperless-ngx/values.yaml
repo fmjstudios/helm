@@ -19,7 +19,7 @@
 image:
   registry: ghcr.io
   repository: paperless-ngx/paperless-ngx
-  tag: "2.3.3"
+  tag: "2.4.0"
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -55,21 +55,26 @@ paperless:
   ##
   ##
   domain: ""
+
   ## Secret Key settings
   ##
   secretKey:
-    ##
+    ## @param paperless.secretKey.value [string] Define a custom secret key for Paperless
     ##
     value: ""
-    ##
+    ## Existing Secret settings
     ##
     existingSecret:
+      ## @param paperless.secretKey.existingSecret.name [string] Define the name of an existing Secret containing the secret key
+      ##
       name: ""
+      ## @param paperless.secretKey.existingSecret.key [string] Define the key within the existing Secret containing the secret key
+      ##
       key: ""
 
   ## @param paperless.address [default: "::"] The address Paperless should bind to
   ##
-  address: "::"
+  address: ""
   ## @param paperless.port [default: 8000] The port Paperless should bind to
   ##
   port: 8000
@@ -83,9 +88,10 @@ paperless:
   ## ref: https://flower.readthedocs.io/en/latest/index.html
   ##
   enableFlower: false
-  ## @param paperless.webserverWorkers [default: 1] The amount for workers process to spawn for the Nginx server within the container
+  ## @param paperless.webserverWorkers [int] The amount for workers process to spawn for the Nginx server within the container
+  ## NOTE: The builtin default value '1' will be used when unset.
   ##
-  webserverWorkers: 1
+  webserverWorkers:
   ##
   ##
   taskWorkers: ""
@@ -104,6 +110,9 @@ paperless:
   ##
   ##
   enableAuditLog: false
+  ##
+  ##
+  enableCompression: ""
 
   ## Authentication configuration
   ##
@@ -166,6 +175,22 @@ paperless:
     ##
     ##
     proxySSLHeader: ""
+
+  ## Cron configuration
+  ##
+  cron:
+    ##
+    ##
+    emailTask: ""
+    ##
+    ##
+    trainTask: ""
+    ##
+    ##
+    indexTask: ""
+    ##
+    ##
+    sanityTask: ""
 
   ## Redis configuration
   ##
@@ -317,7 +342,7 @@ paperless:
     pvc:
       ## @param paperless.data.pvc.size [default: 5Gi] The size given to PVCs created from the above data
       ##
-      size: 5Gi
+      size: 10Gi
       ## @param paperless.data.pvc.storageClass [default: standard] The storageClass given to PVCs created from the above data
       ##
       storageClass: standard
@@ -344,6 +369,9 @@ paperless:
     ##
     ##
     language: ""
+    ##
+    ##
+    additionalLanguages: ""
     ##
     ##
     mode: ""
@@ -383,7 +411,7 @@ paperless:
 
   ## Conversion configuration
   ##
-  convesion:
+  conversion:
     ##
     ##
     memoryLimit: ""
@@ -436,7 +464,7 @@ paperless:
     polling:
       ##
       ##
-      enabled: false
+      enabled: ""
       ##
       ##
       retryCount: ""
@@ -484,7 +512,7 @@ paperless:
       enableDoubleSided: ""
       ##
       ##
-      doubleSidedSubdir: ""
+      doubleSidedSubdirName: ""
       ##
       ##
       doubleSidedTiffSupport: false
@@ -498,6 +526,195 @@ paperless:
     ##
     ##
     gs: ""
+
+## @section Linkwarden ConfigMap parameters
+##
+
+## @param configMapAnnotations Define extra annotations for the Linkwarden ConfigMap
+##
+configMapAnnotations: {}
+
+## @param configMapLabels Define extra labels for the Linkwarden ConfigMap
+##
+configMapLabels: {}
+
+## @section Linkwarden Secret parameters
+##
+
+## @param secretAnnotations Define extra annoations for the created Kubernetes secrets
+##
+secretAnnotations: {}
+
+## @param secretLabels Define extra Labels for the created Kubernetes secrets
+secretLabels: {}
+
+## @section Ingress parameters
+##
+
+## Linkwarden Ingress settings
+## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+## @param ingress.enabled Enable or disable the creation of Ingress resources
+## @param ingress.className [string] Specify an Ingress class for the resource
+## @param ingress.annotations [object] Define extra annotations for the Ingress resource
+## @param ingress.extraHosts [array] Define extra hostnames & paths for the Ingress resource
+## @param ingress.tls [array] Define TLS settings for the Ingress resource
+##
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  tls: []
+  #  - secretName: domain-tld-tls
+  #    hosts:
+  #      - domain.tld
+  extraHosts:
+    []
+    # - host: domain.tld
+    #   paths:
+    #     - path: /
+    #       pathType: ImplementationSpecific
+
+## @section Service parameters
+##
+
+## Linkwarden service settings
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+## @param service.type [string] The type of service resource to create
+## @param service.port [int] The port number to assign to the service
+## @param service.annotations [object] Define extra annotations for the Service resource
+## @param service.labels [object] Define extra labels for the Service resource
+##
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+  labels: {}
+
+## @section RBAC parameters
+##
+
+## Linkwarden RBAC settings
+## ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+## @param rbac.create [default: false] Enable or disable the creation of RBAC resources
+## @param rbac.rules [array] Define extra rules to be added to the Role resource
+##
+rbac:
+  create: true
+  rules: []
+
+## @section Linkwarden Service Account parameters
+##
+
+## FMJ Studios Linkwarden Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.automount [default: true] Whether or not to automatically mount API credentials
+## @param serviceAccount.annotations [object] Annotations to add to the service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise linkwarden.fullname is used
+## @param serviceAccount.secrets [array] A list of secrets mountable by this service account
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # The list of secrets mountable by this service account.
+  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
+  secrets: []
+
+## @section Linkwarden Probes
+##
+
+## Linkwarden Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
+  failureThreshold: 10
+
+## Linkwarden Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
+  failureThreshold: 3
+
+## Linkwarden Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
+  failureThreshold: 10
+
+## @section Pod Disruption Budget parameters
+##
+
+## FMJ Studios Linkwarden pod disruption budget settings
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
 
 ## @section Bitnami&reg; PostgreSQL parameters
 ##

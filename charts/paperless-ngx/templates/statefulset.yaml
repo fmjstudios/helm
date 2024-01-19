@@ -39,7 +39,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ include "paperless.fullname" . }}
+                name: {{ include "paperless.configmaps.general" . }}
           env:
             - name: PAPERLESS_REDIS
               valueFrom:
@@ -75,13 +75,29 @@ spec:
                   name: {{ .Values.paperless.auth.existingSecret | default (include "paperless.secrets.admin" .) }}
                   key: {{ "password" }}            
             {{- end }}
+            {{- if or (or .Values.paperless.smtp.user .Values.paperless.smtp.password) .Values.paperless.smtp.existingSecret }}
+            - name: PAPERLESS_EMAIL_HOST_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.smtp.existingSecret | default (include "paperless.secrets.smtp" .) }}
+                  key: {{ "username" }}
+            - name: PAPERLESS_EMAIL_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.smtp.existingSecret | default (include "paperless.secrets.smtp" .) }}
+                  key: {{ "password" }}            
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.paperless.port }}
               protocol: TCP
-          # volumeMounts:
-          #   - name: {{ include "paperless.pv.name" . }}
-          #     mountPath: {{ .Values.paperless.data.rootPath | default "/data" }}
+          volumeMounts:
+              {{- $dataDir := .Values.paperless.data.paths.dataDir | default "data" }}
+              {{- $mediaDir := .Values.paperless.data.paths.mediaRoot | default "media" }}
+            - name: {{ include "paperless.pv.data.name" . }}
+              mountPath: {{ include "paperless.paths.base" (dict "path"  $dataDir) }}
+            - name: {{ include "paperless.pv.data.name" . }}
+              mountPath: {{ include "paperless.paths.base" (dict "path"  $mediaDir) }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -124,9 +140,9 @@ spec:
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           {{- end }}
       volumes:
-        - name: {{ include "paperless.pv.name" . }}
+        - name: {{ include "paperless.pv.data.name" . }}
           persistentVolumeClaim:
-            claimName: {{ .Values.paperless.data.pvc.existingClaim | default (include "paperless.pvc.name" .) }}
+            claimName: {{ .Values.paperless.data.pvc.existingClaim | default (include "paperless.pvc.data.name" .) }}
       {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
