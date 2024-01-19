@@ -72,7 +72,9 @@ EXECUTABLES := $(helm) $(helmfile) $(kind) $(npx)
 README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
 
 # Internal Helm variables
+ifdef CHART
 CHART_NAME := $(shell basename $(CHART))
+endif
 
 # ---------------------------
 # User-defined variables
