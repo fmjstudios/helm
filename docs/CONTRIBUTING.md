@@ -32,7 +32,7 @@ the structure it must have.
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: ansible|pki|task|scripts|tools|docs|config|apps
+  │       └─⫸ Commit Scope: charts|make|scripts|docs
   │
   └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
 ```
@@ -56,13 +56,12 @@ Must be one of the following:
 
 The following is the list of supported scopes:
 
-* `collections` - Changes affecting a multitude of collections at once
-* `collection/*` - Changes affecting single collections
-* `roles` - Changes affecting a multitude of roles at once
-* `role/*` - Changes affecting single roles
-* `make`
-* `scripts`
-* `docs`
+* `charts` - Changes affecting a multitude of charts at once
+* `charts/*` - Changes affecting single charts
+* `k8s` - Changes to Kubernetes manifests (development setup)
+* `make` - Changes affecting the Make-based build system
+* `scripts` - Changes to scripts
+* `config` - Changes to configuration files
 
 ##### Summary
 
