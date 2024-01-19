@@ -15,6 +15,8 @@ annotations:
       url: https://uptime.kuma.pet/
     - name: Uptime-Kuma Documentation
       url: https://github.com/louislam/uptime-kuma/wiki
+  org.opencontainers.image.vendor: "FMJ Studios"
+  org.opencontainers.image.licenses: "MIT"
 apiVersion: v2
 appVersion: 1.23.11
 kubeVersion: ">=1.26"
@@ -30,6 +32,8 @@ keywords:
   - database
   - tls
   - uptime-robot
+sources:
+  - "https://github.com/fmjstudios/helm"
 maintainers:
   - name: FMJdev
     email: info@fmj.dev

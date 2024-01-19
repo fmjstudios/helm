@@ -15,6 +15,8 @@ annotations:
       url: https://gotenberg.dev/
     - name: Gotenberg Documentation
       url: https://gotenberg.dev/docs/getting-started/introduction
+  org.opencontainers.image.vendor: "FMJ Studios"
+  org.opencontainers.image.licenses: "MIT"
 apiVersion: v2
 appVersion: 8.0.1
 kubeVersion: ">=1.26"
@@ -30,6 +32,8 @@ keywords:
   - office
   - html
   - markdown
+sources:
+  - "https://github.com/fmjstudios/helm"
 maintainers:
   - name: FMJdev
     email: info@fmj.dev

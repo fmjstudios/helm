@@ -15,6 +15,8 @@ annotations:
       url: https://linkwarden.app/
     - name: Linkwarden Documentation
       url: https://docs.linkwarden.app/
+  org.opencontainers.image.vendor: "FMJ Studios"
+  org.opencontainers.image.licenses: "MIT"
 apiVersion: v2
 appVersion: 2.4.8
 kubeVersion: ">=1.26"
@@ -35,6 +37,8 @@ keywords:
   - linkding
   - linkace
   - archivebox
+sources:
+  - "https://github.com/fmjstudios/helm"
 maintainers:
   - name: FMJdev
     email: info@fmj.dev
