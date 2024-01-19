@@ -9,9 +9,9 @@
 
 ## Gotenberg Server Image
 ## ref: https://hub.docker.com/r/gotenberg/gotenberg
-## @param image.registry [default: docker.io] The Docker registry to pull the image from
-## @param image.repository [default: gotenberg/gotenberg] The registry repository to pull the image from
-## @param image.tag [string, default: '8.0.1'] The image tag to pull
+## @param image.registry [string, default: "docker.io"] The Docker registry to pull the image from
+## @param image.repository [string, default: gotenberg/gotenberg] The registry repository to pull the image from
+## @param image.tag [string, default: "8.0.1"] The image tag to pull
 ## @param image.digest [string] The image digest to pull
 ## @param image.pullPolicy [string, default: IfNotPresent] The Kubernetes image pull policy
 ## @param image.pullSecrets [array] A list of secrets to use for pulling images from private registries
@@ -19,7 +19,7 @@
 image:
   registry: docker.io
   repository: gotenberg/gotenberg
-  tag: 8.0.1
+  tag: 8.0.2
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -181,7 +181,7 @@ gotenberg:
     ## @param gotenberg.webhook.retryMinWait [default: 1s]  Set the minimum duration to wait before trying to call the webhook again
     ##
     retryMinWait: "1s"
-    ## @param gotenberg.webhook.retryMinWait [default: 30s] Set the maximum duration to wait before trying to call the webhook again
+    ## @param gotenberg.webhook.retryMaxWait [default: 30s] Set the maximum duration to wait before trying to call the webhook again
     ##
     retryMaxWait: "30s"
     ## @param gotenberg.webhook.clientTimeout [default: 30s] Set the time limit for requests to the webhook
@@ -277,6 +277,7 @@ service:
 ## @param serviceAccount.create [default: true] Whether or not a service account should be created
 ## @param serviceAccount.annotations [object] Annotations to add to the service account
 ## @param serviceAccount.name [string] A custom name for the service account, otherwise gotenberg.fullname is used
+## @param serviceAccount.secrets [array] A list of secrets mountable by this service account
 ##
 serviceAccount:
   # Specifies whether a service account should be created
@@ -290,7 +291,7 @@ serviceAccount:
   # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
   secrets: []
 
-## @section Gotenberg Probes
+## @section Gotenberg Liveness Probes
 ##
 
 ## Gotenberg Liveness Probe
@@ -316,51 +317,64 @@ livenessProbe:
   ##
   failureThreshold: 10
 
+## @section Gotenberg Readiness Probes
+##
+
 ## Gotenberg Readiness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: false
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
   ##
   failureThreshold: 3
+
+## @section Gotenberg Startup Probes
+##
 
 ## Gotenberg Startup Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: true
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
   ##
   failureThreshold: 10
+
+## @section Pod settings
+##
+
+## @param replicas [default: 1] The number of replicas to use for the Gotenberg
+##
+replicas: 1
 
 ## @section Gotenberg resource settings
 ##
@@ -385,8 +399,7 @@ resources:
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
-
+##
 podDisruptionBudget:
   enabled: true
   minAvailable: 1
@@ -398,6 +411,7 @@ podDisruptionBudget:
 ## Gotenberg init Containers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers [array] Define initContainers for the Gotenberg pod
+##
 initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
@@ -431,8 +445,9 @@ podAnnotations: {}
 ##
 podLabels: {}
 
-## @param podSecurityContext [object] Security context settings for the Gotenberg pod
+## Pod security context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+## @param podSecurityContext [object] Security context settings for the Gotenberg pod
 ##
 podSecurityContext:
   {}
@@ -443,8 +458,8 @@ podSecurityContext:
 ## @section Security context settings
 ##
 
-## @param securityContext [object] General security context settings for Gotenberg
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+## @param securityContext [object] General security context settings for Gotenberg
 ##
 securityContext:
   privileged: true
@@ -460,8 +475,8 @@ securityContext:
 ## @section Autoscaling settings
 ##
 
-## @param autoscaling [object] Autoscaling settings
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+## @param autoscaling [object] Autoscaling settings
 ##
 autoscaling:
   enabled: false
