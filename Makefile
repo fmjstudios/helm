@@ -307,7 +307,6 @@ else
 readme-gen:
 	$(call log_success, "Generating README Helm Chart table for chart: $(CHART)")
 	$(npx) $(README_GEN_PACKAGE) \
-		-c $(CONFIG_DIR)/readme-gen.json \
 		-v $(CHART)/values.yaml \
 		-r $(CHART)/README.md
 endif
