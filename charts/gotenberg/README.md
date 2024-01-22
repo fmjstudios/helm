@@ -1,5 +1,5 @@
 
-<img src="https://seeklogo.com/images/H/helm-logo-9208DB3EE5-seeklogo.com.png" alt="Helm Logo" align="right" height="300" width="260"/>
+<img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="150" height="150" align="right" />
 
 # FMJ Studios - Gotenberg Helm Chart
 
@@ -15,16 +15,16 @@ helm install my-release oci://ghcr.io/fmjstudios/helm/gotenberg:1.2.3
 
 # Introduction
 
-This chart bootstraps a Gotenberg [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) and [HorizontalPodAutoscaler](https://kubernetes.io/de/docs/tasks/run-application/horizontal-pod-autoscale/) if enabled.
+This chart bootstraps a Gotenberg [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) and [HorizontalPodAutoscaler](https://kubernetes.io/de/docs/tasks/run-application/horizontal-pod-autoscale/) if enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
-The chart supports the configuration of all [Gotenberg CLI options](https://gotenberg.dev/docs/configuration) via the `gotenberg` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configureable via the Image Parameters.
+The chart supports the configuration of all [Gotenberg CLI options](https://gotenberg.dev/docs/configuration) via the `gotenberg` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image Parameters.
 
 ## Parameters
 
 ### Gotenberg Image parameters
 
 | Name                | Description                                                         | Value                 |
-| ------------------- | ------------------------------------------------------------------- | --------------------- |
+|---------------------|---------------------------------------------------------------------|-----------------------|
 | `image.registry`    | The Docker registry to pull the image from                          | `"docker.io"`         |
 | `image.repository`  | The registry repository to pull the image from                      | `gotenberg/gotenberg` |
 | `image.tag`         | The image tag to pull                                               | `"8.0.1"`             |
@@ -35,14 +35,14 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 ### Gotenberg Name overrides
 
 | Name               | Description                                     | Value |
-| ------------------ | ----------------------------------------------- | ----- |
+|--------------------|-------------------------------------------------|-------|
 | `nameOverride`     | String to partially override gotenberg.fullname | `""`  |
 | `fullnameOverride` | String to fully override gotenberg.fullname     | `""`  |
 
 ### Gotenberg Configuration parameters
 
 | Name                                          | Description                                                                      | Value       |
-| --------------------------------------------- | -------------------------------------------------------------------------------- | ----------- |
+|-----------------------------------------------|----------------------------------------------------------------------------------|-------------|
 | `gotenberg.api.port`                          | The port the API should listen on                                                | `3000`      |
 | `gotenberg.api.startTimeout`                  | Set the time limit for the API to start                                          | `30s`       |
 | `gotenberg.api.timeout`                       | Set the time limit for requests                                                  | `30s`       |
@@ -92,7 +92,7 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 ### Ingress parameters
 
 | Name                  | Description                                         | Value   |
-| --------------------- | --------------------------------------------------- | ------- |
+|-----------------------|-----------------------------------------------------|---------|
 | `ingress.enabled`     | Whether to enable Ingress                           | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress       | `""`    |
 | `ingress.annotations` | Annotations for the Ingress resource                | `{}`    |
@@ -102,7 +102,7 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 ### Service parameters
 
 | Name                  | Description                                      | Value       |
-| --------------------- | ------------------------------------------------ | ----------- |
+|-----------------------|--------------------------------------------------|-------------|
 | `service.type`        | The type of service to create for the deployment | `ClusterIP` |
 | `service.port`        | The port to use on the service                   | `80`        |
 | `service.annotations` | Annotations for the service resource             | `{}`        |
@@ -111,7 +111,7 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 ### Gotenberg Service Account parameters
 
 | Name                         | Description                                                                 | Value  |
-| ---------------------------- | --------------------------------------------------------------------------- | ------ |
+|------------------------------|-----------------------------------------------------------------------------|--------|
 | `serviceAccount.create`      | Whether or not a service account should be created                          | `true` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`   |
 | `serviceAccount.name`        | A custom name for the service account, otherwise gotenberg.fullname is used | `""`   |
@@ -120,7 +120,7 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 ### Gotenberg Liveness Probes
 
 | Name                                | Description                                                 | Value   |
-| ----------------------------------- | ----------------------------------------------------------- | ------- |
+|-------------------------------------|-------------------------------------------------------------|---------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -131,7 +131,7 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 ### Gotenberg Readiness Probes
 
 | Name                                 | Description                                                  | Value   |
-| ------------------------------------ | ------------------------------------------------------------ | ------- |
+|--------------------------------------|--------------------------------------------------------------|---------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -141,38 +141,38 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 
 ### Gotenberg Startup Probes
 
-| Name                               | Description                                                | Value  |
-| ---------------------------------- | ---------------------------------------------------------- | ------ |
-| `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `true` |
-| `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`    |
-| `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`    |
-| `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`   |
-| `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`    |
-| `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`   |
+| Name                               | Description                                                | Value   |
+|------------------------------------|------------------------------------------------------------|---------|
+| `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
+| `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
+| `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
+| `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`    |
+| `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
+| `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
 
 ### Pod settings
 
-| Name       | Description                                     | Value |
-| ---------- | ----------------------------------------------- | ----- |
-| `replicas` | The number of replicas to use for the Gotenberg | `1`   |
+| Name       | Description                                           | Value |
+|------------|-------------------------------------------------------|-------|
+| `replicas` | The number of replicas to create of the Gotenberg Pod | `1`   |
 
 ### Gotenberg resource settings
 
 | Name        | Description                                        | Value |
-| ----------- | -------------------------------------------------- | ----- |
+|-------------|----------------------------------------------------|-------|
 | `resources` | The resource limits/requests for the Gotenberg pod | `{}`  |
 
 ### Pod disruption budget parameters
 
 | Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------|--------|
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                 | Description                                         | Value |
-| -------------------- | --------------------------------------------------- | ----- |
+|----------------------|-----------------------------------------------------|-------|
 | `initContainers`     | Define initContainers for the Gotenberg pod         | `[]`  |
 | `nodeSelector`       | Node labels for pod assignment                      | `{}`  |
 | `tolerations`        | Tolerations for pod assignment                      | `[]`  |
@@ -184,12 +184,19 @@ The chart supports the configuration of all [Gotenberg CLI options](https://gote
 
 ### Security context settings
 
-| Name              | Description                                     | Value |
-| ----------------- | ----------------------------------------------- | ----- |
-| `securityContext` | General security context settings for Gotenberg | `{}`  |
+| Name                         | Description                                     | Value  |
+|------------------------------|-------------------------------------------------|--------|
+| `securityContext`            | General security context settings for Gotenberg | `{}`   |
+| `securityContext.privileged` | Run Gotenberg as an unprivileged container      | `true` |
+| `securityContext.runAsGroup` | Run the Gotenberg container with the GID 1001   | `1001` |
+| `securityContext.runAsUser`  | Run the Gotenberg container with the UID 1001   | `1001` |
 
 ### Autoscaling settings
 
-| Name          | Description          | Value |
-| ------------- | -------------------- | ----- |
-| `autoscaling` | Autoscaling settings | `{}`  |
+| Name                                         | Description                                       | Value   |
+|----------------------------------------------|---------------------------------------------------|---------|
+| `autoscaling`                                | Autoscaling settings                              | `{}`    |
+| `autoscaling.enabled`                        | Enable or disable the HorizontalPodAutoscaler     | `false` |
+| `autoscaling.minReplicas`                    | The minimum replicas to autoscale to              | `1`     |
+| `autoscaling.maxReplicas`                    | The maximum replicas to autoscale to              | `10`    |
+| `autoscaling.targetCPUUtilizationPercentage` | The CPU utilization at which to start autoscaling | `80`    |

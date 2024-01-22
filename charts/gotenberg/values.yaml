@@ -352,7 +352,7 @@ readinessProbe:
 startupProbe:
   ## @param startupProbe.enabled Enable or disable the use of readiness probes
   ##
-  enabled: true
+  enabled: false
   ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
   ##
   initialDelaySeconds: 5
@@ -369,29 +369,6 @@ startupProbe:
   ##
   failureThreshold: 10
 
-## @section Pod settings
-##
-
-## @param replicas [default: 1] The number of replicas to use for the Gotenberg
-##
-replicas: 1
-
-## @section Gotenberg resource settings
-##
-
-## FMJStudios Gotenberg resource settings
-## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources The resource limits/requests for the Gotenberg pod
-##
-resources:
-  {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
 ## @section Pod disruption budget parameters
 ##
 
@@ -407,6 +384,23 @@ podDisruptionBudget:
 
 ## @section Pod settings
 ##
+
+## @param replicas [default: 1] The number of replicas to create of the Gotenberg Pod
+##
+replicas: 1
+
+## FMJStudios Gotenberg resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the Gotenberg pod
+##
+resources:
+  {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 ## Gotenberg init Containers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
@@ -460,9 +454,12 @@ podSecurityContext:
 
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ## @param securityContext [object] General security context settings for Gotenberg
+## @param securityContext.privileged [default: true] Run Gotenberg as an unprivileged container
+## @param securityContext.runAsGroup [default: 1001] Run the Gotenberg container with the GID 1001
+## @param securityContext.runAsUser [default: 1001] Run the Gotenberg container with the UID 1001
 ##
 securityContext:
-  privileged: true
+  privileged: false
   runAsGroup: 1001
   runAsUser: 1001
   # allowPrivilegeEscalation: false
@@ -477,6 +474,10 @@ securityContext:
 
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 ## @param autoscaling [object] Autoscaling settings
+## @param autoscaling.enabled [default: false] Enable or disable the HorizontalPodAutoscaler
+## @param autoscaling.minReplicas [default: 1] The minimum replicas to autoscale to
+## @param autoscaling.maxReplicas [default: 10] The maximum replicas to autoscale to
+## @param autoscaling.targetCPUUtilizationPercentage [default: 80] The CPU utilization at which to start autoscaling
 ##
 autoscaling:
   enabled: false

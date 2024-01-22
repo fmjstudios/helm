@@ -211,6 +211,7 @@ rbac:
 ## @param serviceAccount.create [default: true] Whether or not a service account should be created
 ## @param serviceAccount.annotations [object] Annotations to add to the service account
 ## @param serviceAccount.name [string] A custom name for the service account, otherwise uptimeKuma.fullname is used
+## @param serviceAccount.secrets [string] A list of secrets mountable by this service account
 ##
 serviceAccount:
   # Specifies whether a service account should be created
@@ -224,7 +225,7 @@ serviceAccount:
   # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
   secrets: []
 
-## @section Uptime-Kuma Probes
+## @section Uptime-Kuma Liveness Probes
 ##
 
 ## Uptime-Kuma Liveness Probe
@@ -250,61 +251,72 @@ livenessProbe:
   ##
   failureThreshold: 10
 
+## @section Uptime-Kuma Readiness Probes
+##
+
 ## Uptime-Kuma Readiness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: false
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
   ##
   failureThreshold: 3
+
+## @section Uptime-Kuma Startup Probes
+##
 
 ## Uptime-Kuma Startup Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: true
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
   ##
   failureThreshold: 10
 
-## @section Uptime-Kuma initContainers
+## @section Pod disruption budget parameters
 ##
 
-## Uptime-Kuma init Containers
-## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers [array] Define initContainers for the Uptime-Kuma pod
-initContainers: []
+## FMJ Studios Uptime-Kuma pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+##
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
 
-## @section Uptime-Kuma resource settings
+## @section Pod settings
 ##
 
 ## FMJStudios Uptime-Kuma resource settings
@@ -320,19 +332,10 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-## @section Pod disruption budget parameters
-##
-
-## FMJ Studios Uptime-Kuma pod disruption budget settings
-## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
-## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
-
-podDisruptionBudget:
-  enabled: true
-  minAvailable: 1
-  # maxUnavailable:
+## Uptime-Kuma init Containers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers [array] Define initContainers for the Uptime-Kuma pod
+initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -373,6 +376,9 @@ podSecurityContext:
   # fsGroup: 1001
   # supplementalGroups:
   #   - 1001
+
+## @section Security context settings
+##
 
 ## @param securityContext [object] General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/

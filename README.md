@@ -1,4 +1,4 @@
-<img src="https://helm.sh/img/boat.svg" alt="Helm Boat" align="right" height="316" width="409"/>
+<img src="https://seeklogo.com/images/H/helm-logo-9208DB3EE5-seeklogo.com.png" alt="Helm Logo" align="right" height="300" width="260"/>
 
 # FMJ Studios - Helm Charts
 
@@ -10,13 +10,13 @@ A collection of open-source [MIT][license]-licensed _Helm Charts_ written and ma
 
 ## 📖 Overview
 
-| Chart         | Images Used                                         | Description                                                                                                                    | Current Version |
-|---------------|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| Vaultwarden   | [vaultwarden/server][vaultwarden_images]            | Vaultwarden is an open-source, community-supported, Bitwarden-comptabile server written in Rust                                | 0.0.1           |
-| Uptime-Kuma   | [louislam/uptime-kuma][uptime_kuma_images]          | Uptime-Kuma is an open-source, self-hosted fancy uptime monitoring tool                                                        | 0.0.1           |
-| Linkwarden    | [linkwarden/linkwarden][linkwarden_images]          | Linkwarden is an open-source collaborative bookmark manager to collect, organize and preserve webpages                         | 0.0.1           |
-| Gotenberg     | [gotenberg/gotenberg][gotenberg_images]             | Gotenberg is a Docker-powered stateless API for PDF files.                                                                     | 0.0.1           |
-| Paperless-NGX | [paperless-ngx/paperless-ngx][paperless_ngx_images] | Paperless-NGX is a community-supported supercharged version of paperless - scan, index and archive all your physical documents | 0.0.1           |
+| Chart                            | Container Images Used                               | Current Version |
+|----------------------------------|-----------------------------------------------------|-----------------|
+| [Vaultwarden][vaultwarden_chart] | [vaultwarden/server][vaultwarden_images]            | 0.0.1           |
+| [Uptime-Kuma][uptimekuma_chart]  | [louislam/uptime-kuma][uptime_kuma_images]          | 0.0.1           |
+| [Linkwarden][linkwarden_chart]   | [linkwarden/linkwarden][linkwarden_images]          | 0.0.1           |
+| [Gotenberg][gotenberg_chart]     | [gotenberg/gotenberg][gotenberg_images]             | 0.0.1           |
+| [Paperless-NGX][paperless_chart] | [paperless-ngx/paperless-ngx][paperless_ngx_images] | 0.0.1           |
 
 ## ⚒️ Building
 
@@ -34,6 +34,13 @@ This project and its' contents are licensed under the **[MIT][license]** license
 - **E-Mail**: [info@fmj.studio](mailto:info@fmj.studio)
 
 <!-- INTERNAL REFERENCES -->
+
+<!-- Chart references -->
+[gotenberg_chart]: ./charts/gotenberg/
+[linkwarden_chart]: ./charts/linkwarden/
+[paperless_chart]: ./charts/paperless-ngx/
+[uptimekuma_chart]: ./charts/uptime-kuma/
+[vaultwarden_chart]: ./charts/vaultwarden/
 
 <!-- File references -->
 [license]: ./LICENSE

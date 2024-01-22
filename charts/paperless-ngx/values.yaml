@@ -52,7 +52,7 @@ fullnameOverride: ""
 ## Paperless configuration
 ## ref: https://docs.paperless-ngx.com/configuration/
 paperless:
-  ##
+  ## @param paperless.domain [string] Define the domain name for Paperless - will be re-used in Ingress
   ##
   domain: ""
 
@@ -74,7 +74,7 @@ paperless:
 
   ## @param paperless.address [default: "::"] The address Paperless should bind to
   ##
-  address: ""
+  address: "::"
   ## @param paperless.port [default: 8000] The port Paperless should bind to
   ##
   port: 8000
@@ -88,17 +88,18 @@ paperless:
   ## ref: https://flower.readthedocs.io/en/latest/index.html
   ##
   enableFlower: false
-  ## @param paperless.webserverWorkers [int] The amount for workers process to spawn for the Nginx server within the container
+  ## @param paperless.webserverWorkers [int] The amount of Nginx worker processes to spawn for the server within the container
   ## NOTE: The builtin default value '1' will be used when unset.
   ##
   webserverWorkers:
+  ## @param paperless.taskWorkers [int] The amount for task worker processes to spawn within the container
   ##
   ##
   taskWorkers: ""
-  ##
+  ## @param paperless.threadsPerWorker [int] The amount of threads to assign each task worker process within the container
   ##
   threadsPerWorker: ""
-  ##
+  ## @param paperless.workerTimeout [int] The amount of threads to assign each task worker process within the container
   ##
   workerTimeout: ""
   ##

@@ -1,0 +1,440 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "louislam/uptimeKuma"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "'1.23.11'"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "\"\""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override uptimeKuma.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override uptimeKuma.fullname",
+            "default": ""
+        },
+        "uptimeKuma": {
+            "type": "object",
+            "properties": {
+                "host": {
+                    "type": "string",
+                    "description": "The host address to bind Uptime-Kuma to",
+                    "default": "\"::\""
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port for Uptime-Kuma to listen on",
+                    "default": "3001"
+                },
+                "disableFrameSameOrigin": {
+                    "type": "boolean",
+                    "description": "Allow Uptime-Kuma to be embedded inside HTML 'iframes' of other origins",
+                    "default": "false"
+                },
+                "websocketOriginCheck": {
+                    "type": "string",
+                    "description": "Configures Uptime-Kuma to check whether the websocket 'ORIGIN' header matches the server's hostname",
+                    "default": "\"cors-like\""
+                },
+                "allowAllChromeExecutables": {
+                    "type": "string",
+                    "description": "Allow to specify any executables as Chromium",
+                    "default": "\"0\""
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "description": "The relative path to store data in",
+                            "default": "data"
+                        },
+                        "pvc": {
+                            "type": "object",
+                            "properties": {
+                                "size": {
+                                    "type": "string",
+                                    "description": "The size given to PVCs created from the above data",
+                                    "default": "5Gi"
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "The storageClass given to PVCs created from the above data",
+                                    "default": "standard"
+                                },
+                                "reclaimPolicy": {
+                                    "type": "string",
+                                    "description": "The resourcePolicy given to PVCs created from the above data",
+                                    "default": "Retain"
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Provide the name to an existing PVC",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "certs": {
+                    "type": "object",
+                    "properties": {
+                        "key": {
+                            "type": "string",
+                            "description": "The path to an TLS certificate key - ignored if 'existingSecret' is set",
+                            "default": "\"\""
+                        },
+                        "cert": {
+                            "type": "string",
+                            "description": "The path to an TLS certificate cert - ignored if 'existingSecret' is set",
+                            "default": "\"\""
+                        },
+                        "passphrase": {
+                            "type": "object",
+                            "properties": {
+                                "value": {
+                                    "type": "string",
+                                    "description": "The passphrase for the TLS certificate key",
+                                    "default": "\"\""
+                                },
+                                "existingSecret": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "The name of an existing Kubernetes secret",
+                                            "default": "\"\""
+                                        },
+                                        "key": {
+                                            "type": "string",
+                                            "description": "The key within the existing Kubernetes secret",
+                                            "default": "\"\""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "cloudflaredToken": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "The Cloudflare Tunnel token",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing Kubernetes secret",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key within the existing Kubernetes secret",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "node": {
+                    "type": "object",
+                    "properties": {
+                        "extraCaCerts": {
+                            "type": "string",
+                            "description": "The path to CA bundle for Node.js to use - in order to verify self-signed certificates",
+                            "default": "\"\""
+                        },
+                        "tlsRejectUnauthorized": {
+                            "type": "string",
+                            "description": "Ignore all TLS verification errors",
+                            "default": "\"\""
+                        },
+                        "options": {
+                            "type": "array",
+                            "description": "Specify extra CLI options to pass to Node.js",
+                            "default": "[]",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable Ingress",
+                    "default": "false"
+                },
+                "className": {
+                    "type": "string",
+                    "description": "The IngressClass to use for the pod's ingress",
+                    "default": "\"\""
+                },
+                "hosts": {
+                    "type": "array",
+                    "description": "A list of hosts for the Ingress resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "A list of hostnames and secret names to use for TLS",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service to create for the deployment",
+                    "default": "ClusterIP"
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port to use on the service",
+                    "default": "80"
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not to create RBAC resources",
+                    "default": "false"
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Extra rules to add to the Role",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise uptimeKuma.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "string",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": "\"\""
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": true
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "resources": {
+            "type": "object",
+            "description": "The resource limits/requests for the Uptime-Kuma pod",
+            "default": {}
+        },
+        "initContainers": {
+            "type": "array",
+            "description": "Define initContainers for the Uptime-Kuma pod",
+            "default": "[]",
+            "items": {
+                "type": "string"
+            }
+        },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node labels for pod assignment",
+            "default": {}
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod assignment",
+            "default": [],
+            "items": {}
+        },
+        "affinity": {
+            "type": "object",
+            "description": "Affinity for pod assignment",
+            "default": {}
+        }
+    }
+}

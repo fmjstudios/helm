@@ -74,6 +74,9 @@ README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
 # Internal Helm variables
 ifdef CHART
 CHART_NAME := $(shell basename $(CHART))
+CHART_VERSION := $(shell cat charts/$(CHART_NAME)/Chart.yaml | yq '.version')
+CHART_CHANGELOG_HEADER := $(shell cat changelog-sections.yaml | yq '$(CHART_NAME).header' )
+CHART_CHANGELOG_FOOTER := $(shell cat changelog-sections.yaml | yq '$(CHART_NAME).footer' )
 endif
 
 # ---------------------------
@@ -307,8 +310,10 @@ else
 readme-gen:
 	$(call log_success, "Generating README Helm Chart table for chart: $(CHART)")
 	$(npx) $(README_GEN_PACKAGE) \
+		-c $(CONFIG_DIR)/bitnami-readme-gen.json \
 		-v $(CHART)/values.yaml \
-		-r $(CHART)/README.md
+		-r $(CHART)/README.md \
+		-s $(CHART)/values.schema.json
 endif
 
 # make clean - Clean up after builds

@@ -1,0 +1,592 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "\"docker.io\""
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "gotenberg/gotenberg"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "\"8.0.1\""
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "\"\""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override gotenberg.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override gotenberg.fullname",
+            "default": ""
+        },
+        "gotenberg": {
+            "type": "object",
+            "properties": {
+                "api": {
+                    "type": "object",
+                    "properties": {
+                        "port": {
+                            "type": "number",
+                            "description": "The port the API should listen on",
+                            "default": "3000"
+                        },
+                        "startTimeout": {
+                            "type": "string",
+                            "description": "Set the time limit for the API to start",
+                            "default": "30s"
+                        },
+                        "timeout": {
+                            "type": "string",
+                            "description": "Set the time limit for requests",
+                            "default": "30s"
+                        },
+                        "rootPath": {
+                            "type": "string",
+                            "description": "Set the root path of the API",
+                            "default": "\"/\""
+                        },
+                        "traceHeader": {
+                            "type": "string",
+                            "description": "Set the header name to use for identifying requests",
+                            "default": "\"\""
+                        },
+                        "disableHealthCheckLogging": {
+                            "type": "boolean",
+                            "description": "Disable health check logging",
+                            "default": "false"
+                        }
+                    }
+                },
+                "chromium": {
+                    "type": "object",
+                    "properties": {
+                        "restartAfter": {
+                            "type": "number",
+                            "description": "Number of conversions after which Chromium will auto-restart",
+                            "default": "0"
+                        },
+                        "autoStart": {
+                            "type": "boolean",
+                            "description": "Automatically launch Chromium upon initialization if set to true",
+                            "default": "false"
+                        },
+                        "startTimeout": {
+                            "type": "string",
+                            "description": "Maximum duration to wait for Chromium to start or restart",
+                            "default": "20s"
+                        },
+                        "allowFileAccessFromFiles": {
+                            "type": "boolean",
+                            "description": "Allow file:// URIs to read other file:// URIs",
+                            "default": "false"
+                        },
+                        "allowInsecureLocalhost": {
+                            "type": "boolean",
+                            "description": "Ignore TLS/SSL errors on localhost",
+                            "default": "false"
+                        },
+                        "allowList": {
+                            "type": "string",
+                            "description": "Set the allowed URLs for Chromium using a regular expression - defaults to 'All'",
+                            "default": "\"\""
+                        },
+                        "denyList": {
+                            "type": "string",
+                            "description": "Set the denied URLs for Chromium using a regular expression",
+                            "default": "\"\""
+                        },
+                        "ignoreCertificateErrors": {
+                            "type": "boolean",
+                            "description": "Ignore the certificate errors",
+                            "default": "false"
+                        },
+                        "disableWebSecurity": {
+                            "type": "boolean",
+                            "description": "Don't enforce the same-origin policy",
+                            "default": "false"
+                        },
+                        "incognito": {
+                            "type": "boolean",
+                            "description": "Start Chromium with incognito mode",
+                            "default": "false"
+                        },
+                        "hostResolverRules": {
+                            "type": "string",
+                            "description": "Set custom mappings to the host resolver",
+                            "default": "\"\""
+                        },
+                        "proxyServer": {
+                            "type": "string",
+                            "description": "Set the outbound proxy server; this switch only affects HTTP and HTTPS requests",
+                            "default": "\"\""
+                        },
+                        "clearCache": {
+                            "type": "boolean",
+                            "description": "Clear Chromium cache between each conversion",
+                            "default": "false"
+                        },
+                        "clearCookies": {
+                            "type": "boolean",
+                            "description": "Clear Chromium cookies between each conversion",
+                            "default": "false"
+                        },
+                        "disableJavaScript": {
+                            "type": "boolean",
+                            "description": "Disable JavaScript",
+                            "default": "false"
+                        },
+                        "disableRoutes": {
+                            "type": "boolean",
+                            "description": "Disable the routes",
+                            "default": "false"
+                        }
+                    }
+                },
+                "libreOffice": {
+                    "type": "object",
+                    "properties": {
+                        "restartAfter": {
+                            "type": "number",
+                            "description": "Number of conversions after which LibreOffice will automatically restart",
+                            "default": "10"
+                        },
+                        "autoStart": {
+                            "type": "boolean",
+                            "description": "Automatically launch LibreOffice upon initialization if set to true",
+                            "default": "false"
+                        },
+                        "startTimeout": {
+                            "type": "string",
+                            "description": "Maximum duration to wait for LibreOffice to start or restart",
+                            "default": "20s"
+                        },
+                        "disableRoutes": {
+                            "type": "boolean",
+                            "description": "Disable the route",
+                            "default": "false"
+                        }
+                    }
+                },
+                "pdf": {
+                    "type": "object",
+                    "properties": {
+                        "engines": {
+                            "type": "string",
+                            "description": "Set the PDF engines and their order - defaults to 'All'",
+                            "default": "\"\""
+                        },
+                        "disableRoutes": {
+                            "type": "boolean",
+                            "description": "Disable the routes",
+                            "default": "false"
+                        }
+                    }
+                },
+                "webhook": {
+                    "type": "object",
+                    "properties": {
+                        "allowList": {
+                            "type": "string",
+                            "description": "Set the allowed URLs for the webhook feature using a regular expression",
+                            "default": "\"\""
+                        },
+                        "denyList": {
+                            "type": "string",
+                            "description": "Set the denied URLs for the webhook feature using a regular expression",
+                            "default": "\"\""
+                        },
+                        "errorAllowList": {
+                            "type": "string",
+                            "description": "Set the allowed URLs in case of an error using a regular expression",
+                            "default": "\"\""
+                        },
+                        "errorDenyList": {
+                            "type": "string",
+                            "description": "Set the denied URLs in case of an error using a regular expression",
+                            "default": "\"\""
+                        },
+                        "maxRetry": {
+                            "type": "number",
+                            "description": "Set the maximum number of retries",
+                            "default": "4"
+                        },
+                        "retryMinWait": {
+                            "type": "string",
+                            "description": "Set the minimum duration to wait before trying to call the webhook again",
+                            "default": "1s"
+                        },
+                        "retryMaxWait": {
+                            "type": "string",
+                            "description": "Set the maximum duration to wait before trying to call the webhook again",
+                            "default": "30s"
+                        },
+                        "clientTimeout": {
+                            "type": "string",
+                            "description": "Set the time limit for requests to the webhook",
+                            "default": "30s"
+                        },
+                        "disable": {
+                            "type": "boolean",
+                            "description": "Disable the webhook feature",
+                            "default": "false"
+                        }
+                    }
+                },
+                "prometheus": {
+                    "type": "object",
+                    "properties": {
+                        "collectInterval": {
+                            "type": "string",
+                            "description": "Set the interval for collecting modules' metrics",
+                            "default": "1s"
+                        },
+                        "namespace": {
+                            "type": "string",
+                            "description": "Set the namespace of modules' metrics",
+                            "default": "gotenberg"
+                        },
+                        "disableCollect": {
+                            "type": "boolean",
+                            "description": "Disable the collect of metrics",
+                            "default": "false"
+                        },
+                        "disableRouteLogging": {
+                            "type": "boolean",
+                            "description": "Disable the route logging",
+                            "default": "false"
+                        }
+                    }
+                },
+                "logging": {
+                    "type": "object",
+                    "properties": {
+                        "format": {
+                            "type": "string",
+                            "description": "Specify the format of logging",
+                            "default": "auto"
+                        },
+                        "level": {
+                            "type": "string",
+                            "description": "Choose the level of logging detail",
+                            "default": "info"
+                        },
+                        "fieldsPrefix": {
+                            "type": "string",
+                            "description": "Prepend a specified prefix to each field in the logs",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "shutdown": {
+                    "type": "object",
+                    "properties": {
+                        "duration": {
+                            "type": "string",
+                            "description": "Set the graceful shutdown duration",
+                            "default": "30s"
+                        }
+                    }
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable Ingress",
+                    "default": "false"
+                },
+                "className": {
+                    "type": "string",
+                    "description": "The IngressClass to use for the pod's ingress",
+                    "default": "\"\""
+                },
+                "hosts": {
+                    "type": "array",
+                    "description": "A list of hosts for the Ingress resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "A list of hostnames and secret names to use for TLS",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service to create for the deployment",
+                    "default": "ClusterIP"
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port to use on the service",
+                    "default": "80"
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise gotenberg.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "replicas": {
+            "type": "number",
+            "description": "The number of replicas to create of the Gotenberg Pod",
+            "default": "1"
+        },
+        "resources": {
+            "type": "object",
+            "description": "The resource limits/requests for the Gotenberg pod",
+            "default": {}
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "initContainers": {
+            "type": "array",
+            "description": "Define initContainers for the Gotenberg pod",
+            "default": "[]",
+            "items": {
+                "type": "string"
+            }
+        },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node labels for pod assignment",
+            "default": {}
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod assignment",
+            "default": [],
+            "items": {}
+        },
+        "affinity": {
+            "type": "object",
+            "description": "Affinity for pod assignment",
+            "default": {}
+        },
+        "securityContext": {
+            "type": "object",
+            "properties": {
+                "privileged": {
+                    "type": "boolean",
+                    "description": "Run Gotenberg as an unprivileged container",
+                    "default": "true"
+                },
+                "runAsGroup": {
+                    "type": "number",
+                    "description": "Run the Gotenberg container with the GID 1001",
+                    "default": "1001"
+                },
+                "runAsUser": {
+                    "type": "number",
+                    "description": "Run the Gotenberg container with the UID 1001",
+                    "default": "1001"
+                }
+            }
+        },
+        "autoscaling": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the HorizontalPodAutoscaler",
+                    "default": "false"
+                },
+                "minReplicas": {
+                    "type": "number",
+                    "description": "The minimum replicas to autoscale to",
+                    "default": "1"
+                },
+                "maxReplicas": {
+                    "type": "number",
+                    "description": "The maximum replicas to autoscale to",
+                    "default": "10"
+                },
+                "targetCPUUtilizationPercentage": {
+                    "type": "number",
+                    "description": "The CPU utilization at which to start autoscaling",
+                    "default": "80"
+                }
+            }
+        }
+    }
+}

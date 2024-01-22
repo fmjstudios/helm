@@ -1,0 +1,1072 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "vaultwarden/server"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "'1.30.1-alpine'"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "\"\""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override vaultwarden.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override vaultwarden.fullname",
+            "default": ""
+        },
+        "vaultwarden": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "description": "The domain of the Vaultwarden installation",
+                    "default": "\"\""
+                },
+                "web": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Whether or not to enable the Vaultwarden Web UI - enabled by default",
+                            "default": "true"
+                        },
+                        "folder": {
+                            "type": "string",
+                            "description": "A custom folder from which to load assets for the Web UI - defaults to 'web-vault/'",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "allowSends": {
+                    "type": "boolean",
+                    "description": "Controls whether users are allowed to create Bitwarden Sends. Applies globally to all users.",
+                    "default": true
+                },
+                "allowEmergencyAccess": {
+                    "type": "boolean",
+                    "description": "Controls whether users can enable emergency access to their accounts. Applies globally to all users.",
+                    "default": "true"
+                },
+                "allowEmailChange": {
+                    "type": "boolean",
+                    "description": "Controls whether users can change their email. Applies globally to all users.",
+                    "default": "true"
+                },
+                "enableOrgEvents": {
+                    "type": "boolean",
+                    "description": "Controls whether event logging is enabled for organizations. Applies to organizations.",
+                    "default": "false"
+                },
+                "retainEventsDays": {
+                    "type": "string",
+                    "description": "Number of days to retain events stored in the database.",
+                    "default": "\"\""
+                },
+                "ipHeader": {
+                    "type": "string",
+                    "description": "The Client IP Header, defaults to \"X-Forwarded-For\".",
+                    "default": "X-Forwarded-For"
+                },
+                "disable2FARemember": {
+                    "type": "boolean",
+                    "description": "Disable 2FA remembrance.",
+                    "default": "false"
+                },
+                "orgCreationUsers": {
+                    "type": "string",
+                    "description": "Controls which users can create new orgs.",
+                    "default": "\"\""
+                },
+                "enableOrgGroups": {
+                    "type": "boolean",
+                    "description": "Controls whether group support is enabled for organizations",
+                    "default": "false"
+                },
+                "allowedIframeAncestors": {
+                    "type": "string",
+                    "description": "Allowed iframe ancestors (Know the risks!)",
+                    "default": "\"\""
+                },
+                "adminToken": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "The value for the Vaultwarden admin token",
+                            "default": "\"\""
+                        },
+                        "disable": {
+                            "type": "boolean",
+                            "description": "Disable token authentication for the admin panel",
+                            "default": "false"
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing Secret containing the admin token",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key name within the previously named existingSecret",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "rootPath": {
+                            "type": "string",
+                            "description": "The data folder is used for all files by default",
+                            "default": "/data"
+                        },
+                        "paths": {
+                            "type": "object",
+                            "properties": {
+                                "rsaKey": {
+                                    "type": "string",
+                                    "description": "The file path for the RSA key, 'data/rsa_key' by default",
+                                    "default": "\"\""
+                                },
+                                "iconCache": {
+                                    "type": "string",
+                                    "description": "The path for icon cache, 'data/icon_cache' by default",
+                                    "default": "\"\""
+                                },
+                                "attachments": {
+                                    "type": "string",
+                                    "description": "The mail attachments path, 'data/attachments' by default",
+                                    "default": "\"\""
+                                },
+                                "sends": {
+                                    "type": "string",
+                                    "description": "The mail sends path, 'data/sends' by default",
+                                    "default": "\"\""
+                                },
+                                "tmp": {
+                                    "type": "string",
+                                    "description": "The temporary data path, 'data/tmp' by default",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "pvc": {
+                            "type": "object",
+                            "properties": {
+                                "size": {
+                                    "type": "string",
+                                    "description": "The size given to PVCs created from the above data",
+                                    "default": "5Gi"
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "The storageClass given to PVCs created from the above data",
+                                    "default": "standard"
+                                },
+                                "reclaimPolicy": {
+                                    "type": "string",
+                                    "description": "The resourcePolicy given to PVCs created from the above data",
+                                    "default": "Retain"
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Provide the name to an existing PVC",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "email": {
+                    "type": "object",
+                    "properties": {
+                        "attemptsLimit": {
+                            "type": "number",
+                            "description": "Maximum attempts before an email token is reset requiring a new email",
+                            "default": "3"
+                        },
+                        "tokenExpirationTime": {
+                            "type": "number",
+                            "description": "Token expiration time",
+                            "default": "600"
+                        },
+                        "tokenSize": {
+                            "type": "number",
+                            "description": "Email token size",
+                            "default": "6"
+                        },
+                        "smtp": {
+                            "type": "object",
+                            "properties": {
+                                "host": {
+                                    "type": "string",
+                                    "description": "Hostname of the Mail server",
+                                    "default": "\"\""
+                                },
+                                "from": {
+                                    "type": "string",
+                                    "description": "The from-address for emails sent by Vaultwarden",
+                                    "default": "\"\""
+                                },
+                                "fromName": {
+                                    "type": "string",
+                                    "description": "The from-name for emails sent by Vaultwarden",
+                                    "default": "Vaultwarden"
+                                },
+                                "security": {
+                                    "type": "string",
+                                    "description": "Either 'starttls', 'force_tls' or 'off'",
+                                    "default": "starttls"
+                                },
+                                "port": {
+                                    "type": "number",
+                                    "description": "SMTP port used",
+                                    "default": "587"
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "description": "SMTP user",
+                                    "default": "\"\""
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "description": "SMTP password",
+                                    "default": "\"\""
+                                },
+                                "auth": {
+                                    "type": "string",
+                                    "description": "Defaults for SSL is \"Plain\" and \"Login\" and nothing for Non-SSL connections.",
+                                    "default": "Plain"
+                                },
+                                "existingSecret": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "The name of an existing BasicAuth secret",
+                                            "default": "\"\""
+                                        }
+                                    }
+                                },
+                                "timeout": {
+                                    "type": "number",
+                                    "description": "General SMTP settings",
+                                    "default": "15"
+                                },
+                                "sendmail": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "description": "Whether or not to use sendmail for sending emails",
+                                            "default": "false"
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "description": "The path to which sendmail binary to use.",
+                                            "default": "\"\""
+                                        }
+                                    }
+                                },
+                                "heloName": {
+                                    "type": "string",
+                                    "description": "Server name sent during the SMTP HELO",
+                                    "default": "\"\""
+                                },
+                                "embedImages": {
+                                    "type": "boolean",
+                                    "description": "Embed images as email attachments",
+                                    "default": "false"
+                                },
+                                "acceptInvalidHostnames": {
+                                    "type": "boolean",
+                                    "description": "Accept Invalid Hostnames",
+                                    "default": "false"
+                                },
+                                "acceptInvalidCertificates": {
+                                    "type": "boolean",
+                                    "description": "Accept Invalid Certificates",
+                                    "default": "false"
+                                },
+                                "requireDeviceEmail": {
+                                    "type": "boolean",
+                                    "description": "Require new device emails.",
+                                    "default": "false"
+                                },
+                                "debug": {
+                                    "type": "boolean",
+                                    "description": "Enable debug mode",
+                                    "default": "false"
+                                }
+                            }
+                        }
+                    }
+                },
+                "websocket": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Whether to enable the Websocket - disabled by default",
+                            "default": "false"
+                        },
+                        "address": {
+                            "type": "string",
+                            "description": "The address to which the Websocket should bind",
+                            "default": "\"0.0.0.0\""
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port to which on which the Websocket should be made available",
+                            "default": "3012"
+                        }
+                    }
+                },
+                "database": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'",
+                            "default": "\"sqlite\""
+                        },
+                        "user": {
+                            "type": "string",
+                            "description": "Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'",
+                            "default": "\"\""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'",
+                            "default": "\"\""
+                        },
+                        "host": {
+                            "type": "string",
+                            "description": "Provide the host to the (external) Vaultwarden database - ignored if the database type is 'sqlite'",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "string",
+                            "description": "Provide the port to the (external) Vaultwarden database - ignored if the database type is 'sqlite'",
+                            "default": "\"\""
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Provide the name to the (external) Vaultwarden database - ignored if the database type is 'sqlite'",
+                            "default": "\"\""
+                        },
+                        "uri": {
+                            "type": "string",
+                            "description": "Manually provide the entire URI to the (external) Vaultwarden database - ignored if the database type is 'sqlite'",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing secret",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key within the existing secret",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "enableWAL": {
+                            "type": "boolean",
+                            "description": "Enable write-ahead logging",
+                            "default": "false"
+                        },
+                        "maxConnections": {
+                            "type": "number",
+                            "description": "Maximum database connections",
+                            "default": "10"
+                        },
+                        "timeout": {
+                            "type": "number",
+                            "description": "Database timeout",
+                            "default": "30"
+                        },
+                        "connectionRetries": {
+                            "type": "number",
+                            "description": "Database connection retries",
+                            "default": "15"
+                        }
+                    }
+                },
+                "limits": {
+                    "type": "object",
+                    "properties": {
+                        "logins": {
+                            "type": "object",
+                            "properties": {
+                                "ratelimitSeconds": {
+                                    "type": "number",
+                                    "description": "Number of seconds between login requests",
+                                    "default": "60"
+                                },
+                                "ratelimitMaxBurst": {
+                                    "type": "number",
+                                    "description": "Allow bursts of requests up to this amount",
+                                    "default": "10"
+                                },
+                                "adminRatelimitSeconds": {
+                                    "type": "number",
+                                    "description": "Number of seconds between admin login requests",
+                                    "default": "300"
+                                },
+                                "adminRatelimitMaxBurst": {
+                                    "type": "number",
+                                    "description": "Allow bursts of admin requests up to this amount",
+                                    "default": "300"
+                                },
+                                "adminSessionLifetime": {
+                                    "type": "number",
+                                    "description": "The lifetime of an admin session",
+                                    "default": "20"
+                                }
+                            }
+                        },
+                        "attachments": {
+                            "type": "object",
+                            "properties": {
+                                "orgLimit": {
+                                    "type": "string",
+                                    "description": "Per-organization attachment storage limit (KB)",
+                                    "default": "\"\""
+                                },
+                                "userLimit": {
+                                    "type": "string",
+                                    "description": "Per-user attachment storage limit (KB)",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "passwords": {
+                    "type": "object",
+                    "properties": {
+                        "iterations": {
+                            "type": "number",
+                            "description": "Number of password hash iterations",
+                            "default": "350000"
+                        },
+                        "hintsAllowed": {
+                            "type": "boolean",
+                            "description": "Allow sending of password hints",
+                            "default": "false"
+                        },
+                        "showHint": {
+                            "type": "boolean",
+                            "description": "Show hints directly on login page - disabled by default",
+                            "default": "false"
+                        }
+                    }
+                },
+                "signup": {
+                    "type": "object",
+                    "properties": {
+                        "allowed": {
+                            "type": "boolean",
+                            "description": "Whether or not new users can register",
+                            "default": "true"
+                        },
+                        "verify": {
+                            "type": "boolean",
+                            "description": "Whether email verification is need to sign up",
+                            "default": "true"
+                        },
+                        "verifyResendTime": {
+                            "type": "number",
+                            "description": "How many seconds to wait to resend a verification email",
+                            "default": "3600"
+                        },
+                        "verifyResendLimit": {
+                            "type": "number",
+                            "description": "How many verificatione mails will be sent in total",
+                            "default": "6"
+                        },
+                        "domainWhitelist": {
+                            "type": "string",
+                            "description": "A comma-separated list of domains which can always register",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "authenticatorDisableTimeDrift": {
+                            "type": "boolean",
+                            "description": "Allow 2FA time drift",
+                            "default": "false"
+                        },
+                        "incomplete2FATimeLimit": {
+                            "type": "number",
+                            "description": "Minutes to wait before a 2FA login is considere incomplete",
+                            "default": "3"
+                        },
+                        "yubikey": {
+                            "type": "object",
+                            "properties": {
+                                "enable": {
+                                    "type": "boolean",
+                                    "description": "Whether to enable authentication via YubiKeys",
+                                    "default": "false"
+                                },
+                                "clientId": {
+                                    "type": "string",
+                                    "description": "Yubikey client ID",
+                                    "default": "\"\""
+                                },
+                                "clientSecret": {
+                                    "type": "string",
+                                    "description": "Yubikey client Secret",
+                                    "default": "\"\""
+                                },
+                                "server": {
+                                    "type": "string",
+                                    "description": "Yubikey server",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "duo": {
+                            "type": "object",
+                            "properties": {
+                                "enable": {
+                                    "type": "boolean",
+                                    "description": "Whether to enable authentication via Duo",
+                                    "default": "false"
+                                },
+                                "integrationKey": {
+                                    "type": "string",
+                                    "description": "Duo integration key",
+                                    "default": "\"\""
+                                },
+                                "secretKey": {
+                                    "type": "string",
+                                    "description": "Duo secret key",
+                                    "default": "\"\""
+                                },
+                                "host": {
+                                    "type": "string",
+                                    "description": "Duo host",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "invitations": {
+                    "type": "object",
+                    "properties": {
+                        "allowed": {
+                            "type": "boolean",
+                            "description": "Invitations org admins to invite users, even when signups are disabled",
+                            "default": "true"
+                        },
+                        "orgName": {
+                            "type": "string",
+                            "description": "Generic organization name for Emails",
+                            "default": "Vaultwarden"
+                        },
+                        "expirationHours": {
+                            "type": "number",
+                            "description": "Number of hours which an email invitation lasts",
+                            "default": "120"
+                        }
+                    }
+                },
+                "pushNotifications": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Whether to enable push notifications",
+                            "default": "false"
+                        },
+                        "installationId": {
+                            "type": "string",
+                            "description": "Installation ID from 'https://bitwarden.com/host'",
+                            "default": "\"\""
+                        },
+                        "installationKey": {
+                            "type": "string",
+                            "description": "Installation Key from 'https://bitwarden.com/host'",
+                            "default": "\"\""
+                        },
+                        "relayUri": {
+                            "type": "string",
+                            "description": "Set a custom relay URI for push notifications",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "hibpApiKey": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "The HIBP API key value",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing Secret containing the HIBP API key",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key within an existing Secret which contains the key",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "jobScheduler": {
+                    "type": "object",
+                    "properties": {
+                        "pollIntervalMS": {
+                            "type": "number",
+                            "description": "The poll interval for the job schedular in milliseconds",
+                            "default": "30000"
+                        },
+                        "sendPurgeSchedule": {
+                            "type": "string",
+                            "description": "Cron schedule to purge outdated Bitwarden Sends",
+                            "default": "'0 5 * * * *'"
+                        },
+                        "trashPurgeSchedule": {
+                            "type": "string",
+                            "description": "Cron schedule to purge trashed items",
+                            "default": "'0 5 0 * * *'"
+                        },
+                        "incomplete2FASchedule": {
+                            "type": "string",
+                            "description": "Cron schedule to check for incomplete 2FA logins",
+                            "default": "'0 5 0 * * *'"
+                        },
+                        "emergencyNotificationReminder": {
+                            "type": "string",
+                            "description": "Cron schedule for expiration reminders",
+                            "default": "'0 3 * * * *'"
+                        },
+                        "emergencyRequestTimeout": {
+                            "type": "string",
+                            "description": "Cron schedule for emergency access requests",
+                            "default": "'0 7 * * * *'"
+                        },
+                        "eventCleanup": {
+                            "type": "string",
+                            "description": "Cron schedule for event cleanups",
+                            "default": "'0 10 0 * * *'"
+                        },
+                        "trashAutoDeleteDays": {
+                            "type": "string",
+                            "description": "Number of days to wait before auto-deleting a trashed item.",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "logs": {
+                    "type": "object",
+                    "properties": {
+                        "level": {
+                            "type": "string",
+                            "description": "The configured logging level",
+                            "default": "info"
+                        },
+                        "extended": {
+                            "type": "boolean",
+                            "description": "Configure extended logging",
+                            "default": "true"
+                        },
+                        "timestampFormat": {
+                            "type": "string",
+                            "description": "Timestamp format used in extended logging.",
+                            "default": "\"%Y-%m-%d %H:%M:%S.%3f\""
+                        },
+                        "file": {
+                            "type": "string",
+                            "description": "Logging to a file",
+                            "default": "/var/log/vaultwarden.log"
+                        },
+                        "useSyslog": {
+                            "type": "boolean",
+                            "description": "Logging to Syslog",
+                            "default": "false"
+                        }
+                    }
+                },
+                "templates": {
+                    "type": "object",
+                    "properties": {
+                        "folder": {
+                            "type": "string",
+                            "description": "Templates data folder, by default embedded templates are used",
+                            "default": "\"\""
+                        },
+                        "reload": {
+                            "type": "boolean",
+                            "description": "Automatically reload the templates for every request",
+                            "default": "false"
+                        }
+                    }
+                },
+                "icons": {
+                    "type": "object",
+                    "properties": {
+                        "service": {
+                            "type": "string",
+                            "description": "Which service to use for fetching icons",
+                            "default": "internal"
+                        },
+                        "redirectCode": {
+                            "type": "number",
+                            "description": "The HTTP code to use for redirects to external services",
+                            "default": "302"
+                        },
+                        "disableDownloading": {
+                            "type": "boolean",
+                            "description": "Disable icon downloading",
+                            "default": "false"
+                        },
+                        "downloadTimeout": {
+                            "type": "number",
+                            "description": "Icon download timeout",
+                            "default": "10"
+                        },
+                        "blacklistRegex": {
+                            "type": "string",
+                            "description": "+|192\\.168\\.1\\.[0-9]+)$'] Icon blacklist Regex",
+                            "default": "'^(192\\.168\\.0\\."
+                        },
+                        "blacklistNonGlobalIPs": {
+                            "type": "boolean",
+                            "description": "Any IP which is not defined as a global IP will be blacklisted.",
+                            "default": "true"
+                        },
+                        "cache": {
+                            "type": "object",
+                            "properties": {
+                                "ttl": {
+                                    "type": "number",
+                                    "description": "Cache time-to-live for successfully obtained icons, in seconds",
+                                    "default": "259200"
+                                },
+                                "negttl": {
+                                    "type": "number",
+                                    "description": "Cache time-to-live for icons which weren't available, in seconds",
+                                    "default": "259200"
+                                }
+                            }
+                        }
+                    }
+                },
+                "rocket": {
+                    "type": "object",
+                    "properties": {
+                        "address": {
+                            "type": "string",
+                            "description": "The address Rocket should bind to",
+                            "default": "\"0.0.0.0\""
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port rocket should bind to",
+                            "default": "80"
+                        },
+                        "workers": {
+                            "type": "number",
+                            "description": "The amount of rocket workers to create",
+                            "default": "10"
+                        },
+                        "tls": {
+                            "type": "string",
+                            "description": "Rocket TLS configuration e.g.: \"{certs=\"/path/to/certs.pem\",key=\"/path/to/key.pem\"}\"",
+                            "default": "\"\""
+                        }
+                    }
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable Ingress",
+                    "default": "false"
+                },
+                "className": {
+                    "type": "string",
+                    "description": "The IngressClass to use for the pod's ingress",
+                    "default": "\"\""
+                },
+                "whitelist": {
+                    "type": "string",
+                    "description": "A comma-separated list of IP addresses to whitelist",
+                    "default": "\"\""
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "A list of hostnames and secret names to use for TLS",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "description": "A list of extra hosts for the Ingress resource (with vaultwarden.domain)",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service to create for the deployment",
+                    "default": "ClusterIP"
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port to use on the service",
+                    "default": "80"
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not to create RBAC resources",
+                    "default": "false"
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Extra rules to add to the Role",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise vaultwarden.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "initContainers": {
+            "type": "array",
+            "description": "Define initContainers for the main Vaultwarden server",
+            "default": "[]",
+            "items": {
+                "type": "string"
+            }
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod assignment",
+            "default": "[]",
+            "items": {
+                "type": "string"
+            }
+        }
+    }
+}

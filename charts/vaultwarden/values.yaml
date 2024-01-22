@@ -356,7 +356,7 @@ vaultwarden:
       ##
       key: ""
 
-    ## @param vaultarden.database.enableWAL [default: false] Enable write-ahead logging
+    ## @param vaultwarden.database.enableWAL [default: false] Enable write-ahead logging
     ## Enable WAL for the DB - only actually used when the database type is 'sqlite'
     ## Set to false to avoid enabling WAL during startup.
     ## Note that if the DB already has WAL enabled, you will also need to disable WAL in the DB,
@@ -366,15 +366,15 @@ vaultwarden:
     ##
     enableWAL: false
 
-    ## @param vaultarden.database.maxConnections [default: 10] Maximum database connections
+    ## @param vaultwarden.database.maxConnections [default: 10] Maximum database connections
     ## Define the size of the connection pool used for connecting to the database.
     maxConnections: 10
 
-    ## @param vaultarden.database.timeout [default: 30] Database timeout
+    ## @param vaultwarden.database.timeout [default: 30] Database timeout
     ## Timeout when acquiring database connection
     timeout: 30
 
-    ## @param vaultarden.database.connectionRetries [default: 15] Database connection retries
+    ## @param vaultwarden.database.connectionRetries [default: 15] Database connection retries
     ## Number of times to retry the database connection during startup, with 1 second delay between each retry, set to
     ## 0 to retry indefinitely
     ##
@@ -454,7 +454,7 @@ vaultwarden:
     ##
     verify: true
 
-    ## @param vaultwarden.signup.verify [default: 3600] How many seconds to wait to resend a verification email
+    ## @param vaultwarden.signup.verifyResendTime [default: 3600] How many seconds to wait to resend a verification email
     ## If signups.verify is set to true, this limits how many seconds after the last time
     ## an email verification link has been sent another verification email will be sent
     ##
@@ -624,7 +624,7 @@ vaultwarden:
     ## Defaults to hourly (7 minutes after the hour). Set blank to disable this job.
     ##
     emergencyRequestTimeout: "0 7 * * * *"
-    ## @param vaultwarden.jobScheduler.emergencyRequestTimeout [default: '0 10 0 * * *'] Cron schedule for event cleanups
+    ## @param vaultwarden.jobScheduler.eventCleanup [default: '0 10 0 * * *'] Cron schedule for event cleanups
     ## Cron schedule of the job that cleans old events from the event table.
     ## Defaults to daily. Set blank to disable this job. Also without EVENTS_DAYS_RETAIN set, this job will not start.
     ##
@@ -724,10 +724,10 @@ vaultwarden:
     ## Settings for the Favicon cache
     ##
     cache:
-      ## @param vaultwarden.cache.ttl [default: 259200] Cache time-to-live for successfully obtained icons, in seconds
+      ## @param vaultwarden.icons.cache.ttl [default: 259200] Cache time-to-live for successfully obtained icons, in seconds
       ## (0 is "forever") - default is 72 days
       ttl: 259200
-      ## @param vaultwarden.cache.negttl [default: 259200] Cache time-to-live for icons which weren't available, in seconds
+      ## @param vaultwarden.icons.cache.negttl [default: 259200] Cache time-to-live for icons which weren't available, in seconds
       ## (0 is "forever") - default is 72 days
       negttl: 259200
 
@@ -754,9 +754,10 @@ vaultwarden:
 ## FMJ Studios Vaultwarden Ingress settings
 ## @param ingress.enabled [default: false] Whether to enable Ingress
 ## @param ingress.className [string] The IngressClass to use for the pod's ingress
+## @param ingress.whitelist [string] A comma-separated list of IP addresses to whitelist
 ## @param ingress.annotations [object] Annotations for the Ingress resource
-## @param ingress.hosts [array] A list of hosts for the Ingress resource
 ## @param ingress.tls [array] A list of hostnames and secret names to use for TLS
+## @param ingress.extraHosts [array] A list of extra hosts for the Ingress resource (with vaultwarden.domain)
 
 ingress:
   enabled: false
@@ -784,6 +785,7 @@ ingress:
 ## @param service.port [default: 80] The port to use on the service
 ## @param service.annotations [object] Annotations for the service resource
 ## @param service.labels [object] Labels for the service resource
+## @param service.ipFamilyPolicy [object] The Kubernetes ipFamilyPolicy
 
 service:
   type: ClusterIP
@@ -811,6 +813,7 @@ rbac:
 ## @param serviceAccount.create [default: true] Whether or not a service account should be created
 ## @param serviceAccount.annotations [object] Annotations to add to the service account
 ## @param serviceAccount.name [string] A custom name for the service account, otherwise vaultwarden.fullname is used
+## @param serviceAccount.secrets [array] A list of secrets mountable by this service account
 ##
 serviceAccount:
   # Specifies whether a service account should be created
@@ -824,7 +827,7 @@ serviceAccount:
   # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
   secrets: []
 
-## @section Vaultwarden Probes
+## @section Vaultwarden Liveness Probes
 ##
 
 ## Vaultwarden Liveness Probe
@@ -850,66 +853,80 @@ livenessProbe:
   ##
   failureThreshold: 10
 
+## @section Vaultwarden Readiness Probes
+##
+
 ## Vaultwarden Readiness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: false
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
   ##
   failureThreshold: 3
+
+## @section Vaultwarden Startup Probes
+##
 
 ## Vaultwarden Startup Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: false
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
   ##
   failureThreshold: 10
 
 ## @section Vaultwarden initContainers
 ##
 
-## Vaultwarden init Containers
-## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers [array] Define initContainers for the main Vaultwarden server
-initContainers: []
-
-## @section Vaultwarden resource settings
+## @section Pod disruption budget parameters
 ##
 
-## FMJStudios Vaultwarden resource settings
+## FMJ Studios Vaultwarden pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
+
+## @section Pod settings
+##
+
+## FMJ Studios Vaultwarden resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources The resource limits/requests for the Vaultwarden pod
+## @param resources [object] The resource limits/requests for the Vaultwarden pod
 ##
 resources:
   {}
@@ -920,31 +937,22 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-## @section Pod disruption budget parameters
-##
+## Vaultwarden init Containers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers [array] Define initContainers for the main Vaultwarden server
+initContainers: []
 
-## FMJ Studios Vaultwarden pod disruption budget settings
-## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
-## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
-
-podDisruptionBudget:
-  enabled: true
-  minAvailable: 1
-  # maxUnavailable:
-
-## @param nodeSelector Node labels for pod assignment
+## @param nodeSelector [object] Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##
 nodeSelector: {}
 
-## @param tolerations Tolerations for pod assignment
+## @param tolerations [array] Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
 tolerations: []
 
-## @param affinity Affinity for pod assignment
+## @param affinity [object] Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
 affinity: {}
@@ -973,6 +981,9 @@ podSecurityContext:
   # fsGroup: 1001
   # supplementalGroups:
   #   - 1001
+
+## @section Security context settings
+##
 
 ## @param securityContext [object] General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
