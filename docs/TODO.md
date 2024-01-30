@@ -19,6 +19,7 @@
 - [ ] [OpenGist](https://github.com/thomiceli/opengist) chart
 - [ ] [Drift](https://github.com/MaxLeiter/Drift) chart
 - [ ] [FreshRSS](https://freshrss.org/index.html) chart
+- [ ] [Outline](https://www.getoutline.com/) chart
 
 ## 🔁 Changes (across all charts)
 
