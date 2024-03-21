@@ -20,6 +20,10 @@
 - [ ] [Drift](https://github.com/MaxLeiter/Drift) chart
 - [ ] [FreshRSS](https://freshrss.org/index.html) chart
 - [ ] [Outline](https://www.getoutline.com/) chart
+- [ ] [Weblate](https://weblate.org/en/) chart
+
+> [!NOTE]
+> Most important are `ntfy.sh`, `GoBackup`, `Pretix`, `Shopware 6` and `Weblate`
 
 ## 🔁 Changes (across all charts)
 
