@@ -21,9 +21,10 @@
 - [ ] [FreshRSS](https://freshrss.org/index.html) chart
 - [ ] [Outline](https://www.getoutline.com/) chart
 - [ ] [Weblate](https://weblate.org/en/) chart
+- [ ] [Pterodactyl](https://pterodactyl.io/) chart
 
 > [!NOTE]
-> Most important are `ntfy.sh`, `GoBackup`, `Pretix`, `Shopware 6` and `Weblate`
+> Most important are `ntfy.sh`, `GoBackup`, `Pretix`, `Shopware 6`, `Weblate` and `Pterodactyl`
 
 ## 🔁 Changes (across all charts)
 
