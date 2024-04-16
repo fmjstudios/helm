@@ -23,6 +23,7 @@
 - [ ] [Weblate](https://weblate.org/en/) chart
 - [ ] [Pterodactyl](https://pterodactyl.io/) chart
 - [ ] [Metabase](https://metabase.com) chart
+- [ ] [DBGate](https://github.com/dbgate/dbgate) chart
 
 > [!NOTE]
 > Most important are `ntfy.sh`, `GoBackup`, `Pretix`, `Shopware 6`, `Weblate` and `Pterodactyl`
