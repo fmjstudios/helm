@@ -16,6 +16,9 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Secret files
+secrets
+
 #######################################
 # MISCELLANEOUS
 #######################################
