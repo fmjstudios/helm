@@ -53,6 +53,7 @@ OUT_DIR := $(ROOT_DIR)/dist
 SCRIPT_DIR := $(ROOT_DIR)/scripts
 CONFIG_DIR := $(ROOT_DIR)/config
 K8S_DIR := $(ROOT_DIR)/k8s
+TLS_DIR := $(ROOT_DIR)/secrets
 
 # Documentation
 DOCS_DIR := $(ROOT_DIR)/docs
@@ -61,12 +62,15 @@ GIT_CLIFF_CONFIG := $(DOCS_DIR)/cliff.toml
 DATE := $(shell date '+%d.%m.%y-%T')
 
 # Executables
+kubectl := kubectl
 helm := helm
 helmfile := helmfile
 kind := kind
 npx := npx
+cfssl := cfssl
+cfssljson := cfssljson
 
-EXECUTABLES := $(helm) $(helmfile) $(kind) $(npx)
+EXECUTABLES := $(helm) $(helmfile) $(kind) $(npx) $(cfssl) $(cfssljson) $(kubectl)
 
 # Packages
 README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
@@ -117,6 +121,20 @@ endef
 
 define log_attention
  $(call log, $(1), "red")
+endef
+
+define kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+secretGenerator:
+  - name: root-ca
+    type: "kubernetes.io/tls"
+    namespace: cert-manager
+    files:
+      - tls.crt=ca.pem
+      - tls.key=ca-key.pem
+    options:
+      disableNameSuffixHash: true
 endef
 
 
@@ -177,10 +195,10 @@ dev-cluster-bootstrap:
 else
 dev-cluster-bootstrap:
 	$(call log_success, "Bootstrapping development cluster")
-	$(SCRIPT_DIR)/secrets.sh certs
 	$(helmfile) apply -f $(K8S_DIR)/helmfile.yaml
+	$(kubectl) apply -k $(K8S_DIR)/kustomize
+	$(SCRIPT_DIR)/hosts.sh add
 endif
-
 
 # Cluster Cleanup
 define DEV_CLEANUP_INFO
@@ -198,6 +216,7 @@ dev-cleanup:
 	$(call log_attention, "Deleting local 'kind' Kubernetes cluster!")
 	$(kind) delete cluster \
 		--name $(PROJ_NAME)
+	$(SCRIPT_DIR)/hosts.sh remove
 endif
 
 # ---------------------------
@@ -297,6 +316,24 @@ else
 endif
 endif
 
+# Generate TLS secrets
+define SECRETS_INFO
+# Cloudflare's `cfssl` tool to generate a root CA for use within the local Kubernetes cluster.
+# Afterwards instruct Kustomize to create a secret named 'root-ca' in the 'cert-manager'
+# namespace so that TLS certificates may be issued.
+endef
+.PHONY: secrets
+ifeq ($(PRINT_HELP), y)
+secrets:
+	echo "$$SECRETS_INFO"
+else
+secrets: create-tls
+	$(call log_success, "Generating TLS certificates for local Kubernetes cluster!")
+	cd $(TLS_DIR) && cfssl genkey -initca $(CONFIG_DIR)/cfssl-ca-csr.json | cfssljson -bare ca
+	$(file > $(TLS_DIR)/kustomization.yaml,$(kustomization))
+endif
+
+# Generate README
 define GENERATE_README_INFO
 # Run Bitnami's (VMware) README generator for Helm chart on the specified Chart.
 # The generator will use the configuration file 'reamde-gen.json' in the 'config'
@@ -319,8 +356,10 @@ endif
 # make clean - Clean up after builds
 .PHONY: clean
 clean:
-	@echo Removing temporary distribution directories..
+	$(call log_notice, "Removing temporary distribution directories..")
 	@rm -rf $(OUT_DIR)
+	@rm -rf $(TLS_DIR)
+
 
 .PHONY: tools-check
 tools-check:
@@ -334,3 +373,7 @@ create-dist:
 	$(call log_notice, "Creating distribution directory for Helm charts at: $(OUT_DIR)")
 	@mkdir -p $(OUT_DIR)
 
+.PHONY: create-tls
+create-tls:
+	$(call log_notice, "Creating directory for TLS certificates at: $(TLS_DIR)")
+	@mkdir -p $(TLS_DIR)
