@@ -17,11 +17,21 @@
 lib::paths::root() {
   path=$(git rev-parse --show-toplevel)
 
-  echo -n "${path%/}"
+  echo "${path%/}"
 }
 
-lib::paths::tpl() {
-  base=${1} value=${2}
+# Return the secrets path
+lib::paths::secrets() {
+  root_path=$(lib::paths::root)
 
-  printf "%s/%s" "${base}" "${value}"
+  path="${root_path}/secrets"
+  echo "${path%/}"
+}
+
+# Return the k8s path
+lib::paths::k8s() {
+  root_path=$(lib::paths::root)
+
+  path="${root_path}/k8s"
+  echo "${path%/}"
 }
