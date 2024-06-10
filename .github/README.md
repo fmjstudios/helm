@@ -1,6 +1,4 @@
-<img src="https://seeklogo.com/images/H/helm-logo-9208DB3EE5-seeklogo.com.png" alt="Helm Logo" align="right" height="300" width="260"/>
-
-# FMJ Studios - Helm Charts
+# FMJ Studios - Helm Charts <img src="https://seeklogo.com/images/H/helm-logo-9208DB3EE5-seeklogo.com.png" alt="Helm Logo" align="right" height="300" width="260"/>
 
 A collection of open-source [MIT][license]-licensed _Helm Charts_ written and maintained by `FMJ Studios` for use with [Kubernetes][kubernetes] `v1.26` and above. The charts adhere to [Helm][helm]'s best practices and prefer the use of raw YAML manifests instead of relying on Helm function libraries or other dependencies. This eases the development overhead and also allows chart users to read and learn from the chart sources. Furthermore flat dependency trees are something all developers can appreciate. Lastly the charts are also published to [Artifacthub][artifacthub] for discoverability purposes and (perhaps) for easier traversal of `values.yaml` or the packages manifests.
 
@@ -26,7 +24,7 @@ The project uses the `Make` build system with targets defined in the projects to
 
 ### 📜 License
 
-This project and its' contents are licensed under the **[MIT][license]** license.
+This project and it's contents are licensed under the Open Source **[MIT][license]** license.
 
 ### ✉ Contact
 
