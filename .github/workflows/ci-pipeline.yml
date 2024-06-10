@@ -1,0 +1,49 @@
+name: 'Continuous Integration Pipeline'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  setup:
+    name: Setup a local Kind Kubernetes cluster
+    runs-on: ubunut-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '>=1.18.0'
+
+      - name: Install CFSSL
+        run: go install github.com/cloudflare/cfssl/cmd/...@latest
+
+      - name: Install Kind on the GitHub Actions Runner
+        uses: helm/kind-action@v1
+        with:
+          install_only: true
+
+      - name: Setup Kubectl, Helm and Helmfile
+        uses: mamezou-tech/setup-helmfile@v2.0.0
+
+      - name: Create the local Kind Kubernetes cluster
+        run: make dev-cluster
+
+  integrations:
+    name: Run integration test for the charts
+    runs-on: ubuntu-latest
+    needs: ['setup']
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v4
