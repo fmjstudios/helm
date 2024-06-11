@@ -52,7 +52,7 @@ export
 OUT_DIR := $(ROOT_DIR)/dist
 SCRIPT_DIR := $(ROOT_DIR)/scripts
 CONFIG_DIR := $(ROOT_DIR)/config
-K8S_DIR := $(ROOT_DIR)/k8s
+K8S_DIR := $(CONFIG_DIR)/k8s
 TLS_DIR := $(ROOT_DIR)/secrets
 
 # Documentation
