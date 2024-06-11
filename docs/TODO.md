@@ -8,14 +8,14 @@
 - [ ] [Maildev](https://github.com/maildev/maildev) chart
 - [ ] [GoBackup](https://gobackup.github.io/) chart
 - [ ] [Kubenav](https://github.com/kubenav/kubenav) chart
-- [ ] [Pretix](https://pretix.eu/about/de/) chart
-- [ ] [Shopware 5](https://github.com/shopware5/shopware) chart
+- [X] [Pretix](https://pretix.eu/about/de/) chart -> _obsolete_
+- [X] [Shopware 5](https://github.com/shopware5/shopware) chart -> _deprecated_
 - [ ] [Shopware 6](https://github.com/shopware/shopware) chart
 - [ ] [LinkStack](https://linkstack.org/) chart
 - [ ] [Shlink](https://shlink.io/) chart
 - [ ] [AnonAddy](https://addy.io/) chart
 - [ ] [Cachet](https://cachethq.io/) chart
-- [ ] [Vikunja](https://vikunja.io/) chart
+- [X] [Vikunja](https://vikunja.io/) chart -> [_official chart exists_][vikunja_artifacthub]
 - [ ] [OpenGist](https://github.com/thomiceli/opengist) chart
 - [ ] [Drift](https://github.com/MaxLeiter/Drift) chart
 - [ ] [FreshRSS](https://freshrss.org/index.html) chart
@@ -26,7 +26,7 @@
 - [ ] [DBGate](https://github.com/dbgate/dbgate) chart
 
 > [!NOTE]
-> Most important are `ntfy.sh`, `GoBackup`, `Pretix`, `Shopware 6`, `Weblate` and `Pterodactyl`
+> Most important are `ntfy.sh`, `GoBackup`, `Shopware 6`, `Weblate` and `Pterodactyl`
 
 ## 🔁 Changes (across all charts)
 
@@ -42,8 +42,12 @@
 
 ## 💡 Ideas
 
-*None*
+_None_
 
 ## 🔗 Links
 
-*None*
+_None_
+
+[//]: # (GitHub Links)
+
+[vikunja_artifacthub]: https://artifacthub.io/packages/helm/vikunja/vikunja
