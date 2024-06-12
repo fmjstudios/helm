@@ -80,8 +80,6 @@ README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
 ifdef CHART
 CHART_NAME := $(shell basename $(CHART))
 CHART_VERSION := $(shell cat charts/$(CHART_NAME)/Chart.yaml | yq '.version')
-CHART_CHANGELOG_HEADER := $(shell cat changelog-sections.yaml | yq '$(CHART_NAME).header' )
-CHART_CHANGELOG_FOOTER := $(shell cat changelog-sections.yaml | yq '$(CHART_NAME).footer' )
 endif
 
 # ---------------------------
@@ -251,6 +249,7 @@ define INSTALL_INFO
 #   PRINT_HELP: 'y' or 'n'
 #   CHART: charts/.. (any subdirectory)
 #   VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
+#   RELEASE_NAME: any valid Helm release name
 endef
 .PHONY: install
 ifeq ($(PRINT_HELP), y)
@@ -286,9 +285,17 @@ else
 template:
 	$(call log_success, "Templating file: $(FILE) for chart: $(CHART)")
 ifdef FILES
-	$(helm) template $(CHART) -s $(foreach file,$(FILE),templates/$(FILE)) --debug
+ifdef VALUES
+	$(helm) template $(RELEASE_NAME) $(CHART) -s $(foreach file,$(FILE),templates/$(FILE)) --values $(CHART)/$(VALUES) --debug
 else
-	$(helm) template $(CHART) --debug
+	$(helm) template $(RELEASE_NAME) $(CHART) -s $(foreach file,$(FILE),templates/$(FILE)) --debug
+endif 
+else
+ifdef VALUES
+	$(helm) template $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug
+else
+  $(helm) template $(RELEASE_NAME) $(CHART) --debug
+endif 
 endif
 endif
 
