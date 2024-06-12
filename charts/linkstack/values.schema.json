@@ -1,0 +1,367 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "linkstackorg/linkstack"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "latest"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "sha256:abd691b4293b020a317de8794737671e0315159efcb868e8a4124d6f0611f7ae"
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override linkstack.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override linkstack.fullname",
+            "default": ""
+        },
+        "linkstack": {
+            "type": "object",
+            "properties": {
+                "serverAdmin": {
+                    "type": "string",
+                    "description": "The admin's email address",
+                    "default": "\"\""
+                },
+                "serverName": {
+                    "type": "string",
+                    "description": "The http (and https) server name for Apache2",
+                    "default": "\"\""
+                },
+                "logLevel": {
+                    "type": "string",
+                    "description": "The log level for Apache2",
+                    "default": "info"
+                },
+                "timeZone": {
+                    "type": "string",
+                    "description": "A valid PHP timezone",
+                    "default": "UTC"
+                },
+                "phpMemoryLimit": {
+                    "type": "string",
+                    "description": "The memory limit for PHP",
+                    "default": "256M"
+                },
+                "uploadMaxFileSize": {
+                    "type": "string",
+                    "description": "The upload-max-filesize for PHP",
+                    "default": "8M"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "rootPath": {
+                            "type": "string",
+                            "description": "The data folder is used for all files by default",
+                            "default": "/htdocs"
+                        },
+                        "pvc": {
+                            "type": "object",
+                            "properties": {
+                                "size": {
+                                    "type": "string",
+                                    "description": "The size given to PVCs created from the above data",
+                                    "default": "5Gi"
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "The storageClass given to PVCs created from the above data",
+                                    "default": "standard"
+                                },
+                                "reclaimPolicy": {
+                                    "type": "string",
+                                    "description": "The resourcePolicy given to PVCs created from the above data",
+                                    "default": "Retain"
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Provide the name to an existing PVC",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable Ingress",
+                    "default": "false"
+                },
+                "className": {
+                    "type": "string",
+                    "description": "The IngressClass to use for the pod's ingress",
+                    "default": "\"\""
+                },
+                "whitelist": {
+                    "type": "string",
+                    "description": "A comma-separated list of IP addresses to whitelist",
+                    "default": "\"\""
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "A list of hostnames and secret names to use for TLS",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "description": "A list of extra hosts for the Ingress resource (with linkstack.http(s)ServerName)",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service to create for the deployment",
+                    "default": "ClusterIP"
+                },
+                "ports": {
+                    "type": "object",
+                    "properties": {
+                        "http": {
+                            "type": "number",
+                            "description": "The http port to use on the service",
+                            "default": "80"
+                        },
+                        "https": {
+                            "type": "number",
+                            "description": "The https port to use on the service",
+                            "default": "443"
+                        }
+                    }
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not to create RBAC resources",
+                    "default": "false"
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Extra rules to add to the Role",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "automount": {
+                    "type": "boolean",
+                    "description": "Whether or not to automount the service account token",
+                    "default": "false"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise linkstack.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "initContainers": {
+            "type": "array",
+            "description": "Define initContainers for the main Linkstack server",
+            "default": "[]",
+            "items": {
+                "type": "string"
+            }
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod assignment",
+            "default": "[]",
+            "items": {
+                "type": "string"
+            }
+        }
+    }
+}

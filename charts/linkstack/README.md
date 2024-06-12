@@ -1,0 +1,163 @@
+# FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="175" height="175" align="right" />
+
+LinkStack provides you with a website similar to [Linktree](https://linktr.ee/). Many social media platforms only allow you to add one link, with this you can simply link to your LinkStack page and have all the links you want displayed on one site. You can share all your links to your social media platform or important links to easy accessible and hosted on your own web-server or web-hosting provider. On this website, other users can register and create their own links, you can access other user via the Admin Panel.
+It delivers all of these features within a single Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
+
+> Head to the [Linkstack GitHub Repository](https://github.com/LinkStackOrg/LinkStack) for in-depth view at the implemenation or to the [documentation](https://docs.linkstack.org/) for guides and [examples](https://docs.linkstack.org/docker/setup/).
+
+# TL;DR
+
+```shell
+helm install my-release oci://ghcr.io/fmjstudios/helm/linkstack:1.2.3
+```
+
+# Introduction
+
+This chart bootstraps a Linkstack [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
+
+The chart supports the configuration of all [Linkstack environment variables](https://docs.linkstack.org/docker/setup/) via the `linkstack` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image Parameters.
+
+## Parameters
+
+### Linkstack Image parameters
+
+| Name                | Description                                                         | Value                                                                     |
+| ------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `image.registry`    | The Docker registry to pull the image from                          | `docker.io`                                                               |
+| `image.repository`  | The registry repository to pull the image from                      | `linkstackorg/linkstack`                                                  |
+| `image.tag`         | The image tag to pull                                               | `latest`                                                                  |
+| `image.digest`      | The image digest to pull                                            | `sha256:abd691b4293b020a317de8794737671e0315159efcb868e8a4124d6f0611f7ae` |
+| `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`                                                            |
+| `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                                                                      |
+
+### Linkstack Name overrides
+
+| Name               | Description                                     | Value |
+| ------------------ | ----------------------------------------------- | ----- |
+| `nameOverride`     | String to partially override linkstack.fullname | `""`  |
+| `fullnameOverride` | String to fully override linkstack.fullname     | `""`  |
+
+### Linkstack Configuration parameters
+
+| Name                               | Description                                                  | Value      |
+| ---------------------------------- | ------------------------------------------------------------ | ---------- |
+| `linkstack.serverAdmin`            | The admin's email address                                    | `""`       |
+| `linkstack.serverName`             | The http (and https) server name for Apache2                 | `""`       |
+| `linkstack.logLevel`               | The log level for Apache2                                    | `info`     |
+| `linkstack.timeZone`               | A valid PHP timezone                                         | `UTC`      |
+| `linkstack.phpMemoryLimit`         | The memory limit for PHP                                     | `256M`     |
+| `linkstack.uploadMaxFileSize`      | The upload-max-filesize for PHP                              | `8M`       |
+| `linkstack.data.rootPath`          | The data folder is used for all files by default             | `/htdocs`  |
+| `linkstack.data.pvc.size`          | The size given to PVCs created from the above data           | `5Gi`      |
+| `linkstack.data.pvc.storageClass`  | The storageClass given to PVCs created from the above data   | `standard` |
+| `linkstack.data.pvc.reclaimPolicy` | The resourcePolicy given to PVCs created from the above data | `Retain`   |
+| `linkstack.data.pvc.existingClaim` | Provide the name to an existing PVC                          | `""`       |
+
+### ConfigMap parameters
+
+| Name                    | Description                             | Value |
+| ----------------------- | --------------------------------------- | ----- |
+| `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
+| `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
+
+### Ingress parameters
+
+| Name                  | Description                                                                       | Value   |
+| --------------------- | --------------------------------------------------------------------------------- | ------- |
+| `ingress.enabled`     | Whether to enable Ingress                                                         | `false` |
+| `ingress.className`   | The IngressClass to use for the pod's ingress                                     | `""`    |
+| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                               | `""`    |
+| `ingress.annotations` | Annotations for the Ingress resource                                              | `{}`    |
+| `ingress.tls`         | A list of hostnames and secret names to use for TLS                               | `[]`    |
+| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with linkstack.http(s)ServerName) | `[]`    |
+
+### Service parameters
+
+| Name                     | Description                                      | Value       |
+| ------------------------ | ------------------------------------------------ | ----------- |
+| `service.type`           | The type of service to create for the deployment | `ClusterIP` |
+| `service.ports.http`     | The http port to use on the service              | `80`        |
+| `service.ports.https`    | The https port to use on the service             | `443`       |
+| `service.annotations`    | Annotations for the service resource             | `{}`        |
+| `service.labels`         | Labels for the service resource                  | `{}`        |
+| `service.ipFamilyPolicy` | The Kubernetes ipFamilyPolicy                    | `{}`        |
+
+### RBAC parameters
+
+| Name          | Description                             | Value   |
+| ------------- | --------------------------------------- | ------- |
+| `rbac.create` | Whether or not to create RBAC resources | `false` |
+| `rbac.rules`  | Extra rules to add to the Role          | `[]`    |
+
+### Linkstack Service Account parameters
+
+| Name                         | Description                                                                 | Value   |
+| ---------------------------- | --------------------------------------------------------------------------- | ------- |
+| `serviceAccount.create`      | Whether or not a service account should be created                          | `true`  |
+| `serviceAccount.automount`   | Whether or not to automount the service account token                       | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise linkstack.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                         | `[]`    |
+
+### Linkstack Liveness Probes
+
+| Name                                | Description                                                 | Value   |
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
+| `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
+| `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
+| `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
+| `livenessProbe.periodSeconds`       | Configure the seconds for each period of the liveness probe | `10`    |
+| `livenessProbe.successThreshold`    | Configure the success threshold for the liveness probe      | `1`     |
+| `livenessProbe.failureThreshold`    | Configure the failure threshold for the liveness probe      | `10`    |
+
+### Linkstack Readiness Probes
+
+| Name                                 | Description                                                  | Value   |
+| ------------------------------------ | ------------------------------------------------------------ | ------- |
+| `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
+| `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
+| `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
+| `readinessProbe.periodSeconds`       | Configure the seconds for each period of the readiness probe | `10`    |
+| `readinessProbe.successThreshold`    | Configure the success threshold for the readiness probe      | `1`     |
+| `readinessProbe.failureThreshold`    | Configure the failure threshold for the readiness probe      | `3`     |
+
+### Linkstack Startup Probes
+
+| Name                               | Description                                                | Value   |
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
+| `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
+| `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
+| `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
+| `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`    |
+| `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
+| `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
+
+### Linkstack initContainers
+
+
+### Pod disruption budget parameters
+
+| Name                               | Description                                          | Value  |
+| ---------------------------------- | ---------------------------------------------------- | ------ |
+| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
+| `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
+
+### Pod settings
+
+| Name                 | Description                                         | Value |
+| -------------------- | --------------------------------------------------- | ----- |
+| `resources`          | The resource limits/requests for the Linkstack pod  | `{}`  |
+| `initContainers`     | Define initContainers for the main Linkstack server | `[]`  |
+| `nodeSelector`       | Node labels for pod assignment                      | `{}`  |
+| `tolerations`        | Tolerations for pod assignment                      | `[]`  |
+| `affinity`           | Affinity for pod assignment                         | `{}`  |
+| `strategy`           | Specify a deployment strategy for the Linkstack pod | `{}`  |
+| `podAnnotations`     | Extra annotations for the Linkstack pod             | `{}`  |
+| `podLabels`          | Extra labels for the Linkstack pod                  | `{}`  |
+| `podSecurityContext` | Security context settings for the Linkstack pod     | `{}`  |
+
+### Security context settings
+
+| Name              | Description                           | Value |
+| ----------------- | ------------------------------------- | ----- |
+| `securityContext` | General security context settings for | `{}`  |

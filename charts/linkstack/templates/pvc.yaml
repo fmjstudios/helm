@@ -1,0 +1,21 @@
+{{- if not .Values.linkstack.data.pvc.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "linkstack.pvc.name" . }}
+  labels:
+    {{- include "linkstack.labels" . | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ $.Release.Name | quote }}
+    meta.helm.sh/release-namespace: {{ $.Release.Namespace | quote }}
+    {{- if (eq .Values.linkstack.data.pvc.reclaimPolicy "Retain") }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+spec:
+  storageClassName: {{ .Values.linkstack.data.pvc.storageClass | default "standard" }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.linkstack.data.pvc.size }}
+{{- end }}
