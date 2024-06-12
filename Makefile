@@ -52,6 +52,7 @@ export
 OUT_DIR := $(ROOT_DIR)/dist
 SCRIPT_DIR := $(ROOT_DIR)/scripts
 CONFIG_DIR := $(ROOT_DIR)/config
+CONFIG_SSL_DIR := $(CONFIG_DIR)/ssl
 K8S_DIR := $(CONFIG_DIR)/k8s
 TLS_DIR := $(ROOT_DIR)/secrets
 
@@ -329,7 +330,7 @@ secrets:
 else
 secrets: create-tls
 	$(call log_success, "Generating TLS certificates for local Kubernetes cluster!")
-	cd $(TLS_DIR) && cfssl genkey -initca $(CONFIG_DIR)/cfssl-ca-csr.json | cfssljson -bare ca
+	cd $(TLS_DIR) && cfssl genkey -initca $(CONFIG_SSL_DIR)/cfssl-ca-csr.json | cfssljson -bare ca
 	$(file > $(TLS_DIR)/kustomization.yaml,$(kustomization))
 endif
 
