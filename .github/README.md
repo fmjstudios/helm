@@ -26,11 +26,6 @@ The project uses the `Make` build system with targets defined in the projects to
 
 This project and it's contents are licensed under the Open Source **[MIT][license]** license.
 
-### ✉ Contact
-
-- **Maintainers**: FMJ Studios
-- **E-Mail**: [info@fmj.studio](mailto:info@fmj.studio)
-
 <!-- INTERNAL REFERENCES -->
 
 <!-- Chart references -->
