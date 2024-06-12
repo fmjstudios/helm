@@ -50,7 +50,7 @@ jobs:
           GPG_PASSPHRASE: '${{ secrets.GPG_PASSPHRASE }}'
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.1
+        uses: helm/chart-releaser-action@v1.6.0
         with:
           config: config/cr-config.yaml
         env:
