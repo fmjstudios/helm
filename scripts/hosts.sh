@@ -29,6 +29,7 @@ ${CONFIG_START}
 127.0.0.1               uptime-kuma.helm.private        # Uptime-Kuma
 127.0.0.1               paperless.helm.private          # Paperless-NGX
 127.0.0.1               gotenberg.helm.private          # Gotenberg 
+127.0.0.1               linkstack.helm.private          # Linkstack
 
 ${CONFIG_END}
 EOF
