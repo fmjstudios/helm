@@ -33,10 +33,8 @@
                 "pullSecrets": {
                     "type": "array",
                     "description": "A list of secrets to use for pulling images from private registries",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
@@ -120,6 +118,21 @@
                 }
             }
         },
+        "configMap": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the ConfigMap resource",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Extra Labels for the ConfigMap resource",
+                    "default": {}
+                }
+            }
+        },
         "ingress": {
             "type": "object",
             "properties": {
@@ -138,21 +151,22 @@
                     "description": "A comma-separated list of IP addresses to whitelist",
                     "default": "\"\""
                 },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the Ingress resource",
+                    "default": {}
+                },
                 "tls": {
                     "type": "array",
                     "description": "A list of hostnames and secret names to use for TLS",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 },
                 "extraHosts": {
                     "type": "array",
                     "description": "A list of extra hosts for the Ingress resource (with linkstack.http(s)ServerName)",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
@@ -178,6 +192,21 @@
                             "default": "443"
                         }
                     }
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the service resource",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Labels for the service resource",
+                    "default": {}
+                },
+                "ipFamilyPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes ipFamilyPolicy",
+                    "default": ""
                 }
             }
         },
@@ -187,15 +216,13 @@
                 "create": {
                     "type": "boolean",
                     "description": "Whether or not to create RBAC resources",
-                    "default": "false"
+                    "default": "true"
                 },
                 "rules": {
                     "type": "array",
                     "description": "Extra rules to add to the Role",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
@@ -220,10 +247,8 @@
                 "secrets": {
                     "type": "array",
                     "description": "A list of secrets mountable by this service account",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
@@ -347,21 +372,57 @@
                 }
             }
         },
+        "resources": {
+            "type": "object",
+            "description": "The resource limits/requests for the Linkstack pod",
+            "default": {}
+        },
         "initContainers": {
             "type": "array",
             "description": "Define initContainers for the main Linkstack server",
-            "default": "[]",
-            "items": {
-                "type": "string"
-            }
+            "default": [],
+            "items": {}
+        },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node labels for pod assignment",
+            "default": {}
         },
         "tolerations": {
             "type": "array",
             "description": "Tolerations for pod assignment",
-            "default": "[]",
-            "items": {
-                "type": "string"
-            }
+            "default": [],
+            "items": {}
+        },
+        "affinity": {
+            "type": "object",
+            "description": "Affinity for pod assignment",
+            "default": {}
+        },
+        "strategy": {
+            "type": "object",
+            "description": "Specify a deployment strategy for the Linkstack pod",
+            "default": {}
+        },
+        "podAnnotations": {
+            "type": "object",
+            "description": "Extra annotations for the Linkstack pod",
+            "default": {}
+        },
+        "podLabels": {
+            "type": "object",
+            "description": "Extra labels for the Linkstack pod",
+            "default": {}
+        },
+        "podSecurityContext": {
+            "type": "object",
+            "description": "Security context settings for the Linkstack pod",
+            "default": {}
+        },
+        "securityContext": {
+            "type": "object",
+            "description": "General security context settings for",
+            "default": {}
         }
     }
 }

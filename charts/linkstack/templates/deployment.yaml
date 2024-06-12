@@ -33,7 +33,7 @@ spec:
       serviceAccountName: {{ include "linkstack.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ default .Values.image.tag }}{{- if .Values.image.digest }}@{{ .Values.image.digest }}{{ end }}"
+          image: {{ include "linkstack.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
             - configMapRef:
@@ -110,7 +110,14 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}
-      {{- if .Values.initContainers }}
       initContainers:
+        - name: linkstack-init
+          image: {{ include "linkstack.image" . }}
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "cp -r /htdocs/. /data && chown -R apache:apache /data"]
+          volumeMounts:
+            - name: linkstack-test-pv
+              mountPath: "/data"
+      {{- if .Values.initContainers }}
         {{- toYaml .Values.initContainers | nindent 8 }}
       {{- end }}

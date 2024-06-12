@@ -80,14 +80,14 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 | `service.ports.https`    | The https port to use on the service             | `443`       |
 | `service.annotations`    | Annotations for the service resource             | `{}`        |
 | `service.labels`         | Labels for the service resource                  | `{}`        |
-| `service.ipFamilyPolicy` | The Kubernetes ipFamilyPolicy                    | `{}`        |
+| `service.ipFamilyPolicy` | The Kubernetes ipFamilyPolicy                    | `""`        |
 
 ### RBAC parameters
 
-| Name          | Description                             | Value   |
-| ------------- | --------------------------------------- | ------- |
-| `rbac.create` | Whether or not to create RBAC resources | `false` |
-| `rbac.rules`  | Extra rules to add to the Role          | `[]`    |
+| Name          | Description                             | Value  |
+| ------------- | --------------------------------------- | ------ |
+| `rbac.create` | Whether or not to create RBAC resources | `true` |
+| `rbac.rules`  | Extra rules to add to the Role          | `[]`   |
 
 ### Linkstack Service Account parameters
 
@@ -131,9 +131,6 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 | `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`    |
 | `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
 | `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
-
-### Linkstack initContainers
-
 
 ### Pod disruption budget parameters
 

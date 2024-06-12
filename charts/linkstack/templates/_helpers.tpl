@@ -31,6 +31,13 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Build the Docker Hub image reference as used within the main and init-containers.
+*/}}
+{{- define "linkstack.image" -}}
+{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}{{- if .Values.image.digest }}@{{ .Values.image.digest }}{{ end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "linkstack.labels" -}}
