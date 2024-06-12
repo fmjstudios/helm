@@ -11,7 +11,7 @@
 - [X] [Pretix](https://pretix.eu/about/de/) chart -> _obsolete_
 - [X] [Shopware 5](https://github.com/shopware5/shopware) chart -> _deprecated_
 - [ ] [Shopware 6](https://github.com/shopware/shopware) chart
-- [ ] [LinkStack](https://linkstack.org/) chart
+- [X] [LinkStack](https://linkstack.org/) chart
 - [ ] [Shlink](https://shlink.io/) chart
 - [ ] [AnonAddy](https://addy.io/) chart
 - [ ] [Cachet](https://cachethq.io/) chart
@@ -39,6 +39,7 @@
 - [ ] Enforce the use of well-defined security contexts for pods an containers like in [Bitnami's&reg; Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml)
 - [ ] Possibly add confiuration for [Pod priority](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/)
 - [ ] Enhance service configurations like in [Bitnami's&reg; Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml#L517)
+- [ ] Add Linkstack's ConfigMap parameters to all other charts
 
 ## 💡 Ideas
 
