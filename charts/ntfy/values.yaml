@@ -85,9 +85,388 @@ ntfy:
   ##
   firebaseKeyFile: ""
 
+  ## @param ntfy.behindProxy [boolean] Wether or not ntfy is hosted behind a proxy
+  ##
+  behindProxy: false
+
+  ## @param ntfy.keepaliveInterval [string] Interval in which keepalive messages are sent to the client
+  ##
+  keepaliveInterval: ""
+
+  ## @param ntfy.keepaliveInterval [string] Interval in which the manager prunes old messages
+  ##
+  managerInterval: ""
+
+  ## @param ntfy.disallowedTopics [array] Define topic names that are not allowed
+  ##
+  disallowedTopics: []
+
+  ## @param ntfy.webRoot [string] Define topic names that are not allowed
+  ##
+  webRoot: "/"
+
+  ## @param ntfy.enableSignup [boolean] Allow users to sign up via the web app or API
+  ##
+  enableSignup: false
+
+  ## @param ntfy.enableLogin [boolean] Allow users to sign in via the web app or API
+  ##
+  enableLogin: false
+
+  ## @param ntfy.enableReservations [boolean] Allow users to reserve topics
+  ##
+  enableReservations: false
+
+  ## @param ntfy.globalTopicLimit [number] The total number of topics before the server rejects new topics
+  ##
+  globalTopicLimit: 15000
+
   ## Cache configuration
   ##
   cache:
-    ## @param ntfy.cache.file [string] The path to a Firebase key file (e.g. "/var/lib/ntfy/key.json")
+    ## @param ntfy.cache.file [string] The path where to create the SQLite cache database (e.g. "/var/cache/ntfy/cache.db")
+    ##
+    file: ""
+
+    ## @param ntfy.cache.duration [string] The duration for which messages will be buffered before they are deleted (e.g. "12h")
+    ##
+    duration: ""
+
+    ## @param ntfy.cache.startupQueries [string] SQLite queries to run on database initialization (e.g. to enable WAL mode)
+    ## ref: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml#L49
+    ## Example:
+    ##  startupQueries: |
+    ##      pragma journal_mode = WAL;
+    ##      pragma synchronous = normal;
+    ##      pragma temp_store = memory;
+    ##      pragma busy_timeout = 15000;
+    ##      vacuum;
+    ##
+    startupQueries: ""
+
+    ## @param ntfy.cache.batchSize [number] The amount of messages within a single batch (e.g. 32)
+    ##
+    batchSize: 0
+
+    ## @param ntfy.cache.batchTimeout [string] The timeout after which to write the batched messages to the DB (e.g. "0ms")
+    ##
+    batchTimeout: ""
+
+  ## Auth configuration
+  ##
+  auth:
+    ## @param ntfy.auth.file [string] The path where to create the SQLite user database (e.g. "/var/lib/ntfy/user.db")
+    ##
+    file: ""
+
+    ## @param ntfy.auth.defaultAccess [string] The default access level for new users (e.g. "/var/lib/ntfy/user.db")
+    ##
+    defaultAccess: "read-only"
+
+    ## @param ntfy.auth.startupQueries [string] SQLite queries to run on database initialization (e.g. to enable WAL mode)
+    ## ref: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml#L49
+    ## Example:
+    ##  startupQueries: |
+    ##      pragma journal_mode = WAL;
+    ##      pragma synchronous = normal;
+    ##      pragma temp_store = memory;
+    ##      pragma busy_timeout = 15000;
+    ##      vacuum;
+    ##
+    startupQueries: ""
+
+  ## Attachment configuration
+  ##
+  attachment:
+    ## @param ntfy.attachment.cacheDir [string] The cache directory for attached files (e.g. "/var/cache/ntfy/attachments")
+    ##
+    cacheDir: ""
+    ## @param ntfy.attachment.totalSizeLimit [string] The maximum total size of cacheDir (e.g. "5G")
+    ##
+    totalSizeLimit: ""
+    ## @param ntfy.attachment.totalSizeLimit [string] The maximum size of a single attachment (e.g. "15M")
+    ##
+    fileSizeLimit: ""
+    ## @param ntfy.attachment.totalSizeLimit [string] The duration after which uploaded attachments are deleted (e.g. "3h")
+    ##
+    expiryDuration: ""
+
+  ## SMTP configuration
+  ##
+  smtp:
+    ## @param ntfy.smtp.senderAddr [string] The hostname:port of the SMTP server (e.g. "mail.example.com:587")
+    ##
+    senderAddr: ""
+    ## @param ntfy.smtp.senderFrom [string] The e-mail address of the sender (e.g. "ntfy@example.com")
+    ##
+    senderFrom: ""
+
+    ## SMTP user
+    ##
+    senderUser:
+      ## @param ntfy.smtp.senderUser.value [string] The username of the SMTP user
+      ##
+      value: ""
+      ## Specify an existing secret to grab the admin token from
+      ##
+      existingSecret:
+        ## @param ntfy.smtp.existingSecret.name [string] The name of an existing Secret containing the admin token
+        ##
+        name: ""
+        ## @param ntfy.smtp.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+
+    ## SMTP password
+    ##
+    senderPass:
+      ## @param ntfy.smtp.senderPass.value [string] The password of the SMTP user
+      ##
+      value: ""
+      ## Specify an existing secret to grab the admin token from
+      ##
+      existingSecret:
+        ## @param ntfy.smtp.existingSecret.name [string] The name of an existing Secret containing the admin token
+        ##
+        name: ""
+        ## @param ntfy.smtp.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+
+      ## Incoming SMTP server configuration
+      ##
+      incoming:
+        ## @param ntfy.smtp.incoming.listen [string] The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")
+        ##
+        listen: ""
+        ## @param ntfy.smtp.incoming.domain [string] The e-mail domain (e.g. "example.com")
+        ##
+        domain: ""
+        ## @param ntfy.smtp.incoming.addrPrefix [string] Optional prefix to prevent spam. If set to "ntfy-" for example,
+        ## only emails to "ntfy-$topic@ntfy.sh" will be accepted. If not set, all emails to $topic@ntfy.sh will be accepted
+        ##
+        addrPrefix: ""
+
+  ## Web configuration
+  ##
+  web:
+    ## VAPID public key
+    ##
+    publicKey:
+      ## @param ntfy.web.publicKey.value [string] is the generated VAPID public key, (e.g. "AA...")
+      ##
+      value: ""
+      ## Specify an existing secret to grab the public key from
+      ##
+      existingSecret:
+        ## @param ntfy.web.publicKey.existingSecret.name [string] The name of an existing Secret containing the public key
+        ##
+        name: ""
+        ## @param ntfy.web.publicKey.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+    ## VAPID private key
+    ##
+    privateKey:
+      ## @param ntfy.web.privateKey.value [string] is the generated VAPID private key, (e.g. "AA...")
+      ##
+      value: ""
+      ## Specify an existing secret to grab the private key from
+      ##
+      existingSecret:
+        ## @param ntfy.web.privateKey.existingSecret.name [string] The name of an existing Secret containing the private key
+        ##
+        name: ""
+        ## @param ntfy.web.privateKey.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+    ## @param ntfy.web.file [string] is a database file to keep track of browser subscription endpoints (e.g. "/var/cache/ntfy/webpush.db")
+    ##
+    file: ""
+    ## @param ntfy.web.emailAddress [string] is the admin email address send to the push provider, (e.g. "sysadmin@example.com")
+    ##
+    emailAddress: ""
+    ## @param ntfy.web.startupQueries [string] SQLite queries to run on database initialization (e.g. to enable WAL mode)
+    ##
+    startupQueries: ""
+
+  ## Twilio configuration
+  ##
+  twilio:
+    ## Account SID
+    ##
+    account:
+      ## @param ntfy.twilio.account.value [string] is the Twilio account SID, (e.g. "AC12345beefbeef67890beefbeef122586")
+      ##
+      value: ""
+      ## Specify an existing secret to grab the account SID from
+      ##
+      existingSecret:
+        ## @param ntfy.twilio.account.existingSecret.name [string] The name of an existing Secret containing the account SID
+        ##
+        name: ""
+        ## @param ntfy.twilio.account.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+    ## Auth token
+    ##
+    authToken:
+      ## @param ntfy.twilio.authToken.value [string] is the Twilio account SID, (e.g. "affebeef258625862586258625862586")
+      ##
+      value: ""
+      ## Specify an existing secret to grab the auth token from
+      ##
+      existingSecret:
+        ## @param ntfy.twilio.authToken.existingSecret.name [string] The name of an existing Secret containing the auth token
+        ##
+        name: ""
+        ## @param ntfy.twilio.authToken.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+
+    ## @param ntfy.twilio.phoneNumber [string] The outgoing Twilio phone number (e.g. "+18775132586")
+    ##
+    phoneNumber: ""
+    ## @param ntfy.twilio.verifyService [string] Twilio verify service SID (e.g. "VA12345beefbeef67890beefbeef122586")
+    ##
+    verifyService: ""
+
+  ## Upstream configuration
+  ##
+  upstream:
+    ## @param ntfy.upstream.baseURL [string] The base URL of the upstream server, should be "https://ntfy.sh"
+    ##
+    baseURL: ""
+    ## Access token
+    ##
+    accessToken:
+      ## @param ntfy.upstream.accessToken.value [string] the token used to authenticate with the upstream server
+      ##
+      value: ""
+      ## Specify an existing secret to grab the auth token from
+      ##
+      existingSecret:
+        ## @param ntfy.upstream.accessToken.existingSecret.name [string] The name of an existing Secret containing the access token
+        ##
+        name: ""
+        ## @param ntfy.upstream.accessToken.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+
+  ## Message configuration
+  ##
+  message:
+    ## @param ntfy.message.sizeLimit [string] The maximum size of a message body (e.g. "4k")
+    ##
+    sizeLimit: ""
+    ## @param ntfy.message.delayLimit [string] The maximum delay of a message when using the "Delay" header (e.g. "3d")
+    ##
+    delayLimit: ""
+
+  ## Visitor configuration
+  ##
+  visitor:
+    ## @param ntfy.visitor.subscriptionLimit [number] The number of subscriptions per visitor (IP address)
+    ##
+    subscriptionLimit: ""
+    ## @param ntfy.visitor.requestLimitBurst [number] The initial bucket of requests each visitor has (e.g. "60")
+    ##
+    requestLimitBurst: ""
+    ## @param ntfy.visitor.requestLimitReplenish [number] The rate at which the bucket is refilled (e.g. "5s")
+    ##
+    requestLimitReplenish: ""
+    ## @param ntfy.visitor.requestLimitExemptHosts [string] A comma-separated list of hostnames, IPs or CIDRs to be
+    ## exempt from request rate limiting. Hostnames are resolved at the time the server is started. (e.g. "1.2.3.4,ntfy.example.com,8.7.6.0/24")
+    ##
+    requestLimitExemptHosts: ""
+    ## @param ntfy.visitor.messageDailyLimit [number] Hard daily limit of messages per visitor and day. The limit is reset
+    ## every day at midnight UTC. If the limit is not set (or set to zero), the request limit (see above) governs the
+    ## upper limit.
+    ##
+    messageDailyLimit: ""
+    ## @param ntfy.visitor.emailLimitBurst [number] The initial bucket of emails each visitor has (e.g. "60")
+    ##
+    emailLimitBurst: ""
+    ## @param ntfy.visitor.emailLimitReplenish [string] The rate at which the bucket is refilled (e.g. "5s")
+    ##
+    emailLimitReplenish: ""
+    ## @param ntfy.visitor.attachmentTotalSizeLimit [string] The total storage limit used for attachments per visitor
+    ##
+    attachmentTotalSizeLimit: ""
+    ## @param ntfy.visitor.attachmentTotalSizeLimit [string] The total daily attachment download/upload traffic limit per visitor
+    ##
+    attachmentDailyBandwidthLimit: ""
+    ## @param ntfy.visitor.subscriberRateLimiting [boolean] Whether or not to enable subscriber-based rate limiting
+    ##
+    subscriberRateLimiting: false
+
+  ## Stripe configuration
+  ##
+  stripe:
+    ## Secret key
+    ##
+    secretKey:
+      ## @param ntfy.stripe.secretKey.value [string] the key used for the Stripe API communication
+      ##
+      value: ""
+      ## Specify an existing secret to grab the auth token from
+      ##
+      existingSecret:
+        ## @param ntfy.stripe.secretKey.existingSecret.name [string] The name of an existing Secret containing the secret key
+        ##
+        name: ""
+        ## @param ntfy.stripe.secretKey.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+
+    ## Webhook key
+    ##
+    webhookKey:
+      ## @param ntfy.stripe.webhookKey.value [string] the key used for the Stripe API communication
+      ##
+      value: ""
+      ## Specify an existing secret to grab the auth token from
+      ##
+      existingSecret:
+        ## @param ntfy.stripe.webhookKey.existingSecret.name [string] The name of an existing Secret containing the webhook key
+        ##
+        name: ""
+        ## @param ntfy.stripe.webhookKey.existingSecret.key [string] The key name within the previously named existingSecret
+        ##
+        key: ""
+
+    ## @param ntfy.stripe.billingContact [string] is an email address or website displayed in the "Upgrade tier" dialog to let people reach
+    ##   out with billing questions. If unset, nothing will be displayed
+    ##
+    billingContact: ""
+
+  ## Metrics configuration
+  ##
+  metrics:
+    ## @param ntfy.metrics.enabled [boolean] enables the /metrics endpoint for the ntfy server
+    ##
+    enabled: false
+    ## @param ntfy.metrics.enabled [string] exposes the metrics endpoint via a dedicated [IP]:port. If set, this option
+    ## implicitly enables metrics as well
+    ##
+    listenHTTP: ""
+    ## @param ntfy.metrics.profileListenHTTP [string] If enabled, ntfy will listen on a dedicated listen IP/port
+    ##
+    profileListenHTTP: ""
+
+  ## Log configuration
+  ##
+  log:
+    ## @param ntfy.log.level [default: info] One of "trace", "debug", "info" (default), "warn" or "error"
+    ##
+    level: info
+    ## @param ntfy.log.levelOverrides [string] lets you override the log level if certain fields match
+    ## ref: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml#L347
+    ##
+    levelOverrides: ""
+    ## @param ntfy.log.format [default: text] One of "text" (default) or "json"
+    ##
+    format: text
+    ## @param ntfy.log.file [string] The filename to write logs to. If this is not set, ntfy logs to stderr
     ##
     file: ""
