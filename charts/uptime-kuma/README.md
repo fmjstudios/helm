@@ -1,7 +1,4 @@
-
-<img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="150" height="150" align="right" />
-
-# FMJ Studios - Uptime-Kuma Helm Chart
+# FMJ Studios - Uptime-Kuma Helm Chart <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="150" height="150" align="right" />
 
 Uptime-Kuma is an open-source, is an easy-to-use self-hosted monitoring tool. It supports monitoring uptime for HTTP(s) / TCP / HTTP(s) Keyword / HTTP(s) Json Query / Ping / DNS Record / Push / Steam Game Server / Docker Containers, sports a fancy reactive and fast UI and features notifications via Telegram, Discord, Gotify, Slack, Pushover, Email (SMTP), and [90+ notification services](https://github.com/louislam/uptime-kuma/tree/master/src/components/notifications).
 Additionally the application is available in [multiple languages](https://github.com/louislam/uptime-kuma/tree/master/src/lang), can map status pages to specific domains and supports proxies and 2FA. It delivers all of these features within a single Docker image available on [Docker Hub](https://hub.docker.com/r/louislam/uptime-kuma).
