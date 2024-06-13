@@ -53,8 +53,8 @@ OUT_DIR := $(ROOT_DIR)/dist
 SCRIPT_DIR := $(ROOT_DIR)/scripts
 CONFIG_DIR := $(ROOT_DIR)/config
 CONFIG_SSL_DIR := $(CONFIG_DIR)/ssl
-K8S_DIR := $(CONFIG_DIR)/k8s
-TLS_DIR := $(ROOT_DIR)/secrets
+CONFIG_K8S_DIR := $(CONFIG_DIR)/k8s
+SECRETS_DIR := $(ROOT_DIR)/secrets
 
 # Documentation
 DOCS_DIR := $(ROOT_DIR)/docs
@@ -90,7 +90,7 @@ PRINT_HELP ?=
 CHART ?=
 VALUES ?=
 RELEASE_NAME ?= $(shell printf "%s-%s" $(CHART_NAME) test)
-FILE ?=
+HELM_ARGS ?=
 
 # ---------------------------
 # Custom functions
@@ -122,6 +122,7 @@ define log_attention
  $(call log, $(1), "red")
 endef
 
+# Kustomization for TLS certificates generated with cfssl with 'secrets' target
 define kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -136,91 +137,27 @@ secretGenerator:
       disableNameSuffixHash: true
 endef
 
-
-# -------------------------------------
-# Targets
-# -------------------------------------
-
 # ---------------------------
-#   Development Cluster
+#   Development Environment
 # ---------------------------
 
-# Development environment setup
-define DEV_INFO
+define ENV_INFO
 # Create a local development environment for Helm charts. This is a wrapper
 # target which requires the 'dev-cluster' and 'dev-cluster-bootstrap' Make
 # targets.
 endef
-.PHONY: dev
+.PHONY: env
 ifeq ($(PRINT_HELP), y)
-dev:
-	echo "$$DEV_INFO"
+env:
+	echo "$$ENV_INFO"
 else
-dev: dev-cluster dev-cluster-bootstrap
-endif
-
-
-# Cluster Creation
-define DEV_CLUSTER_INFO
-# Create a local development Kubernetes cluster using 'kind'. This will also
-# create a network within the Docker Engine named 'kind'.
-#
-# Arguments:
-#   PRINT_HELP: 'y' or 'n'
-endef
-.PHONY: dev-cluster
-ifeq ($(PRINT_HELP),y)
-dev-cluster:
-	echo "$$DEV_CLUSTER_INFO"
-else
-dev-cluster:
-	$(call log_success, "Creating local 'kind' Kubernetes cluster using configuration in: $(KIND_CLUSTER_CONFIG)!")
-	$(kind) create cluster \
-		--config $(K8S_DIR)/cluster/kind-config.yaml \
-		--name $(PROJ_NAME) \
-		--wait 15s
-endif
-
-# Cluster Bootstrap
-define DEV_CLUSTER_BOOTSTRAP_INFO
-# Bootstrap the development cluster for proper testing of Helm charts.
-# Creates a Kubernetes secret containing CA information for cert-manager
-# and installs Ingress-Nginx.
-endef
-.PHONY: dev-cluster-bootstrap
-ifeq ($(PRINT_HELP), y)
-dev-cluster-bootstrap:
-	echo "$$DEV_CLUSTER_BOOTSTRAP_INFO"
-else
-dev-cluster-bootstrap:
-	$(call log_success, "Bootstrapping development cluster")
-	$(helmfile) apply -f $(K8S_DIR)/helmfile.yaml
-	$(kubectl) apply -k $(K8S_DIR)/kustomize
-	$(SCRIPT_DIR)/hosts.sh add
-endif
-
-# Cluster Cleanup
-define DEV_CLEANUP_INFO
-# Remove the local development Kubernetes cluster.
-#
-# Arguments:
-#   PRINT_HELP: 'y' or 'n'
-endef
-.PHONY: dev-cleanup
-ifeq ($(PRINT_HELP),y)
-dev-cleanup:
-	echo "$$DEV_CLEANUP_INFO"
-else
-dev-cleanup:
-	$(call log_attention, "Deleting local 'kind' Kubernetes cluster!")
-	$(kind) delete cluster \
-		--name $(PROJ_NAME)
-	$(SCRIPT_DIR)/hosts.sh remove
+env: cluster cluster-bootstrap
 endif
 
 # ---------------------------
-#   Charts
+#   Helm Chart Targets
 # ---------------------------
+
 define BUILD_INFO
 # Package a Helm Chart and put it into the repository's output directory
 # at: ($(OUT_DIR)). The chart may be picked with the 'CHART' Make variable.
@@ -234,7 +171,7 @@ ifeq ($(PRINT_HELP), y)
 build:
 	echo "$$BUILD_INFO"
 else
-build: create-dist
+build: dist-dir
 	$(call log_success, "Building Helm Chart $(CHART_NAME) into $(OUT_DIR)")
 	$(helm) package $(CHART) --destination $(OUT_DIR)
 endif
@@ -247,9 +184,10 @@ define INSTALL_INFO
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
+#   RELEASE_NAME: The Helm release to install the chart as
 #   CHART: charts/.. (any subdirectory)
 #   VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
-#   RELEASE_NAME: any valid Helm release name
+#   HELM_ARGS: #   HELM_ARGS: extra Helm arguments (e.g. --upgrade)
 endef
 .PHONY: install
 ifeq ($(PRINT_HELP), y)
@@ -259,12 +197,11 @@ else
 install:
 	$(call log_success, "Installing Helm Chart $(CHART_NAME) using values: $(VALUES)")
 ifdef VALUES
-	$(helm) install $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES)
+	$(helm) install $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) $(HELM_ARGS)
 else
-	$(helm) install $(RELEASE_NAME) $(CHART)
+	$(helm) install $(RELEASE_NAME) $(CHART) $(HELM_ARGS)
 endif
 endif
-
 
 define TEMPLATE_INFO
 # Run Helm's template engine on some or all files of a Helm Chart.
@@ -274,8 +211,10 @@ define TEMPLATE_INFO
 #
 # Arguments:
 #   PRINT_HELP: 'y' or 'n'
+#   RELEASE_NAME: The Helm release to install the chart as
 #   CHART: charts/.. (any subdirectory)
-#   FILES: ... (e.g. configmap.yaml)
+#   VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
+#   HELM_ARGS: extra Helm arguments (e.g. -s configmap.yaml)
 endef
 .PHONY: template
 ifeq ($(PRINT_HELP), y)
@@ -283,20 +222,12 @@ template:
 	echo "$$TEMPLATE_INFO"
 else
 template:
-	$(call log_success, "Templating file: $(FILE) for chart: $(CHART)")
-ifdef FILES
+	$(call log_success, "Templating chart: $(CHART)")
 ifdef VALUES
-	$(helm) template $(RELEASE_NAME) $(CHART) -s $(foreach file,$(FILE),templates/$(FILE)) --values $(CHART)/$(VALUES) --debug
+	$(helm) template $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug $(HELM_ARGS)
 else
-	$(helm) template $(RELEASE_NAME) $(CHART) -s $(foreach file,$(FILE),templates/$(FILE)) --debug
+	$(helm) template $(RELEASE_NAME) $(CHART) --debug $(HELM_ARGS)
 endif 
-else
-ifdef VALUES
-	$(helm) template $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug
-else
-  $(helm) template $(RELEASE_NAME) $(CHART) --debug
-endif 
-endif
 endif
 
 define DRY_INSTALL_INFO
@@ -324,7 +255,10 @@ else
 endif
 endif
 
-# Generate TLS secrets
+# ---------------------------
+#   Secrets
+# ---------------------------
+
 define SECRETS_INFO
 # Cloudflare's `cfssl` tool to generate a root CA for use within the local Kubernetes cluster.
 # Afterwards instruct Kustomize to create a secret named 'root-ca' in the 'cert-manager'
@@ -335,24 +269,31 @@ ifeq ($(PRINT_HELP), y)
 secrets:
 	echo "$$SECRETS_INFO"
 else
-secrets: create-tls
+secrets: secrets-dir
 	$(call log_success, "Generating TLS certificates for local Kubernetes cluster!")
-	cd $(TLS_DIR) && cfssl genkey -initca $(CONFIG_SSL_DIR)/cfssl-ca-csr.json | cfssljson -bare ca
-	$(file > $(TLS_DIR)/kustomization.yaml,$(kustomization))
+	cd $(SECRETS_DIR) && cfssl genkey -initca $(CONFIG_SSL_DIR)/cfssl-ca-csr.json | cfssljson -bare ca
+	$(file > $(SECRETS_DIR)/kustomization.yaml,$(kustomization))
 endif
 
-# Generate README
+# ---------------------------
+#   Code Generation
+# ---------------------------
+
 define GENERATE_README_INFO
 # Run Bitnami's (VMware) README generator for Helm chart on the specified Chart.
 # The generator will use the configuration file 'reamde-gen.json' in the 'config'
 # subdirectory. The chart may be picked with the 'CHART' Make variable.
+#
+# Arguments:
+#   PRINT_HELP: 'y' or 'n'
+#   CHART: charts/.. (any subdirectory)
 endef
-.PHONY: readme-gen
+.PHONY: gen
 ifeq ($(PRINT_HELP), y)
-readme-gen:
+gen:
 	echo "$$GENERATE_README_INFO"
 else
-readme-gen:
+gen:
 	$(call log_success, "Generating README Helm Chart table for chart: $(CHART)")
 	$(npx) $(README_GEN_PACKAGE) \
 		-c $(CONFIG_DIR)/bitnami-readme-gen.json \
@@ -361,27 +302,53 @@ readme-gen:
 		-s $(CHART)/values.schema.json
 endif
 
-# make clean - Clean up after builds
+
+# ---------------------------
+#   Housekeeping
+# ---------------------------
+
+.PHONY: prune
+prune:
+	$(call log_attention, "Removing development cluster and hosts file configuration")
+	$(kind) delete cluster \
+		--name $(PROJ_NAME)
+	$(SCRIPT_DIR)/hosts.sh remove
+
 .PHONY: clean
 clean:
 	$(call log_notice, "Removing temporary distribution directories..")
 	@rm -rf $(OUT_DIR)
-	@rm -rf $(TLS_DIR)
-
+	@rm -rf $(SECRETS_DIR)
 
 .PHONY: tools-check
 tools-check:
 	$(foreach exe,$(EXECUTABLES), $(if $(shell command -v $(exe) 2> /dev/null), $(info Found $(exe)), $(info Please install $(exe))))
 
 # ---------------------------
-# Dependant recipes
+#   Dependencies
 # ---------------------------
-.PHONY: create-dist
-create-dist:
+
+.PHONY: dist-dir
+dist-dir:
 	$(call log_notice, "Creating distribution directory for Helm charts at: $(OUT_DIR)")
 	@mkdir -p $(OUT_DIR)
 
-.PHONY: create-tls
-create-tls:
-	$(call log_notice, "Creating directory for TLS certificates at: $(TLS_DIR)")
-	@mkdir -p $(TLS_DIR)
+.PHONY: secrets-dir
+secrets-dir:
+	$(call log_notice, "Creating directory for secrets at: $(SECRETS_DIR)")
+	@mkdir -p $(SECRETS_DIR)
+
+.PHONY: cluster
+cluster:
+	$(call log_success, "Creating local 'kind' Kubernetes cluster using configuration in: $(KIND_CLUSTER_CONFIG)!")
+	$(kind) create cluster \
+		--config $(CONFIG_K8S_DIR)/cluster/kind-config.yaml \
+		--name $(PROJ_NAME) \
+		--wait 15s
+
+.PHONY: cluster-bootstrap
+cluster-bootstrap:
+	$(call log_success, "Bootstrapping development cluster")
+	$(helmfile) apply -f $(CONFIG_K8S_DIR)/helmfile.yaml
+	$(kubectl) apply -k $(CONFIG_K8S_DIR)/kustomize
+	$(SCRIPT_DIR)/hosts.sh add
