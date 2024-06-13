@@ -1,9 +1,16 @@
 # FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="175" height="175" align="right" />
 
-LinkStack provides you with a website similar to [Linktree](https://linktr.ee/). Many social media platforms only allow you to add one link, with this you can simply link to your LinkStack page and have all the links you want displayed on one site. You can share all your links to your social media platform or important links to easy accessible and hosted on your own web-server or web-hosting provider. On this website, other users can register and create their own links, you can access other user via the Admin Panel.
-It delivers all of these features within a single Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
+LinkStack provides you with a website similar to [Linktree](https://linktr.ee/). Many social media platforms only allow
+you to add one link, with this you can simply link to your LinkStack page and have all the links you want displayed on
+one site. You can share all your links to your social media platform or important links to easy accessible and hosted on
+your own web-server or web-hosting provider. On this website, other users can register and create their own links, you
+can access other user via the Admin Panel.
+It delivers all of these features within a single Docker image available
+on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
 
-> Head to the [Linkstack GitHub Repository](https://github.com/LinkStackOrg/LinkStack) for in-depth view at the implemenation or to the [documentation](https://docs.linkstack.org/) for guides and [examples](https://docs.linkstack.org/docker/setup/).
+> Head to the [Linkstack GitHub Repository](https://github.com/LinkStackOrg/LinkStack) for in-depth view at the
+> implemenation or to the [documentation](https://docs.linkstack.org/) for guides
+> and [examples](https://docs.linkstack.org/docker/setup/).
 
 # TL;DR
 
@@ -13,16 +20,24 @@ helm install my-release oci://ghcr.io/fmjstudios/helm/linkstack:1.2.3
 
 # Introduction
 
-This chart bootstraps a Linkstack [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
+This chart bootstraps a Linkstack [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
+a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
+a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the
+Ingress needs to be explicitly enabled. Lastly the chart configures
+a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if
+enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
-The chart supports the configuration of all [Linkstack environment variables](https://docs.linkstack.org/docker/setup/) via the `linkstack` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image Parameters.
+The chart supports the configuration of all [Linkstack environment variables](https://docs.linkstack.org/docker/setup/)
+via the `linkstack` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+configurable via the Image Parameters.
 
 ## Parameters
 
 ### Linkstack Image parameters
 
 | Name                | Description                                                         | Value                                                                     |
-| ------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+|---------------------|---------------------------------------------------------------------|---------------------------------------------------------------------------|
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`                                                               |
 | `image.repository`  | The registry repository to pull the image from                      | `linkstackorg/linkstack`                                                  |
 | `image.tag`         | The image tag to pull                                               | `latest`                                                                  |
@@ -33,14 +48,14 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Linkstack Name overrides
 
 | Name               | Description                                     | Value |
-| ------------------ | ----------------------------------------------- | ----- |
+|--------------------|-------------------------------------------------|-------|
 | `nameOverride`     | String to partially override linkstack.fullname | `""`  |
 | `fullnameOverride` | String to fully override linkstack.fullname     | `""`  |
 
 ### Linkstack Configuration parameters
 
 | Name                               | Description                                                  | Value      |
-| ---------------------------------- | ------------------------------------------------------------ | ---------- |
+|------------------------------------|--------------------------------------------------------------|------------|
 | `linkstack.serverAdmin`            | The admin's email address                                    | `""`       |
 | `linkstack.serverName`             | The http (and https) server name for Apache2                 | `""`       |
 | `linkstack.logLevel`               | The log level for Apache2                                    | `info`     |
@@ -56,14 +71,14 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-| ----------------------- | --------------------------------------- | ----- |
+|-------------------------|-----------------------------------------|-------|
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                                       | Value   |
-| --------------------- | --------------------------------------------------------------------------------- | ------- |
+|-----------------------|-----------------------------------------------------------------------------------|---------|
 | `ingress.enabled`     | Whether to enable Ingress                                                         | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                                     | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                               | `""`    |
@@ -74,7 +89,7 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Service parameters
 
 | Name                     | Description                                      | Value       |
-| ------------------------ | ------------------------------------------------ | ----------- |
+|--------------------------|--------------------------------------------------|-------------|
 | `service.type`           | The type of service to create for the deployment | `ClusterIP` |
 | `service.ports.http`     | The http port to use on the service              | `80`        |
 | `service.ports.https`    | The https port to use on the service             | `443`       |
@@ -85,14 +100,14 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### RBAC parameters
 
 | Name          | Description                             | Value  |
-| ------------- | --------------------------------------- | ------ |
+|---------------|-----------------------------------------|--------|
 | `rbac.create` | Whether or not to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role          | `[]`   |
 
 ### Linkstack Service Account parameters
 
 | Name                         | Description                                                                 | Value   |
-| ---------------------------- | --------------------------------------------------------------------------- | ------- |
+|------------------------------|-----------------------------------------------------------------------------|---------|
 | `serviceAccount.create`      | Whether or not a service account should be created                          | `true`  |
 | `serviceAccount.automount`   | Whether or not to automount the service account token                       | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`    |
@@ -102,7 +117,7 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Linkstack Liveness Probes
 
 | Name                                | Description                                                 | Value   |
-| ----------------------------------- | ----------------------------------------------------------- | ------- |
+|-------------------------------------|-------------------------------------------------------------|---------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -113,7 +128,7 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Linkstack Readiness Probes
 
 | Name                                 | Description                                                  | Value   |
-| ------------------------------------ | ------------------------------------------------------------ | ------- |
+|--------------------------------------|--------------------------------------------------------------|---------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -124,7 +139,7 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Linkstack Startup Probes
 
 | Name                               | Description                                                | Value   |
-| ---------------------------------- | ---------------------------------------------------------- | ------- |
+|------------------------------------|------------------------------------------------------------|---------|
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -135,14 +150,14 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Pod disruption budget parameters
 
 | Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------|--------|
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                 | Description                                         | Value |
-| -------------------- | --------------------------------------------------- | ----- |
+|----------------------|-----------------------------------------------------|-------|
 | `resources`          | The resource limits/requests for the Linkstack pod  | `{}`  |
 | `initContainers`     | Define initContainers for the main Linkstack server | `[]`  |
 | `nodeSelector`       | Node labels for pod assignment                      | `{}`  |
@@ -156,5 +171,5 @@ The chart supports the configuration of all [Linkstack environment variables](ht
 ### Security context settings
 
 | Name              | Description                           | Value |
-| ----------------- | ------------------------------------- | ----- |
+|-------------------|---------------------------------------|-------|
 | `securityContext` | General security context settings for | `{}`  |

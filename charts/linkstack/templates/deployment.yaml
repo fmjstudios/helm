@@ -10,7 +10,7 @@ spec:
     matchLabels:
       {{- include "linkstack.selectorLabels" . | nindent 6 }}
   {{- if .Values.strategy -}}
-  updateStrategy:
+  strategy:
   {{- toYaml .Values.strategy | nindent 4 }}
   {{- end }}
   template:
@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ include "linkstack.fullname" . }}     
+                name: {{ include "linkstack.fullname" . }}
           {{/* Container settings */}}
           ports:
             - name: http
@@ -48,7 +48,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: {{ include "linkstack.pv.name" . }}
-              mountPath: {{ .Values.linkstack.data.rootPath }}   
+              mountPath: {{ .Values.linkstack.data.rootPath }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -90,6 +90,9 @@ spec:
             successThreshold: {{ .Values.startupProbe.successThreshold }}
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
       volumes:
         - name: {{ include "linkstack.pv.name" . }}
           persistentVolumeClaim:
@@ -114,9 +117,10 @@ spec:
         - name: linkstack-init
           image: {{ include "linkstack.image" . }}
           imagePullPolicy: IfNotPresent
-          command: ["sh", "-c", "cp -r /htdocs/. /data && chown -R apache:apache /data"]
+          command: ["/bin/sh"]
+          args: ["-c", "cp -r /htdocs/. /data && chown -R {{ default "100" .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /data"]
           volumeMounts:
-            - name: linkstack-test-pv
+            - name: {{ include "linkstack.pv.name" . }}
               mountPath: "/data"
       {{- if .Values.initContainers }}
         {{- toYaml .Values.initContainers | nindent 8 }}

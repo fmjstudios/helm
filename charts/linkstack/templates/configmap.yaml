@@ -4,7 +4,7 @@ metadata:
   name: {{ include "linkstack.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/component: vaultwarden
+    app.kubernetes.io/component: linkstack
     {{- include "linkstack.labels" . | nindent 4 }}
     {{- with .Values.configMap.labels }}
     {{- toYaml . | nindent 4 }}
