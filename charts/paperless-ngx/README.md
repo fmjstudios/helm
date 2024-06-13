@@ -1,7 +1,4 @@
-
-<img src="https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/5842944d1ef817c11a47ed5c19ba8b7886c9fbfe/resources/logo/web/svg/square.svg" alt="Paperless-NGX Logo" width="175" height="175" align="right" />
-
-# FMJ Studios - Paperless-NGX Helm Chart
+# FMJ Studios - Paperless-NGX Helm Chart <img src="https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/5842944d1ef817c11a47ed5c19ba8b7886c9fbfe/resources/logo/web/svg/square.svg" alt="Paperless-NGX Logo" width="175" height="175" align="right" />
 
 Paperless-ngx is a community-supported open-source document management system that transforms your physical documents into a searchable online archive so you can keep, well, less paper. Paperless-NGX is the official successor to the original [Paperless](https://github.com/the-paperless-project/paperless) & [Paperless-ng](https://github.com/jonaswinkler/paperless-ng) projects and is designed to distribute the responsibility of advancing and supporting the project among a team of people. The application organizes and indexes your documents with tags, correspondents, types and more, performs OCR on your documents, making their text searchable and selectable and due its' use of the Tesseract engine - recognizes more than 100 languages. On top of all that it features a beautiful modern web application and is accompanied by a plethora of mobile applications for iOS and Android, provided by the open-source community around the project. It delivers all of these features within a single Docker image available on [GitHub Container Registry](https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx).
 
