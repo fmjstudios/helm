@@ -710,7 +710,6 @@ startupProbe:
 ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
 
 podDisruptionBudget:
   enabled: true
@@ -790,7 +789,7 @@ redis:
   ## @param redis.enabled Enable or disable the Redis&reg; subchart
   ##
   enabled: true
-  ## @param architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
+  ## @param redis.architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
   ##
   architecture: standalone
 
