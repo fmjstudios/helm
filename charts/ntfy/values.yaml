@@ -1,0 +1,93 @@
+# Default Helm values for fmjstudios/ntfy.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section ntfy Image parameters
+##
+
+## ntfy Server Image
+## ref: https://hub.docker.com/r/linkstackorg/linkstack
+## @param image.registry [default: docker.io] The Docker registry to pull the image from
+## @param image.repository [default: binwiederhier/ntfy] The registry repository to pull the image from
+## @param image.tag [default: v2.11.0] The image tag to pull
+## @param image.digest [string] The image digest to pull
+## @param image.pullPolicy [default: IfNotPresent] The Kubernetes image pull policy
+## @param image.pullSecrets [array] A list of secrets to use for pulling images from private registries
+
+image:
+  registry: docker.io
+  repository: binwiederhier/ntfy
+  tag: v2.11.0
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## @section ntfy Name overrides
+##
+
+## @param nameOverride String to partially override linkstack.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override linkstack.fullname
+##
+fullnameOverride: ""
+
+## @section Linkstack Configuration parameters
+##
+
+## ntfy configuration
+## ref: https://docs.ntfy.sh/config/ or https://github.com/binwiederhier/ntfy/blob/main/server/server.yml
+ntfy:
+  ## @param ntfy.baseURL [string] The public facing URL for the service (e.g. https://ntfy.example.com)
+  ##
+  baseURL: ""
+
+  ## @param ntfy.listenHTTP [string] The listen address for the HTTP server (e.g. ":80", "127.0.0.1:80")
+  ##
+  listenHTTP: ":8080"
+
+  ## @param ntfy.listenHTTPS [string] The listen address for the HTTPS server (e.g. ":443", "127.0.0.1:443") -
+  ## setting this parameter requires also setting ntfy.keyFile and ntfy.certFile
+  ##
+  listenHTTPS: ""
+
+  ## @param ntfy.listenUnix [string] The path to a Unix socket to listen on (e.g. "/var/run/ntfy/ntfy.sock")
+  ##
+  listenUnix: ""
+
+  ## @param ntfy.listenUnixMode [string] The Linux permissions for the Unix socket (e.g. "0700")
+  ##
+  listenUnixMode: ""
+
+  ## @param ntfy.keyFile [string] The path to a certificate key file (e.g. "/var/lib/ntfy/tls.key")
+  ##
+  keyFile: ""
+
+  ## @param ntfy.certFile [string] The path to a certificate file (e.g. "/var/lib/ntfy/tls.crt")
+  ##
+  certFile: ""
+
+  ## @param ntfy.firebaseKeyFile [string] The path to a Firebase key file (e.g. "/var/lib/ntfy/key.json")
+  ##
+  firebaseKeyFile: ""
+
+  ## Cache configuration
+  ##
+  cache:
+    ## @param ntfy.cache.file [string] The path to a Firebase key file (e.g. "/var/lib/ntfy/key.json")
+    ##
+    file: ""
