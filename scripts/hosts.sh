@@ -52,7 +52,7 @@ function hosts::usage() {
 # ----------------------
 function hosts::add() {
   log::yellow "Adding custom host configuration to ${HOST_CONFIG}"
-  read -rp "Are you sure you want to modify the system host file ${HOST_CONFIG}? (y/N)" choice
+  read -rp "Are you sure you want to modify the system host file ${HOST_CONFIG}? (y/N) " choice
   case "${choice}" in
   y | Y)
     log::green "Confirmed modification to ${HOST_CONFIG}. Installing..."
@@ -70,7 +70,7 @@ function hosts::add() {
 # ----------------------
 function hosts::remove() {
   log::yellow "Removing custom host configuration from ${HOST_CONFIG}"
-  read -rp "Are you sure you want to modify the system host file ${HOST_CONFIG}? (y/N)" choice
+  read -rp "Are you sure you want to modify the system host file ${HOST_CONFIG}? (y/N) " choice
   case "${choice}" in
   y | Y)
     log::green "Confirmed modification to ${HOST_CONFIG}. Removing..."
