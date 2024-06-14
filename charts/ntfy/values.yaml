@@ -161,7 +161,7 @@ ntfy:
 
     ## @param ntfy.auth.defaultAccess [string] The default access level for new users (e.g. "/var/lib/ntfy/user.db")
     ##
-    defaultAccess: "read-only"
+    defaultAccess: "deny-all"
 
     ## @param ntfy.auth.startupQueries [string] SQLite queries to run on database initialization (e.g. to enable WAL mode)
     ## ref: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml#L49
@@ -366,37 +366,37 @@ ntfy:
   ## Visitor configuration
   ##
   visitor:
-    ## @param ntfy.visitor.subscriptionLimit [number] The number of subscriptions per visitor (IP address)
+    ## @param ntfy.visitor.subscriptionLimit [default: 30] The number of subscriptions per visitor (IP address)
     ##
-    subscriptionLimit: ""
-    ## @param ntfy.visitor.requestLimitBurst [number] The initial bucket of requests each visitor has (e.g. "60")
+    subscriptionLimit: 30
+    ## @param ntfy.visitor.requestLimitBurst [default: 60] The initial bucket of requests each visitor has (e.g. "60")
     ##
-    requestLimitBurst: ""
-    ## @param ntfy.visitor.requestLimitReplenish [number] The rate at which the bucket is refilled (e.g. "5s")
+    requestLimitBurst: 60
+    ## @param ntfy.visitor.requestLimitReplenish [default: 5s] The rate at which the bucket is refilled (e.g. "5s")
     ##
-    requestLimitReplenish: ""
+    requestLimitReplenish: "5s"
     ## @param ntfy.visitor.requestLimitExemptHosts [string] A comma-separated list of hostnames, IPs or CIDRs to be
     ## exempt from request rate limiting. Hostnames are resolved at the time the server is started. (e.g. "1.2.3.4,ntfy.example.com,8.7.6.0/24")
     ##
     requestLimitExemptHosts: ""
-    ## @param ntfy.visitor.messageDailyLimit [number] Hard daily limit of messages per visitor and day. The limit is reset
+    ## @param ntfy.visitor.messageDailyLimit [default: 15000] Hard daily limit of messages per visitor and day. The limit is reset
     ## every day at midnight UTC. If the limit is not set (or set to zero), the request limit (see above) governs the
     ## upper limit.
     ##
-    messageDailyLimit: ""
-    ## @param ntfy.visitor.emailLimitBurst [number] The initial bucket of emails each visitor has (e.g. "60")
+    messageDailyLimit: 15000
+    ## @param ntfy.visitor.emailLimitBurst [default: 16] The initial bucket of emails each visitor has (e.g. "60")
     ##
-    emailLimitBurst: ""
-    ## @param ntfy.visitor.emailLimitReplenish [string] The rate at which the bucket is refilled (e.g. "5s")
+    emailLimitBurst: 16
+    ## @param ntfy.visitor.emailLimitReplenish [default: 1h] The rate at which the bucket is refilled (e.g. "5s")
     ##
-    emailLimitReplenish: ""
-    ## @param ntfy.visitor.attachmentTotalSizeLimit [string] The total storage limit used for attachments per visitor
+    emailLimitReplenish: "1h"
+    ## @param ntfy.visitor.attachmentTotalSizeLimit [default: 100M] The total storage limit used for attachments per visitor
     ##
-    attachmentTotalSizeLimit: ""
-    ## @param ntfy.visitor.attachmentTotalSizeLimit [string] The total daily attachment download/upload traffic limit per visitor
+    attachmentTotalSizeLimit: "100M"
+    ## @param ntfy.visitor.attachmentTotalSizeLimit [default: 500M] The total daily attachment download/upload traffic limit per visitor
     ##
-    attachmentDailyBandwidthLimit: ""
-    ## @param ntfy.visitor.subscriberRateLimiting [boolean] Whether or not to enable subscriber-based rate limiting
+    attachmentDailyBandwidthLimit: "500M"
+    ## @param ntfy.visitor.subscriberRateLimiting [boolean] Whether to enable subscriber-based rate limiting
     ##
     subscriberRateLimiting: false
 
@@ -449,7 +449,7 @@ ntfy:
     ## @param ntfy.metrics.enabled [string] exposes the metrics endpoint via a dedicated [IP]:port. If set, this option
     ## implicitly enables metrics as well
     ##
-    listenHTTP: ""
+    listenHTTP: ":9090"
     ## @param ntfy.metrics.profileListenHTTP [string] If enabled, ntfy will listen on a dedicated listen IP/port
     ##
     profileListenHTTP: ""
