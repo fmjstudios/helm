@@ -1,0 +1,669 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "linkwarden/server"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "'1.30.1-alpine'"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "\"\""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override linkwarden.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override linkwarden.fullname",
+            "default": ""
+        },
+        "linkwarden": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "description": "The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and",
+                    "default": "\"\""
+                },
+                "nextAuthSecret": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "A secret string to encrypt JWTs and hash email verification tokens",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing secret containing the secret string",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key within before mentioned secret containing the actual string",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "paginationTakeCount": {
+                    "type": "number",
+                    "description": "The number of links to fetch every time you reach the bottom of the webpage",
+                    "default": "20"
+                },
+                "autoscrollTimeout": {
+                    "type": "number",
+                    "description": "The amount of time to wait for the website to be archived (in seconds).",
+                    "default": "30"
+                },
+                "rearchiveLimit": {
+                    "type": "number",
+                    "description": "Adjusts how often a user can trigger a new archive for each link (in minutes).",
+                    "default": "5"
+                },
+                "maxFileSize": {
+                    "type": "string",
+                    "description": "Optionally set a maximum file size",
+                    "default": "\"\""
+                },
+                "maxLinksPerUser": {
+                    "type": "string",
+                    "description": "Optionally set the maximum amount of links a single user can create",
+                    "default": "\"\""
+                },
+                "archiveTakeCount": {
+                    "type": "string",
+                    "description": "Optionally set the number of archives to fetch",
+                    "default": "\"\""
+                },
+                "browserTimeout": {
+                    "type": "string",
+                    "description": "Optionally set timeout duration for the browser",
+                    "default": "\"\""
+                },
+                "ignoreUnauthorizedCA": {
+                    "type": "boolean",
+                    "description": "Optionally ignore unauthorized Certificate Authorities",
+                    "default": "false"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "storageType": {
+                            "type": "string",
+                            "description": "The storage type to use for data, can be either 'filesystem' or 's3'",
+                            "default": "filesystem"
+                        },
+                        "filesystem": {
+                            "type": "object",
+                            "properties": {
+                                "dataPath": {
+                                    "type": "string",
+                                    "description": "The relative path for data to be stored in",
+                                    "default": "data"
+                                },
+                                "pvc": {
+                                    "type": "object",
+                                    "properties": {
+                                        "size": {
+                                            "type": "string",
+                                            "description": "The size given to the PVC for the above data paths",
+                                            "default": "5Gi"
+                                        },
+                                        "storageClass": {
+                                            "type": "string",
+                                            "description": "The storageClass given to PVCs",
+                                            "default": "standard"
+                                        },
+                                        "reclaimPolicy": {
+                                            "type": "string",
+                                            "description": "The resourcePolicy given to PVCs",
+                                            "default": "Retain"
+                                        },
+                                        "existingClaim": {
+                                            "type": "string",
+                                            "description": "Provide the name to an existing PVC",
+                                            "default": "\"\""
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "s3": {
+                            "type": "object",
+                            "properties": {
+                                "bucketName": {
+                                    "type": "string",
+                                    "description": "The name of the S3 bucket to be used for the Linkwarden files",
+                                    "default": "\"\""
+                                },
+                                "endpoint": {
+                                    "type": "string",
+                                    "description": "The S3 endpoint to use",
+                                    "default": "\"\""
+                                },
+                                "region": {
+                                    "type": "string",
+                                    "description": "The AWS region the S3 bucket is located in",
+                                    "default": "\"\""
+                                },
+                                "forcePathStyle": {
+                                    "type": "boolean",
+                                    "description": "Use path-style bucket addresses instead of AWS' DNS subdomain style",
+                                    "default": "false"
+                                },
+                                "accessKey": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "The value for the S3 Access Key, to be used within a Kubernetes secret",
+                                            "default": "\"\""
+                                        },
+                                        "existingSecret": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "description": "The name of the existing secret",
+                                                    "default": "\"\""
+                                                },
+                                                "key": {
+                                                    "type": "string",
+                                                    "description": "The key name within the existing Secret",
+                                                    "default": "\"\""
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "secretKey": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "The value for the S3 Secret Key, to be used within a Kubernetes secret",
+                                            "default": "\"\""
+                                        },
+                                        "existingSecret": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "description": "The name of the existing secret",
+                                                    "default": "\"\""
+                                                },
+                                                "key": {
+                                                    "type": "string",
+                                                    "description": "The key name within the existing Secret",
+                                                    "default": "\"\""
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "database": {
+                    "type": "object",
+                    "properties": {
+                        "user": {
+                            "type": "string",
+                            "description": "The user for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set",
+                            "default": "linkwarden"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The password to the aforementioned user - ignored if 'existingSecret' or 'uri' is set",
+                            "default": "linkwarden"
+                        },
+                        "host": {
+                            "type": "string",
+                            "description": "The hostname for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set",
+                            "default": "5432"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The name for the PostgreSQL database - ignored if 'existingSecret' or 'uri' is set",
+                            "default": "linkwarden"
+                        },
+                        "uri": {
+                            "type": "string",
+                            "description": "The URI for the PostgreSQL database - ignored if existingSecret is set",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of the existing secret",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The name of the key within the aforementioned existing secret",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "disableRegistration": {
+                            "type": "boolean",
+                            "description": "Disable registration for Linkwarden",
+                            "default": "false"
+                        },
+                        "enableCredentials": {
+                            "type": "boolean",
+                            "description": "Enable credential logins for Linkwarden",
+                            "default": "true"
+                        },
+                        "disableNewSSOUsers": {
+                            "type": "boolean",
+                            "description": "Disable new SSO users",
+                            "default": "false"
+                        },
+                        "sso": {
+                            "type": "array",
+                            "description": "A list of SSO providers to enable within Linkwarden",
+                            "default": "[]",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "smtp": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable E-mail integration within Linkwarden",
+                            "default": "false"
+                        },
+                        "fromAddress": {
+                            "type": "string",
+                            "description": "The address from which Linkwarden should send emails",
+                            "default": "\"\""
+                        },
+                        "server": {
+                            "type": "string",
+                            "description": "The server from which Linkwarden should send emails",
+                            "default": "\"\""
+                        }
+                    }
+                }
+            }
+        },
+        "configMapAnnotations": {
+            "type": "object",
+            "description": "Define extra annotations for the Linkwarden ConfigMap",
+            "default": {}
+        },
+        "configMapLabels": {
+            "type": "object",
+            "description": "Define extra labels for the Linkwarden ConfigMap",
+            "default": {}
+        },
+        "secretAnnotations": {
+            "type": "object",
+            "description": "Define extra annoations for the created Kubernetes secrets",
+            "default": {}
+        },
+        "secretLabels": {
+            "type": "object",
+            "description": "Define extra Labels for the created Kubernetes secrets",
+            "default": {}
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the creation of Ingress resources",
+                    "default": false
+                },
+                "className": {
+                    "type": "string",
+                    "description": "Specify an Ingress class for the resource",
+                    "default": "\"\""
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "description": "Define extra hostnames & paths for the Ingress resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "Define TLS settings for the Ingress resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service resource to create",
+                    "default": "\"\""
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port number to assign to the service",
+                    "default": "80"
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Enable or disable the creation of RBAC resources",
+                    "default": "false"
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Define extra rules to be added to the Role resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "automount": {
+                    "type": "boolean",
+                    "description": "Whether or not to automatically mount API credentials",
+                    "default": "true"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise linkwarden.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "postgresql": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the PostgreSQL subchart",
+                    "default": true
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "enablePostgresUser": {
+                            "type": "boolean",
+                            "description": "Assign a password to the \"postgres\" admin user. Otherwise, remote access will be blocked for this user",
+                            "default": true
+                        },
+                        "postgresPassword": {
+                            "type": "string",
+                            "description": "Password for the \"postgres\" admin user. Ignored if `auth.existingSecret` is provided",
+                            "default": "postgres"
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "Name for a custom user to create",
+                            "default": "linkwarden"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "Password for the custom user to create. Ignored if `auth.existingSecret` is provided",
+                            "default": "linkwarden"
+                        },
+                        "database": {
+                            "type": "string",
+                            "description": "Name for a custom database to create",
+                            "default": "linkwarden"
+                        },
+                        "usePasswordFiles": {
+                            "type": "boolean",
+                            "description": "Mount credentials as a files instead of using an environment variable",
+                            "default": false
+                        }
+                    }
+                },
+                "primary": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the primary database (eg primary, master, leader, ...)",
+                            "default": "primary"
+                        },
+                        "persistence": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enable PostgreSQL Primary data persistence using PVC",
+                                    "default": true
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Name of an existing PVC to use",
+                                    "default": ""
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "PVC Storage Class for PostgreSQL Primary data volume",
+                                    "default": ""
+                                },
+                                "accessModes": {
+                                    "type": "array",
+                                    "description": "PVC Access Mode for PostgreSQL volume",
+                                    "default": [
+                                        "ReadWriteOnce"
+                                    ],
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "size": {
+                                    "type": "string",
+                                    "description": "PVC Storage Request for PostgreSQL volume",
+                                    "default": "5Gi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

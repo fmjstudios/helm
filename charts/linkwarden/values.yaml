@@ -121,7 +121,7 @@ linkwarden:
         ## @param linkwarden.data.filesystem.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs
         ##
         reclaimPolicy: Retain
-        ## @param linkwarden.data.filessystem.pvc.existingClaim [string] Provide the name to an existing PVC
+        ## @param linkwarden.data.filesystem.pvc.existingClaim [string] Provide the name to an existing PVC
         ##
         existingClaim: ""
 
@@ -195,10 +195,10 @@ linkwarden:
     ## Provide an existing secret containing the entire Database URI at the specified key
     ##
     existingSecret:
-      ## @param linkwarden.database.uri [string] The name of the existing secret
+      ## @param linkwarden.database.existingSecret.name [string] The name of the existing secret
       ##
       name: ""
-      ## @param linkwarden.database.uri [string] The name of the key within the aforementioned existing secret
+      ## @param linkwarden.database.existingSecret.key [string] The name of the key within the aforementioned existing secret
       ##
       key: ""
 
@@ -307,7 +307,7 @@ ingress:
 ## Linkwarden service settings
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
 ## @param service.type [string] The type of service resource to create
-## @param service.port [int] The port number to assign to the service
+## @param service.port [default: 80] The port number to assign to the service
 ## @param service.annotations [object] Define extra annotations for the Service resource
 ## @param service.labels [object] Define extra labels for the Service resource
 ##
@@ -384,22 +384,22 @@ livenessProbe:
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: false
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the readiness probe
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
   ##
   failureThreshold: 3
 
@@ -407,22 +407,22 @@ readinessProbe:
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
-  ## @param livenessProbe.enabled Enable or disable the use of readiness probes
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
   ##
   enabled: false
-  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
   ##
   initialDelaySeconds: 5
-  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
   ##
   timeoutSeconds: 1
-  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
   ##
   periodSeconds: 10
-  ## @param livenessProbe.successThreshold Configure the success threshold for the startup probe
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
   ##
   successThreshold: 1
-  ## @param livenessProbe.failureThreshold Configure the failure threshold for the startup probe
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
   ##
   failureThreshold: 10
 
@@ -433,7 +433,7 @@ startupProbe:
 ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-## @param podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
+## podDisruptionBudget.maxUnavailable The maximum amount of pods which can be unavailable
 
 podDisruptionBudget:
   enabled: true
