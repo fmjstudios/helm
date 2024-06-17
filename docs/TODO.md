@@ -2,7 +2,7 @@
 
 ## ➕ Additions
 
-- [ ] [ntfy.sh](https://ntfy.sh) chart
+- [X] [ntfy.sh](https://ntfy.sh) chart
 - [ ] [Karma (Alertmanager Dashboard)](https://github.com/prymitive/karma) chart
 - [ ] [BookStack](https://www.bookstackapp.com/) chart
 - [ ] [Maildev](https://github.com/maildev/maildev) chart
@@ -14,7 +14,7 @@
 - [X] [LinkStack](https://linkstack.org/) chart
 - [ ] [Shlink](https://shlink.io/) chart
 - [ ] [AnonAddy](https://addy.io/) chart
-- [ ] [Cachet](https://cachethq.io/) chart
+- [X] [Cachet](https://cachethq.io/) chart
 - [X] [Vikunja](https://vikunja.io/) chart -> [_official chart exists_][vikunja_artifacthub]
 - [ ] [OpenGist](https://github.com/thomiceli/opengist) chart
 - [ ] [Drift](https://github.com/MaxLeiter/Drift) chart
@@ -30,15 +30,21 @@
 
 ## 🔁 Changes (across all charts)
 
-- [ ] Allow for the creation of [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+- [ ] Allow for the creation
+  of [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
 - [ ] Enable the use of PSP-labels by default as long as charted applications support it
 - [ ] Add setting to automount service account tokens
 - [ ] Add optional settings to define extra arguments for the deployed containers
-- [ ] Add ability to specify [handlers for Pod lifecycle events](https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/)
-- [ ] Add [Pod/ServiceMonitor and PrometheusRule manifests](https://prometheus-operator.dev/docs/operator/api/) for each chart
-- [ ] Enforce the use of well-defined security contexts for pods an containers like in [Bitnami's&reg; Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml)
-- [ ] Possibly add confiuration for [Pod priority](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/)
-- [ ] Enhance service configurations like in [Bitnami's&reg; Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml#L517)
+- [ ] Add ability to
+  specify [handlers for Pod lifecycle events](https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/)
+- [ ] Add [Pod/ServiceMonitor and PrometheusRule manifests](https://prometheus-operator.dev/docs/operator/api/) for each
+  chart
+- [ ] Enforce the use of well-defined security contexts for pods an containers like
+  in [Bitnami's&reg; Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml)
+- [ ] Possibly add confiuration
+  for [Pod priority](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/)
+- [ ] Enhance service configurations like
+  in [Bitnami's&reg; Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml#L517)
 - [ ] Add Linkstack's ConfigMap parameters to all other charts
 
 ## 💡 Ideas
