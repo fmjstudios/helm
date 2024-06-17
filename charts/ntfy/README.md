@@ -19,7 +19,7 @@ helm install my-release oci://ghcr.io/fmjstudios/helm/ntfy:1.2.3
 # Introduction
 
 This chart bootstraps a
-Paperless-NGX [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
+ntfy [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
 a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
 a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
 and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the
@@ -28,7 +28,7 @@ a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configu
 enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
 The chart supports the configuration of
-all [ntfy environment variables](hhttps://docs.ntfy.sh/config/) via the `ntfy` key in
+all [ntfy environment variables](https://docs.ntfy.sh/config/) via the `ntfy` key in
 Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image
 Parameters.
 
