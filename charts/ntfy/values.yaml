@@ -8,7 +8,7 @@
 ##
 
 ## ntfy Server Image
-## ref: https://hub.docker.com/r/linkstackorg/linkstack
+## ref: https://hub.docker.com/r/binwiederhier/ntfy
 ## @param image.registry [default: docker.io] The Docker registry to pull the image from
 ## @param image.repository [default: binwiederhier/ntfy] The registry repository to pull the image from
 ## @param image.tag [default: v2.11.0] The image tag to pull
@@ -38,15 +38,15 @@ image:
 ## @section ntfy Name overrides
 ##
 
-## @param nameOverride String to partially override linkstack.fullname
+## @param nameOverride String to partially override ntfy.fullname
 ##
 nameOverride: ""
 
-## @param fullnameOverride String to fully override linkstack.fullname
+## @param fullnameOverride String to fully override ntfy.fullname
 ##
 fullnameOverride: ""
 
-## @section Linkstack Configuration parameters
+## @section ntfy Configuration parameters
 ##
 
 ## ntfy configuration
@@ -85,7 +85,7 @@ ntfy:
   ##
   firebaseKeyFile: ""
 
-  ## @param ntfy.behindProxy [boolean] Wether or not ntfy is hosted behind a proxy
+  ## @param ntfy.behindProxy [default: false] Wether or not ntfy is hosted behind a proxy
   ##
   behindProxy: false
 
@@ -93,7 +93,7 @@ ntfy:
   ##
   keepaliveInterval: ""
 
-  ## @param ntfy.keepaliveInterval [string] Interval in which the manager prunes old messages
+  ## @param ntfy.managerInterval [string] Interval in which the manager prunes old messages
   ##
   managerInterval: ""
 
@@ -105,19 +105,19 @@ ntfy:
   ##
   webRoot: "/"
 
-  ## @param ntfy.enableSignup [boolean] Allow users to sign up via the web app or API
+  ## @param ntfy.enableSignup [default: false] Allow users to sign up via the web app or API
   ##
   enableSignup: false
 
-  ## @param ntfy.enableLogin [boolean] Allow users to sign in via the web app or API
+  ## @param ntfy.enableLogin [default: false] Allow users to sign in via the web app or API
   ##
   enableLogin: false
 
-  ## @param ntfy.enableReservations [boolean] Allow users to reserve topics
+  ## @param ntfy.enableReservations [default: false] Allow users to reserve topics
   ##
   enableReservations: false
 
-  ## @param ntfy.globalTopicLimit [number] The total number of topics before the server rejects new topics
+  ## @param ntfy.globalTopicLimit [default: 15000] The total number of topics before the server rejects new topics
   ##
   globalTopicLimit: 15000
 
@@ -144,13 +144,29 @@ ntfy:
     ##
     startupQueries: ""
 
-    ## @param ntfy.cache.batchSize [number] The amount of messages within a single batch (e.g. 32)
+    ## @param ntfy.cache.batchSize [default: 0] The amount of messages within a single batch (e.g. 32)
     ##
     batchSize: 0
 
     ## @param ntfy.cache.batchTimeout [string] The timeout after which to write the batched messages to the DB (e.g. "0ms")
     ##
     batchTimeout: ""
+
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param ntfy.cache.pvc.size [default: 2Gi] The size given to PVCs created for the cache database
+      ##
+      size: 2Gi
+      ## @param ntfy.cache.pvc.storageClass [default: standard] The storageClass given to the new PVCs
+      ##
+      storageClass: standard
+      ## @param ntfy.cache.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVCs
+      ##
+      reclaimPolicy: Retain
+      ## @param ntfy.cache.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
 
   ## Auth configuration
   ##
@@ -175,6 +191,22 @@ ntfy:
     ##
     startupQueries: ""
 
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param ntfy.auth.pvc.size [default: 2Gi] The size given to PVCs created for the auth database
+      ##
+      size: 2Gi
+      ## @param ntfy.auth.pvc.storageClass [default: standard] The storageClass given to the new PVCs
+      ##
+      storageClass: standard
+      ## @param ntfy.auth.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVCs
+      ##
+      reclaimPolicy: Retain
+      ## @param ntfy.auth.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
+
   ## Attachment configuration
   ##
   attachment:
@@ -184,10 +216,10 @@ ntfy:
     ## @param ntfy.attachment.totalSizeLimit [string] The maximum total size of cacheDir (e.g. "5G")
     ##
     totalSizeLimit: ""
-    ## @param ntfy.attachment.totalSizeLimit [string] The maximum size of a single attachment (e.g. "15M")
+    ## @param ntfy.attachment.fileSizeLimit [string] The maximum size of a single attachment (e.g. "15M")
     ##
     fileSizeLimit: ""
-    ## @param ntfy.attachment.totalSizeLimit [string] The duration after which uploaded attachments are deleted (e.g. "3h")
+    ## @param ntfy.attachment.expiryDuration [string] The duration after which uploaded attachments are deleted (e.g. "3h")
     ##
     expiryDuration: ""
 
@@ -210,10 +242,10 @@ ntfy:
       ## Specify an existing secret to grab the admin token from
       ##
       existingSecret:
-        ## @param ntfy.smtp.existingSecret.name [string] The name of an existing Secret containing the admin token
+        ## @param ntfy.smtp.senderUser.existingSecret.name [string] The name of an existing Secret containing the admin token
         ##
         name: ""
-        ## @param ntfy.smtp.existingSecret.key [string] The key name within the previously named existingSecret
+        ## @param ntfy.smtp.senderUser.existingSecret.key [string] The key name within the previously named existingSecret
         ##
         key: ""
 
@@ -226,26 +258,26 @@ ntfy:
       ## Specify an existing secret to grab the admin token from
       ##
       existingSecret:
-        ## @param ntfy.smtp.existingSecret.name [string] The name of an existing Secret containing the admin token
+        ## @param ntfy.smtp.senderPass.existingSecret.name [string] The name of an existing Secret containing the admin token
         ##
         name: ""
-        ## @param ntfy.smtp.existingSecret.key [string] The key name within the previously named existingSecret
+        ## @param ntfy.smtp.senderPass.existingSecret.key [string] The key name within the previously named existingSecret
         ##
         key: ""
 
-      ## Incoming SMTP server configuration
+    ## Incoming SMTP server configuration
+    ##
+    incoming:
+      ## @param ntfy.smtp.incoming.listen [string] The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")
       ##
-      incoming:
-        ## @param ntfy.smtp.incoming.listen [string] The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")
-        ##
-        listen: ""
-        ## @param ntfy.smtp.incoming.domain [string] The e-mail domain (e.g. "example.com")
-        ##
-        domain: ""
-        ## @param ntfy.smtp.incoming.addrPrefix [string] Optional prefix to prevent spam. If set to "ntfy-" for example,
-        ## only emails to "ntfy-$topic@ntfy.sh" will be accepted. If not set, all emails to $topic@ntfy.sh will be accepted
-        ##
-        addrPrefix: ""
+      listen: ""
+      ## @param ntfy.smtp.incoming.domain [string] The e-mail domain (e.g. "example.com")
+      ##
+      domain: ""
+      ## @param ntfy.smtp.incoming.addrPrefix [string] Optional prefix to prevent spam. If set to "ntfy-" for example,
+      ## only emails to "ntfy-$topic@ntfy.sh" will be accepted. If not set, all emails to $topic@ntfy.sh will be accepted
+      ##
+      addrPrefix: ""
 
   ## Web configuration
   ##
@@ -289,6 +321,22 @@ ntfy:
     ## @param ntfy.web.startupQueries [string] SQLite queries to run on database initialization (e.g. to enable WAL mode)
     ##
     startupQueries: ""
+
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param ntfy.web.pvc.size [default: 2Gi] The size given to PVCs created for the browser endpoint database
+      ##
+      size: 2Gi
+      ## @param ntfy.web.pvc.storageClass [default: standard] The storageClass given to the new PVCs
+      ##
+      storageClass: standard
+      ## @param ntfy.web.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVCs
+      ##
+      reclaimPolicy: Retain
+      ## @param ntfy.web.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
 
   ## Twilio configuration
   ##
@@ -393,10 +441,10 @@ ntfy:
     ## @param ntfy.visitor.attachmentTotalSizeLimit [default: 100M] The total storage limit used for attachments per visitor
     ##
     attachmentTotalSizeLimit: "100M"
-    ## @param ntfy.visitor.attachmentTotalSizeLimit [default: 500M] The total daily attachment download/upload traffic limit per visitor
+    ## @param ntfy.visitor.attachmentDailyBandwidthLimit [default: 500M] The total daily attachment download/upload traffic limit per visitor
     ##
     attachmentDailyBandwidthLimit: "500M"
-    ## @param ntfy.visitor.subscriberRateLimiting [boolean] Whether to enable subscriber-based rate limiting
+    ## @param ntfy.visitor.subscriberRateLimiting [default: false] Whether to enable subscriber-based rate limiting
     ##
     subscriberRateLimiting: false
 
@@ -443,10 +491,10 @@ ntfy:
   ## Metrics configuration
   ##
   metrics:
-    ## @param ntfy.metrics.enabled [boolean] enables the /metrics endpoint for the ntfy server
+    ## @param ntfy.metrics.enabled [default: false] enables the /metrics endpoint for the ntfy server
     ##
     enabled: false
-    ## @param ntfy.metrics.enabled [string] exposes the metrics endpoint via a dedicated [IP]:port. If set, this option
+    ## @param ntfy.metrics.listenHTTP [string] exposes the metrics endpoint via a dedicated [IP]:port. If set, this option
     ## implicitly enables metrics as well
     ##
     listenHTTP: ":9090"
@@ -470,3 +518,286 @@ ntfy:
     ## @param ntfy.log.file [string] The filename to write logs to. If this is not set, ntfy logs to stderr
     ##
     file: ""
+
+## @section ConfigMap parameters
+##
+
+## FMJ Studios ntfy ConfigMap settings
+## @param configMap.annotations Annotations for the ConfigMap resource
+## @param configMap.labels Extra Labels for the ConfigMap resource
+
+configMap:
+  annotations: { }
+  labels: { }
+
+## @section Secret parameters
+##
+
+## FMJ Studios ntfy Secret settings
+## @param secret.annotations Common annotations for the SMTP, Twilio and Upstream secrets
+## @param secret.labels Common extra labels for the SMTP, Twilio and Upstream secrets
+
+secret:
+  annotations: { }
+  labels: { }
+
+## @section Ingress parameters
+##
+
+## FMJ Studios ntfy Ingress settings
+## @param ingress.enabled [default: false] Whether to enable Ingress
+## @param ingress.className [string] The IngressClass to use for the pod's ingress
+## @param ingress.whitelist [string] A comma-separated list of IP addresses to whitelist
+## @param ingress.annotations Annotations for the Ingress resource
+## @param ingress.tls A list of hostnames and secret names to use for TLS
+## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with ntfy.baseURL)
+
+ingress:
+  enabled: false
+  className: ""
+  whitelist: ""
+  annotations: { }
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+  extraHosts:
+    []
+  # - host: domain.tld
+  #   paths:
+  #     - path: /
+  #       pathType: ImplementationSpecific
+
+## @section Service parameters
+##
+
+## FMJ Studios ntfy Service settings
+## @param service.type [default: ClusterIP] The type of service to create for the deployment
+## @param service.ports.http [default: 80] The http port to use on the service
+## @param service.ports.https [default: 443] The https port to use on the service
+## @param service.annotations Annotations for the service resource
+## @param service.labels Labels for the service resource
+## @param service.ipFamilyPolicy The Kubernetes ipFamilyPolicy
+
+service:
+  type: ClusterIP
+  ports:
+    http: 8080
+    https: 8443
+  annotations: { }
+  labels: { }
+  ipFamilyPolicy: ""
+
+## @section RBAC parameters
+##
+
+## ntfy RBAC settings
+## @param rbac.create [default: true] Whether or not to create RBAC resources
+## @param rbac.rules Extra rules to add to the Role
+##
+rbac:
+  create: true
+  rules: []
+
+## @section ntfy Service Account parameters
+##
+
+## FMJ Studios ntfy Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.automount [default: false] Whether or not to automount the service account token
+## @param serviceAccount.annotations [object] Annotations to add to the service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise ntfy.fullname is used
+## @param serviceAccount.secrets A list of secrets mountable by this service account
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Whether or not to automount the ServiceAccount token into Pod using this SA
+  automount: false
+  # Annotations to add to the service account
+  annotations: { }
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # The list of secrets mountable by this service account.
+  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
+  secrets: []
+
+## @section ntfy Liveness Probes
+##
+
+## ntfy Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
+  failureThreshold: 10
+
+## @section ntfy Readiness Probes
+##
+
+## ntfy Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
+  timeoutSeconds: 1
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
+  periodSeconds: 10
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
+  successThreshold: 1
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
+  failureThreshold: 3
+
+## @section ntfy Startup Probes
+##
+
+## ntfy Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
+  initialDelaySeconds: 5
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
+  timeoutSeconds: 1
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
+  periodSeconds: 10
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
+  ##
+  successThreshold: 1
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
+  failureThreshold: 10
+
+## @section Pod disruption budget parameters
+##
+
+## FMJ Studios ntfy pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
+
+## @section Pod settings
+##
+
+## FMJ Studios ntfy resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the ntfy pod
+##
+resources:
+  { }
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+## ntfy initContainers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers Define extra initContainers for the main ntfy server
+initContainers: []
+
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: { }
+
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: { }
+
+## @param strategy Specify a deployment strategy for the ntfy pod
+##
+strategy:
+  { }
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxUnavailable: 1
+
+## @param podAnnotations Extra annotations for the ntfy pod
+##
+podAnnotations: { }
+
+## @param podLabels Extra labels for the ntfy pod
+##
+podLabels: { }
+#  pod-security.kubernetes.io/warn: privileged
+#  pod-security.kubernetes.io/audit: privileged
+#  pod-security.kubernetes.io/enforce: baseline
+
+## @param priorityClassName The name of an existing PriorityClass
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+##
+priorityClassName: ""
+
+## @param podSecurityContext Security context settings for the ntfy pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext: { }
+#  fsGroup: 1001
+# supplementalGroups:
+#   - 1001
+
+## @section Security context settings
+##
+
+## @param securityContext General security context settings for
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext: { }
+#  runAsGroup: 1001
+#  runAsUser: 1001
+#  allowPrivilegeEscalation: false
+#  privileged: false
+#  runAsNonRoot: true
+#  readOnlyRootFilesystem: false
+#  capabilities:
+#    drop:
+#      - ALL

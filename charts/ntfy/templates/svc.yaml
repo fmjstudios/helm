@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ntfy.fullname" . }}
+  labels:
+    {{- include "ntfy.labels" . | nindent 4 }}
+    {{- if .Values.service.labels }}
+    {{- toYaml .Values.service.labels -}}
+    {{- end }}
+  {{- if .Values.service.annotations -}}
+  annotations:
+  {{- toYaml .Values.service.annotations }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.ports.http }}
+      targetPort: {{ .Values.ntfy.listenHTTP | trimPrefix ":" }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.ports.https }}
+      targetPort: {{ .Values.ntfy.listenHTTP | trimPrefix ":" }}
+      protocol: TCP
+      name: https
+  selector:
+    {{- include "ntfy.selectorLabels" . | nindent 4 }}
