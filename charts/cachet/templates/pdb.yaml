@@ -1,0 +1,18 @@
+{{- if .Values.podDisruptionBudget.enabled -}}
+apiVersion: {{ include "cachet.pdb.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cachet.fullname" . }}
+  labels:
+    {{- include "cachet.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  {{- end }}
+  {{- if .Values.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cachet.selectorLabels" . | nindent 6 }}
+{{- end }}

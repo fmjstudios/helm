@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cachet.fullname" . }}
+  labels:
+    {{- include "cachet.labels" . | nindent 4 }}
+    {{- if .Values.service.labels }}
+    {{- toYaml .Values.service.labels -}}
+    {{- end }}
+  {{- if .Values.service.annotations -}}
+  annotations:
+  {{- toYaml .Values.service.annotations }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "cachet.selectorLabels" . | nindent 4 }}

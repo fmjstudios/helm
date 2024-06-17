@@ -1,0 +1,35 @@
+{{- if .Values.rbac.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "cachet.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{ include "cachet.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cachet
+rules:
+  {{- if .Values.rbac.rules }}
+  {{ toYaml .Values.rbac.rules | nindent 2 }}
+  {{- end }}
+  - apiGroups: [ "" ]
+    resources: [ "configmaps" ]
+    verbs: [ "get" ]
+  - apiGroups: [ "" ]
+    resources: [ "secrets" ]
+    verbs: [ "get" ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "cachet.fullname" . }}
+  labels:
+    {{ include "cachet.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cachet
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "cachet.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "cachet.serviceAccountName" . }}
+{{- end -}}

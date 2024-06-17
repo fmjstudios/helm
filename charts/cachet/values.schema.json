@@ -1,0 +1,688 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "fmjstudios/cachet"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "2.4.1"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "\"\""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override linkstack.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override linkstack.fullname",
+            "default": ""
+        },
+        "cachet": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "The public facing URL for the application",
+                    "default": "\"\""
+                },
+                "env": {
+                    "type": "string",
+                    "description": "Set the environment the application should run within",
+                    "default": "production"
+                },
+                "debug": {
+                    "type": "boolean",
+                    "description": "Whether the app should be run in debug mode",
+                    "default": "false"
+                },
+                "emoji": {
+                    "type": "boolean",
+                    "description": "Enable GitHub Emoji's",
+                    "default": "false"
+                },
+                "githubToken": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "The GitHub API token",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing Secret containing the token",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key name within the previously named existingSecret",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "drivers": {
+                    "type": "object",
+                    "properties": {
+                        "cache": {
+                            "type": "string",
+                            "description": "The driver used to support caching. `apc` or `redis`.",
+                            "default": "apc"
+                        },
+                        "session": {
+                            "type": "string",
+                            "description": "The driver used to support sessions. `apc` or `redis`.",
+                            "default": "apc"
+                        },
+                        "queue": {
+                            "type": "string",
+                            "description": "The driver used to support queues",
+                            "default": "sync"
+                        },
+                        "mail": {
+                            "type": "string",
+                            "description": "The driver used to support queues",
+                            "default": "smtp"
+                        }
+                    }
+                },
+                "key": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "The application key for encryption (do not change after installation)",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "The name of an existing Secret containing the app key",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key name within the previously named existingSecret",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "database": {
+                    "type": "object",
+                    "properties": {
+                        "driver": {
+                            "type": "string",
+                            "description": "The database driver to use `sqlite`, `mysql` or `postgresql`",
+                            "default": "postgresql"
+                        },
+                        "host": {
+                            "type": "string",
+                            "description": "The database host, or path in case of `sqlite`",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "string",
+                            "description": "The database port, ignored in case of `sqlite`",
+                            "default": "\"\""
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The database name",
+                            "default": "\"\""
+                        },
+                        "user": {
+                            "type": "string",
+                            "description": "The database user",
+                            "default": "\"\""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The database user password",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "The name of an existing secret containing a `username` and `password` key",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "mail": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "string",
+                            "description": "The host of an SMTP server",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "string",
+                            "description": "The port of an SMTP server",
+                            "default": "\"\""
+                        },
+                        "address": {
+                            "type": "string",
+                            "description": "The sender address for emails sent by Cachet",
+                            "default": "\"\""
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The name for emails sent by Cachet",
+                            "default": "\"\""
+                        },
+                        "encryption": {
+                            "type": "string",
+                            "description": "The encryption to use for interactions with the SMTP server",
+                            "default": "tls"
+                        },
+                        "user": {
+                            "type": "string",
+                            "description": "The SMTP user",
+                            "default": "\"\""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The SMTP user password",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "The name of an existing secret containing a `username` and `password` key",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "redis": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "string",
+                            "description": "The Redis host, or path in case of `sqlite`",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "string",
+                            "description": "The Redis port, ignored in case of `sqlite`",
+                            "default": "\"\""
+                        },
+                        "database": {
+                            "type": "string",
+                            "description": "The Redis database name",
+                            "default": "\"\""
+                        }
+                    }
+                }
+            }
+        },
+        "configMap": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the ConfigMap resource",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Extra Labels for the ConfigMap resource",
+                    "default": {}
+                }
+            }
+        },
+        "secret": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Common annotations for the DB, Mail and GitHub Token secrets",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Common extra labels for the DB, Mail and GitHub Token secrets",
+                    "default": {}
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable Ingress",
+                    "default": "false"
+                },
+                "className": {
+                    "type": "string",
+                    "description": "The IngressClass to use for the pod's ingress",
+                    "default": "\"\""
+                },
+                "whitelist": {
+                    "type": "string",
+                    "description": "A comma-separated list of IP addresses to whitelist",
+                    "default": "\"\""
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the Ingress resource",
+                    "default": {}
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "A list of hostnames and secret names to use for TLS",
+                    "default": [],
+                    "items": {}
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "description": "A list of extra hosts for the Ingress resource (with cachet.url)",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service to create for the deployment",
+                    "default": "ClusterIP"
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port to use on the service",
+                    "default": "8080"
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the service resource",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Labels for the service resource",
+                    "default": {}
+                },
+                "ipFamilyPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes ipFamilyPolicy",
+                    "default": ""
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not to create RBAC resources",
+                    "default": "true"
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Extra rules to add to the Role",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "automount": {
+                    "type": "boolean",
+                    "description": "Whether or not to automount the service account token",
+                    "default": "false"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise linkstack.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "resources": {
+            "type": "object",
+            "description": "The resource limits/requests for the Cachet pod",
+            "default": {}
+        },
+        "initContainers": {
+            "type": "array",
+            "description": "Define extra initContainers for the main Cachet server",
+            "default": [],
+            "items": {}
+        },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node labels for pod assignment",
+            "default": {}
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod assignment",
+            "default": [],
+            "items": {}
+        },
+        "affinity": {
+            "type": "object",
+            "description": "Affinity for pod assignment",
+            "default": {}
+        },
+        "strategy": {
+            "type": "object",
+            "description": "Specify a deployment strategy for the Cachet pod",
+            "default": {}
+        },
+        "podAnnotations": {
+            "type": "object",
+            "description": "Extra annotations for the Cachet pod",
+            "default": {}
+        },
+        "podLabels": {
+            "type": "object",
+            "description": "Extra labels for the Cachet pod",
+            "default": {}
+        },
+        "priorityClassName": {
+            "type": "string",
+            "description": "The name of an existing PriorityClass",
+            "default": ""
+        },
+        "podSecurityContext": {
+            "type": "object",
+            "description": "Security context settings for the Cachet pod",
+            "default": {}
+        },
+        "securityContext": {
+            "type": "object",
+            "description": "General security context settings for",
+            "default": {}
+        },
+        "postgresql": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the PostgreSQL subchart",
+                    "default": true
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "enablePostgresUser": {
+                            "type": "boolean",
+                            "description": "Assign a password to the \"postgres\" admin user. Otherwise, remote access will be blocked for this user",
+                            "default": true
+                        },
+                        "postgresPassword": {
+                            "type": "string",
+                            "description": "Password for the \"postgres\" admin user. Ignored if `auth.existingSecret` is provided",
+                            "default": "postgres"
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "Name for a custom user to create",
+                            "default": "cachet"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "Password for the custom user to create. Ignored if `auth.existingSecret` is provided",
+                            "default": "cachet"
+                        },
+                        "database": {
+                            "type": "string",
+                            "description": "Name for a custom database to create",
+                            "default": "cachet"
+                        },
+                        "usePasswordFiles": {
+                            "type": "boolean",
+                            "description": "Mount credentials as a files instead of using an environment variable",
+                            "default": false
+                        }
+                    }
+                },
+                "primary": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the primary database (eg primary, master, leader, ...)",
+                            "default": "primary"
+                        },
+                        "persistence": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enable PostgreSQL Primary data persistence using PVC",
+                                    "default": true
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Name of an existing PVC to use",
+                                    "default": ""
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "PVC Storage Class for PostgreSQL Primary data volume",
+                                    "default": ""
+                                },
+                                "accessModes": {
+                                    "type": "array",
+                                    "description": "PVC Access Mode for PostgreSQL volume",
+                                    "default": [
+                                        "ReadWriteOnce"
+                                    ],
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "size": {
+                                    "type": "string",
+                                    "description": "PVC Storage Request for PostgreSQL volume",
+                                    "default": "5Gi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "redis": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the Redis&reg; subchart",
+                    "default": false
+                },
+                "architecture": {
+                    "type": "string",
+                    "description": "Redis&reg; architecture. Allowed values: `standalone` or `replication`",
+                    "default": "standalone"
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "password": {
+                            "type": "string",
+                            "description": "Redis&reg; password",
+                            "default": ""
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

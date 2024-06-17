@@ -1,0 +1,547 @@
+# Default Helm values for fmjstudios/cachet.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Cachet Image parameters
+##
+
+## Cachet Server Image
+## ref: https://hub.docker.com/r/linkstackorg/linkstack
+## @param image.registry [default: docker.io] The Docker registry to pull the image from
+## @param image.repository [default: fmjstudios/cachet] The registry repository to pull the image from
+## @param image.tag [default: 2.4.1] The image tag to pull
+## @param image.digest [string] The image digest to pull
+## @param image.pullPolicy [default: IfNotPresent] The Kubernetes image pull policy
+## @param image.pullSecrets A list of secrets to use for pulling images from private registries
+
+image:
+  registry: docker.io
+  repository: fmjstudios/cachet
+  tag: latest
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: [ ]
+
+## @section Cachet Name overrides
+##
+
+## @param nameOverride String to partially override linkstack.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override linkstack.fullname
+##
+fullnameOverride: ""
+
+## @section Cachet Configuration parameters
+##
+
+## Cachet configuration
+## ref: https://docs.cachethq.io/installation/guide.html
+cachet:
+  ## @param cachet.url [string] The public facing URL for the application
+  ##
+  url: ""
+  ## @param cachet.env [default: production] Set the environment the application should run within
+  ##
+  env: production
+  ## @param cachet.debug [default: false] Whether the app should be run in debug mode
+  ##
+  debug: false
+  ## @param cachet.emoji [default: false] Enable GitHub Emoji's
+  ##
+  emoji: false
+
+  ## GitHub Token settings
+  ##
+  githubToken:
+    ## @param cachet.githubToken.value [string] The GitHub API token
+    ##
+    value: ""
+    ## Specify an existing secret to grab the auth token from
+    ##
+    existingSecret:
+      ## @param cachet.githubToken.existingSecret.name [string] The name of an existing Secret containing the token
+      ##
+      name: ""
+      ## @param cachet.githubToken.existingSecret.key [string] The key name within the previously named existingSecret
+      ##
+      key: ""
+
+  ## Driver settings
+  ##
+  drivers:
+    ## @param cachet.drivers.cache [default: apc] The driver used to support caching. `apc` or `redis`.
+    ##
+    cache: apc
+    ## @param cachet.drivers.session [default: apc] The driver used to support sessions. `apc` or `redis`.
+    ##
+    session: apc
+    ## @param cachet.drivers.queue [default: sync] The driver used to support queues
+    ##
+    queue: sync
+    ## @param cachet.drivers.mail [default: smtp] The driver used to support queues
+    ##
+    mail: smtp
+
+  ## Application Key settings
+  ##
+  key:
+    ## @param cachet.key.value [string] The application key for encryption (do not change after installation)
+    ##
+    value: ""
+    ## Specify an existing secret to grab the auth token from
+    ##
+    existingSecret:
+      ## @param cachet.key.existingSecret.name [string] The name of an existing Secret containing the app key
+      ##
+      name: ""
+      ## @param cachet.key.existingSecret.key [string] The key name within the previously named existingSecret
+      ##
+      key: ""
+
+  ## Database settings
+  ##
+  database:
+    ## @param cachet.database.driver [default: postgresql] The database driver to use `sqlite`, `mysql` or `postgresql`
+    ##
+    driver: postgresql
+    ## @param cachet.database.host [string] The database host, or path in case of `sqlite`
+    ##
+    host: ""
+    ## @param cachet.database.port [string] The database port, ignored in case of `sqlite`
+    ##
+    port: 5432
+    ## @param cachet.database.name [string] The database name
+    ##
+    name: cachet
+    ## @param cachet.database.user [string] The database user
+    ##
+    user: cachet
+    ## @param cachet.database.password [string] The database user password
+    ##
+    password: cachet
+    ## @param cachet.database.existingSecret [string] The name of an existing secret containing a `username` and `password` key
+    ## the before values will be ignored in that case
+    ##
+    existingSecret: ""
+
+  ## Mail settings
+  ##
+  mail:
+    ## @param cachet.mail.host [string] The host of an SMTP server
+    ##
+    host: ""
+    ## @param cachet.mail.port [string] The port of an SMTP server
+    ##
+    port: ""
+    ## @param cachet.mail.address [string] The sender address for emails sent by Cachet
+    ##
+    address: ""
+    ## @param cachet.mail.name [string] The name for emails sent by Cachet
+    ##
+    name: ""
+    ## @param cachet.mail.encryption [default: tls] The encryption to use for interactions with the SMTP server
+    ##
+    encryption: ""
+    ## @param cachet.mail.user [string] The SMTP user
+    ##
+    user: ""
+    ## @param cachet.mail.password [string] The SMTP user password
+    ##
+    password: ""
+    ## @param cachet.mail.existingSecret [string] The name of an existing secret containing a `username` and `password` key
+    ## the before values will be ignored in that case
+    ##
+    existingSecret: ""
+
+  ## Redis settings
+  ##
+  redis:
+    ## @param cachet.redis.host [string] The Redis host, or path in case of `sqlite`
+    ##
+    host: ""
+    ## @param cachet.redis.port [string] The Redis port, ignored in case of `sqlite`
+    ##
+    port: 5432
+    ## @param cachet.redis.database [string] The Redis database name
+    ##
+    database: ""
+
+## @section ConfigMap parameters
+##
+
+## FMJ Studios Cachet ConfigMap settings
+## @param configMap.annotations Annotations for the ConfigMap resource
+## @param configMap.labels Extra Labels for the ConfigMap resource
+
+configMap:
+  annotations: { }
+  labels: { }
+
+## @section Secret parameters
+##
+
+## FMJ Studios Cachet Secret settings
+## @param secret.annotations Common annotations for the DB, Mail and GitHub Token secrets
+## @param secret.labels Common extra labels for the DB, Mail and GitHub Token secrets
+
+secret:
+  annotations: { }
+  labels: { }
+
+## @section Ingress parameters
+##
+
+## FMJ Studios Cachet Ingress settings
+## @param ingress.enabled [default: false] Whether to enable Ingress
+## @param ingress.className [string] The IngressClass to use for the pod's ingress
+## @param ingress.whitelist [string] A comma-separated list of IP addresses to whitelist
+## @param ingress.annotations Annotations for the Ingress resource
+## @param ingress.tls A list of hostnames and secret names to use for TLS
+## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with cachet.url)
+
+ingress:
+  enabled: false
+  className: ""
+  whitelist: ""
+  annotations: { }
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  tls: [ ]
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+  extraHosts:
+    [ ]
+  # - host: domain.tld
+  #   paths:
+  #     - path: /
+  #       pathType: ImplementationSpecific
+
+## @section Service parameters
+##
+
+## FMJ Studios Cachet Service settings
+## @param service.type [default: ClusterIP] The type of service to create for the deployment
+## @param service.port [default: 8080] The port to use on the service
+## @param service.annotations Annotations for the service resource
+## @param service.labels Labels for the service resource
+## @param service.ipFamilyPolicy The Kubernetes ipFamilyPolicy
+
+service:
+  type: ClusterIP
+  port: 8080
+  annotations: { }
+  labels: { }
+  ipFamilyPolicy: ""
+
+## @section RBAC parameters
+##
+
+## Cachet RBAC settings
+## @param rbac.create [default: true] Whether or not to create RBAC resources
+## @param rbac.rules Extra rules to add to the Role
+##
+rbac:
+  create: true
+  rules: [ ]
+
+## @section Cachet Service Account parameters
+##
+
+## FMJ Studios Cachet Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.automount [default: false] Whether or not to automount the service account token
+## @param serviceAccount.annotations [object] Annotations to add to the service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise linkstack.fullname is used
+## @param serviceAccount.secrets A list of secrets mountable by this service account
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Whether to automount the ServiceAccount token into Pod using this SA
+  automount: false
+  # Annotations to add to the service account
+  annotations: { }
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # The list of secrets mountable by this service account.
+  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
+  secrets: [ ]
+
+## @section Cachet Liveness Probes
+##
+
+## Cachet Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
+  failureThreshold: 10
+
+## @section Cachet Readiness Probes
+##
+
+## Cachet Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
+  timeoutSeconds: 1
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
+  periodSeconds: 10
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
+  successThreshold: 1
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
+  failureThreshold: 3
+
+## @section Cachet Startup Probes
+##
+
+## Cachet Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
+  initialDelaySeconds: 5
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
+  timeoutSeconds: 1
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
+  periodSeconds: 10
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
+  ##
+  successThreshold: 1
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
+  failureThreshold: 10
+
+## @section Pod disruption budget parameters
+##
+
+## FMJ Studios Cachet pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable:
+
+## @section Pod settings
+##
+
+## FMJ Studios Cachet resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the Cachet pod
+##
+resources:
+  { }
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+## Cachet initContainers
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers Define extra initContainers for the main Cachet server
+initContainers: [ ]
+
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: { }
+
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: [ ]
+
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: { }
+
+## @param strategy Specify a deployment strategy for the Cachet pod
+##
+strategy:
+  { }
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxUnavailable: 1
+
+## @param podAnnotations Extra annotations for the Cachet pod
+##
+podAnnotations: { }
+
+## @param podLabels Extra labels for the Cachet pod
+##
+podLabels: { }
+#  pod-security.kubernetes.io/warn: privileged
+#  pod-security.kubernetes.io/audit: privileged
+#  pod-security.kubernetes.io/enforce: baseline
+
+## @param priorityClassName The name of an existing PriorityClass
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+##
+priorityClassName: ""
+
+## @param podSecurityContext Security context settings for the Cachet pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext: { }
+#  fsGroup: 1001
+#  supplementalGroups:
+#    - 1001
+
+## @section Security context settings
+##
+
+## @param securityContext General security context settings for
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext: { }
+#  runAsGroup: 1001
+#  runAsUser: 1001
+#  allowPrivilegeEscalation: false
+#  privileged: false
+#  runAsNonRoot: true
+#  readOnlyRootFilesystem: false
+#  capabilities:
+#    drop:
+#      - ALL
+
+
+## @section Bitnami&reg; PostgreSQL parameters
+##
+
+## PostgreSQL configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
+  ##
+  enabled: true
+  ## Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-user-on-first-run
+  ##
+  auth:
+    ## @param postgresql.auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    ##
+    enablePostgresUser: true
+    ## @param postgresql.auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
+    ##
+    postgresPassword: "postgres"
+    ## @param postgresql.auth.username Name for a custom user to create
+    ##
+    username: "cachet"
+    ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
+    ##
+    password: "cachet"
+    ## @param postgresql.auth.database Name for a custom database to create
+    ##
+    database: "cachet"
+    ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
+    ##
+    usePasswordFiles: false
+  ## @section PostgreSQL Primary parameters
+  ##
+  primary:
+    ## @param postgresql.primary.name Name of the primary database (eg primary, master, leader, ...)
+    ##
+    name: primary
+    ## PostgreSQL Primary persistence configuration
+    ##
+    persistence:
+      ## @param postgresql.primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
+      ##
+      enabled: true
+      ## @param postgresql.primary.persistence.existingClaim Name of an existing PVC to use
+      ##
+      existingClaim: ""
+      ## @param postgresql.primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      storageClass: ""
+      ## @param postgresql.primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+      ##
+      accessModes:
+        - ReadWriteOnce
+      ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ##
+      size: 5Gi
+
+## @section Bitnami&reg; Redis parameters
+##
+
+## Redis configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+redis:
+  ## @param redis.enabled Enable or disable the Redis&reg; subchart
+  ##
+  enabled: false
+  ## @param redis.architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
+  ##
+  architecture: standalone
+
+  ## Redis&reg; Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/redis#setting-the-server-password-on-first-run
+  ##
+  auth:
+    ## @param redis.auth.password Redis&reg; password
+    password: ""
