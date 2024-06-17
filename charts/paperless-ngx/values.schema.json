@@ -1,0 +1,1206 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "paperless-ngx/paperless-ngx"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "'1.30.1-alpine'"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": "\"\""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override paperless.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override paperless.fullname",
+            "default": ""
+        },
+        "paperless": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "description": "Define the domain name for Paperless - will be re-used in Ingress",
+                    "default": "\"\""
+                },
+                "secretKey": {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "description": "Define a custom secret key for Paperless",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Define the name of an existing Secret containing the secret key",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "Define the key within the existing Secret containing the secret key",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "address": {
+                    "type": "string",
+                    "description": "The address Paperless should bind to",
+                    "default": "\"::\""
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port Paperless should bind to",
+                    "default": "8000"
+                },
+                "uid": {
+                    "type": "number",
+                    "description": "The user ID Paperless should use",
+                    "default": "1000"
+                },
+                "gid": {
+                    "type": "number",
+                    "description": "The group ID Paperless should use",
+                    "default": "1000"
+                },
+                "enableFlower": {
+                    "type": "boolean",
+                    "description": "Enable the 'Flower' monitoring tool for 'Celery' (Paperless' task queue)",
+                    "default": "false"
+                },
+                "webserverWorkers": {
+                    "type": "string",
+                    "description": "The amount of Nginx worker processes to spawn for the server within the container",
+                    "default": "\"\""
+                },
+                "taskWorkers": {
+                    "type": "string",
+                    "description": "The amount for task worker processes to spawn within the container",
+                    "default": "\"\""
+                },
+                "threadsPerWorker": {
+                    "type": "string",
+                    "description": "The amount of threads to assign each task worker process within the container",
+                    "default": "\"\""
+                },
+                "workerTimeout": {
+                    "type": "string",
+                    "description": "The amount of threads to assign each task worker process within the container",
+                    "default": "\"\""
+                },
+                "timeZone": {
+                    "type": "string",
+                    "description": "Set the time zone here",
+                    "default": "UTC"
+                },
+                "enableNLTK": {
+                    "type": "string",
+                    "description": "Enables or disables the advanced natural language processing used during",
+                    "default": "\"\""
+                },
+                "enableAuditLog": {
+                    "type": "boolean",
+                    "description": "Enables the audit trail for documents, document types, correspondents, and tags",
+                    "default": "true"
+                },
+                "enableCompression": {
+                    "type": "string",
+                    "description": "Enables compression of the responses from the webserver. Defaults to 1, enabling compression.",
+                    "default": "\"1\""
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "autoLoginUsername": {
+                            "type": "string",
+                            "description": "Specify a username so that paperless will automatically perform login with the selected user",
+                            "default": "\"\""
+                        },
+                        "adminUser": {
+                            "type": "string",
+                            "description": "If this environment variable is specified, Paperless automatically creates a superuser with the provided username at start",
+                            "default": "\"\""
+                        },
+                        "adminPassword": {
+                            "type": "string",
+                            "description": "Only used when PAPERLESS_ADMIN_USER is set. This will be the password of the automatically created superuser",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "Specify an existing secret with a `username` and `password` key",
+                            "default": "\"\""
+                        },
+                        "adminMail": {
+                            "type": "string",
+                            "description": "Specify superuser email address. Only used when PAPERLESS_ADMIN_USER is set",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "hosting": {
+                    "type": "object",
+                    "properties": {
+                        "trustedOrigins": {
+                            "type": "string",
+                            "description": "A list of trusted origins for unsafe requests (e.g. POST). As of Django 4.0 this is required to access the Django admin via the web",
+                            "default": "\"\""
+                        },
+                        "allowedHosts": {
+                            "type": "string",
+                            "description": "If you're planning on putting Paperless on the open internet, then you really should set this value to the domain name you're using",
+                            "default": "\"\""
+                        },
+                        "corsAllowedHosts": {
+                            "type": "string",
+                            "description": "You need to add your servers to the list of allowed hosts that can do CORS calls. Set this to your public domain name",
+                            "default": "\"\""
+                        },
+                        "trustedProxies": {
+                            "type": "string",
+                            "description": "This may be needed to prevent IP address spoofing if you are using e.g. fail2ban with log entries for failed authorization attempts",
+                            "default": "\"\""
+                        },
+                        "forceScriptName": {
+                            "type": "string",
+                            "description": "To host paperless under a subpath url like example.com/paperless you set this value to /paperless. No trailing slash!",
+                            "default": "\"\""
+                        },
+                        "staticURL": {
+                            "type": "string",
+                            "description": "Unless you're hosting Paperless off a subdomain like /paperless/, you probably don't need to change this",
+                            "default": "\"\""
+                        },
+                        "cookiePrefix": {
+                            "type": "string",
+                            "description": "Specify a prefix that is added to the cookies used by paperless to identify the currently logged in user",
+                            "default": "\"\""
+                        },
+                        "enableHTTPRemoteUser": {
+                            "type": "string",
+                            "description": "Allows authentication via HTTP_REMOTE_USER which is used by some SSO applications",
+                            "default": "\"\""
+                        },
+                        "HTTPRemoteUserHeaderName": {
+                            "type": "string",
+                            "description": "If \"PAPERLESS_ENABLE_HTTP_REMOTE_USER\" or PAPERLESS_ENABLE_HTTP_REMOTE_USER_API are enabled, this property allows to customize the name of the HTTP header from which the authenticated username is extracted",
+                            "default": "\"\""
+                        },
+                        "logoutRedirectURL": {
+                            "type": "string",
+                            "description": "URL to redirect the user to after a logout",
+                            "default": "\"\""
+                        },
+                        "useXForwardHost": {
+                            "type": "string",
+                            "description": "Configures the Django setting USE_X_FORWARDED_HOST which may be needed for hosting behind a proxy",
+                            "default": "\"\""
+                        },
+                        "useXForwardPort": {
+                            "type": "string",
+                            "description": "Configures the Django setting USE_X_FORWARDED_PORT which may be needed for hosting behind a proxy",
+                            "default": "\"\""
+                        },
+                        "proxySSLHeader": {
+                            "type": "string",
+                            "description": "Configures the Django setting SECURE_PROXY_SSL_HEADER which may be needed for hosting behind a proxy",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "cron": {
+                    "type": "object",
+                    "properties": {
+                        "emailTask": {
+                            "type": "string",
+                            "description": "Configures the scheduled email fetching frequency. The value should be a valid crontab(5) expression describing when to run.",
+                            "default": "\"*/10 * * * *\""
+                        },
+                        "trainTask": {
+                            "type": "string",
+                            "description": "Configures the scheduled automatic classifier training frequency. May also be \"disabled\".",
+                            "default": "\"5 */1 * * *\""
+                        },
+                        "indexTask": {
+                            "type": "string",
+                            "description": "Configures the scheduled search index update frequency. May also be \"disabled\".",
+                            "default": "\"0 0 * * *\""
+                        },
+                        "sanityTask": {
+                            "type": "string",
+                            "description": "Configures the scheduled sanity checker frequency. May also be \"disabled\".",
+                            "default": "\"30 0 * *\""
+                        }
+                    }
+                },
+                "redis": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "string",
+                            "description": "The hostname for the Redis instance",
+                            "default": "\"\""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The password for the Redis instance",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Provide the name to an existing Secret containing the Redis password",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "Provide the key within the existing Secret containing the Redis password",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "prefix": {
+                            "type": "string",
+                            "description": "",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "postgresql": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "string",
+                            "description": "The hostname for the PostgreSQL database",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port for the PostgreSQL database",
+                            "default": "5432"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The database name for the PostgreSQL database",
+                            "default": "\"\""
+                        },
+                        "user": {
+                            "type": "string",
+                            "description": "The username for the PostgreSQL database",
+                            "default": "\"\""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The password for the PostgreSQL database",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "An existing BasicAuth secret containing the PostgreSQL credentials",
+                            "default": "\"\""
+                        },
+                        "sslMode": {
+                            "type": "string",
+                            "description": "The SSL Mode for the PostgreSQL database",
+                            "default": "prefer"
+                        },
+                        "timeout": {
+                            "type": "string",
+                            "description": "Define a timeout for the database connection",
+                            "default": "\"\""
+                        },
+                        "certs": {
+                            "type": "object",
+                            "properties": {
+                                "rootCert": {
+                                    "type": "string",
+                                    "description": "The path to a mounted TLS root certificate",
+                                    "default": "\"\""
+                                },
+                                "cert": {
+                                    "type": "string",
+                                    "description": "The path to a mounted TLS certificate",
+                                    "default": "\"\""
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "The path to a mounted TLS certificate key",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "tika": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable or disable the Apache&reg; integration",
+                            "default": "true"
+                        },
+                        "endpoint": {
+                            "type": "string",
+                            "description": "Define the Apache Tika endpoint",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "gotenberg": {
+                    "type": "object",
+                    "properties": {
+                        "endpoint": {
+                            "type": "string",
+                            "description": "Define the Apache Gotenberg endpoint",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "smtp": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "string",
+                            "description": "The host to an SMTP server",
+                            "default": "\"\""
+                        },
+                        "port": {
+                            "type": "string",
+                            "description": "The port for an SMTP server",
+                            "default": "\"\""
+                        },
+                        "user": {
+                            "type": "string",
+                            "description": "An SMTP username",
+                            "default": "\"\""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The password for an SMTP user",
+                            "default": "\"\""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "A secret containing `username` and `password` key SMTP authentication",
+                            "default": "\"\""
+                        },
+                        "from": {
+                            "type": "string",
+                            "description": "The `from` address for emails sent by Paperless",
+                            "default": "\"\""
+                        },
+                        "useTLS": {
+                            "type": "boolean",
+                            "description": "Whether to use TLS for contacting the SMTP server",
+                            "default": "false"
+                        },
+                        "useSSL": {
+                            "type": "boolean",
+                            "description": "Whether to use SSL for contacting the SMTP server",
+                            "default": "false"
+                        }
+                    }
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "paths": {
+                            "type": "object",
+                            "properties": {
+                                "consumptionDir": {
+                                    "type": "string",
+                                    "description": "Define a custom consumption directory",
+                                    "default": "\"\""
+                                },
+                                "dataDir": {
+                                    "type": "string",
+                                    "description": "Define a custom data directory",
+                                    "default": "\"\""
+                                },
+                                "trashDir": {
+                                    "type": "string",
+                                    "description": "Define a custom trash directory",
+                                    "default": "\"\""
+                                },
+                                "mediaRoot": {
+                                    "type": "string",
+                                    "description": "Define a custom media directory",
+                                    "default": "\"\""
+                                },
+                                "staticDir": {
+                                    "type": "string",
+                                    "description": "Define a custom static directory",
+                                    "default": "\"\""
+                                },
+                                "filenameFormat": {
+                                    "type": "string",
+                                    "description": "Define a custom filename format",
+                                    "default": "\"\""
+                                },
+                                "filenameFormatRemoveNone": {
+                                    "type": "boolean",
+                                    "description": "Omit placeholders that would resolve to 'none' in filenameFormat",
+                                    "default": "false"
+                                },
+                                "loggingDir": {
+                                    "type": "string",
+                                    "description": "Define a custom logging directory",
+                                    "default": "\"\""
+                                },
+                                "nltkDir": {
+                                    "type": "string",
+                                    "description": "Define a custom NLTK processing directory",
+                                    "default": "\"\""
+                                },
+                                "emailCertificateLocation": {
+                                    "type": "string",
+                                    "description": "Define a path to a certificate (chain) for TLS verification for mail servers",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "pvc": {
+                            "type": "object",
+                            "properties": {
+                                "size": {
+                                    "type": "string",
+                                    "description": "The size given to PVCs created from the above data",
+                                    "default": "10Gi"
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "The storageClass given to PVCs created from the above data",
+                                    "default": "standard"
+                                },
+                                "reclaimPolicy": {
+                                    "type": "string",
+                                    "description": "The resourcePolicy given to PVCs created from the above data",
+                                    "default": "Retain"
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Provide the name to an existing PVC",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "logging": {
+                    "type": "object",
+                    "properties": {
+                        "logrotateMaxSize": {
+                            "type": "string",
+                            "description": "Maximum file size for log files before they're rotated",
+                            "default": "\"\""
+                        },
+                        "logrotateMaxBackups": {
+                            "type": "string",
+                            "description": "The number of rotated log files to keep",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "ocr": {
+                    "type": "object",
+                    "properties": {
+                        "language": {
+                            "type": "string",
+                            "description": "Customize the language that paperless will attempt to use when parsing documents",
+                            "default": "eng"
+                        },
+                        "additionalLanguages": {
+                            "type": "string",
+                            "description": "Additional languages that paperless will attempt to use when parsing documents",
+                            "default": "\"\""
+                        },
+                        "mode": {
+                            "type": "string",
+                            "description": "Tell paperless when and how to perform ocr on your documents: `skip`, `redo` and `force`",
+                            "default": "skip"
+                        },
+                        "skipArchiveFile": {
+                            "type": "string",
+                            "description": "Specify when you would like paperless to skip creating an archived version of your documents",
+                            "default": "never"
+                        },
+                        "clean": {
+                            "type": "string",
+                            "description": "Tells paperless to use unpaper to clean any input document before sending it to tesseract",
+                            "default": "true"
+                        },
+                        "deskew": {
+                            "type": "boolean",
+                            "description": "Tells paperless to correct skewing (slight rotation of input images mainly due to improper scanning)",
+                            "default": "true"
+                        },
+                        "rotatePages": {
+                            "type": "boolean",
+                            "description": "Tells paperless to correct page rotation (90°, 180° and 270° rotation)",
+                            "default": "true"
+                        },
+                        "rotatePagesThreshold": {
+                            "type": "number",
+                            "description": "Adjust the threshold for automatic page rotation by paperless.ocr.rotatePages",
+                            "default": "12"
+                        },
+                        "outputType": {
+                            "type": "string",
+                            "description": "Specify the type of PDF documents that paperless should produce",
+                            "default": "pdfa"
+                        },
+                        "pages": {
+                            "type": "string",
+                            "description": "Tells paperless to use only the specified amount of pages for OCR. Documents with less than the specified amount of pages get OCR'ed completely",
+                            "default": "\"\""
+                        },
+                        "imageDPI": {
+                            "type": "string",
+                            "description": "Paperless will OCR any images you put into the system and convert them into PDF documents",
+                            "default": "\"\""
+                        },
+                        "maxImagePixels": {
+                            "type": "string",
+                            "description": "Paperless will raise a warning when OCRing images which are over this limit and will not OCR images which are more than twice this limit",
+                            "default": "\"\""
+                        },
+                        "colorConversionStrategy": {
+                            "type": "string",
+                            "description": "Controls the Ghostscript color conversion strategy when creating the archive file",
+                            "default": "\"\""
+                        },
+                        "userArgs": {
+                            "type": "string",
+                            "description": "OCRmyPDF offers many more options. Use this parameter to specify any additional arguments you wish to pass to OCRmyPDF",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "conversion": {
+                    "type": "object",
+                    "properties": {
+                        "memoryLimit": {
+                            "type": "string",
+                            "description": "On smaller systems, or even in the case of Very Large Documents, the consumer may explode, complaining about how it's \"unable to extend pixel cache\"",
+                            "default": "\"\""
+                        },
+                        "tmpDir": {
+                            "type": "string",
+                            "description": "Similar to the memory limit, if you've got a small system and your OS mounts /tmp as tmpfs, you should set this to a path that's on a physical disk",
+                            "default": "\"\""
+                        }
+                    }
+                },
+                "consume": {
+                    "type": "object",
+                    "properties": {
+                        "deleteDuplicates": {
+                            "type": "boolean",
+                            "description": "When the consumer detects a duplicate document, it will not touch the original document",
+                            "default": "false"
+                        },
+                        "recursive": {
+                            "type": "boolean",
+                            "description": "Enable recursive watching of the consumption directory",
+                            "default": "false"
+                        },
+                        "subdirsAsTags": {
+                            "type": "boolean",
+                            "description": "Set the names of subdirectories as tags for consumed files. E.g. <CONSUMPTION_DIR>/foo/bar/file.pdf will add the tags \"foo\"",
+                            "default": "false"
+                        },
+                        "ignorePatterns": {
+                            "type": "string",
+                            "description": "By default, paperless ignores certain files and folders in the consumption directory",
+                            "default": "\"\""
+                        },
+                        "barcodeScanner": {
+                            "type": "string",
+                            "description": "Sets the barcode scanner used for barcode functionality",
+                            "default": "PYZBAR"
+                        },
+                        "preConsumeScript": {
+                            "type": "string",
+                            "description": "After some initial validation, Paperless can trigger an arbitrary script if you like before beginning consumption",
+                            "default": "\"\""
+                        },
+                        "postConsumeScript": {
+                            "type": "string",
+                            "description": "After a document is consumed, Paperless can trigger an arbitrary script if you like",
+                            "default": "\"\""
+                        },
+                        "filenameDateOrder": {
+                            "type": "string",
+                            "description": "Paperless will check the document text for document date information",
+                            "default": "\"\""
+                        },
+                        "numberOfSuggestedDates": {
+                            "type": "number",
+                            "description": "Paperless searches an entire document for dates. The first date found will be used as the initial value for the created date",
+                            "default": "3"
+                        },
+                        "thumbnailFontName": {
+                            "type": "string",
+                            "description": "Paperless creates thumbnails for plain text files by rendering the content of the file on an image",
+                            "default": "\"\""
+                        },
+                        "ignoreDates": {
+                            "type": "string",
+                            "description": "Paperless parses a document's creation date from filename and file content. You may specify a comma separated list of dates that should be ignored during this process",
+                            "default": "\"\""
+                        },
+                        "dateOrder": {
+                            "type": "string",
+                            "description": "Paperless will try to determine the document creation date from its contents. Specify the date format Paperless should expect to see within your documents",
+                            "default": "\"\""
+                        },
+                        "polling": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "number",
+                                    "description": "If paperless won't find documents added to your consume folder, it might not be able to automatically detect filesystem changes",
+                                    "default": "0"
+                                },
+                                "retryCount": {
+                                    "type": "number",
+                                    "description": "If consumer polling is enabled, sets the maximum number of times paperless will check for a file to remain unmodified",
+                                    "default": "5"
+                                },
+                                "delay": {
+                                    "type": "number",
+                                    "description": "If consumer polling is enabled, sets the delay in seconds between each check (above) paperless will do while waiting for a file to remain unmodified",
+                                    "default": "5"
+                                }
+                            }
+                        },
+                        "iNotify": {
+                            "type": "object",
+                            "properties": {
+                                "delay": {
+                                    "type": "string",
+                                    "description": "Sets the time in seconds the consumer will wait for additional events from inotify before the consumer will consider a file ready and begin consumption",
+                                    "default": "0.5"
+                                }
+                            }
+                        },
+                        "barcodes": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enables the scanning and page separation based on detected barcodes",
+                                    "default": "false"
+                                },
+                                "tiffSupport": {
+                                    "type": "boolean",
+                                    "description": "Whether TIFF image files should be scanned for barcodes",
+                                    "default": "false"
+                                },
+                                "string": {
+                                    "type": "string",
+                                    "description": "Defines the string to be detected as a separator barcode",
+                                    "default": "PATCHT"
+                                },
+                                "enableASNBarcode": {
+                                    "type": "string",
+                                    "description": "Enables the detection of barcodes in the scanned document and setting the ASN (archive serial number) if a properly formatted barcode is detected",
+                                    "default": "false"
+                                },
+                                "ASNBarcodePrefix": {
+                                    "type": "string",
+                                    "description": "Defines the prefix that is used to identify a barcode as an ASN barcode",
+                                    "default": "ASN"
+                                },
+                                "upscale": {
+                                    "type": "string",
+                                    "description": "Defines the upscale factor used in barcode detection",
+                                    "default": "0.0"
+                                },
+                                "dpi": {
+                                    "type": "number",
+                                    "description": "During barcode detection every page from a PDF document needs to be converted to an image",
+                                    "default": "300"
+                                }
+                            }
+                        },
+                        "collate": {
+                            "type": "object",
+                            "properties": {
+                                "enableDoubleSided": {
+                                    "type": "boolean",
+                                    "description": "Enables automatic collation of two single-sided scans into a double-sided document",
+                                    "default": "false"
+                                },
+                                "doubleSidedSubdirName": {
+                                    "type": "string",
+                                    "description": "The name of the subdirectory that the collate feature expects documents to arrive",
+                                    "default": "double-sided"
+                                },
+                                "doubleSidedTiffSupport": {
+                                    "type": "boolean",
+                                    "description": "Whether TIFF image files should be supported when collating documents",
+                                    "default": "false"
+                                }
+                            }
+                        }
+                    }
+                },
+                "binaries": {
+                    "type": "object",
+                    "properties": {
+                        "convert": {
+                            "type": "string",
+                            "description": "The binary name for `convert`",
+                            "default": "convert"
+                        },
+                        "gs": {
+                            "type": "string",
+                            "description": "The binary name for `gs`",
+                            "default": "convert"
+                        }
+                    }
+                }
+            }
+        },
+        "configMapAnnotations": {
+            "type": "object",
+            "description": "Define extra annotations for the Paperless-NGX ConfigMap",
+            "default": {}
+        },
+        "configMapLabels": {
+            "type": "object",
+            "description": "Define extra labels for the Paperless-NGX ConfigMap",
+            "default": {}
+        },
+        "secretAnnotations": {
+            "type": "object",
+            "description": "Define extra annoations for the created Kubernetes secrets",
+            "default": {}
+        },
+        "secretLabels": {
+            "type": "object",
+            "description": "Define extra Labels for the created Kubernetes secrets",
+            "default": {}
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the creation of Ingress resources",
+                    "default": false
+                },
+                "className": {
+                    "type": "string",
+                    "description": "Specify an Ingress class for the resource",
+                    "default": "\"\""
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "description": "Define extra hostnames & paths for the Ingress resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "Define TLS settings for the Ingress resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service resource to create",
+                    "default": "\"\""
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port number to assign to the service",
+                    "default": "80"
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Enable or disable the creation of RBAC resources",
+                    "default": "false"
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Define extra rules to be added to the Role resource",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether or not a service account should be created",
+                    "default": "true"
+                },
+                "automount": {
+                    "type": "boolean",
+                    "description": "Whether or not to automatically mount API credentials",
+                    "default": "true"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise paperless.fullname is used",
+                    "default": "\"\""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": "[]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "postgresql": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the PostgreSQL subchart",
+                    "default": true
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "enablePostgresUser": {
+                            "type": "boolean",
+                            "description": "Assign a password to the \"postgres\" admin user. Otherwise, remote access will be blocked for this user",
+                            "default": true
+                        },
+                        "postgresPassword": {
+                            "type": "string",
+                            "description": "Password for the \"postgres\" admin user. Ignored if `auth.existingSecret` is provided",
+                            "default": "postgres"
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "Name for a custom user to create",
+                            "default": "paperless"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "Password for the custom user to create. Ignored if `auth.existingSecret` is provided",
+                            "default": "paperless"
+                        },
+                        "database": {
+                            "type": "string",
+                            "description": "Name for a custom database to create",
+                            "default": "paperless"
+                        },
+                        "usePasswordFiles": {
+                            "type": "boolean",
+                            "description": "Mount credentials as a files instead of using an environment variable",
+                            "default": false
+                        }
+                    }
+                },
+                "primary": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the primary database (eg primary, master, leader, ...)",
+                            "default": "primary"
+                        },
+                        "persistence": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enable PostgreSQL Primary data persistence using PVC",
+                                    "default": true
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Name of an existing PVC to use",
+                                    "default": ""
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "PVC Storage Class for PostgreSQL Primary data volume",
+                                    "default": ""
+                                },
+                                "accessModes": {
+                                    "type": "array",
+                                    "description": "PVC Access Mode for PostgreSQL volume",
+                                    "default": [
+                                        "ReadWriteOnce"
+                                    ],
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "size": {
+                                    "type": "string",
+                                    "description": "PVC Storage Request for PostgreSQL volume",
+                                    "default": "5Gi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "redis": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the Redis&reg; subchart",
+                    "default": true
+                },
+                "architecture": {
+                    "type": "string",
+                    "description": "Redis&reg; architecture. Allowed values: `standalone` or `replication`",
+                    "default": "standalone"
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "password": {
+                            "type": "string",
+                            "description": "Redis&reg; password",
+                            "default": "paperless"
+                        }
+                    }
+                }
+            }
+        },
+        "tika": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the Apache Tika subchart",
+                    "default": true
+                }
+            }
+        },
+        "gotenberg": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the Gotenberg subchart",
+                    "default": true
+                },
+                "gotenberg": {
+                    "type": "object",
+                    "properties": {
+                        "chromium": {
+                            "type": "object",
+                            "properties": {
+                                "disableJavaScript": {
+                                    "type": "boolean",
+                                    "description": "Disable JavaScript",
+                                    "default": "false"
+                                },
+                                "allowList": {
+                                    "type": "string",
+                                    "description": "Set the allowed URLs for Chromium using a regular expression - defaults to 'All'",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "logging": {
+                            "type": "object",
+                            "properties": {
+                                "level": {
+                                    "type": "string",
+                                    "description": "Choose the level of logging detail",
+                                    "default": "info"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
