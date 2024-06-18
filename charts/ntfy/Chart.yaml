@@ -7,7 +7,10 @@ annotations:
   artifacthub.io/maintainers: |
     - name: FMJdev
       email: info@fmj.dev
-  artifacthub.io/prerelease: "true"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/images: |
+    - name: ntfy
+      image: docker.io/binwiederhier/ntfy:v2.11.0
   artifacthub.io/links: |
     - name: Source
       url: https://github.com/fmjstudios/helm
@@ -20,7 +23,7 @@ annotations:
 apiVersion: v2
 appVersion: 2.11.0
 kubeVersion: ">=1.26"
-name: linkstack
+name: ntfy
 version: 0.0.1
 description: ntfy lets you send push notifications to your phone or desktop via scripts from any computer, using simple HTTP PUT or POST requests
 home: https://github.com/binwiederhier/ntfy
