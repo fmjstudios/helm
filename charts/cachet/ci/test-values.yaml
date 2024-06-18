@@ -1,0 +1,58 @@
+cachet:
+  url: "cachet.helm.private"
+  env: production
+  debug: false
+  emoji: false
+  beacon: false
+
+  drivers:
+    cache: database
+    session: database
+    queue: database
+    mail: smtp
+
+  key:
+    value: ""
+    existingSecret:
+      name: ""
+      key: ""
+
+  database:
+    driver: pgsql
+    host: cachet-postgresql
+    port: "5432"
+    name: cachet
+    user: cachet
+    password: cachet
+    existingSecret: ""
+
+  redis:
+    host: ""
+    port: "5432"
+    database: ""
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: development-issuer
+  tls:
+    - secretName: cachet-ingress-tls
+      hosts:
+        - "cachet.helm.private"
+
+livenessProbe:
+  enabled: true
+
+readinessProbe:
+  enabled: true
+
+startupProbe:
+  enabled: true
+
+postgresql:
+  enabled: true
+  auth:
+    username: "cachet"
+    password: "cachet"
+    database: "cachet"

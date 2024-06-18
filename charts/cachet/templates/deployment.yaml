@@ -37,6 +37,13 @@ spec:
           image: {{ include "cachet.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: DOCKER
+              value: "true"
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cachet.secrets.appKey" . }}
+                  key: key
             {{- if (or .Values.cachet.database.user .Values.cachet.database.existingSecret) }}
             - name: DB_USERNAME
               valueFrom:
@@ -91,7 +98,7 @@ spec:
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/v1/ping
               port: http
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -102,7 +109,7 @@ spec:
           {{- if .Values.readinessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/v1/ping
               port: http
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
@@ -113,7 +120,7 @@ spec:
           {{- if .Values.startupProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/v1/ping
               port: http
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds }}

@@ -18,6 +18,7 @@ data:
   APP_ENV: {{ .Values.cachet.env | quote }}
   APP_DEBUG: {{ .Values.cachet.debug | quote }}
   CACHET_EMOJI: {{ .Values.cachet.emoji | quote }}
+  CACHET_BEACON: {{ .Values.cachet.beacon | quote }}
   {{- /*
     Database settings
   */}}

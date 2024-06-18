@@ -18,8 +18,8 @@
 
 image:
   registry: docker.io
-  repository: fmjstudios/cachet
-  tag: latest
+  repository: cachethq/docker
+  tag: 2.3.15
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: [ ]
+  pullSecrets: []
 
 ## @section Cachet Name overrides
 ##
@@ -64,6 +64,10 @@ cachet:
   ## @param cachet.emoji [default: false] Enable GitHub Emoji's
   ##
   emoji: false
+  ## @param cachet.beacon [default: true] Whether or not to enable Cachet's telemetry
+  ## ref: https://docs.cachethq.io/installation/beacons.html
+  ##
+  beacon: true
 
   ## GitHub Token settings
   ##
@@ -84,15 +88,15 @@ cachet:
   ## Driver settings
   ##
   drivers:
-    ## @param cachet.drivers.cache [default: apc] The driver used to support caching. `apc` or `redis`.
+    ## @param cachet.drivers.cache [default: apc] The driver used to support caching. `apc`, `file` or `database`.
     ##
-    cache: apc
-    ## @param cachet.drivers.session [default: apc] The driver used to support sessions. `apc` or `redis`.
+    cache: database
+    ## @param cachet.drivers.session [default: apc] The driver used to support sessions. `apc`, `file` or `database`.
     ##
-    session: apc
-    ## @param cachet.drivers.queue [default: sync] The driver used to support queues
+    session: database
+    ## @param cachet.drivers.queue [default: sync] The driver used to support queues. `sync` or `database`.
     ##
-    queue: sync
+    queue: database
     ## @param cachet.drivers.mail [default: smtp] The driver used to support queues
     ##
     mail: smtp
@@ -116,9 +120,9 @@ cachet:
   ## Database settings
   ##
   database:
-    ## @param cachet.database.driver [default: postgresql] The database driver to use `sqlite`, `mysql` or `postgresql`
+    ## @param cachet.database.driver [default: pgsql] The database driver to use `sqlite`, `mysql` or `pgsql`
     ##
-    driver: postgresql
+    driver: pgsql
     ## @param cachet.database.host [string] The database host, or path in case of `sqlite`
     ##
     host: ""
@@ -221,12 +225,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   extraHosts:
-    [ ]
+    []
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -258,7 +262,7 @@ service:
 ##
 rbac:
   create: true
-  rules: [ ]
+  rules: []
 
 ## @section Cachet Service Account parameters
 ##
@@ -283,7 +287,7 @@ serviceAccount:
   name: ""
   # The list of secrets mountable by this service account.
   # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
-  secrets: [ ]
+  secrets: []
 
 ## @section Cachet Liveness Probes
 ##
@@ -395,7 +399,7 @@ resources:
 ## Cachet initContainers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define extra initContainers for the main Cachet server
-initContainers: [ ]
+initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -405,7 +409,7 @@ nodeSelector: { }
 ## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: [ ]
+tolerations: []
 
 ## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

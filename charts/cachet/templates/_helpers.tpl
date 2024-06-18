@@ -85,6 +85,10 @@ Define the PVC name
 {{/*
 Define the Secret names
 */}}
+{{- define "cachet.secrets.appKey" -}}
+{{- printf "%s-key" (include "cachet.fullname" .)}}
+{{- end -}}
+
 {{- define "cachet.secrets.db" -}}
 {{- printf "%s-db-credentials" (include "cachet.fullname" .)}}
 {{- end -}}
