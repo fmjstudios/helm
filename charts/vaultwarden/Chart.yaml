@@ -8,6 +8,9 @@ annotations:
     - name: FMJdev
       email: info@fmj.dev
   artifacthub.io/prerelease: "false"
+  artifacthub.io/images: |
+    - name: vaultwarden
+      image: docker.io/vaultwarden/server:1.30.1-alpine
   artifacthub.io/links: |
     - name: Source
       url: https://github.com/fmjstudios/helm
