@@ -2,20 +2,14 @@
 
 ## ➕ Additions
 
-- [X] [ntfy.sh](https://ntfy.sh) chart
 - [ ] [Karma (Alertmanager Dashboard)](https://github.com/prymitive/karma) chart
 - [ ] [BookStack](https://www.bookstackapp.com/) chart
 - [ ] [Maildev](https://github.com/maildev/maildev) chart
 - [ ] [GoBackup](https://gobackup.github.io/) chart
 - [ ] [Kubenav](https://github.com/kubenav/kubenav) chart
-- [X] [Pretix](https://pretix.eu/about/de/) chart -> _obsolete_
-- [X] [Shopware 5](https://github.com/shopware5/shopware) chart -> _deprecated_
 - [ ] [Shopware 6](https://github.com/shopware/shopware) chart
-- [X] [LinkStack](https://linkstack.org/) chart
 - [ ] [Shlink](https://shlink.io/) chart
 - [ ] [AnonAddy](https://addy.io/) chart
-- [X] [Cachet](https://cachethq.io/) chart
-- [X] [Vikunja](https://vikunja.io/) chart -> [_official chart exists_][vikunja_artifacthub]
 - [ ] [OpenGist](https://github.com/thomiceli/opengist) chart
 - [ ] [Drift](https://github.com/MaxLeiter/Drift) chart
 - [ ] [FreshRSS](https://freshrss.org/index.html) chart
@@ -24,6 +18,7 @@
 - [ ] [Pterodactyl](https://pterodactyl.io/) chart
 - [ ] [Metabase](https://metabase.com) chart
 - [ ] [DBGate](https://github.com/dbgate/dbgate) chart
+- [ ] [Statping-ng](https://github.com/statping-ng/statping-ng/wiki) chart
 
 > [!NOTE]
 > Most important are `ntfy.sh`, `GoBackup`, `Shopware 6`, `Weblate` and `Pterodactyl`
