@@ -30,7 +30,7 @@ ingress:
   enabled: true
   className: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: mkcert-development-issuer
+    cert-manager.io/cluster-issuer: development-issuer
   tls:
     - secretName: domain-tld-tls
       hosts:
