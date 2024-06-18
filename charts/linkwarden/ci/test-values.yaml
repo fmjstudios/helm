@@ -3,10 +3,10 @@ linkwarden:
   nextAuthSecret:
     value: "PretendThisIsARandomString"
   ignoreUnauthorizedCA: true
-  data:
-    filesystem:
-      pvc:
-        existingClaim: linkwarden-pvc
+  #  data:
+  #    filesystem:
+  #      pvc:
+  #        existingClaim: linkwarden-pvc
 
   database:
     user: "linkwarden"
@@ -26,7 +26,7 @@ ingress:
   enabled: true
   className: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: mkcert-development-issuer
+    cert-manager.io/cluster-issuer: development-issuer
   tls:
     - secretName: linkwarden-ingress-tls
       hosts:
@@ -49,13 +49,3 @@ postgresql:
     username: "linkwarden"
     password: "linkwarden"
     database: "linkwarden"
-    usePasswordFiles: false
-  primary:
-    name: primary
-    persistence:
-      enabled: true
-      existingClaim: ""
-      storageClass: standard
-      accessModes:
-        - ReadWriteOnce
-      size: 5Gi

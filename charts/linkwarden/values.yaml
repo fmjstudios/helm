@@ -232,7 +232,7 @@ linkwarden:
       # - provider: "keycloak"
       #   customName: "keycloak-custom"
       #   issuer: "keycloak"
-      #   existingSecret: "keycloak-creds"
+    #   existingSecret: "keycloak-creds"
 
   ## SMTP settings
   ##
@@ -256,21 +256,21 @@ linkwarden:
 
 ## @param configMapAnnotations Define extra annotations for the Linkwarden ConfigMap
 ##
-configMapAnnotations: {}
+configMapAnnotations: { }
 
 ## @param configMapLabels Define extra labels for the Linkwarden ConfigMap
 ##
-configMapLabels: {}
+configMapLabels: { }
 
 ## @section Linkwarden Secret parameters
 ##
 
 ## @param secretAnnotations Define extra annoations for the created Kubernetes secrets
 ##
-secretAnnotations: {}
+secretAnnotations: { }
 
 ## @param secretLabels Define extra Labels for the created Kubernetes secrets
-secretLabels: {}
+secretLabels: { }
 
 ## @section Ingress parameters
 ##
@@ -278,18 +278,18 @@ secretLabels: {}
 ## Linkwarden Ingress settings
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ## @param ingress.enabled Enable or disable the creation of Ingress resources
-## @param ingress.className [string] Specify an Ingress class for the resource
-## @param ingress.annotations [object] Define extra annotations for the Ingress resource
-## @param ingress.extraHosts [array] Define extra hostnames & paths for the Ingress resource
-## @param ingress.tls [array] Define TLS settings for the Ingress resource
+## @param ingress.className Specify an Ingress class for the resource
+## @param ingress.annotations Define extra annotations for the Ingress resource
+## @param ingress.extraHosts Define extra hostnames & paths for the Ingress resource
+## @param ingress.tls Define TLS settings for the Ingress resource
 ##
 ingress:
   enabled: false
   className: ""
   annotations:
-    {}
+    { }
     # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/tls-acme: "true"
   tls: []
   #  - secretName: domain-tld-tls
   #    hosts:
@@ -299,7 +299,7 @@ ingress:
     # - host: domain.tld
     #   paths:
     #     - path: /
-    #       pathType: ImplementationSpecific
+  #       pathType: ImplementationSpecific
 
 ## @section Service parameters
 ##
@@ -314,8 +314,8 @@ ingress:
 service:
   type: ClusterIP
   port: 80
-  annotations: {}
-  labels: {}
+  annotations: { }
+  labels: { }
 
 ## @section RBAC parameters
 ##
@@ -346,7 +346,7 @@ serviceAccount:
   # Automatically mount a ServiceAccount's API credentials?
   automount: true
   # Annotations to add to the service account
-  annotations: {}
+  annotations: { }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""

@@ -374,23 +374,24 @@
                 "className": {
                     "type": "string",
                     "description": "Specify an Ingress class for the resource",
-                    "default": "\"\""
+                    "default": ""
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Define extra annotations for the Ingress resource",
+                    "default": {}
                 },
                 "extraHosts": {
                     "type": "array",
                     "description": "Define extra hostnames & paths for the Ingress resource",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 },
                 "tls": {
                     "type": "array",
                     "description": "Define TLS settings for the Ingress resource",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
