@@ -54,107 +54,87 @@ Parameters.
 
 ### ntfy Configuration parameters
 
-| Name                                            | Description                                                                                            | Value      |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- |
-| `ntfy.baseURL`                                  | The public facing URL for the service (e.g. https://ntfy.example.com)                                  | `""`       |
-| `ntfy.listenHTTP`                               | The listen address for the HTTP server (e.g. ":80", "127.0.0.1:80")                                    | `""`       |
-| `ntfy.listenHTTPS`                              | The listen address for the HTTPS server (e.g. ":443", "127.0.0.1:443") -                               | `""`       |
-| `ntfy.listenUnix`                               | The path to a Unix socket to listen on (e.g. "/var/run/ntfy/ntfy.sock")                                | `""`       |
-| `ntfy.listenUnixMode`                           | The Linux permissions for the Unix socket (e.g. "0700")                                                | `""`       |
-| `ntfy.keyFile`                                  | The path to a certificate key file (e.g. "/var/lib/ntfy/tls.key")                                      | `""`       |
-| `ntfy.certFile`                                 | The path to a certificate file (e.g. "/var/lib/ntfy/tls.crt")                                          | `""`       |
-| `ntfy.firebaseKeyFile`                          | The path to a Firebase key file (e.g. "/var/lib/ntfy/key.json")                                        | `""`       |
-| `ntfy.behindProxy`                              | Wether or not ntfy is hosted behind a proxy                                                            | `false`    |
-| `ntfy.keepaliveInterval`                        | Interval in which keepalive messages are sent to the client                                            | `""`       |
-| `ntfy.managerInterval`                          | Interval in which the manager prunes old messages                                                      | `""`       |
-| `ntfy.disallowedTopics`                         | Define topic names that are not allowed                                                                | `[]`       |
-| `ntfy.webRoot`                                  | Define topic names that are not allowed                                                                | `""`       |
-| `ntfy.enableSignup`                             | Allow users to sign up via the web app or API                                                          | `false`    |
-| `ntfy.enableLogin`                              | Allow users to sign in via the web app or API                                                          | `false`    |
-| `ntfy.enableReservations`                       | Allow users to reserve topics                                                                          | `false`    |
-| `ntfy.globalTopicLimit`                         | The total number of topics before the server rejects new topics                                        | `15000`    |
-| `ntfy.cache.file`                               | The path where to create the SQLite cache database (e.g. "/var/cache/ntfy/cache.db")                   | `""`       |
-| `ntfy.cache.duration`                           | The duration for which messages will be buffered before they are deleted (e.g. "12h")                  | `""`       |
-| `ntfy.cache.startupQueries`                     | SQLite queries to run on database initialization (e.g. to enable WAL mode)                             | `""`       |
-| `ntfy.cache.batchSize`                          | The amount of messages within a single batch (e.g. 32)                                                 | `0`        |
-| `ntfy.cache.batchTimeout`                       | The timeout after which to write the batched messages to the DB (e.g. "0ms")                           | `""`       |
-| `ntfy.cache.pvc.size`                           | The size given to PVCs created for the cache database                                                  | `2Gi`      |
-| `ntfy.cache.pvc.storageClass`                   | The storageClass given to the new PVCs                                                                 | `standard` |
-| `ntfy.cache.pvc.reclaimPolicy`                  | The resourcePolicy given to the new PVCs                                                               | `Retain`   |
-| `ntfy.cache.pvc.existingClaim`                  | Provide the name to an existing PVC                                                                    | `""`       |
-| `ntfy.auth.file`                                | The path where to create the SQLite user database (e.g. "/var/lib/ntfy/user.db")                       | `""`       |
-| `ntfy.auth.defaultAccess`                       | The default access level for new users (e.g. "/var/lib/ntfy/user.db")                                  | `""`       |
-| `ntfy.auth.startupQueries`                      | SQLite queries to run on database initialization (e.g. to enable WAL mode)                             | `""`       |
-| `ntfy.auth.pvc.size`                            | The size given to PVCs created for the auth database                                                   | `2Gi`      |
-| `ntfy.auth.pvc.storageClass`                    | The storageClass given to the new PVCs                                                                 | `standard` |
-| `ntfy.auth.pvc.reclaimPolicy`                   | The resourcePolicy given to the new PVCs                                                               | `Retain`   |
-| `ntfy.auth.pvc.existingClaim`                   | Provide the name to an existing PVC                                                                    | `""`       |
-| `ntfy.attachment.cacheDir`                      | The cache directory for attached files (e.g. "/var/cache/ntfy/attachments")                            | `""`       |
-| `ntfy.attachment.totalSizeLimit`                | The maximum total size of cacheDir (e.g. "5G")                                                         | `""`       |
-| `ntfy.attachment.fileSizeLimit`                 | The maximum size of a single attachment (e.g. "15M")                                                   | `""`       |
-| `ntfy.attachment.expiryDuration`                | The duration after which uploaded attachments are deleted (e.g. "3h")                                  | `""`       |
-| `ntfy.smtp.senderAddr`                          | The hostname:port of the SMTP server (e.g. "mail.example.com:587")                                     | `""`       |
-| `ntfy.smtp.senderFrom`                          | The e-mail address of the sender (e.g. "ntfy@example.com")                                             | `""`       |
-| `ntfy.smtp.senderUser.value`                    | The username of the SMTP user                                                                          | `""`       |
-| `ntfy.smtp.senderUser.existingSecret.name`      | The name of an existing Secret containing the admin token                                              | `""`       |
-| `ntfy.smtp.senderUser.existingSecret.key`       | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.smtp.senderPass.value`                    | The password of the SMTP user                                                                          | `""`       |
-| `ntfy.smtp.senderPass.existingSecret.name`      | The name of an existing Secret containing the admin token                                              | `""`       |
-| `ntfy.smtp.senderPass.existingSecret.key`       | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.smtp.incoming.listen`                     | The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")                    | `""`       |
-| `ntfy.smtp.incoming.domain`                     | The e-mail domain (e.g. "example.com")                                                                 | `""`       |
-| `ntfy.smtp.incoming.addrPrefix`                 | Optional prefix to prevent spam. If set to "ntfy-" for example,                                        | `""`       |
-| `ntfy.web.publicKey.value`                      | is the generated VAPID public key, (e.g. "AA...")                                                      | `""`       |
-| `ntfy.web.publicKey.existingSecret.name`        | The name of an existing Secret containing the public key                                               | `""`       |
-| `ntfy.web.publicKey.existingSecret.key`         | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.web.privateKey.value`                     | is the generated VAPID private key, (e.g. "AA...")                                                     | `""`       |
-| `ntfy.web.privateKey.existingSecret.name`       | The name of an existing Secret containing the private key                                              | `""`       |
-| `ntfy.web.privateKey.existingSecret.key`        | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.web.file`                                 | is a database file to keep track of browser subscription endpoints (e.g. "/var/cache/ntfy/webpush.db") | `""`       |
-| `ntfy.web.emailAddress`                         | is the admin email address send to the push provider, (e.g. "sysadmin@example.com")                    | `""`       |
-| `ntfy.web.startupQueries`                       | SQLite queries to run on database initialization (e.g. to enable WAL mode)                             | `""`       |
-| `ntfy.web.pvc.size`                             | The size given to PVCs created for the browser endpoint database                                       | `2Gi`      |
-| `ntfy.web.pvc.storageClass`                     | The storageClass given to the new PVCs                                                                 | `standard` |
-| `ntfy.web.pvc.reclaimPolicy`                    | The resourcePolicy given to the new PVCs                                                               | `Retain`   |
-| `ntfy.web.pvc.existingClaim`                    | Provide the name to an existing PVC                                                                    | `""`       |
-| `ntfy.twilio.account.value`                     | is the Twilio account SID, (e.g. "AC12345beefbeef67890beefbeef122586")                                 | `""`       |
-| `ntfy.twilio.account.existingSecret.name`       | The name of an existing Secret containing the account SID                                              | `""`       |
-| `ntfy.twilio.account.existingSecret.key`        | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.twilio.authToken.value`                   | is the Twilio account SID, (e.g. "affebeef258625862586258625862586")                                   | `""`       |
-| `ntfy.twilio.authToken.existingSecret.name`     | The name of an existing Secret containing the auth token                                               | `""`       |
-| `ntfy.twilio.authToken.existingSecret.key`      | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.twilio.phoneNumber`                       | The outgoing Twilio phone number (e.g. "+18775132586")                                                 | `""`       |
-| `ntfy.twilio.verifyService`                     | Twilio verify service SID (e.g. "VA12345beefbeef67890beefbeef122586")                                  | `""`       |
-| `ntfy.upstream.baseURL`                         | The base URL of the upstream server, should be "https://ntfy.sh"                                       | `""`       |
-| `ntfy.upstream.accessToken.value`               | the token used to authenticate with the upstream server                                                | `""`       |
-| `ntfy.upstream.accessToken.existingSecret.name` | The name of an existing Secret containing the access token                                             | `""`       |
-| `ntfy.upstream.accessToken.existingSecret.key`  | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.message.sizeLimit`                        | The maximum size of a message body (e.g. "4k")                                                         | `""`       |
-| `ntfy.message.delayLimit`                       | The maximum delay of a message when using the "Delay" header (e.g. "3d")                               | `""`       |
-| `ntfy.visitor.subscriptionLimit`                | The number of subscriptions per visitor (IP address)                                                   | `30`       |
-| `ntfy.visitor.requestLimitBurst`                | The initial bucket of requests each visitor has (e.g. "60")                                            | `60`       |
-| `ntfy.visitor.requestLimitReplenish`            | The rate at which the bucket is refilled (e.g. "5s")                                                   | `5s`       |
-| `ntfy.visitor.requestLimitExemptHosts`          | A comma-separated list of hostnames, IPs or CIDRs to be                                                | `""`       |
-| `ntfy.visitor.messageDailyLimit`                | Hard daily limit of messages per visitor and day. The limit is reset                                   | `15000`    |
-| `ntfy.visitor.emailLimitBurst`                  | The initial bucket of emails each visitor has (e.g. "60")                                              | `16`       |
-| `ntfy.visitor.emailLimitReplenish`              | The rate at which the bucket is refilled (e.g. "5s")                                                   | `1h`       |
-| `ntfy.visitor.attachmentTotalSizeLimit`         | The total storage limit used for attachments per visitor                                               | `100M`     |
-| `ntfy.visitor.attachmentDailyBandwidthLimit`    | The total daily attachment download/upload traffic limit per visitor                                   | `500M`     |
-| `ntfy.visitor.subscriberRateLimiting`           | Whether to enable subscriber-based rate limiting                                                       | `false`    |
-| `ntfy.stripe.secretKey.value`                   | the key used for the Stripe API communication                                                          | `""`       |
-| `ntfy.stripe.secretKey.existingSecret.name`     | The name of an existing Secret containing the secret key                                               | `""`       |
-| `ntfy.stripe.secretKey.existingSecret.key`      | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.stripe.webhookKey.value`                  | the key used for the Stripe API communication                                                          | `""`       |
-| `ntfy.stripe.webhookKey.existingSecret.name`    | The name of an existing Secret containing the webhook key                                              | `""`       |
-| `ntfy.stripe.webhookKey.existingSecret.key`     | The key name within the previously named existingSecret                                                | `""`       |
-| `ntfy.stripe.billingContact`                    | is an email address or website displayed in the "Upgrade tier" dialog to let people reach              | `""`       |
-| `ntfy.metrics.enabled`                          | enables the /metrics endpoint for the ntfy server                                                      | `false`    |
-| `ntfy.metrics.listenHTTP`                       | exposes the metrics endpoint via a dedicated [IP]:port. If set, this option                            | `""`       |
-| `ntfy.metrics.profileListenHTTP`                | If enabled, ntfy will listen on a dedicated listen IP/port                                             | `""`       |
-| `ntfy.log.level`                                | One of "trace", "debug", "info" (default), "warn" or "error"                                           | `info`     |
-| `ntfy.log.levelOverrides`                       | lets you override the log level if certain fields match                                                | `""`       |
-| `ntfy.log.format`                               | One of "text" (default) or "json"                                                                      | `text`     |
-| `ntfy.log.file`                                 | The filename to write logs to. If this is not set, ntfy logs to stderr                                 | `""`       |
+| Name                                         | Description                                                                                            | Value           |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------- |
+| `ntfy.baseURL`                               | The public facing URL for the service (e.g. https://ntfy.example.com)                                  | `""`            |
+| `ntfy.listenHTTP`                            | The listen address for the HTTP server (e.g. ":80", "127.0.0.1:80")                                    | `""`            |
+| `ntfy.listenHTTPS`                           | The listen address for the HTTPS server (e.g. ":443", "127.0.0.1:443") -                               | `""`            |
+| `ntfy.listenUnix`                            | The path to a Unix socket to listen on (e.g. "/var/run/ntfy/ntfy.sock")                                | `""`            |
+| `ntfy.listenUnixMode`                        | The Linux permissions for the Unix socket (e.g. "0700")                                                | `""`            |
+| `ntfy.keyFile`                               | The path to a certificate key file (e.g. "/var/lib/ntfy/tls.key")                                      | `""`            |
+| `ntfy.certFile`                              | The path to a certificate file (e.g. "/var/lib/ntfy/tls.crt")                                          | `""`            |
+| `ntfy.firebaseKeyFile`                       | The path to a Firebase key file (e.g. "/var/lib/ntfy/key.json")                                        | `""`            |
+| `ntfy.behindProxy`                           | Wether or not ntfy is hosted behind a proxy                                                            | `false`         |
+| `ntfy.keepaliveInterval`                     | Interval in which keepalive messages are sent to the client                                            | `""`            |
+| `ntfy.managerInterval`                       | Interval in which the manager prunes old messages                                                      | `""`            |
+| `ntfy.disallowedTopics`                      | Define topic names that are not allowed                                                                | `[]`            |
+| `ntfy.webRoot`                               | Define topic names that are not allowed                                                                | `""`            |
+| `ntfy.enableSignup`                          | Allow users to sign up via the web app or API                                                          | `false`         |
+| `ntfy.enableLogin`                           | Allow users to sign in via the web app or API                                                          | `false`         |
+| `ntfy.enableReservations`                    | Allow users to reserve topics                                                                          | `false`         |
+| `ntfy.globalTopicLimit`                      | The total number of topics before the server rejects new topics                                        | `15000`         |
+| `ntfy.data.rootPath`                         | The root path for ntfy to store its' files                                                             | `/var/lib/ntfy` |
+| `ntfy.data.pvc.size`                         | The size given to the new PVC                                                                          | `5Gi`           |
+| `ntfy.data.pvc.storageClass`                 | The storageClass given to the new PVC                                                                  | `standard`      |
+| `ntfy.data.pvc.reclaimPolicy`                | The resourcePolicy given to the new PVC                                                                | `Retain`        |
+| `ntfy.data.pvc.existingClaim`                | Provide the name to an existing PVC                                                                    | `""`            |
+| `ntfy.cache.file`                            | The path where to create the SQLite cache database, beginning at ntfy.data.rootPath (e.g. "cache.db")  | `cache.db`      |
+| `ntfy.cache.duration`                        | The duration for which messages will be buffered before they are deleted (e.g. "12h")                  | `""`            |
+| `ntfy.cache.startupQueries`                  | SQLite queries to run on database initialization (e.g. to enable WAL mode)                             | `""`            |
+| `ntfy.cache.batchSize`                       | The amount of messages within a single batch (e.g. 32)                                                 | `0`             |
+| `ntfy.cache.batchTimeout`                    | The timeout after which to write the batched messages to the DB (e.g. "0ms")                           | `""`            |
+| `ntfy.auth.file`                             | The path where to create the SQLite user database (e.g. "auth.db")                                     | `""`            |
+| `ntfy.auth.defaultAccess`                    | The default access level for new users. Can be `deny-all`, `read-only` or `write-only`.                | `""`            |
+| `ntfy.auth.startupQueries`                   | SQLite queries to run on database initialization (e.g. to enable WAL mode)                             | `""`            |
+| `ntfy.attachment.cacheDir`                   | The directory for attached files (e.g. "attachments")                                                  | `""`            |
+| `ntfy.attachment.totalSizeLimit`             | The maximum total size of cacheDir (e.g. "5G")                                                         | `""`            |
+| `ntfy.attachment.fileSizeLimit`              | The maximum size of a single attachment (e.g. "15M")                                                   | `""`            |
+| `ntfy.attachment.expiryDuration`             | The duration after which uploaded attachments are deleted (e.g. "3h")                                  | `""`            |
+| `ntfy.smtp.senderAddr`                       | The hostname:port of the SMTP server (e.g. "mail.example.com:587")                                     | `""`            |
+| `ntfy.smtp.senderFrom`                       | The e-mail address of the sender (e.g. "ntfy@example.com")                                             | `""`            |
+| `ntfy.smtp.senderUser`                       | The username of the SMTP user (e.g. "ntfy@example.com")                                                | `""`            |
+| `ntfy.smtp.senderPass`                       | The password of the SMTP user (e.g. "ntfy@example.com")                                                | `""`            |
+| `ntfy.smtp.existingSecret`                   | An existing secret with a `username` and `password` key                                                | `""`            |
+| `ntfy.smtp.incoming.listen`                  | The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")                    | `""`            |
+| `ntfy.smtp.incoming.domain`                  | The e-mail domain (e.g. "example.com")                                                                 | `""`            |
+| `ntfy.smtp.incoming.addrPrefix`              | Optional prefix to prevent spam. If set to "ntfy-" for example,                                        | `""`            |
+| `ntfy.web.publicKey`                         | is the generated VAPID public key, (e.g. "AA...")                                                      | `""`            |
+| `ntfy.web.privateKey`                        | is the generated VAPID private key, (e.g. "AA...")                                                     | `""`            |
+| `ntfy.web.existingSecret`                    | An existing secret with a `privateKey` and `publicKey` a                                               | `""`            |
+| `ntfy.web.file`                              | is a database file to keep track of browser subscription endpoints (e.g. "/var/cache/ntfy/webpush.db") | `""`            |
+| `ntfy.web.emailAddress`                      | is the admin email address send to the push provider, (e.g. "sysadmin@example.com")                    | `""`            |
+| `ntfy.web.startupQueries`                    | SQLite queries to run on database initialization (e.g. to enable WAL mode)                             | `""`            |
+| `ntfy.twilio.accountSID`                     | is the Twilio account SID, (e.g. "AC12345beefbeef67890beefbeef122586")                                 | `""`            |
+| `ntfy.twilio.token`                          | is the Twilio authentication token, (e.g. "ThisIsAnAuthenticationToken")                               | `""`            |
+| `ntfy.twilio.existingSecret`                 | An existing secret containing a `accountSID` and `token` key                                           | `""`            |
+| `ntfy.twilio.phoneNumber`                    | The outgoing Twilio phone number (e.g. "+18775132586")                                                 | `""`            |
+| `ntfy.twilio.verifyService`                  | Twilio verify service SID (e.g. "VA12345beefbeef67890beefbeef122586")                                  | `""`            |
+| `ntfy.upstream.baseURL`                      | The base URL of the upstream server, should be "https://ntfy.sh"                                       | `""`            |
+| `ntfy.upstream.accessToken`                  | the token used to authenticate with the upstream APNS server                                           | `""`            |
+| `ntfy.upstream.existingSecret`               | A existing Secret containing a `token` key                                                             | `""`            |
+| `ntfy.message.sizeLimit`                     | The maximum size of a message body (e.g. "4k")                                                         | `""`            |
+| `ntfy.message.delayLimit`                    | The maximum delay of a message when using the "Delay" header (e.g. "3d")                               | `""`            |
+| `ntfy.visitor.subscriptionLimit`             | The number of subscriptions per visitor (IP address)                                                   | `30`            |
+| `ntfy.visitor.requestLimitBurst`             | The initial bucket of requests each visitor has (e.g. "60")                                            | `60`            |
+| `ntfy.visitor.requestLimitReplenish`         | The rate at which the bucket is refilled (e.g. "5s")                                                   | `5s`            |
+| `ntfy.visitor.requestLimitExemptHosts`       | A comma-separated list of hostnames, IPs or CIDRs to be                                                | `""`            |
+| `ntfy.visitor.messageDailyLimit`             | Hard daily limit of messages per visitor and day. The limit is reset                                   | `15000`         |
+| `ntfy.visitor.emailLimitBurst`               | The initial bucket of emails each visitor has (e.g. "60")                                              | `16`            |
+| `ntfy.visitor.emailLimitReplenish`           | The rate at which the bucket is refilled (e.g. "5s")                                                   | `1h`            |
+| `ntfy.visitor.attachmentTotalSizeLimit`      | The total storage limit used for attachments per visitor                                               | `100M`          |
+| `ntfy.visitor.attachmentDailyBandwidthLimit` | The total daily attachment download/upload traffic limit per visitor                                   | `500M`          |
+| `ntfy.visitor.subscriberRateLimiting`        | Whether to enable subscriber-based rate limiting                                                       | `false`         |
+| `ntfy.stripe.secretKey`                      | The key used for the Stripe API communication                                                          | `""`            |
+| `ntfy.stripe.webhookKey`                     | The webhook key used for the Stripe API communication                                                  | `""`            |
+| `ntfy.stripe.existingSecret`                 | An existing secret containing a `secretKey` and `weboohKey` keys                                       | `""`            |
+| `ntfy.stripe.billingContact`                 | is an email address or website displayed in the "Upgrade tier" dialog to let people reach              | `""`            |
+| `ntfy.metrics.enabled`                       | enables the /metrics endpoint for the ntfy server                                                      | `false`         |
+| `ntfy.metrics.listenHTTP`                    | exposes the metrics endpoint via a dedicated [IP]:port. If set, this option                            | `""`            |
+| `ntfy.metrics.profileListenHTTP`             | If enabled, ntfy will listen on a dedicated listen IP/port                                             | `""`            |
+| `ntfy.log.level`                             | One of "trace", "debug", "info" (default), "warn" or "error"                                           | `info`          |
+| `ntfy.log.levelOverrides`                    | lets you override the log level if certain fields match                                                | `""`            |
+| `ntfy.log.format`                            | One of "text" (default) or "json"                                                                      | `text`          |
+| `ntfy.log.file`                              | The filename to write logs to. If this is not set, ntfy logs to stderr                                 | `""`            |
 
 ### ConfigMap parameters
 

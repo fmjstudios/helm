@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: []
+  pullSecrets: [ ]
 
 ## @section ntfy Name overrides
 ##
@@ -99,7 +99,7 @@ ntfy:
 
   ## @param ntfy.disallowedTopics [array] Define topic names that are not allowed
   ##
-  disallowedTopics: []
+  disallowedTopics: [ ]
 
   ## @param ntfy.webRoot [string] Define topic names that are not allowed
   ##
@@ -121,12 +121,35 @@ ntfy:
   ##
   globalTopicLimit: 15000
 
+  ## Data configuration
+  ##
+  data:
+    ## @param ntfy.data.rootPath [default: /var/lib/ntfy] The root path for ntfy to store its' files
+    ##
+    rootPath: /var/lib/ntfy
+
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param ntfy.data.pvc.size [default: 5Gi] The size given to the new PVC
+      ##
+      size: 5Gi
+      ## @param ntfy.data.pvc.storageClass [default: standard] The storageClass given to the new PVC
+      ##
+      storageClass: standard
+      ## @param ntfy.data.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVC
+      ##
+      reclaimPolicy: Retain
+      ## @param ntfy.data.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
+
   ## Cache configuration
   ##
   cache:
-    ## @param ntfy.cache.file [string] The path where to create the SQLite cache database (e.g. "/var/cache/ntfy/cache.db")
+    ## @param ntfy.cache.file [default: cache.db] The path where to create the SQLite cache database, beginning at ntfy.data.rootPath (e.g. "cache.db")
     ##
-    file: ""
+    file: "cache.db"
 
     ## @param ntfy.cache.duration [string] The duration for which messages will be buffered before they are deleted (e.g. "12h")
     ##
@@ -152,30 +175,14 @@ ntfy:
     ##
     batchTimeout: ""
 
-    ## Kubernetes PVC settings
-    ##
-    pvc:
-      ## @param ntfy.cache.pvc.size [default: 2Gi] The size given to PVCs created for the cache database
-      ##
-      size: 2Gi
-      ## @param ntfy.cache.pvc.storageClass [default: standard] The storageClass given to the new PVCs
-      ##
-      storageClass: standard
-      ## @param ntfy.cache.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVCs
-      ##
-      reclaimPolicy: Retain
-      ## @param ntfy.cache.pvc.existingClaim [string] Provide the name to an existing PVC
-      ##
-      existingClaim: ""
-
   ## Auth configuration
   ##
   auth:
-    ## @param ntfy.auth.file [string] The path where to create the SQLite user database (e.g. "/var/lib/ntfy/user.db")
+    ## @param ntfy.auth.file [string] The path where to create the SQLite user database (e.g. "auth.db")
     ##
     file: ""
 
-    ## @param ntfy.auth.defaultAccess [string] The default access level for new users (e.g. "/var/lib/ntfy/user.db")
+    ## @param ntfy.auth.defaultAccess [string] The default access level for new users. Can be `deny-all`, `read-only` or `write-only`.
     ##
     defaultAccess: "deny-all"
 
@@ -191,26 +198,10 @@ ntfy:
     ##
     startupQueries: ""
 
-    ## Kubernetes PVC settings
-    ##
-    pvc:
-      ## @param ntfy.auth.pvc.size [default: 2Gi] The size given to PVCs created for the auth database
-      ##
-      size: 2Gi
-      ## @param ntfy.auth.pvc.storageClass [default: standard] The storageClass given to the new PVCs
-      ##
-      storageClass: standard
-      ## @param ntfy.auth.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVCs
-      ##
-      reclaimPolicy: Retain
-      ## @param ntfy.auth.pvc.existingClaim [string] Provide the name to an existing PVC
-      ##
-      existingClaim: ""
-
   ## Attachment configuration
   ##
   attachment:
-    ## @param ntfy.attachment.cacheDir [string] The cache directory for attached files (e.g. "/var/cache/ntfy/attachments")
+    ## @param ntfy.attachment.cacheDir [string] The directory for attached files (e.g. "attachments")
     ##
     cacheDir: ""
     ## @param ntfy.attachment.totalSizeLimit [string] The maximum total size of cacheDir (e.g. "5G")
@@ -232,38 +223,15 @@ ntfy:
     ## @param ntfy.smtp.senderFrom [string] The e-mail address of the sender (e.g. "ntfy@example.com")
     ##
     senderFrom: ""
-
-    ## SMTP user
+    ## @param ntfy.smtp.senderUser [string] The username of the SMTP user (e.g. "ntfy@example.com")
     ##
-    senderUser:
-      ## @param ntfy.smtp.senderUser.value [string] The username of the SMTP user
-      ##
-      value: ""
-      ## Specify an existing secret to grab the admin token from
-      ##
-      existingSecret:
-        ## @param ntfy.smtp.senderUser.existingSecret.name [string] The name of an existing Secret containing the admin token
-        ##
-        name: ""
-        ## @param ntfy.smtp.senderUser.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
-
-    ## SMTP password
+    senderUser: ""
+    ## @param ntfy.smtp.senderPass [string] The password of the SMTP user (e.g. "ntfy@example.com")
     ##
-    senderPass:
-      ## @param ntfy.smtp.senderPass.value [string] The password of the SMTP user
-      ##
-      value: ""
-      ## Specify an existing secret to grab the admin token from
-      ##
-      existingSecret:
-        ## @param ntfy.smtp.senderPass.existingSecret.name [string] The name of an existing Secret containing the admin token
-        ##
-        name: ""
-        ## @param ntfy.smtp.senderPass.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
+    senderPass: ""
+    ## @param ntfy.smtp.existingSecret [string] An existing secret with a `username` and `password` key
+    ##
+    existingSecret: ""
 
     ## Incoming SMTP server configuration
     ##
@@ -282,36 +250,15 @@ ntfy:
   ## Web configuration
   ##
   web:
-    ## VAPID public key
+    ## @param ntfy.web.publicKey [string] is the generated VAPID public key, (e.g. "AA...")
     ##
-    publicKey:
-      ## @param ntfy.web.publicKey.value [string] is the generated VAPID public key, (e.g. "AA...")
-      ##
-      value: ""
-      ## Specify an existing secret to grab the public key from
-      ##
-      existingSecret:
-        ## @param ntfy.web.publicKey.existingSecret.name [string] The name of an existing Secret containing the public key
-        ##
-        name: ""
-        ## @param ntfy.web.publicKey.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
-    ## VAPID private key
+    publicKey: ""
+    ## @param ntfy.web.privateKey [string] is the generated VAPID private key, (e.g. "AA...")
     ##
-    privateKey:
-      ## @param ntfy.web.privateKey.value [string] is the generated VAPID private key, (e.g. "AA...")
-      ##
-      value: ""
-      ## Specify an existing secret to grab the private key from
-      ##
-      existingSecret:
-        ## @param ntfy.web.privateKey.existingSecret.name [string] The name of an existing Secret containing the private key
-        ##
-        name: ""
-        ## @param ntfy.web.privateKey.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
+    privateKey: ""
+    ## @param ntfy.web.existingSecret [string] An existing secret with a `privateKey` and `publicKey` a
+    ##
+    existingSecret: ""
     ## @param ntfy.web.file [string] is a database file to keep track of browser subscription endpoints (e.g. "/var/cache/ntfy/webpush.db")
     ##
     file: ""
@@ -322,56 +269,18 @@ ntfy:
     ##
     startupQueries: ""
 
-    ## Kubernetes PVC settings
-    ##
-    pvc:
-      ## @param ntfy.web.pvc.size [default: 2Gi] The size given to PVCs created for the browser endpoint database
-      ##
-      size: 2Gi
-      ## @param ntfy.web.pvc.storageClass [default: standard] The storageClass given to the new PVCs
-      ##
-      storageClass: standard
-      ## @param ntfy.web.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVCs
-      ##
-      reclaimPolicy: Retain
-      ## @param ntfy.web.pvc.existingClaim [string] Provide the name to an existing PVC
-      ##
-      existingClaim: ""
-
   ## Twilio configuration
   ##
   twilio:
-    ## Account SID
+    ## @param ntfy.twilio.accountSID [string] is the Twilio account SID, (e.g. "AC12345beefbeef67890beefbeef122586")
     ##
-    account:
-      ## @param ntfy.twilio.account.value [string] is the Twilio account SID, (e.g. "AC12345beefbeef67890beefbeef122586")
-      ##
-      value: ""
-      ## Specify an existing secret to grab the account SID from
-      ##
-      existingSecret:
-        ## @param ntfy.twilio.account.existingSecret.name [string] The name of an existing Secret containing the account SID
-        ##
-        name: ""
-        ## @param ntfy.twilio.account.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
-    ## Auth token
+    accountSID: ""
+    ## @param ntfy.twilio.token [string] is the Twilio authentication token, (e.g. "ThisIsAnAuthenticationToken")
     ##
-    authToken:
-      ## @param ntfy.twilio.authToken.value [string] is the Twilio account SID, (e.g. "affebeef258625862586258625862586")
-      ##
-      value: ""
-      ## Specify an existing secret to grab the auth token from
-      ##
-      existingSecret:
-        ## @param ntfy.twilio.authToken.existingSecret.name [string] The name of an existing Secret containing the auth token
-        ##
-        name: ""
-        ## @param ntfy.twilio.authToken.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
-
+    token: ""
+    ## @param ntfy.twilio.existingSecret [string] An existing secret containing a `accountSID` and `token` key
+    ##
+    existingSecret: ""
     ## @param ntfy.twilio.phoneNumber [string] The outgoing Twilio phone number (e.g. "+18775132586")
     ##
     phoneNumber: ""
@@ -385,21 +294,12 @@ ntfy:
     ## @param ntfy.upstream.baseURL [string] The base URL of the upstream server, should be "https://ntfy.sh"
     ##
     baseURL: ""
-    ## Access token
+    ## @param ntfy.upstream.accessToken [string] the token used to authenticate with the upstream APNS server
     ##
-    accessToken:
-      ## @param ntfy.upstream.accessToken.value [string] the token used to authenticate with the upstream server
-      ##
-      value: ""
-      ## Specify an existing secret to grab the auth token from
-      ##
-      existingSecret:
-        ## @param ntfy.upstream.accessToken.existingSecret.name [string] The name of an existing Secret containing the access token
-        ##
-        name: ""
-        ## @param ntfy.upstream.accessToken.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
+    accessToken: ""
+    ## @param ntfy.upstream.existingSecret [string] A existing Secret containing a `token` key
+    ##
+    existingSecret: ""
 
   ## Message configuration
   ##
@@ -451,37 +351,15 @@ ntfy:
   ## Stripe configuration
   ##
   stripe:
-    ## Secret key
+    ## @param ntfy.stripe.secretKey [string] The key used for the Stripe API communication
     ##
-    secretKey:
-      ## @param ntfy.stripe.secretKey.value [string] the key used for the Stripe API communication
-      ##
-      value: ""
-      ## Specify an existing secret to grab the auth token from
-      ##
-      existingSecret:
-        ## @param ntfy.stripe.secretKey.existingSecret.name [string] The name of an existing Secret containing the secret key
-        ##
-        name: ""
-        ## @param ntfy.stripe.secretKey.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
-
-    ## Webhook key
+    secretKey: ""
+    ## @param ntfy.stripe.webhookKey [string] The webhook key used for the Stripe API communication
     ##
-    webhookKey:
-      ## @param ntfy.stripe.webhookKey.value [string] the key used for the Stripe API communication
-      ##
-      value: ""
-      ## Specify an existing secret to grab the auth token from
-      ##
-      existingSecret:
-        ## @param ntfy.stripe.webhookKey.existingSecret.name [string] The name of an existing Secret containing the webhook key
-        ##
-        name: ""
-        ## @param ntfy.stripe.webhookKey.existingSecret.key [string] The key name within the previously named existingSecret
-        ##
-        key: ""
+    webhookKey: ""
+    ## @param ntfy.stripe.existingSecret [string] An existing secret containing a `secretKey` and `weboohKey` keys
+    ##
+    existingSecret: ""
 
     ## @param ntfy.stripe.billingContact [string] is an email address or website displayed in the "Upgrade tier" dialog to let people reach
     ##   out with billing questions. If unset, nothing will be displayed
@@ -559,12 +437,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   extraHosts:
-    []
+    [ ]
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -599,7 +477,7 @@ service:
 ##
 rbac:
   create: true
-  rules: []
+  rules: [ ]
 
 ## @section ntfy Service Account parameters
 ##
@@ -624,7 +502,7 @@ serviceAccount:
   name: ""
   # The list of secrets mountable by this service account.
   # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
-  secrets: []
+  secrets: [ ]
 
 ## @section ntfy Liveness Probes
 ##
@@ -736,7 +614,7 @@ resources:
 ## ntfy initContainers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define extra initContainers for the main ntfy server
-initContainers: []
+initContainers: [ ]
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -746,7 +624,7 @@ nodeSelector: { }
 ## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: []
+tolerations: [ ]
 
 ## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

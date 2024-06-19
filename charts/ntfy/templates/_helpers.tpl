@@ -69,33 +69,17 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Define the PV names
+Define the PV name
 */}}
-{{- define "ntfy.pvs.cache" -}}
-{{- printf "%s-pv" (include "ntfy.fullname" .)}}
-{{- end -}}
-
-{{- define "ntfy.pvs.auth" -}}
-{{- printf "%s-pv" (include "ntfy.fullname" .)}}
-{{- end -}}
-
-{{- define "ntfy.pvs.web" -}}
+{{- define "ntfy.pv" -}}
 {{- printf "%s-pv" (include "ntfy.fullname" .)}}
 {{- end -}}
 
 {{/*
-Define the PVC names
+Define the PVC name
 */}}
-{{- define "ntfy.pvcs.cache" -}}
-{{- printf "%s-cache-pvc" (include "ntfy.fullname" .)}}
-{{- end -}}
-
-{{- define "ntfy.pvcs.auth" -}}
-{{- printf "%s-auth-pvc" (include "ntfy.fullname" .)}}
-{{- end -}}
-
-{{- define "ntfy.pvcs.web" -}}
-{{- printf "%s-web-pvc" (include "ntfy.fullname" .)}}
+{{- define "ntfy.pvc" -}}
+{{- printf "%s-pvc" (include "ntfy.fullname" .)}}
 {{- end -}}
 
 {{/*
@@ -105,14 +89,17 @@ Define the Secret names
 {{- printf "%s-smtp" (include "ntfy.fullname" .)}}
 {{- end -}}
 
+{{- define "ntfy.secrets.web" -}}
+{{- printf "%s-web" (include "ntfy.fullname" .)}}
+{{- end -}}
+
 {{- define "ntfy.secrets.twilio" -}}
 {{- printf "%s-twilio" (include "ntfy.fullname" .)}}
 {{- end -}}
 
 {{- define "ntfy.secrets.upstream" -}}
-{{- printf "%s-upstream-credentials" (include "ntfy.fullname" .)}}
+{{- printf "%s-upstream" (include "ntfy.fullname" .)}}
 {{- end -}}
-
 
 {{/*
 Obtain the API version for the Pod Disruption Budget

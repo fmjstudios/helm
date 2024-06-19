@@ -18,9 +18,11 @@ spec:
       targetPort: {{ .Values.ntfy.listenHTTP | trimPrefix ":" }}
       protocol: TCP
       name: http
+    {{- if .Values.ntfy.listenHTTPS }}
     - port: {{ .Values.service.ports.https }}
-      targetPort: {{ .Values.ntfy.listenHTTP | trimPrefix ":" }}
+      targetPort: {{ .Values.ntfy.listenHTTPS | trimPrefix ":" }}
       protocol: TCP
       name: https
+    {{- end }}
   selector:
     {{- include "ntfy.selectorLabels" . | nindent 4 }}

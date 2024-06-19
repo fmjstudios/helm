@@ -15,7 +15,7 @@ metadata:
   {{- end }}
 data:
   config.yml: |
-    base-url: {{ .Values.ntfy }}
+    base-url: {{ .Values.ntfy.baseURL }}
     listen-http: {{ .Values.ntfy.listenHTTP }}
     web-root: {{ .Values.ntfy.webRoot }}
     global-topic-limit: {{ .Values.ntfy.globalTopicLimit }}
@@ -55,7 +55,9 @@ data:
     {{- if .Values.ntfy.enableReservations }}
     enable-reservations: {{ .Values.ntfy.enableReservations }}
     {{- end }}
-    {{-/* CACHE SETTINGS */}}
+    {{- /*
+      CACHE SETTINGS
+    */}}
     {{- if .Values.ntfy.cache.file }}
     cache-file: {{ .Values.ntfy.cache.file }}
     {{- end }}
@@ -71,7 +73,9 @@ data:
     {{- if .Values.ntfy.cache.batchTimeout }}
     cache-batch-timeout: {{ .Values.ntfy.cache.batchTimeout }}
     {{- end }}
-    {{-/* AUTH SETTINGS */}}
+    {{- /*
+      AUTH SETTINGS
+    */}}
     {{- if .Values.ntfy.auth.file }}
     auth-file: {{ .Values.ntfy.auth.file }}
     {{- end }}
@@ -81,7 +85,9 @@ data:
     {{- if .Values.ntfy.auth.startupQueries }}
     auth-startup-queries: {{ .Values.ntfy.auth.startupQueries }}
     {{- end }}
-    {{-/* ATTACHMENT SETTINGS */}}
+    {{- /*
+      ATTACHMENT SETTINGS
+    */}}
     {{- if .Values.ntfy.attachment.cacheDir }}
     attachment-cache-dir: {{ .Values.ntfy.attachment.cacheDir }}
     {{- end }}
@@ -94,15 +100,14 @@ data:
     {{- if .Values.ntfy.attachment.expiryDuration }}
     attachment-expiry-duration: {{ .Values.ntfy.attachment.expiryDuration }}
     {{- end }}
-    {{-/* SMTP SETTINGS */}}
+    {{- /*
+      SMTP SETTINGS
+    */}}
     {{- if .Values.ntfy.smtp.senderAddr }}
     smtp-sender-addr: {{ .Values.ntfy.smtp.senderAddr }}
     {{- end }}
     {{- if .Values.ntfy.smtp.senderFrom }}
     smtp-sender-from: {{ .Values.ntfy.smtp.senderFrom }}
-    {{- end }}
-    {{- if and (not .Values.ntfy.smtp.senderUser.existingSecret.name) .Values.ntfy.smtp.senderUser.value }}
-    smtp-sender-user: {{ .Values.ntfy.smtp.senderUser.value }}
     {{- end }}
     {{- if .Values.ntfy.smtp.incoming.listen }}
     smtp-server-listen: {{ .Values.ntfy.smtp.incoming.listen }}
@@ -113,13 +118,9 @@ data:
     {{- if .Values.ntfy.smtp.incoming.addrPrefix }}
     smtp-server-addr-prefix: {{ .Values.ntfy.smtp.incoming.addrPrefix }}
     {{- end }}
-    {{-/* WEB SETTINGS */}}
-    {{- if and (not .Values.ntfy.web.publicKey.existingSecret.name) .Values.ntfy.web.publicKey.value }}
-    web-push-public-key: {{ .Values.ntfy.web.publicKey.value }}
-    {{- end }}
-    {{- if and (not .Values.ntfy.web.privateKey.existingSecret.name) .Values.ntfy.web.privateKey.value }}
-    web-push-private-key: {{ .Values.ntfy.web.privateKey.value }}
-    {{- end }}
+    {{- /*
+      WEB SETTINGS
+    */}}
     {{- if .Values.ntfy.web.file }}
     web-push-file: {{ .Values.ntfy.web.file }}
     {{- end }}
@@ -129,28 +130,33 @@ data:
     {{- if .Values.ntfy.web.startupQueries }}
     web-push-startup-queries: {{ .Values.ntfy.web.startupQueries }}
     {{- end }}
-    {{-/* TWILIO SETTINGS */}}
-    {{- if and (not .Values.ntfy.twilio.account.existingSecret.name) .Values.ntfy.twilio.account.value }}
-    twilio-account: {{ .Values.ntfy.twilio.account.value }}
-    {{- end }}
+    {{- /*
+      TWILIO SETTINGS
+    */}}
     {{- if .Values.ntfy.twilio.phoneNumber }}
     twilio-phone-number: {{ .Values.ntfy.twilio.phoneNumber }}
     {{- end }}
     {{- if .Values.ntfy.twilio.verifyService }}
     twilio-verify-service: {{ .Values.ntfy.twilio.verifyService }}
     {{- end }}
-    {{-/* UPSTREAM SETTINGS */}}
+    {{- /*
+      UPSTREAM SETTINGS
+    */}}
     {{- if .Values.ntfy.upstream.baseURL }}
     upstream-base-url: {{ .Values.ntfy.upstream.baseURL }}
     {{- end }}
-    {{-/* MESSAGE SETTINGS */}}
+    {{- /*
+      MESSAGE SETTINGS
+    */}}
     {{- if .Values.ntfy.message.sizeLimit }}
     message-size-limit: {{ .Values.ntfy.message.sizeLimit }}
     {{- end }}
     {{- if .Values.ntfy.message.delayLimit }}
     message-size-limit: {{ .Values.ntfy.message.delayLimit }}
     {{- end }}
-    {{-/* VISITOR SETTINGS */}}
+    {{- /*
+      VISITOR SETTINGS
+    */}}
     {{- if .Values.ntfy.visitor.subscriptionLimit }}
     visitor-subscription-limit: {{ .Values.ntfy.visitor.subscriptionLimit }}
     {{- end }}
@@ -181,11 +187,15 @@ data:
     {{- if .Values.ntfy.visitor.subscriberRateLimiting }}
     visitor-subscriber-rate-limiting: {{ .Values.ntfy.visitor.subscriberRateLimiting }}
     {{- end }}
-    {{-/* STRIPE SETTINGS */}}
+    {{- /*
+      STRIPE SETTINGS
+    */}}
     {{- if .Values.ntfy.stripe.billingContact }}
     billing-contact: {{ .Values.ntfy.stripe.billingContact }}
     {{- end }}
-    {{-/* METRICS SETTINGS */}}
+    {{- /*
+      METRICS SETTINGS
+    */}}
     {{- if .Values.ntfy.metrics.enabled }}
     enable-metrics: {{ .Values.ntfy.metrics.enabled }}
     {{- end }}
@@ -195,7 +205,9 @@ data:
     {{- if .Values.ntfy.metrics.profileListenHTTP }}
     profile-listen-http: {{ .Values.ntfy.metrics.profileListenHTTP }}
     {{- end }}
-    {{-/* LOGGING SETTINGS */}}
+    {{- /*
+      LOGGING SETTINGS
+    */}}
     log-level: {{ .Values.ntfy.log.level }}
     {{- if .Values.ntfy.log.levelOverrides }}
     log-level-overrides: {{ .Values.ntfy.log.levelOverrides }}

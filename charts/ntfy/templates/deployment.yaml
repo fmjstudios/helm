@@ -37,21 +37,49 @@ spec:
           image: {{ include "ntfy.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            {{- if (or .Values.ntfy.smtp.senderPass.value .Values.ntfy.smtp.senderPass.existingSecret.name) }}
+            {{- if (or .Values.ntfy.smtp.senderUser .Values.ntfy.smtp.existingSecret) }}
+            - name: NTFY_SMTP_SENDER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "ntfy.secrets.smtp" .) .Values.ntfy.smtp.existingSecret }}
+                  key: username
+            {{- end }}
+            {{- if (or .Values.ntfy.smtp.senderPass .Values.ntfy.smtp.existingSecret) }}
             - name: NTFY_SMTP_SENDER_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ default (include "ntfy.secrets.smtp" .) .Values.ntfy.smtp.senderPass.existingSecret.name }}
+                  name: {{ default (include "ntfy.secrets.smtp" .) .Values.ntfy.smtp.existingSecret }}
                   key: password
             {{- end }}
-            {{- if (or .Values.ntfy.twilio.authToken.value .Values.ntfy.twilio.authToken.existingSecret.name) }}
+            {{- if (or .Values.ntfy.web.publicKey .Values.ntfy.web.existingSecret) }}
+            - name: NTFY_WEB_PUSH_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "ntfy.secrets.web" .) .Values.ntfy.web.existingSecret }}
+                  key: publicKey
+            {{- end }}
+            {{- if (or .Values.ntfy.web.privateKey .Values.ntfy.web.existingSecret) }}
+            - name: NTFY_WEB_PUSH_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "ntfy.secrets.web" .) .Values.ntfy.web.existingSecret }}
+                  key: privateKey
+            {{- end }}
+            {{- if (or .Values.ntfy.twilio.accountSID .Values.ntfy.twilio.existingSecret) }}
+            - name: NTFY_TWILIO_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ntfy.secrets.twilio" . }}
+                  key: accountSID
+            {{- end }}
+            {{- if (or .Values.ntfy.twilio.token .Values.ntfy.twilio.existingSecret) }}
             - name: NTFY_TWILIO_AUTH_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ include "ntfy.secrets.twilio" . }}
                   key: token
             {{- end }}
-            {{- if (or .Values.ntfy.upstream.accessToken.value .Values.ntfy.upstream.accessToken.existingSecret.name) }}
+            {{- if (or .Values.ntfy.upstream.accessToken .Values.ntfy.upstream.existingSecret) }}
             - name: NTFY_UPSTREAM_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -61,25 +89,19 @@ spec:
           {{/* Container settings */}}
           ports:
             - name: http
-              containerPort: {{ .Values.ntfy.listenHTTP }}
+              containerPort: {{ .Values.ntfy.listenHTTP | trimPrefix ":" }}
               protocol: TCP
+            {{- if .Values.ntfy.listenHTTPS }}
             - name: https
-              containerPort: {{ .Values.ntfy.listenHTTPS }}
+              containerPort: {{ .Values.ntfy.listenHTTPS | trimPrefix ":" }}
               protocol: TCP
+            {{- end }}
           volumeMounts:
             - name: {{ printf "%s-config" (include "ntfy.fullname" .) }}
               mountPath: /var/lib/ntfy/server.yml
-            {{- if .Values.ntfy.cache.file }}
-            - name: {{ include "ntfy.pvs.cache" . }}
-              mountPath: {{ dir .Values.ntfy.cache.file }}
-            {{- end }}
-            {{- if .Values.ntfy.auth.file }}
-            - name: {{ include "ntfy.pvs.auth" . }}
-              mountPath: {{ dir .Values.ntfy.auth.file }}
-            {{- end }}
-            {{- if .Values.ntfy.web.file }}
-            - name: {{ include "ntfy.pvs.web" . }}
-              mountPath: {{ dir .Values.ntfy.web.file }}
+            {{- if (or .Values.ntfy.cache.file .Values.ntfy.auth.file .Values.ntfy.attachment.cacheDir) }}
+            - name: {{ include "ntfy.pv" . }}
+              mountPath: {{ .Values.ntfy.data.rootPath }}
             {{- end }}
           {{- if .Values.resources }}
           resources:
@@ -126,20 +148,13 @@ spec:
       priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
       volumes:
-        {{- if (or .Values.ntfy.cache.file .Values.ntfy.cache.pvc.existingClaim)}}
-        - name: {{ include "ntfy.pvs.cache" . }}
+        - name: {{ printf "%s-config" (include "ntfy.fullname" .) }}
+          configMap:
+            name: {{ include "ntfy.fullname" . }}
+        {{- if (or .Values.ntfy.cache.file .Values.ntfy.auth.file .Values.ntfy.attachment.cacheDir)}}
+        - name: {{ include "ntfy.pv" . }}
           persistentVolumeClaim:
-            claimName: {{ default (include "ntfy.pvcs.cache" .) .Values.ntfy.cache.pvc.existingClaim }}
-        {{- end }}
-        {{- if (or .Values.ntfy.auth.file .Values.ntfy.web.auth.existingClaim)}}
-        - name: {{ include "ntfy.pvs.auth" . }}
-          persistentVolumeClaim:
-            claimName: {{ default (include "ntfy.pvcs.auth" .) .Values.ntfy.auth.pvc.existingClaim }}
-        {{- end }}
-        {{- if (or .Values.ntfy.web.file .Values.ntfy.web.pvc.existingClaim)}}
-        - name: {{ include "ntfy.pvs.web" . }}
-          persistentVolumeClaim:
-            claimName: {{ default (include "ntfy.pvcs.web" .) .Values.ntfy.web.pvc.existingClaim }}
+            claimName: {{ default (include "ntfy.pvc" .) .Values.ntfy.data.pvc.existingClaim }}
         {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:
