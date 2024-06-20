@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: [ ]
+  pullSecrets: []
 
 ## @section Paperless Name overrides
 ##
@@ -208,18 +208,18 @@ paperless:
     ## @param paperless.redis.host [string] The hostname for the Redis instance
     ##
     host: ""
+    ## @param paperless.redis.host [default: 6379] The port for the Redis instance
+    ##
+    port: 6379
+    ## @param paperless.redis.username [string] The username for the Redis instance
+    ##
+    username: ""
     ## @param paperless.redis.password [string] The password for the Redis instance
     ##
     password: ""
-    ## Redis existing secret
+    ## @param paperless.redis.existingSecret [string] The name of an existing Secret with a `username` and `password` key
     ##
-    existingSecret:
-      ## @param paperless.redis.existingSecret.name [string] Provide the name to an existing Secret containing the Redis password
-      ##
-      name: ""
-      ## @param paperless.redis.existingSecret.key [string] Provide the key within the existing Secret containing the Redis password
-      ##
-      key: ""
+    existingSecret: ""
     ## @param paperless.redis.prefix [string]
     ##
     prefix: ""
@@ -326,6 +326,9 @@ paperless:
       ## @param paperless.data.paths.trashDir [string] Define a custom trash directory
       ##
       trashDir: ""
+      ## @param paperless.data.paths.emptyTrashDir [string] Define a custom trash directory
+      ##
+      emptyTrashDir: ""
       ## @param paperless.data.paths.mediaRoot [string] Define a custom media directory
       ##
       mediaRoot: ""
@@ -347,6 +350,9 @@ paperless:
       ## @param paperless.data.paths.emailCertificateLocation [string] Define a path to a certificate (chain) for TLS verification for mail servers
       ##
       emailCertificateLocation: ""
+      ## @param paperless.data.paths.modelFile [string] This is where paperless will store the classification model. Default is PAPERLESS_DATA_DIR/classification_model.pickle
+      ##
+      modelFile: ""
 
     ## Kubernetes PVC settings
     ##
@@ -588,12 +594,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   extraHosts:
-    [ ]
+    []
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -624,7 +630,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: [ ]
+  extraPorts: []
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -656,7 +662,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: [ ]
+  loadBalancerSourceRanges: []
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -664,7 +670,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: [ ]
+  externalIPs: []
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -690,7 +696,7 @@ service:
 ##
 rbac:
   create: true
-  rules: [ ]
+  rules: []
 
 ## @section Service Account parameters
 ##
@@ -708,7 +714,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: [ ]
+  secrets: []
 
 ## @section Liveness Probe parameters
 ##
@@ -819,7 +825,7 @@ resources:
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers [array] Define initContainers for the main Vaultwarden server
-initContainers: [ ]
+initContainers: []
 
 ## @param nodeSelector [object] Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -829,7 +835,7 @@ nodeSelector: { }
 ## @param tolerations [array] Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: [ ]
+tolerations: []
 
 ## @param affinity [object] Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

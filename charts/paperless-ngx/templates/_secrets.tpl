@@ -24,8 +24,12 @@ Set the names of the secrets
 {{/*
 Build connection URI's
 */}}
+{{- define "paperless.redis.password" -}}
+{{- printf "%s" default .Values.paperless.redis.password (lookup "v1" "Secret" .Release.Namespace (.Values.paperless.redis.existingSecret)).data.password | b64dec }}
+{{- end }}
+
 {{- define "paperless.redis.uri" -}}
-{{- printf "redis://:%s@%s" .Values.paperless.redis.password .Values.paperless.redis.host  }}
+{{- printf "redis://%s:%s@%s:%d" .Values.paperless.redis.username (include "paperless.redis.password" .) .Values.paperless.redis.host .Values.paperless.redis.port }}
 {{- end }}
 
 {{/*
@@ -35,7 +39,6 @@ Build connection URI's
 {{- if .Values.paperless.secretKey.value }}
 {{- printf "%s" .Values.paperless.secretKey.value }}
 {{ else }}
-{{- $secretKey := randAlphaNum 32 -}}
-{{- printf "%s" $secretKey }}
+{{- randAlphaNum 32 -}}
 {{- end }}
 {{- end }}

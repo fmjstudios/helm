@@ -137,6 +137,9 @@ data:
   {{- if .Values.paperless.postgresql.certs.key }}
   PAPERLESS_DBSSLKEY: {{ .Values.paperless.postgresql.certs.key | quote }}
   {{- end }}
+  {{- if .Values.paperless.postgresql.timeout }}
+  PAPERLESS_DB_TIMEOUT: {{ .Values.paperless.postgresql.timeout }}
+  {{- end }}
   {{- /*
     Tika configuration
   */}}
@@ -178,6 +181,9 @@ data:
   {{- if .Values.paperless.data.paths.trashDir }}
   PAPERLESS_TRASH_DIR: {{ .Values.paperless.data.paths.trashDir | quote }}
   {{- end }}
+  {{- if .Values.paperless.data.paths.emptyTrashDir }}
+  PAPERLESS_EMPTY_TRASH_DIR: {{ .Values.paperless.data.paths.emptyTrashDir | quote }}
+  {{- end }}
   {{- if .Values.paperless.data.paths.mediaRoot }}
   PAPERLESS_MEDIA_ROOT: {{ .Values.paperless.data.paths.mediaRoot | quote }}
   {{- end }}
@@ -198,6 +204,9 @@ data:
   {{- end }}
   {{- if .Values.paperless.data.paths.emailCertificateLocation }}
   PAPERLESS_EMAIL_CERTIFICATE_LOCATION: {{ .Values.paperless.data.paths.emailCertificateLocation | quote }}
+  {{- end }}
+  {{- if .Values.paperless.data.paths.modelFile }}
+  PAPERLESS_MODEL_FILE: {{ .Values.paperless.data.paths.modelFile | quote }}
   {{- end }}
   {{- /*
     Logging configuration
