@@ -16,6 +16,33 @@ spec:
   type: {{ .Values.service.type }}
   selector:
     {{- include "vaultwarden.selectorLabels" . | nindent 4 }}
+  {{- if or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort")}}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
+  {{- if (semverCompare ">=1.22-0" (.Capabilities.KubeVersion)) }}
+  internalTrafficPolicy: {{ .Values.service.internalTrafficPolicy }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerIP))}}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerClass))}}
+  loadBalancerClass: {{ .Values.service.loadBalancerClass }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerSourceRanges))}}
+  loadBalancerSourceRanges: {{ toYaml .Values.service.loadBalancerSourceRanges | nindent 4 }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "ClusterIP") .Values.service.clusterIP }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  {{- end }}
+  {{- if .Values.service.sessionAffinity }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- end }}
+  {{- if .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig: {{ toYaml .Values.service.sessionAffinityConfig | nindent 4 }}
+  {{- end }}
+  {{- if .Values.service.externalIPs }}
+  externalIPs: {{ toYaml .Values.service.externalIPs | nindent 4 }}
+  {{- end }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.vaultwarden.rocket.port }}
@@ -26,6 +53,9 @@ spec:
       targetPort: {{ .Values.vaultwarden.websocket.port }}
       protocol: TCP
       name: websocket
+    {{- end }}
+    {{- if .Values.service.extraPorts }}
+    {{ toYaml .Values.service.extraPorts | nindent 4 }}
     {{- end }}
   {{- if .Values.service.ipFamilyPolicy -}}
   ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}

@@ -30,6 +30,10 @@ template:
       {{- toYaml .Values.image.pullSecrets | nindent 8 }}
     {{- end }}
     serviceAccountName: {{ include "vaultwarden.serviceAccountName" . }}
+    automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+    {{- if .Values.priorityClassName }}
+    priorityClassName: {{ .Values.priorityClassName }}
+    {{- end }}
     containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -105,7 +109,7 @@ template:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         {{- end }}
         {{- if .Values.readinessProbe.enabled }}
-        livenessProbe:
+        readinessProbe:
           httpGet:
             path: /alive
             port: http
@@ -116,7 +120,7 @@ template:
           failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         {{- end }}
         {{- if .Values.startupProbe.enabled }}
-        livenessProbe:
+        startupProbe:
           httpGet:
             path: /alive
             port: http

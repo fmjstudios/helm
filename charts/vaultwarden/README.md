@@ -18,10 +18,10 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 
 ## Parameters
 
-### Vaultwarden Image parameters
+### Image parameters
 
 | Name                | Description                                                         | Value                |
-|---------------------|---------------------------------------------------------------------|----------------------|
+| ------------------- | ------------------------------------------------------------------- | -------------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`          |
 | `image.repository`  | The registry repository to pull the image from                      | `vaultwarden/server` |
 | `image.tag`         | The image tag to pull                                               | `'1.30.1-alpine'`    |
@@ -29,17 +29,17 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`       |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                 |
 
-### Vaultwarden Name overrides
+### Name overrides
 
 | Name               | Description                                       | Value |
-|--------------------|---------------------------------------------------|-------|
+| ------------------ | ------------------------------------------------- | ----- |
 | `nameOverride`     | String to partially override vaultwarden.fullname | `""`  |
 | `fullnameOverride` | String to fully override vaultwarden.fullname     | `""`  |
 
 ### Vaultwarden Configuration parameters
 
 | Name                                                     | Description                                                                                                       | Value                      |
-|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------|
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------- |
 | `vaultwarden.domain`                                     | The domain of the Vaultwarden installation                                                                        | `""`                       |
 | `vaultwarden.web.enabled`                                | Whether or not to enable the Vaultwarden Web UI - enabled by default                                              | `true`                     |
 | `vaultwarden.web.folder`                                 | A custom folder from which to load assets for the Web UI - defaults to 'web-vault/'                               | `""`                       |
@@ -133,8 +133,8 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.invitations.orgName`                        | Generic organization name for Emails                                                                              | `Vaultwarden`              |
 | `vaultwarden.invitations.expirationHours`                | Number of hours which an email invitation lasts                                                                   | `120`                      |
 | `vaultwarden.pushNotifications.enabled`                  | Whether to enable push notifications                                                                              | `false`                    |
-| `vaultwarden.pushNotifications.installationId`           | Installation ID from '<https://bitwarden.com/host>'                                                               | `""`                       |
-| `vaultwarden.pushNotifications.installationKey`          | Installation Key from '<https://bitwarden.com/host>'                                                              | `""`                       |
+| `vaultwarden.pushNotifications.installationId`           | Installation ID from 'https://bitwarden.com/host'                                                                 | `""`                       |
+| `vaultwarden.pushNotifications.installationKey`          | Installation Key from 'https://bitwarden.com/host'                                                                | `""`                       |
 | `vaultwarden.pushNotifications.relayUri`                 | Set a custom relay URI for push notifications                                                                     | `""`                       |
 | `vaultwarden.hibpApiKey.value`                           | The HIBP API key value                                                                                            | `""`                       |
 | `vaultwarden.hibpApiKey.existingSecret.name`             | The name of an existing Secret containing the HIBP API key                                                        | `""`                       |
@@ -158,7 +158,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.icons.redirectCode`                         | The HTTP code to use for redirects to external services                                                           | `302`                      |
 | `vaultwarden.icons.disableDownloading`                   | Disable icon downloading                                                                                          | `false`                    |
 | `vaultwarden.icons.downloadTimeout`                      | Icon download timeout                                                                                             | `10`                       |
-| `vaultwarden.icons.blacklistRegex`                       | +|192\.168\.1\.[0-9]+)$'] Icon blacklist Regex                                                                    | `'^(192\.168\.0\.`         |
+| `vaultwarden.icons.blacklistRegex`                       | Icon blacklist Regex                                                                                              | `""`                       |
 | `vaultwarden.icons.blacklistNonGlobalIPs`                | Any IP which is not defined as a global IP will be blacklisted.                                                   | `true`                     |
 | `vaultwarden.icons.cache.ttl`                            | Cache time-to-live for successfully obtained icons, in seconds                                                    | `259200`                   |
 | `vaultwarden.icons.cache.negttl`                         | Cache time-to-live for icons which weren't available, in seconds                                                  | `259200`                   |
@@ -167,10 +167,24 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.rocket.workers`                             | The amount of rocket workers to create                                                                            | `10`                       |
 | `vaultwarden.rocket.tls`                                 | Rocket TLS configuration e.g.: "{certs="/path/to/certs.pem",key="/path/to/key.pem"}"                              | `""`                       |
 
+### ConfigMap parameters
+
+| Name                    | Description                             | Value |
+| ----------------------- | --------------------------------------- | ----- |
+| `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
+| `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
+
+### Common Secret parameters
+
+| Name                 | Description                                                        | Value |
+| -------------------- | ------------------------------------------------------------------ | ----- |
+| `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
+| `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
+
 ### Ingress parameters
 
 | Name                  | Description                                                              | Value   |
-|-----------------------|--------------------------------------------------------------------------|---------|
+| --------------------- | ------------------------------------------------------------------------ | ------- |
 | `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
@@ -180,34 +194,45 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 
 ### Service parameters
 
-| Name                     | Description                                      | Value       |
-|--------------------------|--------------------------------------------------|-------------|
-| `service.type`           | The type of service to create for the deployment | `ClusterIP` |
-| `service.port`           | The port to use on the service                   | `80`        |
-| `service.annotations`    | Annotations for the service resource             | `{}`        |
-| `service.labels`         | Labels for the service resource                  | `{}`        |
-| `service.ipFamilyPolicy` | The Kubernetes ipFamilyPolicy                    | `{}`        |
+| Name                               | Description                                                                             | Value       |
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+| `service.type`                     | The type of service to create                                                           | `ClusterIP` |
+| `service.port`                     | The port to use on the service                                                          | `80`        |
+| `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
+| `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
+| `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
+| `service.labels`                   | Labels for the service resource                                                         | `{}`        |
+| `service.externalTrafficPolicy`    | The external traffic policy for the service                                             | `Cluster`   |
+| `service.internalTrafficPolicy`    | The internal traffic policy for the service                                             | `Cluster`   |
+| `service.clusterIP`                | Define a static cluster IP for the service                                              | `""`        |
+| `service.loadBalancerIP`           | Set the Load Balancer IP                                                                | `""`        |
+| `service.loadBalancerClass`        | Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific) | `""`        |
+| `service.loadBalancerSourceRanges` | Service Load Balancer source ranges                                                     | `[]`        |
+| `service.externalIPs`              | Service External IPs                                                                    | `[]`        |
+| `service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP"                    | `None`      |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                             | `{}`        |
+| `service.ipFamilyPolicy`           | The ipFamilyPolicy                                                                      | `{}`        |
 
 ### RBAC parameters
 
-| Name          | Description                             | Value   |
-|---------------|-----------------------------------------|---------|
-| `rbac.create` | Whether or not to create RBAC resources | `false` |
-| `rbac.rules`  | Extra rules to add to the Role          | `[]`    |
+| Name          | Description                      | Value  |
+| ------------- | -------------------------------- | ------ |
+| `rbac.create` | Whether to create RBAC resources | `true` |
+| `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
-### Vaultwarden Service Account parameters
+### Service Account parameters
 
 | Name                         | Description                                                                   | Value  |
-|------------------------------|-------------------------------------------------------------------------------|--------|
-| `serviceAccount.create`      | Whether or not a service account should be created                            | `true` |
+| ---------------------------- | ----------------------------------------------------------------------------- | ------ |
+| `serviceAccount.create`      | Whether a service account should be created                                   | `true` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`   |
 | `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`   |
 | `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`   |
 
-### Vaultwarden Liveness Probes
+### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-|-------------------------------------|-------------------------------------------------------------|---------|
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -215,10 +240,10 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `livenessProbe.successThreshold`    | Configure the success threshold for the liveness probe      | `1`     |
 | `livenessProbe.failureThreshold`    | Configure the failure threshold for the liveness probe      | `10`    |
 
-### Vaultwarden Readiness Probes
+### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-|--------------------------------------|--------------------------------------------------------------|---------|
+| ------------------------------------ | ------------------------------------------------------------ | ------- |
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -226,10 +251,10 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `readinessProbe.successThreshold`    | Configure the success threshold for the readiness probe      | `1`     |
 | `readinessProbe.failureThreshold`    | Configure the failure threshold for the readiness probe      | `3`     |
 
-### Vaultwarden Startup Probes
+### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-|------------------------------------|------------------------------------------------------------|---------|
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -237,31 +262,30 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
 | `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
 
-### Vaultwarden initContainers
-
-### Pod disruption budget parameters
+### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-|------------------------------------|------------------------------------------------------|--------|
+| ---------------------------------- | ---------------------------------------------------- | ------ |
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
-| Name                 | Description                                           | Value |
-|----------------------|-------------------------------------------------------|-------|
-| `resources`          | The resource limits/requests for the Vaultwarden pod  | `{}`  |
-| `initContainers`     | Define initContainers for the main Vaultwarden server | `[]`  |
-| `nodeSelector`       | Node labels for pod assignment                        | `{}`  |
-| `tolerations`        | Tolerations for pod assignment                        | `[]`  |
-| `affinity`           | Affinity for pod assignment                           | `{}`  |
-| `strategy`           | Specify a deployment strategy for the Vaultwarden pod | `{}`  |
-| `podAnnotations`     | Extra annotations for the Vaultwarden pod             | `{}`  |
-| `podLabels`          | Extra labels for the Vaultwarden pod                  | `{}`  |
-| `podSecurityContext` | Security context settings for the Vaultwarden pod     | `{}`  |
+| Name                | Description                                           | Value |
+| ------------------- | ----------------------------------------------------- | ----- |
+| `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
+| `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
+| `tolerations`       | Tolerations for pod assignment                        | `[]`  |
+| `affinity`          | Affinity for pod assignment                           | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Vaultwarden pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Vaultwarden pod             | `{}`  |
+| `podLabels`         | Extra labels for the Vaultwarden pod                  | `{}`  |
+| `priorityClassName` | The name of an existing PriorityClass                 | `""`  |
 
 ### Security context settings
 
-| Name              | Description                           | Value |
-|-------------------|---------------------------------------|-------|
-| `securityContext` | General security context settings for | `{}`  |
+| Name                 | Description                                       | Value |
+| -------------------- | ------------------------------------------------- | ----- |
+| `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
+| `securityContext`    | General security context settings for             | `{}`  |

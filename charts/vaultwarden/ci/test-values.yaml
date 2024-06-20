@@ -28,7 +28,7 @@ vaultwarden:
   signup:
     allowed: true
     verify: false
-    domainWhitelist: "fmj.dev,fmj.studio"
+    domainWhitelist: "fmj.studio,helm.private"
 
   logs:
     level: debug
@@ -37,9 +37,8 @@ vaultwarden:
 ingress:
   enabled: true
   className: "nginx"
-  whitelist: ""
   annotations:
-    cert-manager.io/cluster-issuer: mkcert-development-issuer
+    cert-manager.io/cluster-issuer: development-issuer
   tls:
     - secretName: vaultwarden-ingress-tls
       hosts:
@@ -47,28 +46,12 @@ ingress:
 
 rbac:
   create: true
-  rules: []
 
 livenessProbe:
   enabled: true
-  initialDelaySeconds: 5
-  timeoutSeconds: 1
-  periodSeconds: 10
-  successThreshold: 1
-  failureThreshold: 10
 
 readinessProbe:
   enabled: true
-  initialDelaySeconds: 5
-  timeoutSeconds: 1
-  periodSeconds: 10
-  successThreshold: 1
-  failureThreshold: 3
 
 startupProbe:
   enabled: true
-  initialDelaySeconds: 5
-  timeoutSeconds: 1
-  periodSeconds: 10
-  successThreshold: 1
-  failureThreshold: 10

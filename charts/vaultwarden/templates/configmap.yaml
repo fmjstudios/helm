@@ -6,12 +6,13 @@ metadata:
   labels:
     app.kubernetes.io/component: vaultwarden
     {{- include "vaultwarden.labels" . | nindent 4 }}
-  {{- with .Values.configMapAnnotations }}
+    {{- toYaml .Values.configMap.labels | nindent 4 }}
+  {{- if .Values.configMap.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
+  {{- toYaml .Values.configMap.annotations | nindent 4 }}
   {{- end }}
 data:
-  {{- /* 
+  {{- /*
     General configuration
   */}}
   DOMAIN: {{ include "vaultwarden.ingress.url" . | quote }}
@@ -49,8 +50,8 @@ data:
   {{- if .Values.vaultwarden.allowedIframeAncestors }}
   ALLOWED_IFRAME_ANCESTORS: {{ .Values.vaultwarden.allowedIframeAncestors | quote }}
   {{- end }}
-  {{- /* 
-    Database configuration 
+  {{- /*
+    Database configuration
   */}}
   {{- if not (eq .Values.vaultwarden.database.type "sqlite") }}
   DATABASE_MAX_CONNS: {{ .Values.vaultwarden.database.maxConnections | quote }}
@@ -63,10 +64,10 @@ data:
   {{- if .Values.vaultwarden.database.enableWAL }}
   ENABLE_DB_WAL: {{ .Values.vaultwarden.database.enableWAL | quote }}
   {{- end }}
-  {{- /* 
-    EMail and SMTP configuration 
+  {{- /*
+    EMail and SMTP configuration
   */}}
-  {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from }} 
+  {{- if and .Values.vaultwarden.email.smtp.host .Values.vaultwarden.email.smtp.from }}
   SMTP_HOST: {{ .Values.vaultwarden.email.smtp.host | quote }}
   SMTP_FROM: {{ .Values.vaultwarden.email.smtp.from | quote }}
   SMTP_FROM_NAME: {{ .Values.vaultwarden.email.smtp.fromName | default "Vaultwarden" | quote }}
@@ -94,16 +95,16 @@ data:
   EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime | quote }}
   EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize | quote }}
   {{- end }}
-  {{- /* 
-    Websocket configuration 
+  {{- /*
+    Websocket configuration
   */}}
   {{- if .Values.vaultwarden.websocket.enabled }}
   WEBSOCKET_ENABLED: {{ .Values.vaultwarden.websocket.enabled | quote }}
   WEBSOCKET_ADDRESS: {{ .Values.vaultwarden.websocket.address | quote }}
   WEBSOCKET_PORT: {{ .Values.vaultwarden.websocket.port | quote }}
   {{- end }}
-  {{- /* 
-    Rate limits configuration 
+  {{- /*
+    Rate limits configuration
   */}}
   LOGIN_RATELIMIT_SECONDS: {{ .Values.vaultwarden.limits.logins.ratelimitSeconds | quote }}
   LOGIN_RATELIMIT_MAX_BURST: {{ .Values.vaultwarden.limits.logins.ratelimitMaxBurst | quote }}
@@ -116,14 +117,14 @@ data:
   {{- if .Values.vaultwarden.limits.attachments.userLimit }}
   USER_ATTACHMENT_LIMIT: {{ .Values.vaultwarden.limits.attachments.userLimit | quote }}
   {{- end }}
-  {{- /* 
-    Password configuration 
+  {{- /*
+    Password configuration
   */}}
   PASSWORD_ITERATIONS: {{ .Values.vaultwarden.passwords.iterations | quote }}
   PASSWORD_HINTS_ALLOWED: {{ .Values.vaultwarden.passwords.hintsAllowed | quote }}
   SHOW_PASSWORD_HINT: {{ .Values.vaultwarden.passwords.showHint | quote }}
-  {{- /* 
-    Signup configuration 
+  {{- /*
+    Signup configuration
   */}}
   SIGNUPS_ALLOWED: {{ .Values.vaultwarden.signup.allowed | quote }}
   SIGNUPS_VERIFY: {{ .Values.vaultwarden.signup.verify | quote }}
@@ -132,8 +133,8 @@ data:
   {{- if .Values.vaultwarden.signup.domainWhitelist }}
   SIGNUPS_DOMAINS_WHITELIST: {{ .Values.vaultwarden.signup.domainWhitelist | quote }}
   {{- end }}
-  {{- /* 
-    Authentication configuration 
+  {{- /*
+    Authentication configuration
   */}}
   AUTHENTICATOR_DISABLE_TIME_DRIFT: {{ .Values.vaultwarden.auth.authenticatorDisableTimeDrift | quote }}
   INCOMPLETE_2FA_TIME_LIMIT: {{ .Values.vaultwarden.auth.incomplete2FATimeLimit | quote }}
@@ -147,14 +148,14 @@ data:
   DUO_SKEY: {{ .Values.vaultwarden.auth.duo.secretKey | quote }}
   DUO_HOST: {{ .Values.vaultwarden.auth.duo.host | quote }}
   {{- end }}
-  {{- /* 
-    Invitation configuration 
+  {{- /*
+    Invitation configuration
   */}}
   INVITATIONS_ALLOWED: {{ .Values.vaultwarden.invitations.allowed | quote }}
   INVITATION_ORG_NAME: {{ .Values.vaultwarden.invitations.orgName | quote }}
   INVITATION_EXPIRATION_HOURS: {{ .Values.vaultwarden.invitations.expirationHours | quote }}
-  {{- /* 
-    Push notifications configuration 
+  {{- /*
+    Push notifications configuration
   */}}
   {{- if .Values.vaultwarden.pushNotifications.enabled }}
   PUSH_ENABLED: {{ .Values.vaultwarden.pushNotifications.enabled | quote }}
@@ -164,8 +165,8 @@ data:
   PUSH_RELAY_URI: {{ .Values.vaultwarden.pushNotifications.relayUri | quote }}
   {{- end }}
   {{- end }}
-  {{- /* 
-    Job scheduler configuration 
+  {{- /*
+    Job scheduler configuration
   */}}
   JOB_POLL_INTERVAL_MS: {{ .Values.vaultwarden.jobScheduler.pollIntervalMS | quote }}
   SEND_PURGE_SCHEDULE: {{ .Values.vaultwarden.jobScheduler.sendPurgeSchedule | quote }}
@@ -177,8 +178,8 @@ data:
   {{- if .Values.vaultwarden.jobScheduler.trashAutoDeleteDays }}
   TRASH_AUTO_DELETE_DAYS: {{ .Values.vaultwarden.jobScheduler.trashAutoDeleteDays | quote }}
   {{- end }}
-  {{- /* 
-    Logging configuration 
+  {{- /*
+    Logging configuration
   */}}
   LOG_LEVEL: {{ .Values.vaultwarden.logs.level | quote }}
   EXTENDED_LOGGING: {{ .Values.vaultwarden.logs.extended | quote }}
@@ -187,15 +188,15 @@ data:
   {{- if .Values.vaultwarden.logs.file }}
   LOG_FILE: {{ .Values.vaultwarden.logs.file | quote }}
   {{- end }}
-  {{- /* 
-    Template configuration 
+  {{- /*
+    Template configuration
   */}}
   {{- if .Values.vaultwarden.templates.folder }}
   TEMPLATES_FOLDER: {{ .Values.vaultwarden.templates.folder | quote }}
   RELOAD_TEMPLATES: {{ .Values.vaultwarden.templates.reload | quote }}
   {{- end }}
-  {{- /* 
-    Icon configuration 
+  {{- /*
+    Icon configuration
   */}}
   {{- if not .Values.vaultwarden.icons.disableDownloading }}
   DISABLE_ICON_DOWNLOAD: {{ .Values.vaultwarden.icons.disableDownloading | quote }}
@@ -207,8 +208,8 @@ data:
   ICON_CACHE_TTL: {{ .Values.vaultwarden.icons.cache.ttl | quote }}
   ICON_CACHE_NEGTTL: {{ .Values.vaultwarden.icons.cache.negttl | quote }}
   {{- end }}
-  {{- /* 
-    Underlying Rust 'rocket' configuration 
+  {{- /*
+    Underlying Rust 'rocket' configuration
   */}}
   ROCKET_ADDRESS: {{ .Values.vaultwarden.rocket.address | quote }}
   ROCKET_PORT: {{ .Values.vaultwarden.rocket.port | quote }}

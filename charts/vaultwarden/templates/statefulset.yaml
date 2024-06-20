@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "vaultwarden.labels" . | nindent 4 }}
 spec:
-  {{- include "vaultwarden.podSpec" . | nindent 2}}
+  {{- include "vaultwarden.podSpec" . | nindent 2 }}
   persistentVolumeClaimRetentionPolicy:
     whenDeleted: {{ .Values.vaultwarden.data.pvc.reclaimPolicy }}
     whenScaled: {{ .Values.vaultwarden.data.pvc.reclaimPolicy }}

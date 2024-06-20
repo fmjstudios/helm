@@ -788,8 +788,8 @@
                         },
                         "blacklistRegex": {
                             "type": "string",
-                            "description": "+|192\\.168\\.1\\.[0-9]+)$'] Icon blacklist Regex",
-                            "default": "'^(192\\.168\\.0\\."
+                            "description": "Icon blacklist Regex",
+                            "default": "\"\""
                         },
                         "blacklistNonGlobalIPs": {
                             "type": "boolean",
@@ -840,6 +840,36 @@
                 }
             }
         },
+        "configMap": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the ConfigMap resource",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Extra Labels for the ConfigMap resource",
+                    "default": {}
+                }
+            }
+        },
+        "secret": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Common annotations for the SMTP, HIBP, Admin and Database secrets",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Common extra labels for the SMTP, HIBP, Admin and Database secrets",
+                    "default": {}
+                }
+            }
+        },
         "ingress": {
             "type": "object",
             "properties": {
@@ -881,13 +911,71 @@
             "properties": {
                 "type": {
                     "type": "string",
-                    "description": "The type of service to create for the deployment",
+                    "description": "The type of service to create",
                     "default": "ClusterIP"
                 },
                 "port": {
                     "type": "number",
                     "description": "The port to use on the service",
                     "default": "80"
+                },
+                "nodePort": {
+                    "type": "number",
+                    "description": "The Node port to use on the service",
+                    "default": "30080"
+                },
+                "extraPorts": {
+                    "type": "array",
+                    "description": "Extra ports to add to the service",
+                    "default": [],
+                    "items": {}
+                },
+                "externalTrafficPolicy": {
+                    "type": "string",
+                    "description": "The external traffic policy for the service",
+                    "default": "Cluster"
+                },
+                "internalTrafficPolicy": {
+                    "type": "string",
+                    "description": "The internal traffic policy for the service",
+                    "default": "Cluster"
+                },
+                "clusterIP": {
+                    "type": "string",
+                    "description": "Define a static cluster IP for the service",
+                    "default": "\"\""
+                },
+                "loadBalancerIP": {
+                    "type": "string",
+                    "description": "Set the Load Balancer IP",
+                    "default": ""
+                },
+                "loadBalancerClass": {
+                    "type": "string",
+                    "description": "Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)",
+                    "default": ""
+                },
+                "loadBalancerSourceRanges": {
+                    "type": "array",
+                    "description": "Service Load Balancer source ranges",
+                    "default": [],
+                    "items": {}
+                },
+                "externalIPs": {
+                    "type": "array",
+                    "description": "Service External IPs",
+                    "default": [],
+                    "items": {}
+                },
+                "sessionAffinity": {
+                    "type": "string",
+                    "description": "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\"",
+                    "default": "None"
+                },
+                "sessionAffinityConfig": {
+                    "type": "object",
+                    "description": "Additional settings for the sessionAffinity",
+                    "default": {}
                 }
             }
         },
@@ -896,16 +984,14 @@
             "properties": {
                 "create": {
                     "type": "boolean",
-                    "description": "Whether or not to create RBAC resources",
-                    "default": "false"
+                    "description": "Whether to create RBAC resources",
+                    "default": "true"
                 },
                 "rules": {
                     "type": "array",
                     "description": "Extra rules to add to the Role",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
@@ -914,7 +1000,7 @@
             "properties": {
                 "create": {
                     "type": "boolean",
-                    "description": "Whether or not a service account should be created",
+                    "description": "Whether a service account should be created",
                     "default": "true"
                 },
                 "name": {
@@ -1067,6 +1153,11 @@
             "items": {
                 "type": "string"
             }
+        },
+        "priorityClassName": {
+            "type": "string",
+            "description": "The name of an existing PriorityClass",
+            "default": ""
         }
     }
 }

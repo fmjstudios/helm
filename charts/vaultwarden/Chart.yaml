@@ -10,7 +10,7 @@ annotations:
   artifacthub.io/prerelease: "false"
   artifacthub.io/images: |
     - name: vaultwarden
-      image: docker.io/vaultwarden/server:1.30.1-alpine
+      image: docker.io/vaultwarden/server:1.30.5-alpine
   artifacthub.io/links: |
     - name: Source
       url: https://github.com/fmjstudios/helm
@@ -21,7 +21,7 @@ annotations:
   org.opencontainers.image.vendor: "FMJ Studios"
   org.opencontainers.image.licenses: "MIT"
 apiVersion: v2
-appVersion: 1.30.1
+appVersion: 1.30.5
 kubeVersion: ">=1.26"
 name: vaultwarden
 version: 0.0.1
