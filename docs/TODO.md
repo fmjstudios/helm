@@ -1,4 +1,4 @@
-# ✅ delta4x4 Operations - TODO's
+# ✅ FMJ Studios Helm Charts - TODO's
 
 ## ➕ Additions
 
@@ -11,17 +11,18 @@
 - [ ] [Shlink](https://shlink.io/) chart
 - [ ] [AnonAddy](https://addy.io/) chart
 - [ ] [OpenGist](https://github.com/thomiceli/opengist) chart
-- [ ] [Drift](https://github.com/MaxLeiter/Drift) chart
+- ~~[X] [Drift](https://github.com/MaxLeiter/Drift)
+  chart~~ -> [abandoned](https://github.com/MaxLeiter/Drift/commits/refactor/)
 - [ ] [FreshRSS](https://freshrss.org/index.html) chart
 - [ ] [Outline](https://www.getoutline.com/) chart
-- [ ] [Weblate](https://weblate.org/en/) chart
-- [ ] [Pterodactyl](https://pterodactyl.io/) chart
+- ~~[X] [Weblate](https://weblate.org/en/) chart~~ -> [official chart][weblate_artifacthub] available
+- ~~[X] [Pterodactyl](https://pterodactyl.io/) chart~~ -> cannot be hosted on Kubernetes
 - [ ] [Metabase](https://metabase.com) chart
 - [ ] [DBGate](https://github.com/dbgate/dbgate) chart
 - [ ] [Statping-ng](https://github.com/statping-ng/statping-ng/wiki) chart
 
 > [!NOTE]
-> Most important are `ntfy.sh`, `GoBackup`, `Shopware 6`, `Weblate` and `Pterodactyl`
+> Most important are `GoBackup`, `Shopware 6` and `Pterodactyl`
 
 ## 🔁 Changes (across all charts)
 
@@ -53,3 +54,5 @@ _None_
 [//]: # (GitHub Links)
 
 [vikunja_artifacthub]: https://artifacthub.io/packages/helm/vikunja/vikunja
+
+[weblate_artifacthub]: https://artifacthub.io/packages/helm/weblate/weblate
