@@ -2,8 +2,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   labels:
-    delta4x4.io/component: cert-manager
-    delta4x4.io/env: dev
+    fmj.studio/component: cert-manager
+    fmj.studio/env: dev
   name: development-issuer
   namespace: cert-manager
 spec:
