@@ -69,11 +69,11 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.hosting.forceScriptName`                | To host paperless under a subpath url like example.com/paperless you set this value to /paperless. No trailing slash!                                                                                         | `""`             |
 | `paperless.hosting.staticURL`                      | Unless you're hosting Paperless off a subdomain like /paperless/, you probably don't need to change this                                                                                                      | `""`             |
 | `paperless.hosting.cookiePrefix`                   | Specify a prefix that is added to the cookies used by paperless to identify the currently logged in user                                                                                                      | `""`             |
-| `paperless.hosting.enableHTTPRemoteUser`           | Allows authentication via HTTP_REMOTE_USER which is used by some SSO applications                                                                                                                             | `""`             |
+| `paperless.hosting.enableHTTPRemoteUser`           | Allows authentication via HTTP_REMOTE_USER which is used by some SSO applications                                                                                                                             | `false`          |
 | `paperless.hosting.HTTPRemoteUserHeaderName`       | If "PAPERLESS_ENABLE_HTTP_REMOTE_USER" or PAPERLESS_ENABLE_HTTP_REMOTE_USER_API are enabled, this property allows to customize the name of the HTTP header from which the authenticated username is extracted | `""`             |
 | `paperless.hosting.logoutRedirectURL`              | URL to redirect the user to after a logout                                                                                                                                                                    | `""`             |
-| `paperless.hosting.useXForwardHost`                | Configures the Django setting USE_X_FORWARDED_HOST which may be needed for hosting behind a proxy                                                                                                             | `""`             |
-| `paperless.hosting.useXForwardPort`                | Configures the Django setting USE_X_FORWARDED_PORT which may be needed for hosting behind a proxy                                                                                                             | `""`             |
+| `paperless.hosting.useXForwardHost`                | Configures the Django setting USE_X_FORWARDED_HOST which may be needed for hosting behind a proxy                                                                                                             | `false`          |
+| `paperless.hosting.useXForwardPort`                | Configures the Django setting USE_X_FORWARDED_PORT which may be needed for hosting behind a proxy                                                                                                             | `false`          |
 | `paperless.hosting.proxySSLHeader`                 | Configures the Django setting SECURE_PROXY_SSL_HEADER which may be needed for hosting behind a proxy                                                                                                          | `""`             |
 | `paperless.cron.emailTask`                         | Configures the scheduled email fetching frequency. The value should be a valid crontab(5) expression describing when to run.                                                                                  | `"*/10 * * * *"` |
 | `paperless.cron.trainTask`                         | Configures the scheduled automatic classifier training frequency. May also be "disabled".                                                                                                                     | `"5 */1 * * *"`  |
@@ -167,108 +167,147 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.binaries.convert`                       | The binary name for `convert`                                                                                                                                                                                 | `convert`        |
 | `paperless.binaries.gs`                            | The binary name for `gs`                                                                                                                                                                                      | `convert`        |
 
-### Paperless-NGX ConfigMap parameters
+### ConfigMap parameters
 
-| Name                   | Description                                              | Value |
-| ---------------------- | -------------------------------------------------------- | ----- |
-| `configMapAnnotations` | Define extra annotations for the Paperless-NGX ConfigMap | `{}`  |
-| `configMapLabels`      | Define extra labels for the Paperless-NGX ConfigMap      | `{}`  |
+| Name                    | Description                             | Value |
+| ----------------------- | --------------------------------------- | ----- |
+| `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
+| `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
-### Paperless-NGX Secret parameters
+### Common Secret parameters
 
-| Name                | Description                                                | Value |
-| ------------------- | ---------------------------------------------------------- | ----- |
-| `secretAnnotations` | Define extra annoations for the created Kubernetes secrets | `{}`  |
-| `secretLabels`      | Define extra Labels for the created Kubernetes secrets     | `{}`  |
+| Name                 | Description                                                        | Value |
+| -------------------- | ------------------------------------------------------------------ | ----- |
+| `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
+| `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
-| Name                  | Description                                             | Value   |
-| --------------------- | ------------------------------------------------------- | ------- |
-| `ingress.enabled`     | Enable or disable the creation of Ingress resources     | `false` |
-| `ingress.className`   | Specify an Ingress class for the resource               | `""`    |
-| `ingress.annotations` | Define extra annotations for the Ingress resource       | `{}`    |
-| `ingress.extraHosts`  | Define extra hostnames & paths for the Ingress resource | `[]`    |
-| `ingress.tls`         | Define TLS settings for the Ingress resource            | `[]`    |
+| Name                  | Description                                                              | Value   |
+| --------------------- | ------------------------------------------------------------------------ | ------- |
+| `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
+| `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
+| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
+| `ingress.annotations` | Annotations for the Ingress resource                                     | `{}`    |
+| `ingress.tls`         | A list of hostnames and secret names to use for TLS                      | `[]`    |
+| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with vaultwarden.domain) | `[]`    |
 
 ### Service parameters
 
-| Name                  | Description                                       | Value |
-| --------------------- | ------------------------------------------------- | ----- |
-| `service.type`        | The type of service resource to create            | `""`  |
-| `service.port`        | The port number to assign to the service          | `80`  |
-| `service.annotations` | Define extra annotations for the Service resource | `{}`  |
-| `service.labels`      | Define extra labels for the Service resource      | `{}`  |
+| Name                               | Description                                                                             | Value       |
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+| `service.type`                     | The type of service to create                                                           | `ClusterIP` |
+| `service.port`                     | The port to use on the service                                                          | `80`        |
+| `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
+| `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
+| `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
+| `service.labels`                   | Labels for the service resource                                                         | `{}`        |
+| `service.externalTrafficPolicy`    | The external traffic policy for the service                                             | `Cluster`   |
+| `service.internalTrafficPolicy`    | The internal traffic policy for the service                                             | `Cluster`   |
+| `service.clusterIP`                | Define a static cluster IP for the service                                              | `""`        |
+| `service.loadBalancerIP`           | Set the Load Balancer IP                                                                | `""`        |
+| `service.loadBalancerClass`        | Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific) | `""`        |
+| `service.loadBalancerSourceRanges` | Service Load Balancer source ranges                                                     | `[]`        |
+| `service.externalIPs`              | Service External IPs                                                                    | `[]`        |
+| `service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP"                    | `None`      |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                             | `{}`        |
+| `service.ipFamilyPolicy`           | The ipFamilyPolicy                                                                      | `{}`        |
 
 ### RBAC parameters
 
-| Name          | Description                                         | Value   |
-| ------------- | --------------------------------------------------- | ------- |
-| `rbac.create` | Enable or disable the creation of RBAC resources    | `false` |
-| `rbac.rules`  | Define extra rules to be added to the Role resource | `[]`    |
+| Name          | Description                      | Value  |
+| ------------- | -------------------------------- | ------ |
+| `rbac.create` | Whether to create RBAC resources | `true` |
+| `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
-### Paperless-NGX Service Account parameters
+### Service Account parameters
 
-| Name                         | Description                                                                 | Value  |
-| ---------------------------- | --------------------------------------------------------------------------- | ------ |
-| `serviceAccount.create`      | Whether or not a service account should be created                          | `true` |
-| `serviceAccount.automount`   | Whether or not to automatically mount API credentials                       | `true` |
-| `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`   |
-| `serviceAccount.name`        | A custom name for the service account, otherwise paperless.fullname is used | `""`   |
-| `serviceAccount.secrets`     | A list of secrets mountable by this service account                         | `[]`   |
+| Name                         | Description                                                                   | Value   |
+| ---------------------------- | ----------------------------------------------------------------------------- | ------- |
+| `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`    |
 
-### Paperless-NGX Probes
+### Liveness Probe parameters
+
+| Name                                | Description                                                 | Value   |
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
+| `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
+| `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
+| `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
+| `livenessProbe.periodSeconds`       | Configure the seconds for each period of the liveness probe | `10`    |
+| `livenessProbe.successThreshold`    | Configure the success threshold for the liveness probe      | `1`     |
+| `livenessProbe.failureThreshold`    | Configure the failure threshold for the liveness probe      | `10`    |
+
+### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
 | ------------------------------------ | ------------------------------------------------------------ | ------- |
-| `livenessProbe.enabled`              | Enable or disable the use of liveness probes                 | `false` |
-| `livenessProbe.initialDelaySeconds`  | Configure the initial delay seconds for the liveness probe   | `5`     |
-| `livenessProbe.timeoutSeconds`       | Configure the initial delay seconds for the liveness probe   | `1`     |
-| `livenessProbe.periodSeconds`        | Configure the seconds for each period of the liveness probe  | `10`    |
-| `livenessProbe.successThreshold`     | Configure the success threshold for the liveness probe       | `1`     |
-| `livenessProbe.failureThreshold`     | Configure the failure threshold for the liveness probe       | `10`    |
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
 | `readinessProbe.periodSeconds`       | Configure the seconds for each period of the readiness probe | `10`    |
 | `readinessProbe.successThreshold`    | Configure the success threshold for the readiness probe      | `1`     |
 | `readinessProbe.failureThreshold`    | Configure the failure threshold for the readiness probe      | `3`     |
-| `startupProbe.enabled`               | Enable or disable the use of readiness probes                | `false` |
-| `startupProbe.initialDelaySeconds`   | Configure the initial delay seconds for the startup probe    | `5`     |
-| `startupProbe.timeoutSeconds`        | Configure the initial delay seconds for the startup probe    | `1`     |
-| `startupProbe.periodSeconds`         | Configure the seconds for each period of the startup probe   | `10`    |
-| `startupProbe.successThreshold`      | Configure the success threshold for the startup probe        | `1`     |
-| `startupProbe.failureThreshold`      | Configure the failure threshold for the startup probe        | `10`    |
 
-### Pod Disruption Budget parameters
+### Startup Probe parameters
+
+| Name                               | Description                                                | Value   |
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
+| `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
+| `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
+| `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
+| `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`    |
+| `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
+| `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
+
+### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
 | ---------------------------------- | ---------------------------------------------------- | ------ |
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
+### Pod settings
+
+| Name                | Description                                           | Value |
+| ------------------- | ----------------------------------------------------- | ----- |
+| `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
+| `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
+| `tolerations`       | Tolerations for pod assignment                        | `[]`  |
+| `affinity`          | Affinity for pod assignment                           | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Vaultwarden pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Vaultwarden pod             | `{}`  |
+| `podLabels`         | Extra labels for the Vaultwarden pod                  | `{}`  |
+| `priorityClassName` | The name of an existing PriorityClass                 | `""`  |
+
+### Security context settings
+
+| Name                 | Description                                       | Value |
+| -------------------- | ------------------------------------------------- | ----- |
+| `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
+| `securityContext`    | General security context settings for             | `{}`  |
+
 ### Bitnami&reg; PostgreSQL parameters
 
-| Name                                 | Description                                                                                            | Value       |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------ | ----------- |
-| `postgresql.enabled`                 | Enable or disable the PostgreSQL subchart                                                              | `true`      |
-| `postgresql.auth.enablePostgresUser` | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`      |
-| `postgresql.auth.postgresPassword`   | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres`  |
-| `postgresql.auth.username`           | Name for a custom user to create                                                                       | `paperless` |
-| `postgresql.auth.password`           | Password for the custom user to create. Ignored if `auth.existingSecret` is provided                   | `paperless` |
-| `postgresql.auth.database`           | Name for a custom database to create                                                                   | `paperless` |
-| `postgresql.auth.usePasswordFiles`   | Mount credentials as a files instead of using an environment variable                                  | `false`     |
-
-### PostgreSQL Primary parameters
-
-| Name                                           | Description                                                    | Value               |
-| ---------------------------------------------- | -------------------------------------------------------------- | ------------------- |
-| `postgresql.primary.name`                      | Name of the primary database (eg primary, master, leader, ...) | `primary`           |
-| `postgresql.primary.persistence.enabled`       | Enable PostgreSQL Primary data persistence using PVC           | `true`              |
-| `postgresql.primary.persistence.existingClaim` | Name of an existing PVC to use                                 | `""`                |
-| `postgresql.primary.persistence.storageClass`  | PVC Storage Class for PostgreSQL Primary data volume           | `""`                |
-| `postgresql.primary.persistence.accessModes`   | PVC Access Mode for PostgreSQL volume                          | `["ReadWriteOnce"]` |
-| `postgresql.primary.persistence.size`          | PVC Storage Request for PostgreSQL volume                      | `5Gi`               |
+| Name                                           | Description                                                                                            | Value               |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
+| `postgresql.enabled`                           | Enable or disable the PostgreSQL subchart                                                              | `true`              |
+| `postgresql.auth.enablePostgresUser`           | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`              |
+| `postgresql.auth.postgresPassword`             | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres`          |
+| `postgresql.auth.username`                     | Name for a custom user to create                                                                       | `paperless`         |
+| `postgresql.auth.password`                     | Password for the custom user to create. Ignored if `auth.existingSecret` is provided                   | `paperless`         |
+| `postgresql.auth.database`                     | Name for a custom database to create                                                                   | `paperless`         |
+| `postgresql.auth.usePasswordFiles`             | Mount credentials as a files instead of using an environment variable                                  | `false`             |
+| `postgresql.primary.name`                      | Name of the primary database (eg primary, master, leader, ...)                                         | `primary`           |
+| `postgresql.primary.persistence.enabled`       | Enable PostgreSQL Primary data persistence using PVC                                                   | `true`              |
+| `postgresql.primary.persistence.existingClaim` | Name of an existing PVC to use                                                                         | `""`                |
+| `postgresql.primary.persistence.storageClass`  | PVC Storage Class for PostgreSQL Primary data volume                                                   | `""`                |
+| `postgresql.primary.persistence.accessModes`   | PVC Access Mode for PostgreSQL volume                                                                  | `["ReadWriteOnce"]` |
+| `postgresql.primary.persistence.size`          | PVC Storage Request for PostgreSQL volume                                                              | `5Gi`               |
 
 ### Bitnami&reg; Redis parameters
 

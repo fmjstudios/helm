@@ -5,16 +5,14 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: paperless-ngx
-  {{- include "paperless.labels" . | nindent 4 }}
-  {{- if .Values.configMapLabels }}
-    {{- toYaml .Values.configMapLabels | nindent 4 }}
-  {{- end }}
-  {{- if .Values.configMapAnnotations }}
+    {{- include "paperless.labels" . | nindent 4 }}
+    {{- toYaml .Values.configMap.labels | nindent 4 }}
+  {{- if .Values.configMap.annotations }}
   annotations:
-    {{- toYaml .Values.configMapAnnotations | nindent 4 }}
+  {{- toYaml .Values.configMap.annotations | nindent 4 }}
   {{- end }}
 data:
-  {{- /* 
+  {{- /*
     General configuration
   */}}
   PAPERLESS_PORT: {{ .Values.paperless.port | quote }}
@@ -50,7 +48,7 @@ data:
   {{- if .Values.paperless.enableFlower }}
   PAPERLESS_ENABLE_FLOWER: {{ .Values.paperless.enableFlower | quote }}
   {{- end }}
-  {{- /* 
+  {{- /*
     Hosting configuration
   */}}
   {{- if .Values.paperless.hosting.trustedOrigins }}
@@ -92,7 +90,7 @@ data:
   {{- if .Values.paperless.hosting.proxySSLHeader }}
   PAPERLESS_PROXY_SSL_HEADER: {{ .Values.paperless.hosting.proxySSLHeader | quote }}
   {{- end }}
-  {{- /* 
+  {{- /*
     Cron configuration
   */}}
   {{- if .Values.paperless.cron.emailTask }}
@@ -107,7 +105,7 @@ data:
   {{- if .Values.paperless.cron.sanityTask }}
   PAPERLESS_SANITY_TASK_CRON: {{ .Values.paperless.cron.sanityTask | quote }}
   {{- end }}
-  {{- /* 
+  {{- /*
     Authentication configuration
   */}}
   {{- if .Values.paperless.auth.autoLoginUsername }}
@@ -255,7 +253,7 @@ data:
   {{- if .Values.paperless.ocr.userArgs }}
   PAPERLESS_OCR_USER_ARGS: {{ .Values.paperless.ocr.userArgs | quote }}
   {{- end }}
-  {{- /* 
+  {{- /*
     Conversion configuration
   */}}
   {{- if .Values.paperless.conversion.memoryLimit }}
@@ -264,7 +262,7 @@ data:
   {{- if .Values.paperless.conversion.tmpDir }}
   PAPERLESS_CONVERT_TMPDIR: {{ .Values.paperless.conversion.tmpDir | quote }}
   {{- end }}
-  {{- /* 
+  {{- /*
     Document consumption configuration
   */}}
   {{- if .Values.paperless.consume.deleteDuplicates }}
@@ -348,7 +346,7 @@ data:
   {{- if .Values.paperless.consume.collate.doubleSidedTiffSupport }}
   PAPERLESS_CONSUMER_COLLATE_DOUBLE_SIDED_TIFF_SUPPORT: {{ .Values.paperless.collate.doubleSidedTiffSupport | quote }}
   {{- end }}
-  {{- /* 
+  {{- /*
     Binaries configuration
   */}}
   {{- if .Values.paperless.binaries.convert }}
