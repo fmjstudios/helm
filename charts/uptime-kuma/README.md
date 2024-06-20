@@ -63,24 +63,51 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 | `uptimeKuma.node.tlsRejectUnauthorized`           | Ignore all TLS verification errors                                                                  | `""`          |
 | `uptimeKuma.node.options`                         | Specify extra CLI options to pass to Node.js                                                        | `[]`          |
 
+### ConfigMap parameters
+
+| Name                    | Description                             | Value |
+| ----------------------- | --------------------------------------- | ----- |
+| `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
+| `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
+
+### Common Secret parameters
+
+| Name                 | Description                                                        | Value |
+| -------------------- | ------------------------------------------------------------------ | ----- |
+| `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
+| `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
+
 ### Ingress parameters
 
-| Name                  | Description                                         | Value   |
-| --------------------- | --------------------------------------------------- | ------- |
-| `ingress.enabled`     | Whether to enable Ingress                           | `false` |
-| `ingress.className`   | The IngressClass to use for the pod's ingress       | `""`    |
-| `ingress.annotations` | Annotations for the Ingress resource                | `{}`    |
-| `ingress.hosts`       | A list of hosts for the Ingress resource            | `[]`    |
-| `ingress.tls`         | A list of hostnames and secret names to use for TLS | `[]`    |
+| Name                  | Description                                                              | Value   |
+| --------------------- | ------------------------------------------------------------------------ | ------- |
+| `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
+| `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
+| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
+| `ingress.annotations` | Annotations for the Ingress resource                                     | `{}`    |
+| `ingress.tls`         | A list of hostnames and secret names to use for TLS                      | `[]`    |
+| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with vaultwarden.domain) | `[]`    |
 
 ### Service parameters
 
-| Name                  | Description                                      | Value       |
-| --------------------- | ------------------------------------------------ | ----------- |
-| `service.type`        | The type of service to create for the deployment | `ClusterIP` |
-| `service.port`        | The port to use on the service                   | `80`        |
-| `service.annotations` | Annotations for the service resource             | `{}`        |
-| `service.labels`      | Labels for the service resource                  | `{}`        |
+| Name                               | Description                                                                             | Value       |
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+| `service.type`                     | The type of service to create                                                           | `ClusterIP` |
+| `service.port`                     | The port to use on the service                                                          | `80`        |
+| `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
+| `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
+| `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
+| `service.labels`                   | Labels for the service resource                                                         | `{}`        |
+| `service.externalTrafficPolicy`    | The external traffic policy for the service                                             | `Cluster`   |
+| `service.internalTrafficPolicy`    | The internal traffic policy for the service                                             | `Cluster`   |
+| `service.clusterIP`                | Define a static cluster IP for the service                                              | `""`        |
+| `service.loadBalancerIP`           | Set the Load Balancer IP                                                                | `""`        |
+| `service.loadBalancerClass`        | Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific) | `""`        |
+| `service.loadBalancerSourceRanges` | Service Load Balancer source ranges                                                     | `[]`        |
+| `service.externalIPs`              | Service External IPs                                                                    | `[]`        |
+| `service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP"                    | `None`      |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                             | `{}`        |
+| `service.ipFamilyPolicy`           | The ipFamilyPolicy                                                                      | `{}`        |
 
 ### RBAC parameters
 
@@ -89,16 +116,17 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 | `rbac.create` | Whether or not to create RBAC resources | `false` |
 | `rbac.rules`  | Extra rules to add to the Role          | `[]`    |
 
-### Uptime-Kuma Service Account parameters
+### Service Account parameters
 
-| Name                         | Description                                                                  | Value  |
-| ---------------------------- | ---------------------------------------------------------------------------- | ------ |
-| `serviceAccount.create`      | Whether or not a service account should be created                           | `true` |
-| `serviceAccount.annotations` | Annotations to add to the service account                                    | `{}`   |
-| `serviceAccount.name`        | A custom name for the service account, otherwise uptimeKuma.fullname is used | `""`   |
-| `serviceAccount.secrets`     | A list of secrets mountable by this service account                          | `""`   |
+| Name                         | Description                                                                   | Value   |
+| ---------------------------- | ----------------------------------------------------------------------------- | ------- |
+| `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`    |
 
-### Uptime-Kuma Liveness Probes
+### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
 | ----------------------------------- | ----------------------------------------------------------- | ------- |
@@ -109,7 +137,7 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 | `livenessProbe.successThreshold`    | Configure the success threshold for the liveness probe      | `1`     |
 | `livenessProbe.failureThreshold`    | Configure the failure threshold for the liveness probe      | `10`    |
 
-### Uptime-Kuma Readiness Probes
+### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
 | ------------------------------------ | ------------------------------------------------------------ | ------- |
@@ -120,18 +148,18 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 | `readinessProbe.successThreshold`    | Configure the success threshold for the readiness probe      | `1`     |
 | `readinessProbe.failureThreshold`    | Configure the failure threshold for the readiness probe      | `3`     |
 
-### Uptime-Kuma Startup Probes
+### Startup Probe parameters
 
-| Name                               | Description                                                | Value  |
-| ---------------------------------- | ---------------------------------------------------------- | ------ |
-| `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `true` |
-| `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`    |
-| `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`    |
-| `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`   |
-| `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`    |
-| `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`   |
+| Name                               | Description                                                | Value   |
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
+| `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
+| `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
+| `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
+| `startupProbe.periodSeconds`       | Configure the seconds for each period of the startup probe | `10`    |
+| `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
+| `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
 
-### Pod disruption budget parameters
+### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
 | ---------------------------------- | ---------------------------------------------------- | ------ |
@@ -140,20 +168,21 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 
 ### Pod settings
 
-| Name                 | Description                                           | Value |
-| -------------------- | ----------------------------------------------------- | ----- |
-| `resources`          | The resource limits/requests for the Uptime-Kuma pod  | `{}`  |
-| `initContainers`     | Define initContainers for the Uptime-Kuma pod         | `[]`  |
-| `nodeSelector`       | Node labels for pod assignment                        | `{}`  |
-| `tolerations`        | Tolerations for pod assignment                        | `[]`  |
-| `affinity`           | Affinity for pod assignment                           | `{}`  |
-| `strategy`           | Specify a deployment strategy for the Uptime-Kuma pod | `{}`  |
-| `podAnnotations`     | Extra annotations for the Uptime-Kuma pod             | `{}`  |
-| `podLabels`          | Extra labels for the Uptime-Kuma pod                  | `{}`  |
-| `podSecurityContext` | Security context settings for the Uptime-Kuma pod     | `{}`  |
+| Name                | Description                                           | Value |
+| ------------------- | ----------------------------------------------------- | ----- |
+| `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
+| `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
+| `tolerations`       | Tolerations for pod assignment                        | `[]`  |
+| `affinity`          | Affinity for pod assignment                           | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Vaultwarden pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Vaultwarden pod             | `{}`  |
+| `podLabels`         | Extra labels for the Vaultwarden pod                  | `{}`  |
+| `priorityClassName` | The name of an existing PriorityClass                 | `""`  |
 
 ### Security context settings
 
-| Name              | Description                           | Value |
-| ----------------- | ------------------------------------- | ----- |
-| `securityContext` | General security context settings for | `{}`  |
+| Name                 | Description                                       | Value |
+| -------------------- | ------------------------------------------------- | ----- |
+| `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
+| `securityContext`    | General security context settings for             | `{}`  |

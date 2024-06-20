@@ -19,7 +19,7 @@
 image:
   registry: docker.io
   repository: louislam/uptime-kuma
-  tag: 1.23.11
+  tag: 1.23.13
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: []
+  pullSecrets: [ ]
 
 ## @section Uptime-Kuma Name overrides
 ##
@@ -148,49 +148,141 @@ uptimeKuma:
     tlsRejectUnauthorized: "0"
     ## @param uptimeKuma.node.options [array] Specify extra CLI options to pass to Node.js
     ##
-    options: []
+    options: [ ]
+
+## @section ConfigMap parameters
+##
+
+## Uptime-Kuma ConfigMap settings
+## @param configMap.annotations Annotations for the ConfigMap resource
+## @param configMap.labels Extra Labels for the ConfigMap resource
+
+configMap:
+  annotations: { }
+  labels: { }
+
+## @section Common Secret parameters
+##
+
+## Uptime-Kuma Common Secret settings
+## @param secret.annotations Common annotations for the SMTP, HIBP, Admin and Database secrets
+## @param secret.labels Common extra labels for the SMTP, HIBP, Admin and Database secrets
+
+secret:
+  annotations: { }
+  labels: { }
+
 
 ## @section Ingress parameters
 ##
 
 ## Uptime-Kuma Ingress settings
-## @param ingress.enabled [default: false] Whether to enable Ingress
-## @param ingress.className [string] The IngressClass to use for the pod's ingress
-## @param ingress.annotations [object] Annotations for the Ingress resource
-## @param ingress.hosts [array] A list of hosts for the Ingress resource
-## @param ingress.tls [array] A list of hostnames and secret names to use for TLS
+## @param ingress.enabled Whether to enable Ingress
+## @param ingress.className The IngressClass to use for the pod's ingress
+## @param ingress.whitelist A comma-separated list of IP addresses to whitelist
+## @param ingress.annotations Annotations for the Ingress resource
+## @param ingress.tls A list of hostnames and secret names to use for TLS
+## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with vaultwarden.domain)
 
 ingress:
   enabled: false
   className: ""
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-  hosts:
-    []
-    # - host: domain.tld
-    #   paths:
-    #     - path: /
-    #       pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: uptime-kuma-ingress-tls
+  whitelist: ""
+  annotations: { }
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  tls: [ ]
+  #  - secretName: chart-example-tls
   #    hosts:
-  #      - domain.tld
+  #      - chart-example.local
+  extraHosts:
+    [ ]
+  # - host: domain.tld
+  #   paths:
+  #     - path: /
+  #       pathType: ImplementationSpecific
 
 ## @section Service parameters
 ##
 
-## Uptime-Kuma Service settings
-## @param service.type [default: ClusterIP] The type of service to create for the deployment
-## @param service.port [default: 80] The port to use on the service
-## @param service.annotations [object] Annotations for the service resource
-## @param service.labels [object] Labels for the service resource
-
+## Vaultwarden Service settings
 service:
+  ## @param service.type [default: ClusterIP] The type of service to create
+  ##
   type: ClusterIP
+  ## @param service.port [default: 80] The port to use on the service
+  ##
   port: 80
-  annotations: {}
-  labels: {}
+  ## @param service.nodePort [default: 30080] The Node port to use on the service
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ## NOTE: choose port between <30000-32767>
+  ##
+  nodePort: 30080
+  ## @param service.extraPorts Extra ports to add to the service
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
+  ## e.g.
+  ## extraPorts:
+  ##   - name: https
+  ##     protocol: TCP
+  ##     port: 443
+  ##     targetPort: 9377
+  ##
+  extraPorts: [ ]
+  ## @param service.annotations [object] Annotations for the service resource
+  ##
+  annotations: { }
+  ## @param service.labels [object] Labels for the service resource
+  ##
+  labels: { }
+  ## @param service.externalTrafficPolicy [default: Cluster] The external traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+  ## @param service.internalTrafficPolicy [default: Cluster] The internal traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  internalTrafficPolicy: Cluster
+  ## @param service.clusterIP [string] Define a static cluster IP for the service
+  ##
+  clusterIP: ""
+  ## @param service.loadBalancerIP Set the Load Balancer IP
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ##
+  loadBalancerIP: ""
+  ## @param service.loadBalancerClass Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+  ##
+  loadBalancerClass: ""
+  ## @param service.loadBalancerSourceRanges Service Load Balancer source ranges
+  ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ## e.g.
+  ## loadBalancerSourceRanges:
+  ##   - 10.10.10.0/24
+  ##
+  loadBalancerSourceRanges: [ ]
+  ## @param service.externalIPs Service External IPs
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  ## e.g.
+  ## externalIPs:
+  ##   - 10.10.10.1
+  ##   - 201.22.30.1
+  ##
+  externalIPs: [ ]
+  ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+  ## If "ClientIP", consecutive client requests will be directed to the same Pod
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+  ##
+  sessionAffinity: None
+  ## @param service.sessionAffinityConfig Additional settings for the sessionAffinity
+  ## sessionAffinityConfig:
+  ##   clientIP:
+  ##     timeoutSeconds: 300
+  ##
+  sessionAffinityConfig: { }
+  ## @param service.ipFamilyPolicy [object] The ipFamilyPolicy
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
+  ##
+  ipFamilyPolicy: ""
 
 ## @section RBAC parameters
 ##
@@ -201,34 +293,30 @@ service:
 ##
 rbac:
   create: true
-  rules: []
+  rules: [ ]
 
-## @section Uptime-Kuma Service Account parameters
+## @section Service Account parameters
 ##
 
 ## FMJ Studios Uptime-Kuma Service Account settings
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-## @param serviceAccount.create [default: true] Whether or not a service account should be created
+## @param serviceAccount.create [default: true] Whether a service account should be created
+## @param serviceAccount.automount [default: false] Whether to automount the service account token
 ## @param serviceAccount.annotations [object] Annotations to add to the service account
-## @param serviceAccount.name [string] A custom name for the service account, otherwise uptimeKuma.fullname is used
-## @param serviceAccount.secrets [string] A list of secrets mountable by this service account
+## @param serviceAccount.name [string] A custom name for the service account, otherwise vaultwarden.fullname is used
+## @param serviceAccount.secrets [array] A list of secrets mountable by this service account
 ##
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  automount: false
+  annotations: { }
   name: ""
-  # The list of secrets mountable by this service account.
-  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
-  secrets: []
+  secrets: [ ]
 
-## @section Uptime-Kuma Liveness Probes
+## @section Liveness Probe parameters
 ##
 
-## Uptime-Kuma Liveness Probe
+## Vaultwarden Liveness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 livenessProbe:
@@ -251,10 +339,10 @@ livenessProbe:
   ##
   failureThreshold: 10
 
-## @section Uptime-Kuma Readiness Probes
+## @section Readiness Probe parameters
 ##
 
-## Uptime-Kuma Readiness Probe
+## Vaultwarden Readiness Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 readinessProbe:
@@ -277,16 +365,16 @@ readinessProbe:
   ##
   failureThreshold: 3
 
-## @section Uptime-Kuma Startup Probes
+## @section Startup Probe parameters
 ##
 
-## Uptime-Kuma Startup Probe
+## Vaultwarden Startup Probe
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 ##
 startupProbe:
   ## @param startupProbe.enabled Enable or disable the use of readiness probes
   ##
-  enabled: true
+  enabled: false
   ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
   ##
   initialDelaySeconds: 5
@@ -303,94 +391,98 @@ startupProbe:
   ##
   failureThreshold: 10
 
-## @section Pod disruption budget parameters
+## @section PodDisruptionBudget parameters
 ##
 
-## FMJ Studios Uptime-Kuma pod disruption budget settings
+## Vaultwarden pod disruption budget settings
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-##
+
 podDisruptionBudget:
-  enabled: true
+  enabled: false
   minAvailable: 1
   # maxUnavailable:
 
 ## @section Pod settings
 ##
 
-## FMJStudios Uptime-Kuma resource settings
+## Vaultwarden resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources The resource limits/requests for the Uptime-Kuma pod
+## @param resources [object] The resource limits/requests for the Vaultwarden pod
 ##
 resources:
-  {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  { }
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
-## Uptime-Kuma init Containers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers [array] Define initContainers for the Uptime-Kuma pod
-initContainers: []
+## @param initContainers [array] Define initContainers for the main Vaultwarden server
+initContainers: [ ]
 
-## @param nodeSelector Node labels for pod assignment
+## @param nodeSelector [object] Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##
-nodeSelector: {}
+nodeSelector: { }
 
-## @param tolerations Tolerations for pod assignment
+## @param tolerations [array] Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: []
+tolerations: [ ]
 
-## @param affinity Affinity for pod assignment
+## @param affinity [object] Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
-affinity: {}
+affinity: { }
 
-## @param strategy [object] Specify a deployment strategy for the Uptime-Kuma pod
+## @param strategy [object] Specify a deployment strategy for the Vaultwarden pod
 ##
 strategy:
-  {}
-  #  type: RollingUpdate
-  #  rollingUpdate:
-  #    maxUnavailable: 1
+  { }
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxUnavailable: 1
 
-## @param podAnnotations [object] Extra annotations for the Uptime-Kuma pod
+## @param podAnnotations [object] Extra annotations for the Vaultwarden pod
 ##
-podAnnotations: {}
+podAnnotations: { }
 
-## @param podLabels [object] Extra labels for the Uptime-Kuma pod
+## @param podLabels [object] Extra labels for the Vaultwarden pod
 ##
-podLabels: {}
+podLabels: { }
 
-## @param podSecurityContext [object] Security context settings for the Uptime-Kuma pod
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+## @param priorityClassName The name of an existing PriorityClass
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
 ##
-podSecurityContext:
-  {}
-  # fsGroup: 1001
-  # supplementalGroups:
-  #   - 1001
+priorityClassName: ""
 
 ## @section Security context settings
 ##
+
+## @param podSecurityContext [object] Security context settings for the Vaultwarden pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext:
+  { }
+# fsGroup: 1001
+# supplementalGroups:
+#   - 1001
 
 ## @param securityContext [object] General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
 securityContext:
-  {}
-  # allowPrivilegeEscalation: false
-  # privileged: false
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsGroup: 1001
-  # runAsUser: 1001
-  # capabilities:
-  #   drop:
-  #     - ALL
+  { }
+# allowPrivilegeEscalation: false
+# privileged: false
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsGroup: 1001
+# runAsUser: 1001
+# capabilities:
+#   drop:
+#     - ALL

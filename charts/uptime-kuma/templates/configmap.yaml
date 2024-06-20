@@ -6,12 +6,10 @@ metadata:
   labels:
     app.kubernetes.io/component: uptime-kuma
   {{- include "uptimeKuma.labels" . | nindent 4 }}
-  {{- if .Values.configMapLabels }}
-    {{- toYaml .Values.configMapLabels | nindent 4 }}
-  {{- end }}
-  {{- if .Values.configMapAnnotations }}
+  {{- toYaml .Values.configMap.labels | nindent 4 }}
+  {{- if .Values.configMap.annotations }}
   annotations:
-    {{- toYaml .Values.configMapAnnotations | nindent 4 }}
+    {{- toYaml .Values.configMap.annotations | nindent 4 }}
   {{- end }}
 data:
   DATA_DIR: {{ include "uptimeKuma.paths.data" . | quote }}
@@ -50,6 +48,6 @@ data:
   {{- /*
     Container configuration
   */}}
-  PUID: {{ .Values.securityContext.runAsUser | default "1000" | quote }}
-  PGID: {{ .Values.securityContext.runAsGroup | default "1000" | quote }}
+  PUID: {{ default "1000" .Values.securityContext.runAsUser | quote }}
+  PGID: {{ default "1000" .Values.securityContext.runAsGroup | quote }}
 ---

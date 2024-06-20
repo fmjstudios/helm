@@ -18,13 +18,12 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "uptimeKuma.labels" . | nindent 4 }}
-    {{- if .Values.ingress.extraLabels }}
-      {{- toYaml .Values.ingress.extraLabels | nindent 4 }}
-    {{- end }}
-  {{- with .Values.ingress.annotations }}
+    {{- if (eq .Values.ingress.className "nginx") }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    {{- end }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
@@ -40,7 +39,22 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
+    - host: {{ .Values.uptimeKuma.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ include "uptimeKuma.fullname" $ }}
+                port:
+                  number: {{ $.Values.uptimeKuma.port }}
+              {{- else }}
+              serviceName: {{ include "uptimeKuma.fullname" $ }}
+              servicePort: {{ $.Values.uptimeKuma.port }}
+              {{- end }}
+  {{- range .Values.ingress.extraHosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -61,4 +75,4 @@ spec:
               {{- end }}
           {{- end }}
     {{- end }}
-{{- end }}
+  {{- end }}
