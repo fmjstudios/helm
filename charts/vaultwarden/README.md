@@ -36,6 +36,12 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `nameOverride`     | String to partially override vaultwarden.fullname | `""`  |
 | `fullnameOverride` | String to fully override vaultwarden.fullname     | `""`  |
 
+### Workload overrides
+
+| Name   | Description                                                                   | Value         |
+| ------ | ----------------------------------------------------------------------------- | ------------- |
+| `kind` | The kind of workload to deploy Vaultwarden as (`StatefulSet` or `Deployment`) | `StatefulSet` |
+
 ### Vaultwarden Configuration parameters
 
 | Name                                                     | Description                                                                                                       | Value                      |
@@ -88,9 +94,9 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.email.smtp.acceptInvalidCertificates`       | Accept Invalid Certificates                                                                                       | `false`                    |
 | `vaultwarden.email.smtp.requireDeviceEmail`              | Require new device emails.                                                                                        | `false`                    |
 | `vaultwarden.email.smtp.debug`                           | Enable debug mode                                                                                                 | `false`                    |
-| `vaultwarden.websocket.enabled`                          | Whether to enable the Websocket - disabled by default                                                             | `false`                    |
-| `vaultwarden.websocket.address`                          | The address to which the Websocket should bind                                                                    | `"0.0.0.0"`                |
-| `vaultwarden.websocket.port`                             | The port to which on which the Websocket should be made available                                                 | `3012`                     |
+| `vaultwarden.email.twoFactor.enforceInviteVerification`  | Setup email 2FA regardless of any organization policy                                                             | `false`                    |
+| `vaultwarden.email.twoFactor.autoFallback`               | Automatically setup email 2FA as fallback provider when needed                                                    | `false`                    |
+| `vaultwarden.websocket.enabled`                          | Whether to enable Websocket push notifications                                                                    | `true`                     |
 | `vaultwarden.database.type`                              | Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'                                      | `"sqlite"`                 |
 | `vaultwarden.database.user`                              | Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'            | `""`                       |
 | `vaultwarden.database.password`                          | Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'            | `""`                       |
@@ -111,6 +117,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.limits.logins.adminSessionLifetime`         | The lifetime of an admin session                                                                                  | `20`                       |
 | `vaultwarden.limits.attachments.orgLimit`                | Per-organization attachment storage limit (KB)                                                                    | `""`                       |
 | `vaultwarden.limits.attachments.userLimit`               | Per-user attachment storage limit (KB)                                                                            | `""`                       |
+| `vaultwarden.limits.send.userLimit`                      | Per-user send storage limit (KB)                                                                                  | `""`                       |
 | `vaultwarden.passwords.iterations`                       | Number of password hash iterations                                                                                | `350000`                   |
 | `vaultwarden.passwords.hintsAllowed`                     | Allow sending of password hints                                                                                   | `false`                    |
 | `vaultwarden.passwords.showHint`                         | Show hints directly on login page - disabled by default                                                           | `false`                    |
@@ -136,6 +143,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.pushNotifications.installationId`           | Installation ID from 'https://bitwarden.com/host'                                                                 | `""`                       |
 | `vaultwarden.pushNotifications.installationKey`          | Installation Key from 'https://bitwarden.com/host'                                                                | `""`                       |
 | `vaultwarden.pushNotifications.relayUri`                 | Set a custom relay URI for push notifications                                                                     | `""`                       |
+| `vaultwarden.pushNotifications.identityUri`              | Set a custom identity URI for push notifications                                                                  | `""`                       |
 | `vaultwarden.hibpApiKey.value`                           | The HIBP API key value                                                                                            | `""`                       |
 | `vaultwarden.hibpApiKey.existingSecret.name`             | The name of an existing Secret containing the HIBP API key                                                        | `""`                       |
 | `vaultwarden.hibpApiKey.existingSecret.key`              | The key within an existing Secret which contains the key                                                          | `""`                       |
@@ -166,6 +174,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 | `vaultwarden.rocket.port`                                | The port rocket should bind to                                                                                    | `80`                       |
 | `vaultwarden.rocket.workers`                             | The amount of rocket workers to create                                                                            | `10`                       |
 | `vaultwarden.rocket.tls`                                 | Rocket TLS configuration e.g.: "{certs="/path/to/certs.pem",key="/path/to/key.pem"}"                              | `""`                       |
+| `vaultwarden.experimental.featureFlags`                  | A list of feature flags to enable                                                                                 | `[]`                       |
 
 ### ConfigMap parameters
 
@@ -222,12 +231,13 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 
 ### Service Account parameters
 
-| Name                         | Description                                                                   | Value  |
-| ---------------------------- | ----------------------------------------------------------------------------- | ------ |
-| `serviceAccount.create`      | Whether a service account should be created                                   | `true` |
-| `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`   |
-| `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`   |
-| `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`   |
+| Name                         | Description                                                                   | Value   |
+| ---------------------------- | ----------------------------------------------------------------------------- | ------- |
+| `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`    |
 
 ### Liveness Probe parameters
 

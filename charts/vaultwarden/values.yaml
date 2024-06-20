@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: [ ]
+  pullSecrets: []
 
 ## @section Name overrides
 ##
@@ -45,6 +45,13 @@ nameOverride: ""
 ## @param fullnameOverride String to fully override vaultwarden.fullname
 ##
 fullnameOverride: ""
+
+## @section Workload overrides
+##
+
+## @param kind The kind of workload to deploy Vaultwarden as (`StatefulSet` or `Deployment`)
+##
+kind: StatefulSet
 
 ## @section Vaultwarden Configuration parameters
 ##
@@ -293,20 +300,22 @@ vaultwarden:
       ##
       debug: false
 
+    ## twoFactor settings
+    ##
+    twoFactor:
+      ## @param vaultwarden.email.twoFactor.enforceInviteVerification [default: false] Setup email 2FA regardless of any organization policy
+      ##
+      enforceInviteVerification: false
+      ## @param vaultwarden.email.twoFactor.autoFallback [default: false] Automatically setup email 2FA as fallback provider when needed
+      ##
+      autoFallback: false
+
   ## Websocket configuration for push notifications
   ##
   websocket:
-    ## @param vaultwarden.websocket.enabled [default: false] Whether to enable the Websocket - disabled by default
+    ## @param vaultwarden.websocket.enabled [default: true] Whether to enable Websocket push notifications
     ##
-    enabled: false
-
-    ## @param vaultwarden.websocket.address [default: "0.0.0.0"] The address to which the Websocket should bind
-    ##
-    address: "0.0.0.0"
-
-    ## @param vaultwarden.websocket.port [default: 3012] The port to which on which the Websocket should be made available
-    ##
-    port: 3012
+    enabled: true
 
   ## Database settings
   ##
@@ -383,7 +392,7 @@ vaultwarden:
   ## Rate Limits
   ##
   limits:
-    ## Login configuration
+    ## Login limits
     ##
     logins:
       ## @param vaultwarden.limits.logins.ratelimitSeconds [default: 60] Number of seconds between login requests
@@ -407,7 +416,7 @@ vaultwarden:
       ## Set the lifetime of admin sessions to this value (in minutes).
       ##
       adminSessionLifetime: 20
-    ## Attachments settings
+    ## Attachments limits
     ##
     attachments:
       ## @param vaultwarden.limits.attachments.orgLimit [string] Per-organization attachment storage limit (KB)
@@ -421,7 +430,16 @@ vaultwarden:
       ## When this limit is reached, the user will not be allowed to upload further attachments.
       ##
       userLimit: ""
-
+    ## Sending limits
+    ##
+    send:
+      ## @param vaultwarden.limits.send.userLimit [string] Per-user send storage limit (KB)
+      ## Max kilobytes of send storage allowed per user. When this limit is reached, the user will not be
+      ## allowed to upload further sends.
+      ##
+      userLimit: ""
+  
+  
   ## Password configuration
   ##
   passwords:
@@ -561,10 +579,13 @@ vaultwarden:
     ##
     installationKey: ""
     ## @param vaultwarden.pushNotifications.relayUri [string] Set a custom relay URI for push notifications
-    ## defaults to 'https://bitwarden.com/host'
-    ## changes to this setting most likely require the creation of a custom application image
+    ## Defaults to 'https://push.bitwarden.com'. Change to '.eu' instead to force the EU as the data region.
     ##
     relayUri: ""
+    ## @param vaultwarden.pushNotifications.identityUri [string] Set a custom identity URI for push notifications
+    ## Defaults to 'https://identity.bitwarden.com'. Change to '.eu' instead to force the EU as the data region.
+    ##
+    identityUri: ""
 
   ## HaveIBeenPwned API Integration
   ##
@@ -748,6 +769,18 @@ vaultwarden:
     ##
     tls: ""
 
+  ## Experimental Vaultwarden settings
+  ## ref:
+  experimental:
+    ## @param vaultwarden.experimental.featureFlags [array] A list of feature flags to enable
+    ##
+    ## The following flags are available:
+    ### - "autofill-overlay": Add an overlay menu to form fields for quick access to credentials.
+    ### - "autofill-v2": Use the new autofill implementation.
+    ### - "browser-fileless-import": Directly import credentials from other providers without a file.
+    ### - "fido2-vault-credentials": Enable the use of FIDO2 security keys as second factor.
+    featureFlags: []
+
 ## @section ConfigMap parameters
 ##
 
@@ -788,12 +821,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   extraHosts:
-    [ ]
+    []
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -824,7 +857,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: [ ]
+  extraPorts: []
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -856,7 +889,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: [ ]
+  loadBalancerSourceRanges: []
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -864,7 +897,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: [ ]
+  externalIPs: []
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -890,7 +923,7 @@ service:
 ##
 rbac:
   create: true
-  rules: [ ]
+  rules: []
 
 ## @section Service Account parameters
 ##
@@ -908,7 +941,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: [ ]
+  secrets: []
 
 ## @section Liveness Probe parameters
 ##
@@ -995,7 +1028,7 @@ startupProbe:
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-
+##
 podDisruptionBudget:
   enabled: false
   minAvailable: 1
@@ -1019,7 +1052,8 @@ resources:
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers [array] Define initContainers for the main Vaultwarden server
-initContainers: [ ]
+##
+initContainers: []
 
 ## @param nodeSelector [object] Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -1029,7 +1063,7 @@ nodeSelector: { }
 ## @param tolerations [array] Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: [ ]
+tolerations: []
 
 ## @param affinity [object] Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

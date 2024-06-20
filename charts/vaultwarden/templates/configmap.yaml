@@ -94,14 +94,14 @@ data:
   EMAIL_ATTEMPTS_LIMIT: {{ .Values.vaultwarden.email.attemptsLimit | quote }}
   EMAIL_EXPIRATION_TIME: {{ .Values.vaultwarden.email.tokenExpirationTime | quote }}
   EMAIL_TOKEN_SIZE: {{ .Values.vaultwarden.email.tokenSize | quote }}
+  EMAIL_2FA_ENFORCE_ON_VERIFIED_INVITE: {{ .Values.vaultwarden.email.twoFactor.enforceInviteVerification | quote }}
+  EMAIL_2FA_AUTO_FALLBACK: {{ .Values.vaultwarden.email.twoFactor.autoFallback | quote }}
   {{- end }}
   {{- /*
     Websocket configuration
   */}}
   {{- if .Values.vaultwarden.websocket.enabled }}
   WEBSOCKET_ENABLED: {{ .Values.vaultwarden.websocket.enabled | quote }}
-  WEBSOCKET_ADDRESS: {{ .Values.vaultwarden.websocket.address | quote }}
-  WEBSOCKET_PORT: {{ .Values.vaultwarden.websocket.port | quote }}
   {{- end }}
   {{- /*
     Rate limits configuration
@@ -116,6 +116,9 @@ data:
   {{- end }}
   {{- if .Values.vaultwarden.limits.attachments.userLimit }}
   USER_ATTACHMENT_LIMIT: {{ .Values.vaultwarden.limits.attachments.userLimit | quote }}
+  {{- end }}
+  {{- if .Values.vaultwarden.limits.send.userLimit }}
+  USER_SEND_LIMIT: {{ .Values.vaultwarden.limits.send.userLimit | quote }}
   {{- end }}
   {{- /*
     Password configuration
@@ -161,8 +164,9 @@ data:
   PUSH_ENABLED: {{ .Values.vaultwarden.pushNotifications.enabled | quote }}
   PUSH_INSTALLATION_ID: {{ .Values.vaultwarden.pushNotifications.installationId | quote }}
   PUSH_INSTALLATION_KEY: {{ .Values.vaultwarden.pushNotifications.installationKey | quote }}
-  {{- if .Values.vaultwarden.pushNotifications.relayUri }}
-  PUSH_RELAY_URI: {{ .Values.vaultwarden.pushNotifications.relayUri | quote }}
+  {{- if (or .Values.vaultwarden.pushNotifications.relayUri .Values.vaultwarden.pushNotifications.identityUri) }}
+  PUSH_RELAY_URI: {{ default "https://push.bitwarden.com" .Values.vaultwarden.pushNotifications.relayUri | quote }}
+  PUSH_IDENTITY_URI: {{ default "https://identity.bitwarden.com" .Values.vaultwarden.pushNotifications.relayUri | quote }}
   {{- end }}
   {{- end }}
   {{- /*
@@ -217,3 +221,7 @@ data:
   {{- if .Values.vaultwarden.rocket.tls }}
   ROCKET_TLS: {{ .Values.vaultwarden.rocket.tls | quote }}
   {{- end }}
+  {{- /*
+    Experimental Vaultwaroden configuration
+  */}}
+  EXPERIMENTAL_CLIENT_FEATURE_FLAGS: {{ join "," .Values.vaultwarden.experimental.featureFlags | quote }}

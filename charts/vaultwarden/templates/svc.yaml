@@ -48,12 +48,6 @@ spec:
       targetPort: {{ .Values.vaultwarden.rocket.port }}
       protocol: TCP
       name: http
-    {{- if .Values.vaultwarden.websocket.enabled }}
-    - port: {{ .Values.vaultwarden.websocket.port }}
-      targetPort: {{ .Values.vaultwarden.websocket.port }}
-      protocol: TCP
-      name: websocket
-    {{- end }}
     {{- if .Values.service.extraPorts }}
     {{ toYaml .Values.service.extraPorts | nindent 4 }}
     {{- end }}

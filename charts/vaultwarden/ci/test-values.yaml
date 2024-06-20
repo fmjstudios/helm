@@ -16,11 +16,6 @@ vaultwarden:
       acceptInvalidHostnames: true
       acceptInvalidCertificates: true
 
-  websocket:
-    enabled: true
-    address: "0.0.0.0"
-    port: 3012
-
   database:
     type: "sqlite"
     enableWAL: true
@@ -36,7 +31,7 @@ vaultwarden:
 
 ingress:
   enabled: true
-  className: "nginx"
+  className: nginx
   annotations:
     cert-manager.io/cluster-issuer: development-issuer
   tls:

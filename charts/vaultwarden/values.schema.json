@@ -50,6 +50,11 @@
             "description": "String to fully override vaultwarden.fullname",
             "default": ""
         },
+        "kind": {
+            "type": "string",
+            "description": "The kind of workload to deploy Vaultwarden as (`StatefulSet` or `Deployment`)",
+            "default": "StatefulSet"
+        },
         "vaultwarden": {
             "type": "object",
             "properties": {
@@ -340,6 +345,21 @@
                                     "default": "false"
                                 }
                             }
+                        },
+                        "twoFactor": {
+                            "type": "object",
+                            "properties": {
+                                "enforceInviteVerification": {
+                                    "type": "boolean",
+                                    "description": "Setup email 2FA regardless of any organization policy",
+                                    "default": "false"
+                                },
+                                "autoFallback": {
+                                    "type": "boolean",
+                                    "description": "Automatically setup email 2FA as fallback provider when needed",
+                                    "default": "false"
+                                }
+                            }
                         }
                     }
                 },
@@ -348,18 +368,8 @@
                     "properties": {
                         "enabled": {
                             "type": "boolean",
-                            "description": "Whether to enable the Websocket - disabled by default",
-                            "default": "false"
-                        },
-                        "address": {
-                            "type": "string",
-                            "description": "The address to which the Websocket should bind",
-                            "default": "\"0.0.0.0\""
-                        },
-                        "port": {
-                            "type": "number",
-                            "description": "The port to which on which the Websocket should be made available",
-                            "default": "3012"
+                            "description": "Whether to enable Websocket push notifications",
+                            "default": "true"
                         }
                     }
                 },
@@ -482,6 +492,16 @@
                                 "userLimit": {
                                     "type": "string",
                                     "description": "Per-user attachment storage limit (KB)",
+                                    "default": "\"\""
+                                }
+                            }
+                        },
+                        "send": {
+                            "type": "object",
+                            "properties": {
+                                "userLimit": {
+                                    "type": "string",
+                                    "description": "Per-user send storage limit (KB)",
                                     "default": "\"\""
                                 }
                             }
@@ -644,6 +664,11 @@
                         "relayUri": {
                             "type": "string",
                             "description": "Set a custom relay URI for push notifications",
+                            "default": "\"\""
+                        },
+                        "identityUri": {
+                            "type": "string",
+                            "description": "Set a custom identity URI for push notifications",
                             "default": "\"\""
                         }
                     }
@@ -837,6 +862,19 @@
                             "default": "\"\""
                         }
                     }
+                },
+                "experimental": {
+                    "type": "object",
+                    "properties": {
+                        "featureFlags": {
+                            "type": "array",
+                            "description": "A list of feature flags to enable",
+                            "default": "[]",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -876,33 +914,34 @@
                 "enabled": {
                     "type": "boolean",
                     "description": "Whether to enable Ingress",
-                    "default": "false"
+                    "default": false
                 },
                 "className": {
                     "type": "string",
                     "description": "The IngressClass to use for the pod's ingress",
-                    "default": "\"\""
+                    "default": ""
                 },
                 "whitelist": {
                     "type": "string",
                     "description": "A comma-separated list of IP addresses to whitelist",
-                    "default": "\"\""
+                    "default": ""
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the Ingress resource",
+                    "default": {}
                 },
                 "tls": {
                     "type": "array",
                     "description": "A list of hostnames and secret names to use for TLS",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 },
                 "extraHosts": {
                     "type": "array",
                     "description": "A list of extra hosts for the Ingress resource (with vaultwarden.domain)",
-                    "default": "[]",
-                    "items": {
-                        "type": "string"
-                    }
+                    "default": [],
+                    "items": {}
                 }
             }
         },
@@ -1002,6 +1041,11 @@
                     "type": "boolean",
                     "description": "Whether a service account should be created",
                     "default": "true"
+                },
+                "automount": {
+                    "type": "boolean",
+                    "description": "Whether to automount the service account token",
+                    "default": "false"
                 },
                 "name": {
                     "type": "string",
