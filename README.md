@@ -1,11 +1,7 @@
-# FMJ Studios - Helm Charts <img src="https://seeklogo.com/images/H/helm-logo-9208DB3EE5-seeklogo.com.png" alt="Helm Logo" align="right" height="300" width="260"/>
+# FMJ Studios - Helm Charts <img src="https://raw.githubusercontent.com/cncf/artwork/892ce913bbce895ddbd99f981917fcf93050a8ca/projects/helm/icon/color/helm-icon-color.svg" alt="Helm Logo" align="right" width="225"/>
 
 A collection of open-source [MIT][license]-licensed _Helm Charts_ written and maintained by `FMJ Studios` for use
-with [Kubernetes][kubernetes] `v1.26` and above. The charts adhere to [Helm][helm]'s best practices and prefer the use
-of raw YAML manifests instead of relying on Helm function libraries or other dependencies. This eases the development
-overhead and also allows chart users to read and learn from the chart sources. Furthermore flat dependency trees are
-something all developers can appreciate. Lastly the charts are also published to [Artifacthub][artifacthub] for
-discoverability purposes and (perhaps) for easier traversal of `values.yaml` or the packages manifests.
+with [Kubernetes][kubernetes] `v1.26` and above.
 
 ---
 
@@ -13,8 +9,6 @@ discoverability purposes and (perhaps) for easier traversal of `values.yaml` or 
 > currently released is of course possible, but highly discouraged.
 
 ## 📖 Overview
-
-[//]: # (Stolen from https://github.com/gabe565/charts/blob/main/README.md because I really liked the look)
 
 | Chart                                                                                                                                                                                                                                                                  | Current Version | Default Container Images                            |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------:|-----------------------------------------------------|
@@ -26,6 +20,16 @@ discoverability purposes and (perhaps) for easier traversal of `values.yaml` or 
 | [LinkStack <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="32px" height="32px" align="right" loading="lazy">][linkstack_chart]                                                        |      0.0.1      | [linkstackorg/linkstack][linkstack_images]          |
 | [ntfy <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/main/web/public/static/images/ntfy.png" alt="ntfy Logo" width="32px" height="32px" align="right" loading="lazy">][ntfy_chart]                                                                     |      0.0.1      | [binwiederhier/ntfy][ntfy_images]                   |
 | [Cachet <img src="https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="32px" height="32px" align="right" loading="lazy">][cachet_chart]                                                                 |      0.0.1      | [cachethq/docker][cachet_images]                    |
+
+[//]: # (Stolen from https://github.com/gabe565/charts/blob/main/README.md because I really liked the look)
+
+## ❔ Why
+
+The charts adhere to [Helm][helm]'s best practices and prefer the use of raw YAML manifests instead of relying on Helm
+function libraries or other dependencies. This eases the development overhead and also allows chart users to read and
+learn from the chart sources. On top of that flat dependency trees are something all developers can appreciate. Lastly
+the charts are also published to [Artifacthub][artifacthub] for discoverability purposes and (perhaps) for easier
+traversal of `values.yaml` or the packages manifests.
 
 ## ⚒️ Building
 
@@ -45,27 +49,27 @@ This project and it's contents are licensed under the Open Source **[MIT][licens
 
 <!-- Chart references -->
 
-[gotenberg_chart]: ./charts/gotenberg/
+[gotenberg_chart]: charts/gotenberg
 
-[linkwarden_chart]: ./charts/linkwarden/
+[linkwarden_chart]: charts/linkwarden
 
-[paperless_chart]: ./charts/paperless-ngx/
+[paperless_chart]: charts/paperless-ngx
 
-[uptimekuma_chart]: ./charts/uptime-kuma/
+[uptimekuma_chart]: charts/uptime-kuma
 
-[vaultwarden_chart]: ./charts/vaultwarden/
+[vaultwarden_chart]: charts/vaultwarden
 
-[linkstack_chart]: ./charts/linkstack
+[linkstack_chart]: charts/linkstack
 
-[ntfy_chart]: ./charts/ntfy
+[ntfy_chart]: charts/ntfy
 
-[cachet_chart]: ./charts/cachet
+[cachet_chart]: charts/cachet
 
 <!-- File references -->
 
-[license]: ./LICENSE
+[license]: LICENSE
 
-[makefile]: ./Makefile
+[makefile]: Makefile
 
 <!-- General links -->
 
@@ -91,4 +95,4 @@ This project and it's contents are licensed under the Open Source **[MIT][licens
 
 [ntfy_images]: https://hub.docker.com/r/binwiederhier/ntfy
 
-[cachet_images]: https://hub.docker.com/r/cachethq/docker/
+[cachet_images]: https://hub.docker.com/r/cachethq/docker
