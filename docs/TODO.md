@@ -24,7 +24,7 @@
 > [!NOTE]
 > Most important are `GoBackup`, `Shopware 6` and `Pterodactyl`
 
-## 🔁 Changes (across all charts)
+## ✏️ Planned Changes
 
 - [X] Allow for the creation
   of [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) -> out of scope

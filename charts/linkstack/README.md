@@ -1,12 +1,11 @@
 # FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="175" height="175" align="right" />
 
-LinkStack provides you with a website similar to [Linktree](https://linktr.ee/). Many social media platforms only allow
-you to add one link, with this you can simply link to your LinkStack page and have all the links you want displayed on
-one site. You can share all your links to your social media platform or important links to easy accessible and hosted on
-your own web-server or web-hosting provider. On this website, other users can register and create their own links, you
-can access other user via the Admin Panel.
-It delivers all of these features within a single Docker image available
-on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
+LinkStack provides you with a configurable self-hosted website similar to [Linktree](https://linktr.ee/). Many social
+media platforms only allow you to add one link, with this you can simply link to your LinkStack page and have all the
+links you want displayed on one site. You can share all your links to your social media platform or important links to
+easy accessible and hosted on your own web-server or web-hosting provider. On this website, other users can register and
+create their own links, you can access other user via the Admin Panel. It delivers all of these features within a single
+Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
 
 > Head to the [Linkstack GitHub Repository](https://github.com/LinkStackOrg/LinkStack) for in-depth view at the
 > implemenation or to the [documentation](https://docs.linkstack.org/) for guides

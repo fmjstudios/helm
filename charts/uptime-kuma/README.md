@@ -1,9 +1,18 @@
 # FMJ Studios - Uptime-Kuma Helm Chart <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="150" height="150" align="right" />
 
-Uptime-Kuma is an open-source, is an easy-to-use self-hosted monitoring tool. It supports monitoring uptime for HTTP(s) / TCP / HTTP(s) Keyword / HTTP(s) Json Query / Ping / DNS Record / Push / Steam Game Server / Docker Containers, sports a fancy reactive and fast UI and features notifications via Telegram, Discord, Gotify, Slack, Pushover, Email (SMTP), and [90+ notification services](https://github.com/louislam/uptime-kuma/tree/master/src/components/notifications).
-Additionally the application is available in [multiple languages](https://github.com/louislam/uptime-kuma/tree/master/src/lang), can map status pages to specific domains and supports proxies and 2FA. It delivers all of these features within a single Docker image available on [Docker Hub](https://hub.docker.com/r/louislam/uptime-kuma).
+Uptime-Kuma is an open-source, is an easy-to-use self-hosted monitoring tool. It supports monitoring uptime for HTTP(
+s) / TCP / HTTP(s) Keyword / HTTP(s) Json Query / Ping / DNS Record / Push / Steam Game Server / Docker Containers,
+sports a fancy reactive and fast UI and features notifications via Telegram, Discord, Gotify, Slack, Pushover, Email (
+SMTP),
+and [90+ notification services](https://github.com/louislam/uptime-kuma/tree/master/src/components/notifications).
+Additionally the application is available
+in [multiple languages](https://github.com/louislam/uptime-kuma/tree/master/src/lang), can map status pages to specific
+domains and supports proxies and 2FA. It delivers all of these features within a single Docker image available
+on [Docker Hub](https://hub.docker.com/r/louislam/uptime-kuma).
 
-> Head to the [Uptime-Kuma GitHub Repository](https://github.com/louislam/uptime-kuma/tree/master) for in-depth [documentation](https://github.com/louislam/uptime-kuma/wiki) and [configuration guides](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables).
+> Head to the [Uptime-Kuma GitHub Repository](https://github.com/louislam/uptime-kuma/tree/master) for
+> in-depth [documentation](https://github.com/louislam/uptime-kuma/wiki)
+> and [configuration guides](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables).
 
 # TL;DR
 
@@ -13,16 +22,27 @@ helm install my-release oci://ghcr.io/fmjstudios/helm/uptime-kuma:1.2.3
 
 # Introduction
 
-This chart bootstraps a Uptime-Kuma [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
+This chart bootstraps a
+Uptime-Kuma [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+or [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
+a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
+a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the
+Ingress needs to be explicitly enabled. Lastly the chart configures
+a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if
+enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
-The chart supports the configuration of all [Uptime-Kuma environment variables]([StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or) via the `uptimeKuma` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configureble via the Image Parameters.
+The chart supports the configuration of
+all [Uptime-Kuma environment variables]([StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+or) via the `uptimeKuma` key in Helm's *values* and makes use of the official Docker Hub container image, although this
+is configureble via the Image Parameters.
 
 ## Parameters
 
 ### Uptime-Kuma Image parameters
 
 | Name                | Description                                                         | Value                 |
-| ------------------- | ------------------------------------------------------------------- | --------------------- |
+|---------------------|---------------------------------------------------------------------|-----------------------|
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`           |
 | `image.repository`  | The registry repository to pull the image from                      | `louislam/uptimeKuma` |
 | `image.tag`         | The image tag to pull                                               | `'1.23.11'`           |
@@ -33,14 +53,14 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### Uptime-Kuma Name overrides
 
 | Name               | Description                                      | Value |
-| ------------------ | ------------------------------------------------ | ----- |
+|--------------------|--------------------------------------------------|-------|
 | `nameOverride`     | String to partially override uptimeKuma.fullname | `""`  |
 | `fullnameOverride` | String to fully override uptimeKuma.fullname     | `""`  |
 
 ### Uptime-Kuma Configuration parameters
 
 | Name                                              | Description                                                                                         | Value         |
-| ------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------- |
+|---------------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------|
 | `uptimeKuma.host`                                 | The host address to bind Uptime-Kuma to                                                             | `"::"`        |
 | `uptimeKuma.port`                                 | The port for Uptime-Kuma to listen on                                                               | `3001`        |
 | `uptimeKuma.disableFrameSameOrigin`               | Allow Uptime-Kuma to be embedded inside HTML 'iframes' of other origins                             | `false`       |
@@ -66,21 +86,21 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-| ----------------------- | --------------------------------------- | ----- |
+|-------------------------|-----------------------------------------|-------|
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Common Secret parameters
 
 | Name                 | Description                                                        | Value |
-| -------------------- | ------------------------------------------------------------------ | ----- |
+|----------------------|--------------------------------------------------------------------|-------|
 | `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
 | `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                              | Value   |
-| --------------------- | ------------------------------------------------------------------------ | ------- |
+|-----------------------|--------------------------------------------------------------------------|---------|
 | `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
@@ -91,7 +111,7 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -112,14 +132,14 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### RBAC parameters
 
 | Name          | Description                             | Value   |
-| ------------- | --------------------------------------- | ------- |
+|---------------|-----------------------------------------|---------|
 | `rbac.create` | Whether or not to create RBAC resources | `false` |
 | `rbac.rules`  | Extra rules to add to the Role          | `[]`    |
 
 ### Service Account parameters
 
 | Name                         | Description                                                                   | Value   |
-| ---------------------------- | ----------------------------------------------------------------------------- | ------- |
+|------------------------------|-------------------------------------------------------------------------------|---------|
 | `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
@@ -129,7 +149,7 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-| ----------------------------------- | ----------------------------------------------------------- | ------- |
+|-------------------------------------|-------------------------------------------------------------|---------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -140,7 +160,7 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-| ------------------------------------ | ------------------------------------------------------------ | ------- |
+|--------------------------------------|--------------------------------------------------------------|---------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -151,7 +171,7 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-| ---------------------------------- | ---------------------------------------------------------- | ------- |
+|------------------------------------|------------------------------------------------------------|---------|
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -162,14 +182,14 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------|--------|
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                | Description                                           | Value |
-| ------------------- | ----------------------------------------------------- | ----- |
+|---------------------|-------------------------------------------------------|-------|
 | `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
 | `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
@@ -183,6 +203,6 @@ The chart supports the configuration of all [Uptime-Kuma environment variables](
 ### Security context settings
 
 | Name                 | Description                                       | Value |
-| -------------------- | ------------------------------------------------- | ----- |
+|----------------------|---------------------------------------------------|-------|
 | `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
 | `securityContext`    | General security context settings for             | `{}`  |
