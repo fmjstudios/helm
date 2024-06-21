@@ -75,6 +75,9 @@ data:
   {{- if .Values.paperless.hosting.enableHTTPRemoteUser }}
   PAPERLESS_ENABLE_HTTP_REMOTE_USER: {{ .Values.paperless.hosting.enableHTTPRemoteUser | quote }}
   {{- end }}
+  {{- if .Values.paperless.hosting.enableHTTPRemoteUserAPI }}
+  PAPERLESS_ENABLE_HTTP_REMOTE_USER_API: {{ .Values.paperless.hosting.enableHTTPRemoteUserAPI | quote }}
+  {{- end }}
   {{- if .Values.paperless.hosting.HTTPRemoteUserHeaderName }}
   PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: {{ .Values.paperless.hosting.HTTPRemoteUserHeaderName | quote }}
   {{- end }}

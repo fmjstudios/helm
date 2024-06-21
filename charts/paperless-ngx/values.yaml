@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: []
+  pullSecrets: [ ]
 
 ## @section Paperless Name overrides
 ##
@@ -135,6 +135,33 @@ paperless:
     ## @param paperless.auth.adminMail [string]  Specify superuser email address. Only used when PAPERLESS_ADMIN_USER is set
     ##
     adminMail: ""
+    ## @param paperless.auth.allowSignups [string] Allow users to sign up for a new Paperless-ngx account
+    ##
+    allowSignups: ""
+    ## @param paperless.auth.disableRegularLogin [string] Disables the regular frontend username / password login, i.e. once you have setup SSO
+    ##
+    disableRegularLogin: false
+    ## @param paperless.auth.disableRegularLogin [string] Controls the lifetime of the session. `None`, `False` or `True`
+    ## ref: https://docs.allauth.org/en/latest/account/configuration.html
+    ##
+    sessionRemember: None
+    ## @param paperless.auth.defaultHTTPProtocol [string] The protocol used when generating URLs, e.g. login callback URLs
+    ##
+    defaultHTTPProtocol: https
+    ## @param paperless.auth.allowsSignups [string] Determines whether email addresses are verified during signup (as performed by Django allauth)
+    ##
+    emailVerification: optional
+    ## @param paperless.auth.socialAccountProviders [string] This variable is used to set up login and signup via social account providers which are compatible with django-allauth.
+    ## ref: https://docs.paperless-ngx.com/configuration/#PAPERLESS_SOCIALACCOUNT_PROVIDERS
+    ##
+    socialAccountProviders: ""
+    ## @param paperless.auth.socialAccountAllowSignups [default: false] Allow users to signup for a new Paperless-ngx account using any setup third party authentication systems
+    ##
+    socialAccountAllowSignups: false
+    ## @param paperless.auth.socialAccountProviders [default: false] Attempt to sign up the user using retrieved email, username etc from the third party authentication system
+    ##
+    socialAutoSignup: false
+
 
   ## Hosting configuration
   ##
@@ -165,6 +192,9 @@ paperless:
     ## @param paperless.hosting.enableHTTPRemoteUser [default: false] Allows authentication via HTTP_REMOTE_USER which is used by some SSO applications
     ##
     enableHTTPRemoteUser: false
+    ## @param paperless.hosting.enableHTTPRemoteUserAPI [default: false] AAllows authentication via HTTP_REMOTE_USER directly against the API
+    ##
+    enableHTTPRemoteUserAPI: false
     ## @param paperless.hosting.HTTPRemoteUserHeaderName [string] If "PAPERLESS_ENABLE_HTTP_REMOTE_USER" or PAPERLESS_ENABLE_HTTP_REMOTE_USER_API are enabled, this property allows to customize the name of the HTTP header from which the authenticated username is extracted
     ## ref: https://docs.paperless-ngx.com/configuration/#PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME
     ##
@@ -594,12 +624,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   extraHosts:
-    []
+    [ ]
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -630,7 +660,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: []
+  extraPorts: [ ]
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -662,7 +692,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: []
+  loadBalancerSourceRanges: [ ]
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -670,7 +700,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: []
+  externalIPs: [ ]
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -696,7 +726,7 @@ service:
 ##
 rbac:
   create: true
-  rules: []
+  rules: [ ]
 
 ## @section Service Account parameters
 ##
@@ -714,7 +744,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: []
+  secrets: [ ]
 
 ## @section Liveness Probe parameters
 ##
@@ -825,7 +855,7 @@ resources:
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers [array] Define initContainers for the main Vaultwarden server
-initContainers: []
+initContainers: [ ]
 
 ## @param nodeSelector [object] Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -835,7 +865,7 @@ nodeSelector: { }
 ## @param tolerations [array] Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: []
+tolerations: [ ]
 
 ## @param affinity [object] Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
