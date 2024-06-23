@@ -1,4 +1,79 @@
-# Commit Message Format
+# FMJ Studios - `helm` Repository Contributing Guidelines
+
+Contributions are welcome via GitHub's Pull Requests. This document outlines the process to help get your contribution
+accepted.
+
+## ⚒️ Building
+
+The project uses the `Make` build system with targets defined in the projects top-level [`Makefile`](../Makefile). The
+file includes a debug mode that will print usage information for each `make` target when the variable `PRINT_HELP=y` is
+defined. It will not execute any commands, but solely print the information so no actions will be taken on your machine.
+
+Before running _any_ other target you should run the `tools-check` target which will look for all executables required
+to operate the project locally. If any of the required executables are not found the `make` will let you know.
+
+After you have all the necessary tools installed you will want to generate a TLS certificate authority to issue local
+TLS certificates for your applications' Ingress manifests. To this you can run:
+
+```shell
+make secrets
+```
+
+This will create a new `secrets` directory in the project root and fill the directory with a `Kustomization.yaml`, a
+TLS certificate as well as a private key, and a CSR (we won't need this). You will need to set up your browser to trust
+this CA certificate to avoid TLS issues. For Google Chrome this can be done by navigating to the settings, then
+under `Privacy and security > Security > Manage certificates > Authorities` click `Import` and select the generated
+certificate.
+
+These files will also be re-used when setting up the development environment. Said environment is facilitated
+through `kind` and can be created with:
+
+```shell
+make env
+```
+
+This will set up a new local `kind`, already pre-configured to
+be [ingress-ready](https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx) and
+install [Jetstack's Cert-Manager](https://artifacthub.io/packages/helm/cert-manager/cert-manager) as well as
+the [Kubernetes Project's Ingress-Nginx Controller](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx).
+As mentioned `cert-manager` is already set up to make use of our previously generated CA. Most charts' `ci/test-values`
+already include the
+necessary `Ingress` [annotations to auto-generate TLS certificates](https://cert-manager.io/docs/usage/certificate/)
+with `cert-manager`. Lastly this will also insert the hostnames defined in [`scripts/hosts.sh`](../scripts/hosts.sh) in
+your `/etc/hosts/` to be-able to resolve the hostnames in your browser. If your current user has root-privileges then
+the script will just insert the hostnames, otherwise you will be prompt for the `sudo` password.
+
+When developing new charts the [`Makefile`](../Makefile) provides a couple of handy targets to `template`, `install`
+or `dry-install` any chart. To run them you might execute something like this:
+
+```shell
+make template CHART=charts/paperless-ngx VALUES=ci/test-values.yaml RELEASE_NAME=paperless-override
+```
+
+Take a look at each target's output with `PRINT_HELP=y` set for more in-depth information.
+
+Updates to the `values.schema.json` and the `README.md` can be performed with the `make gen` target:
+
+```shell
+make gen CHART=charts/paperless-ngx
+```
+
+If you have made a general change like a stylistic one for the chart `README` or any change which might affect multiple
+charts at a time you might want to regenerate the `values.schema.json` and `README.md` files and re-build all charts.
+This can be achieved with the `all` target:
+
+```shell
+make all
+```
+
+When you're done and want to delete the cluster as well as the hostnames inserted in your `/etc/hosts` you might
+run the `prune` target which will revert these changes for you.
+
+```shell
+make prune
+```
+
+## ℹ️ Commit Message Format
 
 This specification is inspired by and supersedes the **AngularJS commit message format**.
 
@@ -7,13 +82,12 @@ This format leads to **easier to read commit history**.
 
 Each commit message consists of a **header**, a **body**, and a **footer**.
 
-```html
-
+```
 <header>
-    <BLANK LINE>
-        <body>
-        <BLANK LINE>
-            <footer>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
 ```
 
 The `header` is mandatory and must conform to the [Commit Message Header](#commit-header) format.
@@ -121,68 +195,40 @@ The content of the commit message body should contain:
 * information about the SHA of the commit being reverted in the following format: `This reverts commit <SHA>`,
 * a clear description of the reason for reverting the commit message.
 
----
-_This file is based on
-the [Angular Contribution Guidelines](https://github.com/angular/angular/blob/main/CONTRIBUTING.md?plain=1)_.
-It has been tweaked to use _this_ project's recommendations for commit scope etc..
-
-# Guidelines
-
-Contributions are welcome via GitHub pull requests. This document outlines the process to help get your contribution accepted.
-
-## Sign off Your Work
-
-The Developer Certificate of Origin (DCO) is a lightweight way for contributors to certify that they wrote or otherwise have the right to submit the code they are contributing to the project. Here is the full text of the [DCO](http://developercertificate.org/). Contributors must sign-off that they adhere to these requirements by adding a `Signed-off-by` line to commit messages.
-
-```text
-This is my commit message
-
-Signed-off-by: Random J Developer <random@developer.example.org>
-```
-
-See `git help commit`:
-
-```text
--s, --signoff
-    Add Signed-off-by line by the committer at the end of the commit log
-    message. The meaning of a signoff depends on the project, but it typically
-    certifies that committer has the rights to submit this work under the same
-    license and agrees to a Developer Certificate of Origin (see
-    http://developercertificate.org/ for more information).
-```
-
-## How to Contribute
+## ✅ How to Contribute
 
 1. Fork this repository, develop, and test your changes
-1. Remember to sign off your commits as described above
-1. Submit a pull request
+2. Add your GitHub username to the [`AUTHORS`](../.github/AUTHORS) and [`CODEOWNERS`](../.github/CODEOWNERS) files
+3. Submit a pull request
 
-_**NOTE**_: In order to make testing and merging of PRs easier, please submit changes to multiple charts in separate PRs.
+_**NOTE**_: In order to make testing and merging of PRs easier, please submit changes to multiple charts in separate
+PRs.
 
 ### Technical Requirements
 
-* Must pass [DCO check](#sign-off-your-work)
 * Must follow [Charts best practices](https://helm.sh/docs/topics/chart_best_practices/)
-* Must pass CI jobs for linting and installing changed charts with the [chart-testing](https://github.com/helm/chart-testing) tool
-* Any change to a chart requires a version bump following [semver](https://semver.org/) principles. See [Immutability](#immutability) and [Versioning](#versioning) below
+* Must pass CI jobs for linting and installing changed charts with
+  the [chart-testing](https://github.com/helm/chart-testing) tool
+* Any change to a chart requires a version bump following [semver](https://semver.org/) principles.
+  See [Immutability](#immutability) and [Versioning](#versioning) below
 
 Once changes have been merged, the release job will automatically run to package and release changed charts.
 
 ### Immutability
 
-Chart releases must be immutable. Any change to a chart warrants a chart version bump even if it is only changed to the documentation.
+Chart releases must be immutable. Any change to a chart warrants a chart version bump even if it is only changed to the
+documentation.
 
 ### Versioning
 
 The chart `version` should follow [semver](https://semver.org/).
 
-Charts should start at `1.0.0`. Any breaking (backwards incompatible) changes to a chart should:
+New charts should start at `0.1.0`. They will be upgraded to a _stable_ `1.0.0` after they have been used in production
+clusters for more than a month without issues. This is obviously hard to do, but as [I](https://github.com/FMJdev)
+operate a cluster myself I will be taking care of this.
+
+Any breaking (backwards incompatible) changes to a chart should:
 
 1. Bump the MAJOR version
-2. In the README, under a section called "Upgrading", describe the manual steps necessary to upgrade to the new (specified) MAJOR version
-
-### Community Requirements
-
-This project is released with a [Contributor Covenant](https://www.contributor-covenant.org).
-By participating in this project you agree to abide by its terms.
-See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+2. In the README, under a section called "Upgrading", describe the manual steps necessary to upgrade to the new (
+   specified) MAJOR version
