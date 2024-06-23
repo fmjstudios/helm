@@ -20,11 +20,15 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "paperless.selectorLabels" . | nindent 8 }}
+        {{- if .Values.podLabels }}
         {{- toYaml .Values.podLabels | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
@@ -48,43 +52,50 @@ spec:
             - name: PAPERLESS_DBUSER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.postgresql.existingSecret | default (include "paperless.secrets.postgresql" .) }}
-                  key: "username"
+                  name: {{ default (include "paperless.secrets.postgresql" .) .Values.paperless.postgresql.existingSecret }}
+                  key: username
             - name: PAPERLESS_DBPASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.postgresql.existingSecret | default (include "paperless.secrets.postgresql" .) }}
-                  key: "password"
+                  name: {{ default (include "paperless.secrets.postgresql" .) .Values.paperless.postgresql.existingSecret }}
+                  key: password
             {{- if or .Values.paperless.secretKey.value .Values.paperless.secretKey.existingSecret.name }}
             - name: PAPERLESS_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.secretKey.existingSecret.name | default (include "paperless.secrets.general" .) }}
-                  key: {{ .Values.paperless.secretKey.existingSecret.key | default "secretKey" }}
+                  name: {{ default (include "paperless.secrets.general" .) .Values.paperless.secretKey.existingSecret.name }}
+                  key: {{ default "secretKey" .Values.paperless.secretKey.existingSecret.key }}
             {{- end }}
             {{- if or (or .Values.paperless.auth.adminUser .Values.paperless.auth.adminPassword) .Values.paperless.auth.existingSecret }}
             - name: PAPERLESS_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.auth.existingSecret | default (include "paperless.secrets.admin" .) }}
-                  key: {{ "username" }}
+                  name: {{ default (include "paperless.secrets.admin" .) .Values.paperless.auth.existingSecret }}
+                  key: username
             - name: PAPERLESS_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.auth.existingSecret | default (include "paperless.secrets.admin" .) }}
-                  key: {{ "password" }}
+                  name: {{ default (include "paperless.secrets.admin" .) .Values.paperless.auth.existingSecret }}
+                  key: password
             {{- end }}
             {{- if or (or .Values.paperless.smtp.user .Values.paperless.smtp.password) .Values.paperless.smtp.existingSecret }}
             - name: PAPERLESS_EMAIL_HOST_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.smtp.existingSecret | default (include "paperless.secrets.smtp" .) }}
-                  key: {{ "username" }}
+                  name: {{ default (include "paperless.secrets.smtp" .) .Values.paperless.smtp.existingSecret }}
+                  key: username
             - name: PAPERLESS_EMAIL_HOST_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.smtp.existingSecret | default (include "paperless.secrets.smtp" .) }}
-                  key: {{ "password" }}
+                  name: {{ default (include "paperless.secrets.smtp" .) .Values.paperless.smtp.existingSecret }}
+                  key: password
+            {{- end }}
+            {{- if (or .Values.paperless.auth.social.accountProviders .Values.paperless.auth.social.existingSecret ) }}
+            - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "paperless.secrets.allauth" .) .Values.paperless.auth.social.existingSecret }}
+                  key: accountProviders
             {{- end }}
           ports:
             - name: http

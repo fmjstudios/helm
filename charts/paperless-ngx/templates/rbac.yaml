@@ -5,7 +5,7 @@ metadata:
   name: {{ include "paperless.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{ include "paperless.labels" . | nindent 4 }}
+    {{- include "paperless.labels" . | nindent 4 }}
     app.kubernetes.io/component: paperless-ngx
 rules:
   {{- if .Values.rbac.rules }}
@@ -23,7 +23,7 @@ kind: RoleBinding
 metadata:
   name: {{ include "paperless.fullname" . }}
   labels:
-    {{ include "paperless.labels" . | nindent 4 }}
+    {{- include "paperless.labels" . | nindent 4 }}
     app.kubernetes.io/component: paperless
 roleRef:
   apiGroup: rbac.authorization.k8s.io

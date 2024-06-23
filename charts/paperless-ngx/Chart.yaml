@@ -21,10 +21,10 @@ annotations:
   org.opencontainers.image.vendor: "FMJ Studios"
   org.opencontainers.image.licenses: "MIT"
 apiVersion: v2
-appVersion: 2.4.0
+appVersion: 2.10.1
 kubeVersion: ">=1.26"
 name: paperless-ngx
-version: 0.0.1
+version: 0.1.0
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -41,7 +41,7 @@ dependencies:
   - name: gotenberg
     repository: oci://ghcr.io/fmjstudios/helm
     condition: gotenberg.enabled
-    version: 0.0.1
+    version: ~0.0.1
 description: Paperless-NGX is a community-supported supercharged version of paperless - scan, index and archive all your physical documents
 home: https://github.com/paperless-ngx/paperless-ngx
 icon: https://docs.paperless-ngx.com/

@@ -1,46 +1,78 @@
 # FMJ Studios - Paperless-NGX Helm Chart <img src="https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/5842944d1ef817c11a47ed5c19ba8b7886c9fbfe/resources/logo/web/svg/square.svg" alt="Paperless-NGX Logo" width="175" height="175" align="right" />
 
-Paperless-ngx is a community-supported open-source document management system that transforms your physical documents into a searchable online archive so you can keep, well, less paper. Paperless-NGX is the official successor to the original [Paperless](https://github.com/the-paperless-project/paperless) & [Paperless-ng](https://github.com/jonaswinkler/paperless-ng) projects and is designed to distribute the responsibility of advancing and supporting the project among a team of people. The application organizes and indexes your documents with tags, correspondents, types and more, performs OCR on your documents, making their text searchable and selectable and due its' use of the Tesseract engine - recognizes more than 100 languages. On top of all that it features a beautiful modern web application and is accompanied by a plethora of mobile applications for iOS and Android, provided by the open-source community around the project. It delivers all of these features within a single Docker image available on [GitHub Container Registry](https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx).
+Paperless-ngx is a community-supported open-source document management system that transforms your physical documents
+into a searchable online archive so you can keep, well, less paper. Paperless-NGX is the official successor to the
+original [Paperless](https://github.com/the-paperless-project/paperless) & [Paperless-ng](https://github.com/jonaswinkler/paperless-ng)
+projects and is designed to distribute the responsibility of advancing and supporting the project among a team of
+people. The application organizes and indexes your documents with tags, correspondents, types and more, performs OCR on
+your documents, making their text searchable and selectable and due its' use of the Tesseract engine - recognizes more
+than 100 languages. On top of all that it features a beautiful modern web application and is accompanied by a plethora
+of mobile applications for iOS and Android, provided by the open-source community around the project. It delivers all of
+these features within a single Docker image available
+on [GitHub Container Registry](https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx).
 
-> Head to the [Paperless-NGX GitHub Repository](https://github.com/paperless-ngx/paperless-ngx/tree/dev) or ther [Website](https://docs.paperless-ngx.com/) for in-depth [documentation](https://docs.paperless-ngx.com/) and [configuration guides](https://docs.paperless-ngx.com/configuration/).
+> Head to the [Paperless-NGX GitHub Repository](https://github.com/paperless-ngx/paperless-ngx/tree/dev) or
+> ther [Website](https://docs.paperless-ngx.com/) for in-depth [documentation](https://docs.paperless-ngx.com/)
+> and [configuration guides](https://docs.paperless-ngx.com/configuration/).
 
-# TL;DR
+# ✨ TL;DR
+
+_Repository-based installation_
 
 ```shell
-helm install my-release oci://ghcr.io/fmjstudios/helm/paperless-ngx:1.2.3
+helm repo add fmjstudios https://fmjstudios.github.io/helm
+helm install my-vaultwarden fmjstudios/paperless-ngx
+```
+
+_OCI-Registry-based installation_
+
+```shell
+helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:0.1.0
 ```
 
 # Introduction
 
-This chart bootstraps a Paperless-NGX [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
+This chart bootstraps a
+Paperless-NGX [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) on
+a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
+a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the
+Ingress needs to be explicitly enabled. Lastly the chart configures
+a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if
+enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
-The chart supports the configuration of all [Paperless-NGX environment variables](https://docs.paperless-ngx.com/configuration/) via the `paperless` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image Parameters.
+The chart supports the configuration of
+all [Paperless-NGX environment variables](https://docs.paperless-ngx.com/configuration/) via the `paperless` key in
+Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image
+Parameters.
 
 ## Parameters
 
-### Paperless-NGX Image parameters
+### Image parameters
 
 | Name                | Description                                                         | Value                         |
-| ------------------- | ------------------------------------------------------------------- | ----------------------------- |
-| `image.registry`    | The Docker registry to pull the image from                          | `docker.io`                   |
+|---------------------|---------------------------------------------------------------------|-------------------------------|
+| `image.registry`    | The Docker registry to pull the image from                          | `ghcr.io`                     |
 | `image.repository`  | The registry repository to pull the image from                      | `paperless-ngx/paperless-ngx` |
-| `image.tag`         | The image tag to pull                                               | `'1.30.1-alpine'`             |
+| `image.tag`         | The image tag to pull                                               | `2.10.1`                      |
 | `image.digest`      | The image digest to pull                                            | `""`                          |
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`                |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                          |
 
-### Paperless Name overrides
+### Name overrides
 
 | Name               | Description                                     | Value |
-| ------------------ | ----------------------------------------------- | ----- |
+|--------------------|-------------------------------------------------|-------|
 | `nameOverride`     | String to partially override paperless.fullname | `""`  |
 | `fullnameOverride` | String to fully override paperless.fullname     | `""`  |
 
 ### Paperless Configuration parameters
 
 | Name                                               | Description                                                                                                                                                                                                   | Value            |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+|----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
 | `paperless.domain`                                 | Define the domain name for Paperless - will be re-used in Ingress                                                                                                                                             | `""`             |
+| `paperless.appTitle`                               | If set, overrides the default name "Paperless-ngx"                                                                                                                                                            | `""`             |
+| `paperless.appLogo`                                | Path to an image file in the `/media/logo` directory, must include 'logo', e.g. `/logo/Atari_logo.svg`                                                                                                        | `""`             |
 | `paperless.secretKey.value`                        | Define a custom secret key for Paperless                                                                                                                                                                      | `""`             |
 | `paperless.secretKey.existingSecret.name`          | Define the name of an existing Secret containing the secret key                                                                                                                                               | `""`             |
 | `paperless.secretKey.existingSecret.key`           | Define the key within the existing Secret containing the secret key                                                                                                                                           | `""`             |
@@ -49,7 +81,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.uid`                                    | The user ID Paperless should use                                                                                                                                                                              | `1000`           |
 | `paperless.gid`                                    | The group ID Paperless should use                                                                                                                                                                             | `1000`           |
 | `paperless.enableFlower`                           | Enable the 'Flower' monitoring tool for 'Celery' (Paperless' task queue)                                                                                                                                      | `false`          |
-| `paperless.webserverWorkers`                       | The amount of Nginx worker processes to spawn for the server within the container                                                                                                                             | `""`             |
+| `paperless.webserverWorkers`                       | The amount of Nginx worker processes to spawn for the server within the container                                                                                                                             | `1`              |
 | `paperless.taskWorkers`                            | The amount for task worker processes to spawn within the container                                                                                                                                            | `""`             |
 | `paperless.threadsPerWorker`                       | The amount of threads to assign each task worker process within the container                                                                                                                                 | `""`             |
 | `paperless.workerTimeout`                          | The amount of threads to assign each task worker process within the container                                                                                                                                 | `""`             |
@@ -57,11 +89,23 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.enableNLTK`                             | Enables or disables the advanced natural language processing used during                                                                                                                                      | `""`             |
 | `paperless.enableAuditLog`                         | Enables the audit trail for documents, document types, correspondents, and tags                                                                                                                               | `true`           |
 | `paperless.enableCompression`                      | Enables compression of the responses from the webserver. Defaults to 1, enabling compression.                                                                                                                 | `"1"`            |
+| `paperless.apps`                                   | A comma-separated list of Django apps to be included in Django's INSTALLED_APPS                                                                                                                               | `""`             |
+| `paperless.maxImagePixels`                         | Configures the maximum size of an image PIL will allow to load without warning or error                                                                                                                       | `""`             |
+| `paperless.emptyTrashDelay`                        | Sets how long in days documents remain in the 'trash' before they are permanently deleted                                                                                                                     | `30`             |
 | `paperless.auth.autoLoginUsername`                 | Specify a username so that paperless will automatically perform login with the selected user                                                                                                                  | `""`             |
 | `paperless.auth.adminUser`                         | If this environment variable is specified, Paperless automatically creates a superuser with the provided username at start                                                                                    | `""`             |
 | `paperless.auth.adminPassword`                     | Only used when PAPERLESS_ADMIN_USER is set. This will be the password of the automatically created superuser                                                                                                  | `""`             |
 | `paperless.auth.existingSecret`                    | Specify an existing secret with a `username` and `password` key                                                                                                                                               | `""`             |
 | `paperless.auth.adminMail`                         | Specify superuser email address. Only used when PAPERLESS_ADMIN_USER is set                                                                                                                                   | `""`             |
+| `paperless.auth.allowSignups`                      | Allow users to sign up for a new Paperless-ngx account                                                                                                                                                        | `""`             |
+| `paperless.auth.disableRegularLogin`               | Disables the regular frontend username / password login, i.e. once you have setup SSO                                                                                                                         | `false`          |
+| `paperless.auth.sessionRemember`                   | Controls the lifetime of the session. `None`, `False` or `True`                                                                                                                                               | `""`             |
+| `paperless.auth.defaultHTTPProtocol`               | The protocol used when generating URLs, e.g. login callback URLs                                                                                                                                              | `""`             |
+| `paperless.auth.emailVerification`                 | Determines whether email addresses are verified during signup (as performed by Django allauth)                                                                                                                | `""`             |
+| `paperless.auth.social.accountProviders`           | This variable is used to set up login and signup via social account providers which are compatible with django-allauth.                                                                                       | `""`             |
+| `paperless.auth.social.existingSecret`             | The name of existing secret containing a `accountProviders` key to configure Django AllAuth                                                                                                                   | `""`             |
+| `paperless.auth.social.allowSignups`               | Allow users to signup for a new Paperless-ngx account using any setup third party authentication systems                                                                                                      | `false`          |
+| `paperless.auth.social.autoSignup`                 | Attempt to sign up the user using retrieved email, username etc from the third party authentication system                                                                                                    | `false`          |
 | `paperless.hosting.trustedOrigins`                 | A list of trusted origins for unsafe requests (e.g. POST). As of Django 4.0 this is required to access the Django admin via the web                                                                           | `""`             |
 | `paperless.hosting.allowedHosts`                   | If you're planning on putting Paperless on the open internet, then you really should set this value to the domain name you're using                                                                           | `""`             |
 | `paperless.hosting.corsAllowedHosts`               | You need to add your servers to the list of allowed hosts that can do CORS calls. Set this to your public domain name                                                                                         | `""`             |
@@ -70,6 +114,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.hosting.staticURL`                      | Unless you're hosting Paperless off a subdomain like /paperless/, you probably don't need to change this                                                                                                      | `""`             |
 | `paperless.hosting.cookiePrefix`                   | Specify a prefix that is added to the cookies used by paperless to identify the currently logged in user                                                                                                      | `""`             |
 | `paperless.hosting.enableHTTPRemoteUser`           | Allows authentication via HTTP_REMOTE_USER which is used by some SSO applications                                                                                                                             | `false`          |
+| `paperless.hosting.enableHTTPRemoteUserAPI`        | AAllows authentication via HTTP_REMOTE_USER directly against the API                                                                                                                                          | `false`          |
 | `paperless.hosting.HTTPRemoteUserHeaderName`       | If "PAPERLESS_ENABLE_HTTP_REMOTE_USER" or PAPERLESS_ENABLE_HTTP_REMOTE_USER_API are enabled, this property allows to customize the name of the HTTP header from which the authenticated username is extracted | `""`             |
 | `paperless.hosting.logoutRedirectURL`              | URL to redirect the user to after a logout                                                                                                                                                                    | `""`             |
 | `paperless.hosting.useXForwardHost`                | Configures the Django setting USE_X_FORWARDED_HOST which may be needed for hosting behind a proxy                                                                                                             | `false`          |
@@ -79,10 +124,12 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.cron.trainTask`                         | Configures the scheduled automatic classifier training frequency. May also be "disabled".                                                                                                                     | `"5 */1 * * *"`  |
 | `paperless.cron.indexTask`                         | Configures the scheduled search index update frequency. May also be "disabled".                                                                                                                               | `"0 0 * * *"`    |
 | `paperless.cron.sanityTask`                        | Configures the scheduled sanity checker frequency. May also be "disabled".                                                                                                                                    | `"30 0 * *"`     |
+| `paperless.cron.emptyTrashTask`                    | Configures the schedule to empty the trash of expired deleted documents                                                                                                                                       | `"0 1 * * *"`    |
 | `paperless.redis.host`                             | The hostname for the Redis instance                                                                                                                                                                           | `""`             |
+| `paperless.redis.port`                             | The port for the Redis instance                                                                                                                                                                               | `6379`           |
+| `paperless.redis.username`                         | The username for the Redis instance                                                                                                                                                                           | `""`             |
 | `paperless.redis.password`                         | The password for the Redis instance                                                                                                                                                                           | `""`             |
-| `paperless.redis.existingSecret.name`              | Provide the name to an existing Secret containing the Redis password                                                                                                                                          | `""`             |
-| `paperless.redis.existingSecret.key`               | Provide the key within the existing Secret containing the Redis password                                                                                                                                      | `""`             |
+| `paperless.redis.existingSecret`                   | The name of an existing Secret with a `username` and `password` key                                                                                                                                           | `""`             |
 | `paperless.redis.prefix`                           |                                                                                                                                                                                                               | `""`             |
 | `paperless.postgresql.host`                        | The hostname for the PostgreSQL database                                                                                                                                                                      | `""`             |
 | `paperless.postgresql.port`                        | The port for the PostgreSQL database                                                                                                                                                                          | `5432`           |
@@ -95,7 +142,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.postgresql.certs.rootCert`              | The path to a mounted TLS root certificate                                                                                                                                                                    | `""`             |
 | `paperless.postgresql.certs.cert`                  | The path to a mounted TLS certificate                                                                                                                                                                         | `""`             |
 | `paperless.postgresql.certs.key`                   | The path to a mounted TLS certificate key                                                                                                                                                                     | `""`             |
-| `paperless.tika.enabled`                           | Enable or disable the Apache&reg; integration                                                                                                                                                                 | `true`           |
+| `paperless.tika.enabled`                           | Enable or disable the Apache&reg; Tika integration                                                                                                                                                            | `true`           |
 | `paperless.tika.endpoint`                          | Define the Apache Tika endpoint                                                                                                                                                                               | `""`             |
 | `paperless.gotenberg.endpoint`                     | Define the Apache Gotenberg endpoint                                                                                                                                                                          | `""`             |
 | `paperless.smtp.host`                              | The host to an SMTP server                                                                                                                                                                                    | `""`             |
@@ -109,6 +156,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.data.paths.consumptionDir`              | Define a custom consumption directory                                                                                                                                                                         | `""`             |
 | `paperless.data.paths.dataDir`                     | Define a custom data directory                                                                                                                                                                                | `""`             |
 | `paperless.data.paths.trashDir`                    | Define a custom trash directory                                                                                                                                                                               | `""`             |
+| `paperless.data.paths.emptyTrashDir`               | Define a custom trash directory                                                                                                                                                                               | `""`             |
 | `paperless.data.paths.mediaRoot`                   | Define a custom media directory                                                                                                                                                                               | `""`             |
 | `paperless.data.paths.staticDir`                   | Define a custom static directory                                                                                                                                                                              | `""`             |
 | `paperless.data.paths.filenameFormat`              | Define a custom filename format                                                                                                                                                                               | `""`             |
@@ -116,6 +164,8 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.data.paths.loggingDir`                  | Define a custom logging directory                                                                                                                                                                             | `""`             |
 | `paperless.data.paths.nltkDir`                     | Define a custom NLTK processing directory                                                                                                                                                                     | `""`             |
 | `paperless.data.paths.emailCertificateLocation`    | Define a path to a certificate (chain) for TLS verification for mail servers                                                                                                                                  | `""`             |
+| `paperless.data.paths.modelFile`                   | This is where paperless will store the classification model. Default is PAPERLESS_DATA_DIR/classification_model.pickle                                                                                        | `""`             |
+| `paperless.data.paths.supervisordWorkingDir`       | If this environment variable is defined, the supervisord.log and supervisord.pid file will be created under the specified path                                                                                | `""`             |
 | `paperless.data.pvc.size`                          | The size given to PVCs created from the above data                                                                                                                                                            | `10Gi`           |
 | `paperless.data.pvc.storageClass`                  | The storageClass given to PVCs created from the above data                                                                                                                                                    | `standard`       |
 | `paperless.data.pvc.reclaimPolicy`                 | The resourcePolicy given to PVCs created from the above data                                                                                                                                                  | `Retain`         |
@@ -161,6 +211,8 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 | `paperless.consume.barcodes.ASNBarcodePrefix`      | Defines the prefix that is used to identify a barcode as an ASN barcode                                                                                                                                       | `ASN`            |
 | `paperless.consume.barcodes.upscale`               | Defines the upscale factor used in barcode detection                                                                                                                                                          | `0.0`            |
 | `paperless.consume.barcodes.dpi`                   | During barcode detection every page from a PDF document needs to be converted to an image                                                                                                                     | `300`            |
+| `paperless.consume.barcodes.enableTagBarcode`      | Enables the detection of barcodes in the scanned document and assigns or creates tags if a properly formatted barcode is detected                                                                             | `300`            |
+| `paperless.consume.barcodes.tagBarcodeMapping`     | Override the default dictionary of filter regex and substitute expressions                                                                                                                                    | `""`             |
 | `paperless.consume.collate.enableDoubleSided`      | Enables automatic collation of two single-sided scans into a double-sided document                                                                                                                            | `false`          |
 | `paperless.consume.collate.doubleSidedSubdirName`  | The name of the subdirectory that the collate feature expects documents to arrive                                                                                                                             | `double-sided`   |
 | `paperless.consume.collate.doubleSidedTiffSupport` | Whether TIFF image files should be supported when collating documents                                                                                                                                         | `false`          |
@@ -170,21 +222,21 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-| ----------------------- | --------------------------------------- | ----- |
+|-------------------------|-----------------------------------------|-------|
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Common Secret parameters
 
 | Name                 | Description                                                        | Value |
-| -------------------- | ------------------------------------------------------------------ | ----- |
+|----------------------|--------------------------------------------------------------------|-------|
 | `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
 | `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                              | Value   |
-| --------------------- | ------------------------------------------------------------------------ | ------- |
+|-----------------------|--------------------------------------------------------------------------|---------|
 | `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
@@ -195,7 +247,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -216,24 +268,24 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-| ------------- | -------------------------------- | ------ |
+|---------------|----------------------------------|--------|
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
-| Name                         | Description                                                                   | Value   |
-| ---------------------------- | ----------------------------------------------------------------------------- | ------- |
-| `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
-| `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
-| `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
-| `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`    |
-| `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`    |
+| Name                         | Description                                                                 | Value   |
+|------------------------------|-----------------------------------------------------------------------------|---------|
+| `serviceAccount.create`      | Whether a service account should be created                                 | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                              | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise paperless.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                         | `[]`    |
 
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-| ----------------------------------- | ----------------------------------------------------------- | ------- |
+|-------------------------------------|-------------------------------------------------------------|---------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -244,7 +296,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-| ------------------------------------ | ------------------------------------------------------------ | ------- |
+|--------------------------------------|--------------------------------------------------------------|---------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -255,7 +307,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-| ---------------------------------- | ---------------------------------------------------------- | ------- |
+|------------------------------------|------------------------------------------------------------|---------|
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -266,35 +318,35 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------|--------|
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
-| Name                | Description                                           | Value |
-| ------------------- | ----------------------------------------------------- | ----- |
-| `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
-| `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
-| `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
-| `tolerations`       | Tolerations for pod assignment                        | `[]`  |
-| `affinity`          | Affinity for pod assignment                           | `{}`  |
-| `strategy`          | Specify a deployment strategy for the Vaultwarden pod | `{}`  |
-| `podAnnotations`    | Extra annotations for the Vaultwarden pod             | `{}`  |
-| `podLabels`         | Extra labels for the Vaultwarden pod                  | `{}`  |
-| `priorityClassName` | The name of an existing PriorityClass                 | `""`  |
+| Name                | Description                                         | Value |
+|---------------------|-----------------------------------------------------|-------|
+| `resources`         | The resource limits/requests for the Paperless pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Paperless server | `[]`  |
+| `nodeSelector`      | Node labels for pod assignment                      | `{}`  |
+| `tolerations`       | Tolerations for pod assignment                      | `[]`  |
+| `affinity`          | Affinity for pod assignment                         | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Paperless pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Paperless pod             | `{}`  |
+| `podLabels`         | Extra labels for the Paperless pod                  | `{}`  |
+| `priorityClassName` | The name of an existing PriorityClass               | `""`  |
 
 ### Security context settings
 
-| Name                 | Description                                       | Value |
-| -------------------- | ------------------------------------------------- | ----- |
-| `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
-| `securityContext`    | General security context settings for             | `{}`  |
+| Name                 | Description                                     | Value |
+|----------------------|-------------------------------------------------|-------|
+| `podSecurityContext` | Security context settings for the Paperless pod | `{}`  |
+| `securityContext`    | General security context settings for           | `{}`  |
 
 ### Bitnami&reg; PostgreSQL parameters
 
 | Name                                           | Description                                                                                            | Value               |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
+|------------------------------------------------|--------------------------------------------------------------------------------------------------------|---------------------|
 | `postgresql.enabled`                           | Enable or disable the PostgreSQL subchart                                                              | `true`              |
 | `postgresql.auth.enablePostgresUser`           | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`              |
 | `postgresql.auth.postgresPassword`             | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres`          |
@@ -312,7 +364,7 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### Bitnami&reg; Redis parameters
 
 | Name                  | Description                                                            | Value        |
-| --------------------- | ---------------------------------------------------------------------- | ------------ |
+|-----------------------|------------------------------------------------------------------------|--------------|
 | `redis.enabled`       | Enable or disable the Redis&reg; subchart                              | `true`       |
 | `redis.architecture`  | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone` |
 | `redis.auth.password` | Redis&reg; password                                                    | `paperless`  |
@@ -320,13 +372,13 @@ The chart supports the configuration of all [Paperless-NGX environment variables
 ### Apache&reg; Tika parameters
 
 | Name           | Description                                | Value  |
-| -------------- | ------------------------------------------ | ------ |
+|----------------|--------------------------------------------|--------|
 | `tika.enabled` | Enable or disable the Apache Tika subchart | `true` |
 
 ### FMJ Studios Gotenberg parameters
 
 | Name                                             | Description                                                                      | Value   |
-| ------------------------------------------------ | -------------------------------------------------------------------------------- | ------- |
+|--------------------------------------------------|----------------------------------------------------------------------------------|---------|
 | `gotenberg.enabled`                              | Enable or disable the Gotenberg subchart                                         | `true`  |
 | `gotenberg.gotenberg.chromium.disableJavaScript` | Disable JavaScript                                                               | `false` |
 | `gotenberg.gotenberg.chromium.allowList`         | Set the allowed URLs for Chromium using a regular expression - defaults to 'All' | `""`    |
