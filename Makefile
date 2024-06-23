@@ -1,4 +1,4 @@
-# Copyright (C) 2023 The FMJ Helm Authors <info@fmj.studio>
+# Copyright (C) 2023 The FMJ Studios Helm Authors
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -55,6 +55,7 @@ CONFIG_DIR := $(ROOT_DIR)/config
 CONFIG_SSL_DIR := $(CONFIG_DIR)/ssl
 CONFIG_K8S_DIR := $(CONFIG_DIR)/k8s
 SECRETS_DIR := $(ROOT_DIR)/secrets
+ALL_CHARTS := $(sort $(dir $(wildcard charts/*/)))
 
 # Documentation
 DOCS_DIR := $(ROOT_DIR)/docs
@@ -86,11 +87,11 @@ endif
 # User-defined variables
 # ---------------------------
 PRINT_HELP ?=
-
 CHART ?=
 VALUES ?=
 RELEASE_NAME ?= $(shell printf "%s-%s" $(CHART_NAME) test)
 HELM_ARGS ?=
+REGISTRY_USER ?=
 
 # ---------------------------
 # Custom functions
@@ -157,6 +158,35 @@ endif
 # ---------------------------
 #   Helm Chart Targets
 # ---------------------------
+
+# The implementation for this target directly contradicts the GNU Make documentation for standard targets and also
+# builds the chart documentation and JSON schemas along with the tarballs
+# ref: https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html#Standard-Targets
+#
+# This is due to the fact that Bitnami's README generator generates a JSON schema by default before ever updating the
+# chart's README. Separating these steps would require considerable effort with little time savings. Maybe as the number
+# of charts grows this will be reconsidered
+define ALL_INFO
+# Generate updated schemas and README and build all charts.
+#
+# Arguments:
+#   PRINT_HELP: 'y' or 'n'
+endef
+.PHONY: all
+ifeq ($(PRINT_HELP), y)
+all:
+	echo "$$BUILD_INFO"
+else
+all: dist-dir
+	for chart in $(ALL_CHARTS); do \
+  		$(MAKE) gen CHART=$$chart; \
+  	done
+  	$(call log_success, "Generated updated JSON schemas and documentation for all Charts")
+	for chart in $(ALL_CHARTS); do \
+  		$(MAKE) build CHART=$$chart; \
+  	done
+  	$(call log_success, "Building all Charts into $(OUT_DIR)")
+endif
 
 define BUILD_INFO
 # Package a Helm Chart and put it into the repository's output directory
@@ -352,3 +382,11 @@ cluster-bootstrap:
 	$(helmfile) apply -f $(CONFIG_K8S_DIR)/helmfile.yaml
 	$(kubectl) apply -k $(CONFIG_K8S_DIR)/kustomize
 	$(SCRIPT_DIR)/hosts.sh add
+
+.PHONY: registry-login
+registry-login:
+ifndef REGISTRY_USER
+	$(call log_attention, "Cannot login to GHCR registry using empty username! REGISTRY_USER must be defined")
+else
+	gh auth token | helm registry login ghcr.io -u $(REGISTRY_USER) --password-stdin
+endif
