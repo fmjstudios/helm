@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/fmjstudios/helm?label=License)](https://opensource.org/licenses/MIT)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/fmjstudios)](https://artifacthub.io/packages/search?repo=fmjstudios&sort=relevance)
-[![CI Status](https://github.com/fmjstudios/helm/actions/workflows/ci-pipeline.yml/badge.svg)](https://github.com/fmjstudios/helm/blob/main/.github/workflows/ci-pipeline.yml)
+[![CI Status](https://github.com/fmjstudios/helm/actions/workflows/release.yml/badge.svg)](https://github.com/fmjstudios/helm/blob/main/.github/workflows/ci-pipeline.yml)
 [![Renovate](https://img.shields.io/badge/Renovate-enabled-brightgreen?logo=renovatebot&logoColor=1DDEDD)](https://renovatebot.com/)
 
 A collection of open-source [MIT][license]-licensed _Helm Charts_ written and maintained by `FMJ Studios` for use
