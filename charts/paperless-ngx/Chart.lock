@@ -1,7 +1,7 @@
 dependencies:
 - name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 15.5.7
+  version: 15.5.9
 - name: redis
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 19.5.5
@@ -11,5 +11,5 @@ dependencies:
 - name: gotenberg
   repository: oci://ghcr.io/fmjstudios/helm
   version: 0.0.1
-digest: sha256:f4b5c263a4bfbbb13ab14c6aca4b7d303c2db6cdbe97131f5f80fa55437a470f
-generated: "2024-06-18T23:57:22.481736476+02:00"
+digest: sha256:a287915c1c241ba886faab304949c0cbd47b2a3315d7abed6ba95d5e423af1b9
+generated: "2024-06-24T00:12:32.720375381+02:00"
