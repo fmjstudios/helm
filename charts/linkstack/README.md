@@ -11,17 +11,26 @@ Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/lin
 > implemenation or to the [documentation](https://docs.linkstack.org/) for guides
 > and [examples](https://docs.linkstack.org/docker/setup/).
 
-# TL;DR
+# ✨ TL;DR
+
+_Repository-based installation_
 
 ```shell
-helm install my-release oci://ghcr.io/fmjstudios/helm/linkstack:1.2.3
+helm repo add fmjstudios https://fmjstudios.github.io/helm
+helm install my-vaultwarden fmjstudios/linkstack
+```
+
+_OCI-Registry-based installation_
+
+```shell
+helm install oci://ghcr.io/fmjstudios/helm/linkstack:0.1.0
 ```
 
 # Introduction
 
-This chart bootstraps a Linkstack [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
-a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
-a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+This chart bootstraps a Linkstack [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster
+networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
 and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the
 Ingress needs to be explicitly enabled. Lastly the chart configures
 a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if
@@ -33,7 +42,7 @@ configurable via the Image Parameters.
 
 ## Parameters
 
-### Linkstack Image parameters
+### Image parameters
 
 | Name                | Description                                                         | Value                                                                     |
 |---------------------|---------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -44,7 +53,7 @@ configurable via the Image Parameters.
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`                                                            |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                                                                      |
 
-### Linkstack Name overrides
+### Name overrides
 
 | Name               | Description                                     | Value |
 |--------------------|-------------------------------------------------|-------|
@@ -76,44 +85,55 @@ configurable via the Image Parameters.
 
 ### Ingress parameters
 
-| Name                  | Description                                                                       | Value   |
-|-----------------------|-----------------------------------------------------------------------------------|---------|
-| `ingress.enabled`     | Whether to enable Ingress                                                         | `false` |
-| `ingress.className`   | The IngressClass to use for the pod's ingress                                     | `""`    |
-| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                               | `""`    |
-| `ingress.annotations` | Annotations for the Ingress resource                                              | `{}`    |
-| `ingress.tls`         | A list of hostnames and secret names to use for TLS                               | `[]`    |
-| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with linkstack.http(s)ServerName) | `[]`    |
+| Name                  | Description                                                                | Value   |
+|-----------------------|----------------------------------------------------------------------------|---------|
+| `ingress.enabled`     | Whether to enable Ingress                                                  | `false` |
+| `ingress.className`   | The IngressClass to use for the pod's ingress                              | `""`    |
+| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                        | `""`    |
+| `ingress.annotations` | Annotations for the Ingress resource                                       | `{}`    |
+| `ingress.tls`         | A list of hostnames and secret names to use for TLS                        | `[]`    |
+| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with linkstack.serverName) | `[]`    |
 
 ### Service parameters
 
-| Name                     | Description                                      | Value       |
-|--------------------------|--------------------------------------------------|-------------|
-| `service.type`           | The type of service to create for the deployment | `ClusterIP` |
-| `service.ports.http`     | The http port to use on the service              | `80`        |
-| `service.ports.https`    | The https port to use on the service             | `443`       |
-| `service.annotations`    | Annotations for the service resource             | `{}`        |
-| `service.labels`         | Labels for the service resource                  | `{}`        |
-| `service.ipFamilyPolicy` | The Kubernetes ipFamilyPolicy                    | `""`        |
+| Name                               | Description                                                                             | Value       |
+|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
+| `service.type`                     | The type of service to create                                                           | `ClusterIP` |
+| `service.ports.http`               | The http port to use on the service                                                     | `80`        |
+| `service.ports.https`              | The https port to use on the service                                                    | `443`       |
+| `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
+| `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
+| `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
+| `service.labels`                   | Labels for the service resource                                                         | `{}`        |
+| `service.externalTrafficPolicy`    | The external traffic policy for the service                                             | `Cluster`   |
+| `service.internalTrafficPolicy`    | The internal traffic policy for the service                                             | `Cluster`   |
+| `service.clusterIP`                | Define a static cluster IP for the service                                              | `""`        |
+| `service.loadBalancerIP`           | Set the Load Balancer IP                                                                | `""`        |
+| `service.loadBalancerClass`        | Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific) | `""`        |
+| `service.loadBalancerSourceRanges` | Service Load Balancer source ranges                                                     | `[]`        |
+| `service.externalIPs`              | Service External IPs                                                                    | `[]`        |
+| `service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP"                    | `None`      |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                             | `{}`        |
+| `service.ipFamilyPolicy`           | The ipFamilyPolicy                                                                      | `{}`        |
 
 ### RBAC parameters
 
-| Name          | Description                             | Value  |
-|---------------|-----------------------------------------|--------|
-| `rbac.create` | Whether or not to create RBAC resources | `true` |
-| `rbac.rules`  | Extra rules to add to the Role          | `[]`   |
+| Name          | Description                      | Value  |
+|---------------|----------------------------------|--------|
+| `rbac.create` | Whether to create RBAC resources | `true` |
+| `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
-### Linkstack Service Account parameters
+### Service Account parameters
 
 | Name                         | Description                                                                 | Value   |
 |------------------------------|-----------------------------------------------------------------------------|---------|
-| `serviceAccount.create`      | Whether or not a service account should be created                          | `true`  |
-| `serviceAccount.automount`   | Whether or not to automount the service account token                       | `false` |
+| `serviceAccount.create`      | Whether a service account should be created                                 | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                              | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`    |
 | `serviceAccount.name`        | A custom name for the service account, otherwise linkstack.fullname is used | `""`    |
 | `serviceAccount.secrets`     | A list of secrets mountable by this service account                         | `[]`    |
 
-### Linkstack Liveness Probes
+### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
 |-------------------------------------|-------------------------------------------------------------|---------|
@@ -124,7 +144,7 @@ configurable via the Image Parameters.
 | `livenessProbe.successThreshold`    | Configure the success threshold for the liveness probe      | `1`     |
 | `livenessProbe.failureThreshold`    | Configure the failure threshold for the liveness probe      | `10`    |
 
-### Linkstack Readiness Probes
+### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
 |--------------------------------------|--------------------------------------------------------------|---------|
@@ -135,7 +155,7 @@ configurable via the Image Parameters.
 | `readinessProbe.successThreshold`    | Configure the success threshold for the readiness probe      | `1`     |
 | `readinessProbe.failureThreshold`    | Configure the failure threshold for the readiness probe      | `3`     |
 
-### Linkstack Startup Probes
+### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
 |------------------------------------|------------------------------------------------------------|---------|
@@ -146,7 +166,7 @@ configurable via the Image Parameters.
 | `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
 | `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
 
-### Pod disruption budget parameters
+### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
 |------------------------------------|------------------------------------------------------|--------|
@@ -155,20 +175,21 @@ configurable via the Image Parameters.
 
 ### Pod settings
 
-| Name                 | Description                                         | Value |
-|----------------------|-----------------------------------------------------|-------|
-| `resources`          | The resource limits/requests for the Linkstack pod  | `{}`  |
-| `initContainers`     | Define initContainers for the main Linkstack server | `[]`  |
-| `nodeSelector`       | Node labels for pod assignment                      | `{}`  |
-| `tolerations`        | Tolerations for pod assignment                      | `[]`  |
-| `affinity`           | Affinity for pod assignment                         | `{}`  |
-| `strategy`           | Specify a deployment strategy for the Linkstack pod | `{}`  |
-| `podAnnotations`     | Extra annotations for the Linkstack pod             | `{}`  |
-| `podLabels`          | Extra labels for the Linkstack pod                  | `{}`  |
-| `podSecurityContext` | Security context settings for the Linkstack pod     | `{}`  |
+| Name                | Description                                         | Value |
+|---------------------|-----------------------------------------------------|-------|
+| `resources`         | The resource limits/requests for the Linkstack pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Linkstack server | `[]`  |
+| `nodeSelector`      | Node labels for pod assignment                      | `{}`  |
+| `tolerations`       | Tolerations for pod assignment                      | `[]`  |
+| `affinity`          | Affinity for pod assignment                         | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Linkstack pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Linkstack pod             | `{}`  |
+| `podLabels`         | Extra labels for the Linkstack pod                  | `{}`  |
+| `priorityClassName` | The name of an existing PriorityClass               | `""`  |
 
 ### Security context settings
 
-| Name              | Description                           | Value |
-|-------------------|---------------------------------------|-------|
-| `securityContext` | General security context settings for | `{}`  |
+| Name                 | Description                                     | Value |
+|----------------------|-------------------------------------------------|-------|
+| `podSecurityContext` | Security context settings for the Linkstack pod | `{}`  |
+| `securityContext`    | General security context settings for           | `{}`  |

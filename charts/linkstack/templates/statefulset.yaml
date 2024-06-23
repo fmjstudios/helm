@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "linkstack.fullname" . }}
   labels:
@@ -10,7 +10,7 @@ spec:
     matchLabels:
       {{- include "linkstack.selectorLabels" . | nindent 6 }}
   {{- if .Values.strategy -}}
-  strategy:
+  updateStrategy:
   {{- toYaml .Values.strategy | nindent 4 }}
   {{- end }}
   template:
@@ -18,19 +18,22 @@ spec:
       {{- if .Values.podAnnotations }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "linkstack.selectorLabels" . | nindent 8 }}
-      {{- if .Values.podLabels -}}
+        {{- if .Values.podLabels -}}
         {{- toYaml .Values.podLabels | nindent 8 }}
-      {{- end }}
+        {{- end }}
     spec:
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
         {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "linkstack.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ include "linkstack.image" . }}
@@ -69,7 +72,7 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           {{- end }}
           {{- if .Values.readinessProbe.enabled }}
-          livenessProbe:
+          readinessProbe:
             httpGet:
               path: /
               port: http
@@ -80,7 +83,7 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           {{- end }}
           {{- if .Values.startupProbe.enabled }}
-          livenessProbe:
+          startupProbe:
             httpGet:
               path: /
               port: http
@@ -125,3 +128,6 @@ spec:
       {{- if .Values.initContainers }}
         {{- toYaml .Values.initContainers | nindent 8 }}
       {{- end }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: {{ .Values.linkstack.data.pvc.reclaimPolicy }}
+    whenScaled: {{ .Values.linkstack.data.pvc.reclaimPolicy }}

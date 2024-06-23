@@ -5,7 +5,7 @@ metadata:
   name: {{ include "linkstack.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{ include "linkstack.labels" . | nindent 4 }}
+    {{- include "linkstack.labels" . | nindent 4 }}
     app.kubernetes.io/component: linkstack
 rules:
   {{- if .Values.rbac.rules }}
@@ -20,7 +20,7 @@ kind: RoleBinding
 metadata:
   name: {{ include "linkstack.fullname" . }}
   labels:
-    {{ include "linkstack.labels" . | nindent 4 }}
+    {{- include "linkstack.labels" . | nindent 4 }}
     app.kubernetes.io/component: linkstack
 roleRef:
   apiGroup: rbac.authorization.k8s.io

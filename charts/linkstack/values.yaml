@@ -4,16 +4,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## @section Linkstack Image parameters
+## @section Image parameters
 ##
 
 ## Linkstack Server Image
 ## ref: https://hub.docker.com/r/linkstackorg/linkstack
-## @param image.registry [default: docker.io] The Docker registry to pull the image from
-## @param image.repository [default: linkstackorg/linkstack] The registry repository to pull the image from
-## @param image.tag [default: latest] The image tag to pull
-## @param image.digest [default: sha256:abd691b4293b020a317de8794737671e0315159efcb868e8a4124d6f0611f7ae] The image digest to pull
-## @param image.pullPolicy [default: IfNotPresent] The Kubernetes image pull policy
+## @param image.registry The Docker registry to pull the image from
+## @param image.repository The registry repository to pull the image from
+## @param image.tag The image tag to pull
+## @param image.digest The image digest to pull
+## @param image.pullPolicy The Kubernetes image pull policy
 ## @param image.pullSecrets A list of secrets to use for pulling images from private registries
 
 image:
@@ -35,7 +35,7 @@ image:
   ##
   pullSecrets: []
 
-## @section Linkstack Name overrides
+## @section Name overrides
 ##
 
 ## @param nameOverride String to partially override linkstack.fullname
@@ -105,7 +105,7 @@ linkstack:
 ## @section ConfigMap parameters
 ##
 
-## FMJ Studios Linkstack ConfigMap settings
+## Linkstack ConfigMap settings
 ## @param configMap.annotations Annotations for the ConfigMap resource
 ## @param configMap.labels Extra Labels for the ConfigMap resource
 
@@ -116,13 +116,13 @@ configMap:
 ## @section Ingress parameters
 ##
 
-## FMJ Studios Linkstack Ingress settings
-## @param ingress.enabled [default: false] Whether to enable Ingress
-## @param ingress.className [string] The IngressClass to use for the pod's ingress
-## @param ingress.whitelist [string] A comma-separated list of IP addresses to whitelist
+## Linkstack Ingress settings
+## @param ingress.enabled Whether to enable Ingress
+## @param ingress.className The IngressClass to use for the pod's ingress
+## @param ingress.whitelist A comma-separated list of IP addresses to whitelist
 ## @param ingress.annotations Annotations for the Ingress resource
 ## @param ingress.tls A list of hostnames and secret names to use for TLS
-## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with linkstack.http(s)ServerName)
+## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with linkstack.serverName)
 
 ingress:
   enabled: false
@@ -145,60 +145,121 @@ ingress:
 ## @section Service parameters
 ##
 
-## FMJ Studios Linkstack Service settings
-## @param service.type [default: ClusterIP] The type of service to create for the deployment
-## @param service.ports.http [default: 80] The http port to use on the service
-## @param service.ports.https [default: 443] The https port to use on the service
-## @param service.annotations Annotations for the service resource
-## @param service.labels Labels for the service resource
-## @param service.ipFamilyPolicy The Kubernetes ipFamilyPolicy
-
+## Linkstack Service settings
 service:
+  ## @param service.type [default: ClusterIP] The type of service to create
+  ##
   type: ClusterIP
+  ## Linkstack Service Ports
+  ##
   ports:
+    ## @param service.ports.http [default: 80] The http port to use on the service
+    ##
     http: 8080
+    ## @param service.ports.https [default: 443] The https port to use on the service
+    ##
     https: 8443
+  ## @param service.nodePort [default: 30080] The Node port to use on the service
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ## NOTE: choose port between <30000-32767>
+  ##
+  nodePort: 30080
+  ## @param service.extraPorts Extra ports to add to the service
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
+  ## e.g.
+  ## extraPorts:
+  ##   - name: https
+  ##     protocol: TCP
+  ##     port: 443
+  ##     targetPort: 9377
+  ##
+  extraPorts: []
+  ## @param service.annotations [object] Annotations for the service resource
+  ##
   annotations: { }
+  ## @param service.labels [object] Labels for the service resource
+  ##
   labels: { }
+  ## @param service.externalTrafficPolicy [default: Cluster] The external traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+  ## @param service.internalTrafficPolicy [default: Cluster] The internal traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  internalTrafficPolicy: Cluster
+  ## @param service.clusterIP [string] Define a static cluster IP for the service
+  ##
+  clusterIP: ""
+  ## @param service.loadBalancerIP Set the Load Balancer IP
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ##
+  loadBalancerIP: ""
+  ## @param service.loadBalancerClass Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+  ##
+  loadBalancerClass: ""
+  ## @param service.loadBalancerSourceRanges Service Load Balancer source ranges
+  ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ## e.g.
+  ## loadBalancerSourceRanges:
+  ##   - 10.10.10.0/24
+  ##
+  loadBalancerSourceRanges: []
+  ## @param service.externalIPs Service External IPs
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  ## e.g.
+  ## externalIPs:
+  ##   - 10.10.10.1
+  ##   - 201.22.30.1
+  ##
+  externalIPs: []
+  ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+  ## If "ClientIP", consecutive client requests will be directed to the same Pod
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+  ##
+  sessionAffinity: None
+  ## @param service.sessionAffinityConfig Additional settings for the sessionAffinity
+  ## sessionAffinityConfig:
+  ##   clientIP:
+  ##     timeoutSeconds: 300
+  ##
+  sessionAffinityConfig: { }
+  ## @param service.ipFamilyPolicy [object] The ipFamilyPolicy
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
+  ##
   ipFamilyPolicy: ""
 
 ## @section RBAC parameters
 ##
 
 ## Linkstack RBAC settings
-## @param rbac.create [default: true] Whether or not to create RBAC resources
+## @param rbac.create Whether to create RBAC resources
 ## @param rbac.rules Extra rules to add to the Role
 ##
 rbac:
   create: true
   rules: []
 
-## @section Linkstack Service Account parameters
+## @section Service Account parameters
 ##
 
-## FMJ Studios Linkstack Service Account settings
+## Linkstack Service Account settings
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-## @param serviceAccount.create [default: true] Whether or not a service account should be created
-## @param serviceAccount.automount [default: false] Whether or not to automount the service account token
-## @param serviceAccount.annotations [object] Annotations to add to the service account
-## @param serviceAccount.name [string] A custom name for the service account, otherwise linkstack.fullname is used
+## @param serviceAccount.create Whether a service account should be created
+## @param serviceAccount.automount Whether to automount the service account token
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name A custom name for the service account, otherwise linkstack.fullname is used
 ## @param serviceAccount.secrets A list of secrets mountable by this service account
 ##
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Whether or not to automount the ServiceAccount token into Pod using this SA
   automount: false
-  # Annotations to add to the service account
   annotations: { }
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
-  # The list of secrets mountable by this service account.
-  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
   secrets: []
 
-## @section Linkstack Liveness Probes
+## @section Liveness Probe parameters
 ##
 
 ## Linkstack Liveness Probe
@@ -224,7 +285,7 @@ livenessProbe:
   ##
   failureThreshold: 10
 
-## @section Linkstack Readiness Probes
+## @section Readiness Probe parameters
 ##
 
 ## Linkstack Readiness Probe
@@ -250,7 +311,7 @@ readinessProbe:
   ##
   failureThreshold: 3
 
-## @section Linkstack Startup Probes
+## @section Startup Probe parameters
 ##
 
 ## Linkstack Startup Probe
@@ -276,23 +337,23 @@ startupProbe:
   ##
   failureThreshold: 10
 
-## @section Pod disruption budget parameters
+## @section PodDisruptionBudget parameters
 ##
 
-## FMJ Studios Linkstack pod disruption budget settings
+## Linkstack pod disruption budget settings
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-
+##
 podDisruptionBudget:
-  enabled: true
+  enabled: false
   minAvailable: 1
   # maxUnavailable:
 
 ## @section Pod settings
 ##
 
-## FMJ Studios Linkstack resource settings
+## Linkstack resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources The resource limits/requests for the Linkstack pod
 ##
@@ -305,9 +366,9 @@ resources:
 #   cpu: 100m
 #   memory: 128Mi
 
-## Linkstack initContainers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers Define extra initContainers for the main Linkstack server
+## @param initContainers Define initContainers for the main Linkstack server
+##
 initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
@@ -339,37 +400,39 @@ podAnnotations: { }
 
 ## @param podLabels Extra labels for the Linkstack pod
 ##
-podLabels:
-  pod-security.kubernetes.io/warn: privileged
-  pod-security.kubernetes.io/audit: privileged
-  pod-security.kubernetes.io/enforce: baseline
+podLabels: { }
+#  pod-security.kubernetes.io/warn: privileged
+#  pod-security.kubernetes.io/audit: privileged
+#  pod-security.kubernetes.io/enforce: baseline
 
 ## @param priorityClassName The name of an existing PriorityClass
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
 ##
 priorityClassName: ""
 
+## @section Security context settings
+##
+
 ## @param podSecurityContext Security context settings for the Linkstack pod
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
 podSecurityContext:
-  fsGroup: 1001
+  { }
+# fsGroup: 1001
 # supplementalGroups:
 #   - 1001
-
-## @section Security context settings
-##
 
 ## @param securityContext General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
 securityContext:
-  runAsGroup: 101
-  runAsUser: 0
-  allowPrivilegeEscalation: false
-  privileged: false
-  runAsNonRoot: false
-  readOnlyRootFilesystem: false
-  #  capabilities:
-  #    drop:
-  #      - ALL
+  { }
+# allowPrivilegeEscalation: false
+# privileged: false
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsGroup: 1001
+# runAsUser: 1001
+# capabilities:
+#   drop:
+#     - ALL

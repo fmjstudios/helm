@@ -4,15 +4,45 @@ metadata:
   name: {{ include "linkstack.fullname" . }}
   labels:
     {{- include "linkstack.labels" . | nindent 4 }}
-    {{- if .Values.service.labels }}
-    {{- toYaml .Values.service.labels -}}
-    {{- end }}
+  {{- if .Values.service.labels -}}
+  labels:
+    {{- toYaml .Values.service.labels | nindent 4 }}
+  {{- end }}
   {{- if .Values.service.annotations -}}
   annotations:
-  {{- toYaml .Values.service.annotations }}
+    {{- toYaml .Values.service.annotations | nindent 4 }}
   {{- end }}
 spec:
   type: {{ .Values.service.type }}
+  selector:
+    {{- include "linkstack.selectorLabels" . | nindent 4 }}
+  {{- if or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort")}}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
+  {{- if (semverCompare ">=1.22-0" (.Capabilities.KubeVersion.GitVersion)) }}
+  internalTrafficPolicy: {{ .Values.service.internalTrafficPolicy }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerIP))}}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerClass))}}
+  loadBalancerClass: {{ .Values.service.loadBalancerClass }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerSourceRanges))}}
+  loadBalancerSourceRanges: {{ toYaml .Values.service.loadBalancerSourceRanges | nindent 4 }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "ClusterIP") .Values.service.clusterIP }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  {{- end }}
+  {{- if .Values.service.sessionAffinity }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- end }}
+  {{- if .Values.service.sessionAffinityConfig }}
+  sessionAffinityConfig: {{ toYaml .Values.service.sessionAffinityConfig | nindent 4 }}
+  {{- end }}
+  {{- if .Values.service.externalIPs }}
+  externalIPs: {{ toYaml .Values.service.externalIPs | nindent 4 }}
+  {{- end }}
   ports:
     - port: {{ .Values.service.ports.http }}
       targetPort: 80
@@ -22,5 +52,9 @@ spec:
       targetPort: 443
       protocol: TCP
       name: https
-  selector:
-    {{- include "linkstack.selectorLabels" . | nindent 4 }}
+    {{- if .Values.service.extraPorts }}
+    {{ toYaml .Values.service.extraPorts | nindent 4 }}
+    {{- end }}
+  {{- if .Values.service.ipFamilyPolicy -}}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+  {{- end }}

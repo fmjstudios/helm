@@ -6,12 +6,12 @@ metadata:
   labels:
     app.kubernetes.io/component: linkstack
     {{- include "linkstack.labels" . | nindent 4 }}
-    {{- with .Values.configMap.labels }}
-    {{- toYaml . | nindent 4 }}
+    {{- if .Values.configMap.labels }}
+    {{- toYaml .Values.configMap.labels | nindent 4 }}
     {{- end }}
-  {{- with .Values.configMap.annotations }}
+  {{- if .Values.configMap.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
+  {{- toYaml .Values.configMap.annotations | nindent 4 }}
   {{- end }}
 data:
   SERVER_ADMIN: {{ .Values.linkstack.serverAdmin }}
