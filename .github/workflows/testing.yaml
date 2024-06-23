@@ -1,4 +1,4 @@
-name: 'Continuous Integration Pipeline'
+name: 'Testing'
 
 on:
   workflow_dispatch:
@@ -9,25 +9,19 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-
 defaults:
   run:
     shell: bash
 
 jobs:
-  setup:
-    name: Set up required tools
+  lint:
+    name: Lint Helm Charts
     runs-on: ubuntu-latest
     steps:
-      # - name: Setup Go
-      #   uses: actions/setup-go@v5
-      #   with:
-      #     go-version: '>=1.18.0'
-
-      # - name: Install CFSSL
-      #   run: go install github.com/cloudflare/cfssl/cmd/...@latest
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Helm
         uses: azure/setup-helm@v4.2.0
@@ -41,26 +35,7 @@ jobs:
           check-latest: true
 
       - name: Set up Chart-Testing
-        uses: helm/chart-testing-action@v2.7.0
-
-      - name: Set up Kind
-        uses: helm/kind-action@v1
-        with:
-          install_only: true
-
-      # - name: Setup Kubectl, Helm and Helmfile
-      #   uses: mamezou-tech/setup-helmfile@v2.0.0
-
-      # - name: Create the local Kind Kubernetes cluster
-      #   run: make dev-cluster
-
-  integrations:
-    name: Run integration tests
-    runs-on: ubuntu-latest
-    needs: ['setup']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        uses: helm/chart-testing-action@v2.6.1
 
       - name: Run chart-testing (list-changed)
         id: ct-list-changed
@@ -75,11 +50,48 @@ jobs:
         run: |
           ct lint --config config/ct-config.yaml
 
+  lint-artifacthub:
+    name: Lint Helm Charts with ArtifactHub Linter
+    runs-on: ubuntu-latest
+    container:
+      image: public.ecr.aws/artifacthub/ah:v1.14.0
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run ah lint
+        working-directory: charts
+        run: ah lint
+
+  test:
+    name: Test Helm Charts
+    needs: ['lint', 'lint-artifacthub']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: v3.15.1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          check-latest: true
+
+      - name: Set up Chart-Testing
+        uses: helm/chart-testing-action@v2.6.1
+
       - name: Run kind to create a Kubernetes cluster
         if: steps.ct-list-changed.outputs.changed == 'true'
         uses: helm/kind-action@v1
         with:
-          config: k8s/cluster/kind-config.yaml
+          config: config/k8s/cluster/kind-config.yaml
 
       - name: Run chart-testing (install)
         if: steps.ct-list-changed.outputs.changed == 'true'

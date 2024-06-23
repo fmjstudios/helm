@@ -1,17 +1,10 @@
-name: 'Lint the Code Base with Superlinter'
+name: 'Run Super-Linter'
 
-on:
-  push:
-  pull_request:
-
-permissions:
-  contents: read
-  packages: read
-  statuses: write
+on: ['push', 'pull_request']
 
 jobs:
   lint:
-    name: Lint
+    name: Super-Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
