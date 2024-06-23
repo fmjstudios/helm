@@ -15,6 +15,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
+      pages: write
       contents: write
       packages: write
       id-token: write
@@ -76,7 +77,7 @@ jobs:
 
       - name: Push charts to GHCR
         run: |
-          for pkg in .cr-release-packages/*; do
+          for pkg in .cr-release-packages/*.tgz; do
             if [ -z "${pkg:-}" ]; then
               break
             fi
