@@ -19,7 +19,7 @@ spec:
   {{- if or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort")}}
   externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
   {{- end }}
-  {{- if (semverCompare ">=1.22-0" (.Capabilities.KubeVersion)) }}
+  {{- if (semverCompare ">=1.22-0" (.Capabilities.KubeVersion.GitVersion)) }}
   internalTrafficPolicy: {{ .Values.service.internalTrafficPolicy }}
   {{- end }}
   {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerIP))}}

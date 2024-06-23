@@ -5,7 +5,7 @@ metadata:
   name: {{ include "uptimeKuma.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-  {{ include "uptimeKuma.labels" . | nindent 4 }}
+    {{- include "uptimeKuma.labels" . | nindent 4 }}
     app.kubernetes.io/component: uptime-kuma
 rules:
   {{- if .Values.rbac.rules }}
@@ -23,7 +23,7 @@ kind: RoleBinding
 metadata:
   name: {{ include "uptimeKuma.fullname" . }}
   labels:
-  {{ include "uptimeKuma.labels" . | nindent 4 }}
+    {{- include "uptimeKuma.labels" . | nindent 4 }}
     app.kubernetes.io/component: uptime-kuma
 roleRef:
   apiGroup: rbac.authorization.k8s.io

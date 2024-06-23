@@ -14,15 +14,24 @@ on [Docker Hub](https://hub.docker.com/r/louislam/uptime-kuma).
 > in-depth [documentation](https://github.com/louislam/uptime-kuma/wiki)
 > and [configuration guides](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables).
 
-# TL;DR
+# ✨ TL;DR
+
+_Repository-based installation_
 
 ```shell
-helm install my-release oci://ghcr.io/fmjstudios/helm/uptime-kuma:1.2.3
+helm repo add fmjstudios https://fmjstudios.github.io/helm
+helm install my-uptime-kuma fmjstudios/uptime-kuma
+```
+
+_OCI-Registry-based installation_
+
+```shell
+helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.0
 ```
 
 # Introduction
 
-This chart bootstraps a
+This chart bootstraps an
 Uptime-Kuma [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 or [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
 a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
@@ -131,20 +140,20 @@ is configureble via the Image Parameters.
 
 ### RBAC parameters
 
-| Name          | Description                             | Value   |
-|---------------|-----------------------------------------|---------|
-| `rbac.create` | Whether or not to create RBAC resources | `false` |
-| `rbac.rules`  | Extra rules to add to the Role          | `[]`    |
+| Name          | Description                      | Value  |
+|---------------|----------------------------------|--------|
+| `rbac.create` | Whether to create RBAC resources | `true` |
+| `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
-| Name                         | Description                                                                   | Value   |
-|------------------------------|-------------------------------------------------------------------------------|---------|
-| `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
-| `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
-| `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
-| `serviceAccount.name`        | A custom name for the service account, otherwise vaultwarden.fullname is used | `""`    |
-| `serviceAccount.secrets`     | A list of secrets mountable by this service account                           | `[]`    |
+| Name                         | Description                                                                  | Value   |
+|------------------------------|------------------------------------------------------------------------------|---------|
+| `serviceAccount.create`      | Whether a service account should be created                                  | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                               | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                    | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise uptimeKuma.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                          | `[]`    |
 
 ### Liveness Probe parameters
 
@@ -190,19 +199,19 @@ is configureble via the Image Parameters.
 
 | Name                | Description                                           | Value |
 |---------------------|-------------------------------------------------------|-------|
-| `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
-| `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
+| `resources`         | The resource limits/requests for the Uptime-Kuma pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Uptime-Kuma server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
 | `tolerations`       | Tolerations for pod assignment                        | `[]`  |
 | `affinity`          | Affinity for pod assignment                           | `{}`  |
-| `strategy`          | Specify a deployment strategy for the Vaultwarden pod | `{}`  |
-| `podAnnotations`    | Extra annotations for the Vaultwarden pod             | `{}`  |
-| `podLabels`         | Extra labels for the Vaultwarden pod                  | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Uptime-Kuma pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Uptime-Kuma pod             | `{}`  |
+| `podLabels`         | Extra labels for the Uptime-Kuma pod                  | `{}`  |
 | `priorityClassName` | The name of an existing PriorityClass                 | `""`  |
 
 ### Security context settings
 
 | Name                 | Description                                       | Value |
 |----------------------|---------------------------------------------------|-------|
-| `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
+| `podSecurityContext` | Security context settings for the Uptime-Kuma pod | `{}`  |
 | `securityContext`    | General security context settings for             | `{}`  |
