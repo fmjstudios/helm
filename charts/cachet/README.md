@@ -1,21 +1,30 @@
 # FMJ Studios - Cachet Helm Chart <img src="https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="175" height="175" align="right" loading="lazy">
 
-
-Cachet is an open-source status page system designed to help you keep track of your system status and share it with your 
-user base. It is built to be responsive and works seamlessly across different devices. It is perfect for businesses and 
-organizations of all sizes that want to maintain transparency about their system's status with their users, especially 
+Cachet is an open-source status page system designed to help you keep track of your system status and share it with your
+user base. It is built to be responsive and works seamlessly across different devices. It is perfect for businesses and
+organizations of all sizes that want to maintain transparency about their system's status with their users, especially
 in cases of downtime or maintenance. As an open-source project, Cachet is freely available for self-hosting.
 
-It delivers all of these features within a single Docker image available on [Docker Hub](https://hub.docker.com/r/cachethq/docker/).
+It delivers all of these features within a single Docker image available
+on [Docker Hub](https://hub.docker.com/r/cachethq/docker/).
 
 > Head to the [Cachet GitHub Repository](https://github.com/cachethq/cachet) or
 > their [Website](https://cachethq.io/) for in-depth [documentation](https://docs.cachethq.io/introduction.html)
 > and [configuration guides](https://docs.cachethq.io/installation/docker.html).
 
-# TL;DR
+# ✨ TL;DR
+
+_Repository-based installation_
 
 ```shell
-helm install my-release oci://ghcr.io/fmjstudios/helm/cachet:1.2.3
+helm repo add fmjstudios https://fmjstudios.github.io/helm
+helm install my-vaultwarden fmjstudios/cachet
+```
+
+_OCI-Registry-based installation_
+
+```shell
+helm install oci://ghcr.io/fmjstudios/helm/cachet:0.1.0
 ```
 
 # Introduction
@@ -28,49 +37,52 @@ Ingress needs to be explicitly enabled. Lastly the chart configures
 a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if
 enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
-The chart supports the configuration of all [Cachet environment variables](https://docs.cachethq.io/installation/docker.html)
-via the `cachet` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image
+The chart supports the configuration of
+all [Cachet environment variables](https://docs.cachethq.io/installation/docker.html)
+via the `cachet` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+configurable via the Image
 Parameters.
 
 ## Parameters
 
-### Cachet Image parameters
+### Image parameters
 
-| Name                | Description                                                         | Value               |
-| ------------------- | ------------------------------------------------------------------- | ------------------- |
-| `image.registry`    | The Docker registry to pull the image from                          | `docker.io`         |
-| `image.repository`  | The registry repository to pull the image from                      | `fmjstudios/cachet` |
-| `image.tag`         | The image tag to pull                                               | `2.4.1`             |
-| `image.digest`      | The image digest to pull                                            | `""`                |
-| `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`      |
-| `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                |
+| Name                | Description                                                         | Value             |
+|---------------------|---------------------------------------------------------------------|-------------------|
+| `image.registry`    | The Docker registry to pull the image from                          | `docker.io`       |
+| `image.repository`  | The registry repository to pull the image from                      | `cachethq/docker` |
+| `image.tag`         | The image tag to pull                                               | `2.3.15`          |
+| `image.digest`      | The image digest to pull                                            | `""`              |
+| `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`    |
+| `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`              |
 
-### Cachet Name overrides
+### Name overrides
 
 | Name               | Description                                     | Value |
-| ------------------ | ----------------------------------------------- | ----- |
+|--------------------|-------------------------------------------------|-------|
 | `nameOverride`     | String to partially override linkstack.fullname | `""`  |
 | `fullnameOverride` | String to fully override linkstack.fullname     | `""`  |
 
 ### Cachet Configuration parameters
 
 | Name                                     | Description                                                               | Value        |
-| ---------------------------------------- | ------------------------------------------------------------------------- | ------------ |
+|------------------------------------------|---------------------------------------------------------------------------|--------------|
 | `cachet.url`                             | The public facing URL for the application                                 | `""`         |
 | `cachet.env`                             | Set the environment the application should run within                     | `production` |
 | `cachet.debug`                           | Whether the app should be run in debug mode                               | `false`      |
 | `cachet.emoji`                           | Enable GitHub Emoji's                                                     | `false`      |
+| `cachet.beacon`                          | Whether or not to enable Cachet's telemetry                               | `true`       |
 | `cachet.githubToken.value`               | The GitHub API token                                                      | `""`         |
 | `cachet.githubToken.existingSecret.name` | The name of an existing Secret containing the token                       | `""`         |
 | `cachet.githubToken.existingSecret.key`  | The key name within the previously named existingSecret                   | `""`         |
-| `cachet.drivers.cache`                   | The driver used to support caching. `apc` or `redis`.                     | `apc`        |
-| `cachet.drivers.session`                 | The driver used to support sessions. `apc` or `redis`.                    | `apc`        |
-| `cachet.drivers.queue`                   | The driver used to support queues                                         | `sync`       |
+| `cachet.drivers.cache`                   | The driver used to support caching. `apc`, `file` or `database`.          | `apc`        |
+| `cachet.drivers.session`                 | The driver used to support sessions. `apc`, `file` or `database`.         | `apc`        |
+| `cachet.drivers.queue`                   | The driver used to support queues. `sync` or `database`.                  | `sync`       |
 | `cachet.drivers.mail`                    | The driver used to support queues                                         | `smtp`       |
 | `cachet.key.value`                       | The application key for encryption (do not change after installation)     | `""`         |
 | `cachet.key.existingSecret.name`         | The name of an existing Secret containing the app key                     | `""`         |
 | `cachet.key.existingSecret.key`          | The key name within the previously named existingSecret                   | `""`         |
-| `cachet.database.driver`                 | The database driver to use `sqlite`, `mysql` or `postgresql`              | `postgresql` |
+| `cachet.database.driver`                 | The database driver to use `sqlite`, `mysql` or `pgsql`                   | `pgsql`      |
 | `cachet.database.host`                   | The database host, or path in case of `sqlite`                            | `""`         |
 | `cachet.database.port`                   | The database port, ignored in case of `sqlite`                            | `""`         |
 | `cachet.database.name`                   | The database name                                                         | `""`         |
@@ -92,21 +104,21 @@ Parameters.
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-| ----------------------- | --------------------------------------- | ----- |
+|-------------------------|-----------------------------------------|-------|
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
-### Secret parameters
+### Common Secret parameters
 
-| Name                 | Description                                                   | Value |
-| -------------------- | ------------------------------------------------------------- | ----- |
-| `secret.annotations` | Common annotations for the DB, Mail and GitHub Token secrets  | `{}`  |
-| `secret.labels`      | Common extra labels for the DB, Mail and GitHub Token secrets | `{}`  |
+| Name                 | Description                                                        | Value |
+|----------------------|--------------------------------------------------------------------|-------|
+| `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
+| `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                      | Value   |
-| --------------------- | ---------------------------------------------------------------- | ------- |
+|-----------------------|------------------------------------------------------------------|---------|
 | `ingress.enabled`     | Whether to enable Ingress                                        | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                    | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist              | `""`    |
@@ -116,35 +128,46 @@ Parameters.
 
 ### Service parameters
 
-| Name                     | Description                                      | Value       |
-| ------------------------ | ------------------------------------------------ | ----------- |
-| `service.type`           | The type of service to create for the deployment | `ClusterIP` |
-| `service.port`           | The port to use on the service                   | `8080`      |
-| `service.annotations`    | Annotations for the service resource             | `{}`        |
-| `service.labels`         | Labels for the service resource                  | `{}`        |
-| `service.ipFamilyPolicy` | The Kubernetes ipFamilyPolicy                    | `""`        |
+| Name                               | Description                                                                             | Value       |
+|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
+| `service.type`                     | The type of service to create                                                           | `ClusterIP` |
+| `service.port`                     | The port to use on the service                                                          | `80`        |
+| `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
+| `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
+| `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
+| `service.labels`                   | Labels for the service resource                                                         | `{}`        |
+| `service.externalTrafficPolicy`    | The external traffic policy for the service                                             | `Cluster`   |
+| `service.internalTrafficPolicy`    | The internal traffic policy for the service                                             | `Cluster`   |
+| `service.clusterIP`                | Define a static cluster IP for the service                                              | `""`        |
+| `service.loadBalancerIP`           | Set the Load Balancer IP                                                                | `""`        |
+| `service.loadBalancerClass`        | Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific) | `""`        |
+| `service.loadBalancerSourceRanges` | Service Load Balancer source ranges                                                     | `[]`        |
+| `service.externalIPs`              | Service External IPs                                                                    | `[]`        |
+| `service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP"                    | `None`      |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                             | `{}`        |
+| `service.ipFamilyPolicy`           | The ipFamilyPolicy                                                                      | `{}`        |
 
 ### RBAC parameters
 
-| Name          | Description                             | Value  |
-| ------------- | --------------------------------------- | ------ |
-| `rbac.create` | Whether or not to create RBAC resources | `true` |
-| `rbac.rules`  | Extra rules to add to the Role          | `[]`   |
+| Name          | Description                      | Value  |
+|---------------|----------------------------------|--------|
+| `rbac.create` | Whether to create RBAC resources | `true` |
+| `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
-### Cachet Service Account parameters
+### Service Account parameters
 
-| Name                         | Description                                                                 | Value   |
-| ---------------------------- | --------------------------------------------------------------------------- | ------- |
-| `serviceAccount.create`      | Whether or not a service account should be created                          | `true`  |
-| `serviceAccount.automount`   | Whether or not to automount the service account token                       | `false` |
-| `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`    |
-| `serviceAccount.name`        | A custom name for the service account, otherwise linkstack.fullname is used | `""`    |
-| `serviceAccount.secrets`     | A list of secrets mountable by this service account                         | `[]`    |
+| Name                         | Description                                                              | Value   |
+|------------------------------|--------------------------------------------------------------------------|---------|
+| `serviceAccount.create`      | Whether a service account should be created                              | `true`  |
+| `serviceAccount.automount`   | Whether to automount the service account token                           | `false` |
+| `serviceAccount.annotations` | Annotations to add to the service account                                | `{}`    |
+| `serviceAccount.name`        | A custom name for the service account, otherwise cachet.fullname is used | `""`    |
+| `serviceAccount.secrets`     | A list of secrets mountable by this service account                      | `[]`    |
 
-### Cachet Liveness Probes
+### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-| ----------------------------------- | ----------------------------------------------------------- | ------- |
+|-------------------------------------|-------------------------------------------------------------|---------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -152,10 +175,10 @@ Parameters.
 | `livenessProbe.successThreshold`    | Configure the success threshold for the liveness probe      | `1`     |
 | `livenessProbe.failureThreshold`    | Configure the failure threshold for the liveness probe      | `10`    |
 
-### Cachet Readiness Probes
+### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-| ------------------------------------ | ------------------------------------------------------------ | ------- |
+|--------------------------------------|--------------------------------------------------------------|---------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -163,10 +186,10 @@ Parameters.
 | `readinessProbe.successThreshold`    | Configure the success threshold for the readiness probe      | `1`     |
 | `readinessProbe.failureThreshold`    | Configure the failure threshold for the readiness probe      | `3`     |
 
-### Cachet Startup Probes
+### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-| ---------------------------------- | ---------------------------------------------------------- | ------- |
+|------------------------------------|------------------------------------------------------------|---------|
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -174,38 +197,38 @@ Parameters.
 | `startupProbe.successThreshold`    | Configure the success threshold for the startup probe      | `1`     |
 | `startupProbe.failureThreshold`    | Configure the failure threshold for the startup probe      | `10`    |
 
-### Pod disruption budget parameters
+### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------|--------|
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
-| Name                 | Description                                            | Value |
-| -------------------- | ------------------------------------------------------ | ----- |
-| `resources`          | The resource limits/requests for the Cachet pod        | `{}`  |
-| `initContainers`     | Define extra initContainers for the main Cachet server | `[]`  |
-| `nodeSelector`       | Node labels for pod assignment                         | `{}`  |
-| `tolerations`        | Tolerations for pod assignment                         | `[]`  |
-| `affinity`           | Affinity for pod assignment                            | `{}`  |
-| `strategy`           | Specify a deployment strategy for the Cachet pod       | `{}`  |
-| `podAnnotations`     | Extra annotations for the Cachet pod                   | `{}`  |
-| `podLabels`          | Extra labels for the Cachet pod                        | `{}`  |
-| `priorityClassName`  | The name of an existing PriorityClass                  | `""`  |
-| `podSecurityContext` | Security context settings for the Cachet pod           | `{}`  |
+| Name                | Description                                      | Value |
+|---------------------|--------------------------------------------------|-------|
+| `resources`         | The resource limits/requests for the Cachet pod  | `{}`  |
+| `initContainers`    | Define initContainers for the main Cachet server | `[]`  |
+| `nodeSelector`      | Node labels for pod assignment                   | `{}`  |
+| `tolerations`       | Tolerations for pod assignment                   | `[]`  |
+| `affinity`          | Affinity for pod assignment                      | `{}`  |
+| `strategy`          | Specify a deployment strategy for the Cachet pod | `{}`  |
+| `podAnnotations`    | Extra annotations for the Cachet pod             | `{}`  |
+| `podLabels`         | Extra labels for the Cachet pod                  | `{}`  |
+| `priorityClassName` | The name of an existing PriorityClass            | `""`  |
 
 ### Security context settings
 
-| Name              | Description                           | Value |
-| ----------------- | ------------------------------------- | ----- |
-| `securityContext` | General security context settings for | `{}`  |
+| Name                 | Description                                  | Value |
+|----------------------|----------------------------------------------|-------|
+| `podSecurityContext` | Security context settings for the Cachet pod | `{}`  |
+| `securityContext`    | General security context settings for        | `{}`  |
 
 ### Bitnami&reg; PostgreSQL parameters
 
 | Name                                 | Description                                                                                            | Value      |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------ | ---------- |
+|--------------------------------------|--------------------------------------------------------------------------------------------------------|------------|
 | `postgresql.enabled`                 | Enable or disable the PostgreSQL subchart                                                              | `true`     |
 | `postgresql.auth.enablePostgresUser` | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`     |
 | `postgresql.auth.postgresPassword`   | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres` |
@@ -217,7 +240,7 @@ Parameters.
 ### PostgreSQL Primary parameters
 
 | Name                                           | Description                                                    | Value               |
-| ---------------------------------------------- | -------------------------------------------------------------- | ------------------- |
+|------------------------------------------------|----------------------------------------------------------------|---------------------|
 | `postgresql.primary.name`                      | Name of the primary database (eg primary, master, leader, ...) | `primary`           |
 | `postgresql.primary.persistence.enabled`       | Enable PostgreSQL Primary data persistence using PVC           | `true`              |
 | `postgresql.primary.persistence.existingClaim` | Name of an existing PVC to use                                 | `""`                |
@@ -228,7 +251,7 @@ Parameters.
 ### Bitnami&reg; Redis parameters
 
 | Name                  | Description                                                            | Value        |
-| --------------------- | ---------------------------------------------------------------------- | ------------ |
+|-----------------------|------------------------------------------------------------------------|--------------|
 | `redis.enabled`       | Enable or disable the Redis&reg; subchart                              | `false`      |
 | `redis.architecture`  | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone` |
 | `redis.auth.password` | Redis&reg; password                                                    | `""`         |

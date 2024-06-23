@@ -19,19 +19,22 @@ spec:
       annotations:
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "cachet.selectorLabels" . | nindent 8 }}
-      {{- if .Values.podLabels -}}
+        {{- if .Values.podLabels -}}
         {{- toYaml .Values.podLabels | nindent 8 }}
-      {{- end }}
+        {{- end }}
     spec:
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
         {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "cachet.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ include "cachet.image" . }}
@@ -107,7 +110,7 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           {{- end }}
           {{- if .Values.readinessProbe.enabled }}
-          livenessProbe:
+          readinessProbe:
             httpGet:
               path: /api/v1/ping
               port: http
@@ -118,7 +121,7 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           {{- end }}
           {{- if .Values.startupProbe.enabled }}
-          livenessProbe:
+          startupProbe:
             httpGet:
               path: /api/v1/ping
               port: http

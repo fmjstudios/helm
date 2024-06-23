@@ -4,16 +4,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## @section Cachet Image parameters
+## @section Image parameters
 ##
 
 ## Cachet Server Image
 ## ref: https://hub.docker.com/r/linkstackorg/linkstack
-## @param image.registry [default: docker.io] The Docker registry to pull the image from
-## @param image.repository [default: fmjstudios/cachet] The registry repository to pull the image from
-## @param image.tag [default: 2.4.1] The image tag to pull
-## @param image.digest [string] The image digest to pull
-## @param image.pullPolicy [default: IfNotPresent] The Kubernetes image pull policy
+## @param image.registry The Docker registry to pull the image from
+## @param image.repository The registry repository to pull the image from
+## @param image.tag The image tag to pull
+## @param image.digest The image digest to pull
+## @param image.pullPolicy The Kubernetes image pull policy
 ## @param image.pullSecrets A list of secrets to use for pulling images from private registries
 
 image:
@@ -35,7 +35,7 @@ image:
   ##
   pullSecrets: []
 
-## @section Cachet Name overrides
+## @section Name overrides
 ##
 
 ## @param nameOverride String to partially override linkstack.fullname
@@ -188,7 +188,7 @@ cachet:
 ## @section ConfigMap parameters
 ##
 
-## FMJ Studios Cachet ConfigMap settings
+## Cachet ConfigMap settings
 ## @param configMap.annotations Annotations for the ConfigMap resource
 ## @param configMap.labels Extra Labels for the ConfigMap resource
 
@@ -196,12 +196,12 @@ configMap:
   annotations: { }
   labels: { }
 
-## @section Secret parameters
+## @section Common Secret parameters
 ##
 
-## FMJ Studios Cachet Secret settings
-## @param secret.annotations Common annotations for the DB, Mail and GitHub Token secrets
-## @param secret.labels Common extra labels for the DB, Mail and GitHub Token secrets
+## Cachet Common Secret settings
+## @param secret.annotations Common annotations for the SMTP, HIBP, Admin and Database secrets
+## @param secret.labels Common extra labels for the SMTP, HIBP, Admin and Database secrets
 
 secret:
   annotations: { }
@@ -210,10 +210,10 @@ secret:
 ## @section Ingress parameters
 ##
 
-## FMJ Studios Cachet Ingress settings
-## @param ingress.enabled [default: false] Whether to enable Ingress
-## @param ingress.className [string] The IngressClass to use for the pod's ingress
-## @param ingress.whitelist [string] A comma-separated list of IP addresses to whitelist
+## Cachet Ingress settings
+## @param ingress.enabled Whether to enable Ingress
+## @param ingress.className The IngressClass to use for the pod's ingress
+## @param ingress.whitelist A comma-separated list of IP addresses to whitelist
 ## @param ingress.annotations Annotations for the Ingress resource
 ## @param ingress.tls A list of hostnames and secret names to use for TLS
 ## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with cachet.url)
@@ -239,57 +239,115 @@ ingress:
 ## @section Service parameters
 ##
 
-## FMJ Studios Cachet Service settings
-## @param service.type [default: ClusterIP] The type of service to create for the deployment
-## @param service.port [default: 8080] The port to use on the service
-## @param service.annotations Annotations for the service resource
-## @param service.labels Labels for the service resource
-## @param service.ipFamilyPolicy The Kubernetes ipFamilyPolicy
-
+## Cachet Service settings
 service:
+  ## @param service.type [default: ClusterIP] The type of service to create
+  ##
   type: ClusterIP
-  port: 8080
+  ## @param service.port [default: 80] The port to use on the service
+  ##
+  port: 80
+  ## @param service.nodePort [default: 30080] The Node port to use on the service
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ## NOTE: choose port between <30000-32767>
+  ##
+  nodePort: 30080
+  ## @param service.extraPorts Extra ports to add to the service
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
+  ## e.g.
+  ## extraPorts:
+  ##   - name: https
+  ##     protocol: TCP
+  ##     port: 443
+  ##     targetPort: 9377
+  ##
+  extraPorts: []
+  ## @param service.annotations [object] Annotations for the service resource
+  ##
   annotations: { }
+  ## @param service.labels [object] Labels for the service resource
+  ##
   labels: { }
+  ## @param service.externalTrafficPolicy [default: Cluster] The external traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+  ## @param service.internalTrafficPolicy [default: Cluster] The internal traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  internalTrafficPolicy: Cluster
+  ## @param service.clusterIP [string] Define a static cluster IP for the service
+  ##
+  clusterIP: ""
+  ## @param service.loadBalancerIP Set the Load Balancer IP
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ##
+  loadBalancerIP: ""
+  ## @param service.loadBalancerClass Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+  ##
+  loadBalancerClass: ""
+  ## @param service.loadBalancerSourceRanges Service Load Balancer source ranges
+  ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ## e.g.
+  ## loadBalancerSourceRanges:
+  ##   - 10.10.10.0/24
+  ##
+  loadBalancerSourceRanges: []
+  ## @param service.externalIPs Service External IPs
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  ## e.g.
+  ## externalIPs:
+  ##   - 10.10.10.1
+  ##   - 201.22.30.1
+  ##
+  externalIPs: []
+  ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+  ## If "ClientIP", consecutive client requests will be directed to the same Pod
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+  ##
+  sessionAffinity: None
+  ## @param service.sessionAffinityConfig Additional settings for the sessionAffinity
+  ## sessionAffinityConfig:
+  ##   clientIP:
+  ##     timeoutSeconds: 300
+  ##
+  sessionAffinityConfig: { }
+  ## @param service.ipFamilyPolicy [object] The ipFamilyPolicy
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
+  ##
   ipFamilyPolicy: ""
 
 ## @section RBAC parameters
 ##
 
 ## Cachet RBAC settings
-## @param rbac.create [default: true] Whether or not to create RBAC resources
+## @param rbac.create Whether to create RBAC resources
 ## @param rbac.rules Extra rules to add to the Role
 ##
 rbac:
   create: true
   rules: []
 
-## @section Cachet Service Account parameters
+## @section Service Account parameters
 ##
 
-## FMJ Studios Cachet Service Account settings
+## Cachet Service Account settings
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-## @param serviceAccount.create [default: true] Whether or not a service account should be created
-## @param serviceAccount.automount [default: false] Whether or not to automount the service account token
-## @param serviceAccount.annotations [object] Annotations to add to the service account
-## @param serviceAccount.name [string] A custom name for the service account, otherwise linkstack.fullname is used
+## @param serviceAccount.create Whether a service account should be created
+## @param serviceAccount.automount Whether to automount the service account token
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name A custom name for the service account, otherwise cachet.fullname is used
 ## @param serviceAccount.secrets A list of secrets mountable by this service account
 ##
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Whether to automount the ServiceAccount token into Pod using this SA
   automount: false
-  # Annotations to add to the service account
   annotations: { }
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
-  # The list of secrets mountable by this service account.
-  # See https://kubernetes.io/docs/reference/labels-annotations-taints/#enforce-mountable-secrets
   secrets: []
 
-## @section Cachet Liveness Probes
+## @section Liveness Probe parameters
 ##
 
 ## Cachet Liveness Probe
@@ -315,7 +373,7 @@ livenessProbe:
   ##
   failureThreshold: 10
 
-## @section Cachet Readiness Probes
+## @section Readiness Probe parameters
 ##
 
 ## Cachet Readiness Probe
@@ -341,7 +399,7 @@ readinessProbe:
   ##
   failureThreshold: 3
 
-## @section Cachet Startup Probes
+## @section Startup Probe parameters
 ##
 
 ## Cachet Startup Probe
@@ -367,23 +425,23 @@ startupProbe:
   ##
   failureThreshold: 10
 
-## @section Pod disruption budget parameters
+## @section PodDisruptionBudget parameters
 ##
 
-## FMJ Studios Cachet pod disruption budget settings
+## Cachet pod disruption budget settings
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
 ## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
-
+##
 podDisruptionBudget:
-  enabled: true
+  enabled: false
   minAvailable: 1
   # maxUnavailable:
 
 ## @section Pod settings
 ##
 
-## FMJ Studios Cachet resource settings
+## Cachet resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources The resource limits/requests for the Cachet pod
 ##
@@ -396,9 +454,9 @@ resources:
 #   cpu: 100m
 #   memory: 128Mi
 
-## Cachet initContainers
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers Define extra initContainers for the main Cachet server
+## @param initContainers Define initContainers for the main Cachet server
+##
 initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
@@ -440,30 +498,32 @@ podLabels: { }
 ##
 priorityClassName: ""
 
+## @section Security context settings
+##
+
 ## @param podSecurityContext Security context settings for the Cachet pod
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
-podSecurityContext: { }
-#  fsGroup: 1001
-#  supplementalGroups:
-#    - 1001
-
-## @section Security context settings
-##
+podSecurityContext:
+  { }
+# fsGroup: 1001
+# supplementalGroups:
+#   - 1001
 
 ## @param securityContext General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
-securityContext: { }
-#  runAsGroup: 1001
-#  runAsUser: 1001
-#  allowPrivilegeEscalation: false
-#  privileged: false
-#  runAsNonRoot: true
-#  readOnlyRootFilesystem: false
-#  capabilities:
-#    drop:
-#      - ALL
+securityContext:
+  { }
+# allowPrivilegeEscalation: false
+# privileged: false
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsGroup: 1001
+# runAsUser: 1001
+# capabilities:
+#   drop:
+#     - ALL
 
 
 ## @section Bitnami&reg; PostgreSQL parameters
