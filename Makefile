@@ -175,7 +175,7 @@ endef
 .PHONY: all
 ifeq ($(PRINT_HELP), y)
 all:
-	echo "$$BUILD_INFO"
+	echo "$$ALL_INFO"
 else
 all: dist-dir
 	for chart in $(ALL_CHARTS); do \
