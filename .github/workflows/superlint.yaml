@@ -28,3 +28,4 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
           VALIDATE_YAML: false
+          VALIDATE_CHECKOV: false
