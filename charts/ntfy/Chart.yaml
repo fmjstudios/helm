@@ -7,6 +7,9 @@ annotations:
   artifacthub.io/maintainers: |
     - name: FMJdev
       email: info@fmj.dev
+  artifacthub.io/signKey: |
+    fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+    url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
   artifacthub.io/prerelease: "false"
   artifacthub.io/images: |
     - name: ntfy
