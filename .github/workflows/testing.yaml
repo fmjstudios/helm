@@ -5,9 +5,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - charts/**
   pull_request:
     branches:
       - main
+    paths:
+      - charts/**
 
 defaults:
   run:
@@ -53,6 +57,9 @@ jobs:
   lint-artifacthub:
     name: Lint Helm Charts with ArtifactHub Linter
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: sh
     container:
       image: public.ecr.aws/artifacthub/ah:v1.14.0
       options: --user 1001
