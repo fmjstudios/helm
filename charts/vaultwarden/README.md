@@ -1,30 +1,58 @@
 # FMJ Studios - Vaultwarden Helm Chart <img src="https://raw.githubusercontent.com/dani-garcia/vaultwarden/890e668071cffe2833834348e19bbef3c061d014/resources/vaultwarden-icon.svg" alt="Vaultwarden Logo" width="175" height="175" align="right" />
 
-Vaultwarden is an unofficial Bitwarden server implementation written in Rust. It is compatible with the [official Bitwarden clients](https://bitwarden.com/download/), and is ideal for self-hosted deployments where running the official resource-heavy service is undesirable. Vaultwarden is targeted towards individuals, families, and smaller organizations. Development of features that are mainly useful to larger organizations (e.g., single sign-on, directory syncing, etc.) is not a priority, though high-quality PRs that implement such features would be welcome. It delivers all of these features within a single Docker image available on [Docker Hub](https://hub.docker.com/r/vaultwarden/server).
+Vaultwarden is an unofficial Bitwarden server implementation written in Rust. It is compatible with
+the [official Bitwarden clients](https://bitwarden.com/download/), and is ideal for self-hosted deployments where
+running the official resource-heavy service is undesirable. Vaultwarden is targeted towards individuals, families, and
+smaller organizations. Development of features that are mainly useful to larger organizations (e.g., single sign-on,
+directory syncing, etc.) is not a priority, though high-quality PRs that implement such features would be welcome. It
+delivers all of these features within a single Docker image available
+on [Docker Hub](https://hub.docker.com/r/vaultwarden/server).
 
-> Head to the [Vaultwarden GitHub Repository](https://github.com/dani-garcia/vaultwarden) for in-depth [documentation](https://github.com/dani-garcia/vaultwarden/wiki) and [configuration templates](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template).
+> Head to the [Vaultwarden GitHub Repository](https://github.com/dani-garcia/vaultwarden) for
+> in-depth [documentation](https://github.com/dani-garcia/vaultwarden/wiki)
+> and [configuration templates](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template).
 
-# TL;DR
+# ✨ TL;DR
+
+_Repository-based installation_
 
 ```shell
-helm install my-release oci://ghcr.io/fmjstudios/helm/vaultwarden:1.2.3
+helm repo add fmjstudios https://fmjstudios.github.io/helm
+helm install my-vaultwarden fmjstudios/vaultwarden
+```
+
+_OCI-Registry-based installation_
+
+```shell
+helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:0.1.0
 ```
 
 # Introduction
 
-This chart bootstraps a Vaultwarden [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the Ingress needs to be explicitly enabled. Lastly the chart configures a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
+This chart bootstraps a
+Vaultwarden [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+or [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
+a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
+a [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+and [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) manifest is also created, whereas the
+Ingress needs to be explicitly enabled. Lastly the chart configures
+a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) if
+enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
-The chart supports the configuration of all [Vaultwarden environment variables](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) via the `vaultwarden` key in Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image Parameters.
+The chart supports the configuration of
+all [Vaultwarden environment variables](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) via
+the `vaultwarden` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+configurable via the Image Parameters.
 
 ## Parameters
 
 ### Image parameters
 
 | Name                | Description                                                         | Value                |
-| ------------------- | ------------------------------------------------------------------- | -------------------- |
+|---------------------|---------------------------------------------------------------------|----------------------|
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`          |
 | `image.repository`  | The registry repository to pull the image from                      | `vaultwarden/server` |
-| `image.tag`         | The image tag to pull                                               | `'1.30.1-alpine'`    |
+| `image.tag`         | The image tag to pull                                               | `1.30.5-alpine`      |
 | `image.digest`      | The image digest to pull                                            | `""`                 |
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`       |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                 |
@@ -32,20 +60,20 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### Name overrides
 
 | Name               | Description                                       | Value |
-| ------------------ | ------------------------------------------------- | ----- |
+|--------------------|---------------------------------------------------|-------|
 | `nameOverride`     | String to partially override vaultwarden.fullname | `""`  |
 | `fullnameOverride` | String to fully override vaultwarden.fullname     | `""`  |
 
 ### Workload overrides
 
 | Name   | Description                                                                   | Value         |
-| ------ | ----------------------------------------------------------------------------- | ------------- |
+|--------|-------------------------------------------------------------------------------|---------------|
 | `kind` | The kind of workload to deploy Vaultwarden as (`StatefulSet` or `Deployment`) | `StatefulSet` |
 
 ### Vaultwarden Configuration parameters
 
 | Name                                                     | Description                                                                                                       | Value                      |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------- |
+|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------|
 | `vaultwarden.domain`                                     | The domain of the Vaultwarden installation                                                                        | `""`                       |
 | `vaultwarden.web.enabled`                                | Whether or not to enable the Vaultwarden Web UI - enabled by default                                              | `true`                     |
 | `vaultwarden.web.folder`                                 | A custom folder from which to load assets for the Web UI - defaults to 'web-vault/'                               | `""`                       |
@@ -179,21 +207,21 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-| ----------------------- | --------------------------------------- | ----- |
+|-------------------------|-----------------------------------------|-------|
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Common Secret parameters
 
 | Name                 | Description                                                        | Value |
-| -------------------- | ------------------------------------------------------------------ | ----- |
+|----------------------|--------------------------------------------------------------------|-------|
 | `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
 | `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                              | Value   |
-| --------------------- | ------------------------------------------------------------------------ | ------- |
+|-----------------------|--------------------------------------------------------------------------|---------|
 | `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
@@ -204,7 +232,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -225,14 +253,14 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-| ------------- | -------------------------------- | ------ |
+|---------------|----------------------------------|--------|
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                                   | Value   |
-| ---------------------------- | ----------------------------------------------------------------------------- | ------- |
+|------------------------------|-------------------------------------------------------------------------------|---------|
 | `serviceAccount.create`      | Whether a service account should be created                                   | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                                | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                     | `{}`    |
@@ -242,7 +270,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-| ----------------------------------- | ----------------------------------------------------------- | ------- |
+|-------------------------------------|-------------------------------------------------------------|---------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -253,7 +281,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-| ------------------------------------ | ------------------------------------------------------------ | ------- |
+|--------------------------------------|--------------------------------------------------------------|---------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -264,7 +292,7 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-| ---------------------------------- | ---------------------------------------------------------- | ------- |
+|------------------------------------|------------------------------------------------------------|---------|
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -275,14 +303,14 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------|--------|
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                | Description                                           | Value |
-| ------------------- | ----------------------------------------------------- | ----- |
+|---------------------|-------------------------------------------------------|-------|
 | `resources`         | The resource limits/requests for the Vaultwarden pod  | `{}`  |
 | `initContainers`    | Define initContainers for the main Vaultwarden server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
@@ -296,6 +324,6 @@ The chart supports the configuration of all [Vaultwarden environment variables](
 ### Security context settings
 
 | Name                 | Description                                       | Value |
-| -------------------- | ------------------------------------------------- | ----- |
+|----------------------|---------------------------------------------------|-------|
 | `podSecurityContext` | Security context settings for the Vaultwarden pod | `{}`  |
 | `securityContext`    | General security context settings for             | `{}`  |

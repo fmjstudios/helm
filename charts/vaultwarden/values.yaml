@@ -9,12 +9,12 @@
 
 ## Vaultwarden Server Image
 ## ref: https://hub.docker.com/r/vaultwarden/server/tags
-## @param image.registry [string, default: docker.io] The Docker registry to pull the image from
-## @param image.repository [string, default: vaultwarden/server] The registry repository to pull the image from
-## @param image.tag [string, default: '1.30.1-alpine'] The image tag to pull
-## @param image.digest [string] The image digest to pull
-## @param image.pullPolicy [string, default: IfNotPresent] The Kubernetes image pull policy
-## @param image.pullSecrets [array] A list of secrets to use for pulling images from private registries
+## @param image.registry The Docker registry to pull the image from
+## @param image.repository The registry repository to pull the image from
+## @param image.tag The image tag to pull
+## @param image.digest The image digest to pull
+## @param image.pullPolicy The Kubernetes image pull policy
+## @param image.pullSecrets A list of secrets to use for pulling images from private registries
 
 image:
   registry: docker.io
@@ -918,7 +918,7 @@ service:
 ##
 
 ## Vaultwarden RBAC settings
-## @param rbac.create [default: true] Whether to create RBAC resources
+## @param rbac.create Whether to create RBAC resources
 ## @param rbac.rules Extra rules to add to the Role
 ##
 rbac:
@@ -930,11 +930,11 @@ rbac:
 
 ## Vaultwarden Service Account settings
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-## @param serviceAccount.create [default: true] Whether a service account should be created
-## @param serviceAccount.automount [default: false] Whether to automount the service account token
-## @param serviceAccount.annotations [object] Annotations to add to the service account
-## @param serviceAccount.name [string] A custom name for the service account, otherwise vaultwarden.fullname is used
-## @param serviceAccount.secrets [array] A list of secrets mountable by this service account
+## @param serviceAccount.create Whether a service account should be created
+## @param serviceAccount.automount Whether to automount the service account token
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name A custom name for the service account, otherwise vaultwarden.fullname is used
+## @param serviceAccount.secrets A list of secrets mountable by this service account
 ##
 serviceAccount:
   create: true
@@ -1039,7 +1039,7 @@ podDisruptionBudget:
 
 ## Vaultwarden resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources [object] The resource limits/requests for the Vaultwarden pod
+## @param resources The resource limits/requests for the Vaultwarden pod
 ##
 resources:
   { }
@@ -1051,26 +1051,26 @@ resources:
 #   memory: 128Mi
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-## @param initContainers [array] Define initContainers for the main Vaultwarden server
+## @param initContainers Define initContainers for the main Vaultwarden server
 ##
 initContainers: []
 
-## @param nodeSelector [object] Node labels for pod assignment
+## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##
 nodeSelector: { }
 
-## @param tolerations [array] Tolerations for pod assignment
+## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
 tolerations: []
 
-## @param affinity [object] Affinity for pod assignment
+## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
 affinity: { }
 
-## @param strategy [object] Specify a deployment strategy for the Vaultwarden pod
+## @param strategy Specify a deployment strategy for the Vaultwarden pod
 ##
 strategy:
   { }
@@ -1078,13 +1078,16 @@ strategy:
 #  rollingUpdate:
 #    maxUnavailable: 1
 
-## @param podAnnotations [object] Extra annotations for the Vaultwarden pod
+## @param podAnnotations Extra annotations for the Vaultwarden pod
 ##
 podAnnotations: { }
 
-## @param podLabels [object] Extra labels for the Vaultwarden pod
+## @param podLabels Extra labels for the Vaultwarden pod
 ##
 podLabels: { }
+#  pod-security.kubernetes.io/warn: privileged
+#  pod-security.kubernetes.io/audit: privileged
+#  pod-security.kubernetes.io/enforce: baseline
 
 ## @param priorityClassName The name of an existing PriorityClass
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
@@ -1094,7 +1097,7 @@ priorityClassName: ""
 ## @section Security context settings
 ##
 
-## @param podSecurityContext [object] Security context settings for the Vaultwarden pod
+## @param podSecurityContext Security context settings for the Vaultwarden pod
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
 podSecurityContext:
@@ -1103,7 +1106,7 @@ podSecurityContext:
 # supplementalGroups:
 #   - 1001
 
-## @param securityContext [object] General security context settings for
+## @param securityContext General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
 securityContext:

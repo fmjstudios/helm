@@ -5,7 +5,7 @@ metadata:
   name: {{ include "vaultwarden.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-  {{ include "vaultwarden.labels" . | nindent 4 }}
+    {{- include "vaultwarden.labels" . | nindent 4 }}
     app.kubernetes.io/component: vaultwarden
 rules:
   {{- if .Values.rbac.rules }}
@@ -23,7 +23,7 @@ kind: RoleBinding
 metadata:
   name: {{ include "vaultwarden.fullname" . }}
   labels:
-  {{ include "vaultwarden.labels" . | nindent 4 }}
+    {{- include "vaultwarden.labels" . | nindent 4 }}
     app.kubernetes.io/component: vaultwarden
 roleRef:
   apiGroup: rbac.authorization.k8s.io

@@ -6,7 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/component: vaultwarden
     {{- include "vaultwarden.labels" . | nindent 4 }}
+    {{- if .Values.configMap.labels }}
     {{- toYaml .Values.configMap.labels | nindent 4 }}
+    {{- end }}
   {{- if .Values.configMap.annotations }}
   annotations:
   {{- toYaml .Values.configMap.annotations | nindent 4 }}

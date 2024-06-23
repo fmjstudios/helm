@@ -7,9 +7,12 @@ replicas: 1
 selector:
   matchLabels:
     {{- include "vaultwarden.selectorLabels" . | nindent 6 }}
-{{- if .Values.strategy -}}
+{{- if eq (include "vaultwarden.resourceType" .) "Deployment" }}
+strategy:
+{{- else }}
 updateStrategy:
-{{- toYaml .Values.strategy | nindent 4 }}
+{{- end }}
+  {{- toYaml .Values.strategy | nindent 4 }}
 {{- end }}
 template:
   metadata:
@@ -17,13 +20,15 @@ template:
     annotations:
       checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      {{- if .Values.podAnnotations }}
       {{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
     {{- end }}
     labels:
       {{- include "vaultwarden.selectorLabels" . | nindent 8 }}
-    {{- if .Values.podLabels -}}
+      {{- if .Values.podLabels -}}
       {{- toYaml .Values.podLabels | nindent 8 }}
-    {{- end }}
+      {{- end }}
   spec:
     {{- if .Values.image.pullSecrets }}
     imagePullSecrets:
