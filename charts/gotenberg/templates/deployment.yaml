@@ -19,183 +19,210 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "gotenberg.selectorLabels" . | nindent 8 }}
-      {{- if .Values.podLabels -}}
+        {{- if .Values.podLabels -}}
         {{- toYaml .Values.podLabels | nindent 8 }}
-      {{- end }}
+        {{- end }}
     spec:
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
         {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "gotenberg.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-          - gotenberg
+            - gotenberg
           {{- /*
             API settings
           */}}
-          - --api-port={{ .Values.gotenberg.api.port }}
-          {{- if .Values.gotenberg.api.startTimeout }}
-          - --api-start-timeout={{ .Values.gotenberg.api.startTimeout }}
+            - --api-port={{ .Values.gotenberg.api.port }}
+          {{- if ne .Values.gotenberg.api.startTimeout "30s" }}
+            - --api-start-timeout={{ .Values.gotenberg.api.startTimeout }}
           {{- end }}
-          {{- if .Values.gotenberg.api.timeout }}
-          - --api-timeout={{ .Values.gotenberg.api.timeout }}
+          {{- if ne .Values.gotenberg.api.timeout "30s" }}
+            - --api-timeout={{ .Values.gotenberg.api.timeout }}
           {{- end }}
-          {{- if .Values.gotenberg.api.rootPath }}
-          - --api-root-path={{ .Values.gotenberg.api.rootPath }}
+          {{- if ne .Values.gotenberg.api.rootPath "/" }}
+            - --api-root-path={{ .Values.gotenberg.api.rootPath }}
           {{- end }}
           {{- if .Values.gotenberg.api.traceHeader }}
-          - --api-trace-header={{ .Values.gotenberg.api.traceHeader }}
+            - --api-trace-header={{ .Values.gotenberg.api.traceHeader }}
           {{- end }}
           {{- if .Values.gotenberg.api.disableHealthCheckLogging }}
-          - --api-disable-health-check-logging={{ .Values.gotenberg.api.disableHealthCheckLogging }}
+            - --api-disable-health-check-logging={{ .Values.gotenberg.api.disableHealthCheckLogging }}
+          {{- end }}
+          {{- /*
+            HTTP BasicAuth settings
+          */}}
+          {{- if .Values.gotenberg.basicAuth.enabled }}
+            - --api-enable-basic-auth={{ .Values.gotenberg.basicAuth.enabled }}
           {{- end }}
           {{- /*
             Chromium settings
           */}}
-          {{- if .Values.gotenberg.chromium.restartAfter }}
-          - --chromium-restart-after={{ .Values.gotenberg.chromium.restartAfter }}
+          {{- if ne .Values.gotenberg.chromium.restartAfter "0" }}
+            - --chromium-restart-after={{ .Values.gotenberg.chromium.restartAfter }}
+          {{- end }}
+          {{- if ne .Values.gotenberg.chromium.maxQueueSize "0" }}
+            - --chromium-max-queue-size={{ .Values.gotenberg.chromium.maxQueueSize }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.autoStart }}
-          - --chromium-auto-start={{ .Values.gotenberg.chromium.autoStart }}
+            - --chromium-auto-start={{ .Values.gotenberg.chromium.autoStart }}
           {{- end }}
-          {{- if .Values.gotenberg.chromium.startTimeout }}
-          - --chromium-start-timeout={{ .Values.gotenberg.chromium.startTimeout }}
+          {{- if ne .Values.gotenberg.chromium.startTimeout "20s" }}
+            - --chromium-start-timeout={{ .Values.gotenberg.chromium.startTimeout }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.allowFileAccessFromFiles }}
-          - --chromium-allow-file-access-from-files={{ .Values.gotenberg.chromium.allowFileAccessFromFiles }}
+            - --chromium-allow-file-access-from-files={{ .Values.gotenberg.chromium.allowFileAccessFromFiles }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.allowInsecureLocalhost }}
-          - --chromium-allow-insecure-localhost={{ .Values.gotenberg.chromium.allowInsecureLocalhost }}
+            - --chromium-allow-insecure-localhost={{ .Values.gotenberg.chromium.allowInsecureLocalhost }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.allowList }}
-          - --chromium-allow-list={{ .Values.gotenberg.chromium.allowList }}
+            - --chromium-allow-list={{ .Values.gotenberg.chromium.allowList }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.denyList }}
-          - --chromium-deny-list={{ .Values.gotenberg.chromium.denyList }}
+            - --chromium-deny-list={{ .Values.gotenberg.chromium.denyList }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.ignoreCertificateErrors }}
-          - --chromium-ignore-certificate-errors={{ .Values.gotenberg.chromium.ignoreCertificateErrors }}
+            - --chromium-ignore-certificate-errors={{ .Values.gotenberg.chromium.ignoreCertificateErrors }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.disableWebSecurity }}
-          - --chromium-disable-web-security={{ .Values.gotenberg.chromium.disableWebSecurity }}
+            - --chromium-disable-web-security={{ .Values.gotenberg.chromium.disableWebSecurity }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.incognito }}
-          - --chromium-incognito={{ .Values.gotenberg.chromium.incognito }}
+            - --chromium-incognito={{ .Values.gotenberg.chromium.incognito }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.hostResolverRules }}
-          - --chromium-host-resolver-rules={{ .Values.gotenberg.chromium.hostResolverRules }}
+            - --chromium-host-resolver-rules={{ .Values.gotenberg.chromium.hostResolverRules }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.proxyServer }}
-          - --chromium-proxy-server={{ .Values.gotenberg.chromium.proxyServer }}
+            - --chromium-proxy-server={{ .Values.gotenberg.chromium.proxyServer }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.clearCache }}
-          - --chromium-clear-cache={{ .Values.gotenberg.chromium.clearCache }}
+            - --chromium-clear-cache={{ .Values.gotenberg.chromium.clearCache }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.clearCookies }}
-          - --chromium-clear-cookies={{ .Values.gotenberg.chromium.clearCookies }}
+            - --chromium-clear-cookies={{ .Values.gotenberg.chromium.clearCookies }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.disableJavaScript }}
-          - --chromium-disable-javascript={{ .Values.gotenberg.chromium.disableJavaScript }}
+            - --chromium-disable-javascript={{ .Values.gotenberg.chromium.disableJavaScript }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.disableRoutes }}
-          - --chromium-disable-routes={{ .Values.gotenberg.chromium.disableRoutes }}
+            - --chromium-disable-routes={{ .Values.gotenberg.chromium.disableRoutes }}
           {{- end }}
           {{- /*
             LibreOffice settings
           */}}
-          {{- if .Values.gotenberg.libreOffice.restartAfter }}
-          - --libreoffice-restart-after={{ .Values.gotenberg.libreOffice.restartAfter }}
+          {{- if ne .Values.gotenberg.libreOffice.restartAfter "10" }}
+            - --libreoffice-restart-after={{ .Values.gotenberg.libreOffice.restartAfter }}
+          {{- end }}
+          {{- if ne .Values.gotenberg.libreOffice.maxQueueSize "0" }}
+            - --libreoffice-max-queue-size={{ .Values.gotenberg.libreOffice.maxQueueSize }}
           {{- end }}
           {{- if .Values.gotenberg.libreOffice.autoStart }}
-          - --libreoffice-auto-start={{ .Values.gotenberg.libreOffice.autoStart }}
+            - --libreoffice-auto-start={{ .Values.gotenberg.libreOffice.autoStart }}
           {{- end }}
-          {{- if .Values.gotenberg.libreOffice.startTimeout }}
-          - --libreoffice-start-timeout={{ .Values.gotenberg.libreOffice.startTimeout }}
+          {{- if ne .Values.gotenberg.libreOffice.startTimeout "20s" }}
+            - --libreoffice-start-timeout={{ .Values.gotenberg.libreOffice.startTimeout }}
           {{- end }}
           {{- if .Values.gotenberg.libreOffice.disableRoutes }}
-          - --libreoffice-disable-routes={{ .Values.gotenberg.libreOffice.disableRoutes }}
+            - --libreoffice-disable-routes={{ .Values.gotenberg.libreOffice.disableRoutes }}
           {{- end }}
           {{- /*
             PDF settings
           */}}
           {{- if .Values.gotenberg.pdf.engines }}
-          - --pdfengines-engines={{ .Values.gotenberg.pdf.engines }}
+            - --pdfengines-engines={{ .Values.gotenberg.pdf.engines }}
           {{- end }}
           {{- if .Values.gotenberg.pdf.disableRoutes }}
-          - --pdfengines-disable-routes={{ .Values.gotenberg.pdf.disableRoutes }}
+            - --pdfengines-disable-routes={{ .Values.gotenberg.pdf.disableRoutes }}
           {{- end }}
           {{- /*
             Webhook settings
           */}}
           {{- if .Values.gotenberg.webhook.allowList }}
-          - --webhook-allow-list={{ .Values.gotenberg.webhook.allowList }}
+            - --webhook-allow-list={{ .Values.gotenberg.webhook.allowList }}
           {{- end }}
           {{- if .Values.gotenberg.webhook.denyList }}
-          - --webhook-deny-list={{ .Values.gotenberg.webhook.denyList }}
+            - --webhook-deny-list={{ .Values.gotenberg.webhook.denyList }}
           {{- end }}
           {{- if .Values.gotenberg.webhook.errorAllowList }}
-          - --webhook-error-allow-list={{ .Values.gotenberg.webhook.errorAllowList }}
+            - --webhook-error-allow-list={{ .Values.gotenberg.webhook.errorAllowList }}
           {{- end }}
           {{- if .Values.gotenberg.webhook.errorDenyList }}
-          - --webhook-error-deny-list={{ .Values.gotenberg.webhook.errorDenyList }}
+            - --webhook-error-deny-list={{ .Values.gotenberg.webhook.errorDenyList }}
           {{- end }}
-          {{- if .Values.gotenberg.webhook.maxRetry }}
-          - --webhook-max-retry={{ .Values.gotenberg.webhook.maxRetry }}
+          {{- if ne .Values.gotenberg.webhook.maxRetry "4" }}
+            - --webhook-max-retry={{ .Values.gotenberg.webhook.maxRetry }}
           {{- end }}
-          {{- if .Values.gotenberg.webhook.retryMinWait }}
-          - --webhook-retry-min-wait={{ .Values.gotenberg.webhook.retryMinWait }}
+          {{- if ne .Values.gotenberg.webhook.retryMinWait "1s" }}
+            - --webhook-retry-min-wait={{ .Values.gotenberg.webhook.retryMinWait }}
           {{- end }}
-          {{- if .Values.gotenberg.webhook.retryMaxWait }}
-          - --webhook-retry-max-wait={{ .Values.gotenberg.webhook.retryMaxWait }}
+          {{- if ne .Values.gotenberg.webhook.retryMaxWait "30s" }}
+            - --webhook-retry-max-wait={{ .Values.gotenberg.webhook.retryMaxWait }}
           {{- end }}
-          {{- if .Values.gotenberg.webhook.clientTimeout }}
-          - --webhook-client-timeout={{ .Values.gotenberg.webhook.clientTimeout }}
+          {{- if ne .Values.gotenberg.webhook.clientTimeout "30s" }}
+            - --webhook-client-timeout={{ .Values.gotenberg.webhook.clientTimeout }}
           {{- end }}
           {{- if .Values.gotenberg.webhook.disable }}
-          - --webhook-disable={{ .Values.gotenberg.webhook.disable }}
+            - --webhook-disable={{ .Values.gotenberg.webhook.disable }}
           {{- end }}
           {{- /*
             Prometheus settings
           */}}
           {{- if .Values.gotenberg.prometheus.collectInterval }}
-          - --prometheus-collect-interval={{ .Values.gotenberg.prometheus.collectInterval }}
+            - --prometheus-collect-interval={{ .Values.gotenberg.prometheus.collectInterval }}
           {{- end }}
           {{- if .Values.gotenberg.prometheus.namespace }}
-          - --prometheus-namespace={{ .Values.gotenberg.prometheus.namespace }}
+            - --prometheus-namespace={{ .Values.gotenberg.prometheus.namespace }}
           {{- end }}
           {{- if .Values.gotenberg.prometheus.disableCollect }}
-          - --prometheus-disable-collect={{ .Values.gotenberg.prometheus.disableCollect }}
+            - --prometheus-disable-collect={{ .Values.gotenberg.prometheus.disableCollect }}
           {{- end }}
           {{- if .Values.gotenberg.prometheus.disableRouteLogging }}
-          - --prometheus-disable-route-logging={{ .Values.gotenberg.prometheus.disableRouteLogging }}
+            - --prometheus-disable-route-logging={{ .Values.gotenberg.prometheus.disableRouteLogging }}
           {{- end }}
           {{- /*
             Logging settings
           */}}
           {{- if .Values.gotenberg.logging.format }}
-          - --log-format={{ .Values.gotenberg.logging.format }}
+            - --log-format={{ .Values.gotenberg.logging.format }}
           {{- end }}
           {{- if .Values.gotenberg.logging.level }}
-          - --log-level={{ .Values.gotenberg.logging.level }}
+            - --log-level={{ .Values.gotenberg.logging.level }}
           {{- end }}
           {{- if .Values.gotenberg.logging.fieldsPrefix }}
-          - --log-fields-prefix={{ .Values.gotenberg.logging.fieldsPrefix }}
+            - --log-fields-prefix={{ .Values.gotenberg.logging.fieldsPrefix }}
           {{- end }}
           {{- /*
             Shutdown settings
           */}}
-          {{- if .Values.gotenberg.shutdown.duration }}
-          - --gotenberg-graceful-shutdown-duration={{ .Values.gotenberg.shutdown.duration }}
+          {{- if ne .Values.gotenberg.shutdown.duration "30s" }}
+            - --gotenberg-graceful-shutdown-duration={{ .Values.gotenberg.shutdown.duration }}
           {{- end }}
-          {{/* Container settings */}}
+          env:
+            {{- if .Values.gotenberg.basicAuth.enabled }}
+            - name: GOTENBERG_API_BASIC_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gotenberg.secret.auth" .) .Values.gotenberg.basicAuth.existingSecret }}
+                  key: username
+            - name: GOTENBERG_API_BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gotenberg.secret.auth" .) .Values.gotenberg.basicAuth.existingSecret }}
+                  key: password
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.gotenberg.api.port }}

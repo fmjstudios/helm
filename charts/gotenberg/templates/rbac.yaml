@@ -1,0 +1,29 @@
+{{- if .Values.rbac.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "gotenberg.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gotenberg.labels" . | nindent 4 }}
+    app.kubernetes.io/component: gotenberg
+rules:
+  {{- if .Values.rbac.rules }}
+  {{ toYaml .Values.rbac.rules | nindent 2 }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "gotenberg.fullname" . }}
+  labels:
+    {{- include "gotenberg.labels" . | nindent 4 }}
+    app.kubernetes.io/component: gotenberg
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "gotenberg.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "gotenberg.serviceAccountName" . }}
+{{- end -}}

@@ -61,6 +61,13 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{/*
+Define Secret names
+*/}}
+{{- define "gotenberg.secret.auth" }}
+{{- printf "%s-http-auth" (include "gotenberg.fullname" .) }}
+{{- end }}
+
 
 {{/* 
 Obtain the API version for the Pod Disruption Budget
