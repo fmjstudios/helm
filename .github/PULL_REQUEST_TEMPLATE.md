@@ -29,6 +29,7 @@ We would like these checks to pass before we even continue reviewing your change
 -->
 
 <!-- markdownlint-disable-next-line first-line-heading -->
+
 #### What this PR does / why we need it
 
 #### Which issue this PR fixes
@@ -42,6 +43,6 @@ We would like these checks to pass before we even continue reviewing your change
 #### Checklist
 
 <!-- [Place an '[x]' (no spaces) in all applicable fields. Please remove unrelated fields.] -->
-- [ ] [DCO](https://github.com/fmjstudios/helm/blob/main/docs/CONTRIBUTING.md#sign-off-your-work) signed
+
 - [ ] Chart Version bumped
 - [ ] Title of the PR starts with chart name (e.g. `(paperless-ngx)`)
