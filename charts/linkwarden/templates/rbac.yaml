@@ -5,7 +5,7 @@ metadata:
   name: {{ include "linkwarden.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{ include "linkwarden.labels" . | nindent 4 }}
+    {{- include "linkwarden.labels" . | nindent 4 }}
     app.kubernetes.io/component: linkwarden
 rules:
   {{- if .Values.rbac.rules }}
@@ -23,7 +23,7 @@ kind: RoleBinding
 metadata:
   name: {{ include "linkwarden.fullname" . }}
   labels:
-    {{ include "linkwarden.labels" . | nindent 4 }}
+    {{- include "linkwarden.labels" . | nindent 4 }}
     app.kubernetes.io/component: linkwarden
 roleRef:
   apiGroup: rbac.authorization.k8s.io

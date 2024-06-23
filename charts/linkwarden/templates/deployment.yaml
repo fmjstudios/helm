@@ -10,7 +10,7 @@ spec:
     matchLabels:
       {{- include "linkwarden.selectorLabels" . | nindent 6 }}
   {{- if .Values.strategy -}}
-  updateStrategy:
+  strategy:
   {{- toYaml .Values.strategy | nindent 4 }}
   {{- end }}
   template:
@@ -19,19 +19,22 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "linkwarden.selectorLabels" . | nindent 8 }}
-      {{- if .Values.podLabels -}}
+        {{- if .Values.podLabels -}}
         {{- toYaml .Values.podLabels | nindent 8 }}
-      {{- end }}
+        {{- end }}
     spec:
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
         {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "linkwarden.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -42,7 +45,7 @@ spec:
             {{- range $_, $v := .Values.linkwarden.auth.sso }}
             - configMapRef:
                 name: {{ printf "%s-%s" (include "linkwarden.configmaps.auth" $) $v.provider }}
-            {{- end }}        
+            {{- end }}
           env:
             {{- if or .Values.linkwarden.nextAuthSecret.value .Values.linkwarden.nextAuthSecret.existingSecret.name }}
             - name: NEXTAUTH_SECRET
@@ -51,19 +54,19 @@ spec:
                   name: {{ .Values.linkwarden.nextAuthSecret.existingSecret.name | default (include "linkwarden.secrets.nextAuth" .) }}
                   key: {{ .Values.linkwarden.nextAuthSecret.existingSecret.key | default "token" }}
             {{- end }}
-            {{- if or .Values.linkwarden.data.s3.accessKey.value .Values.linkwarden.data.s3.accessKey.existingSecret.name }}
+            {{- if or .Values.linkwarden.data.s3.accessKey .Values.linkwarden.data.s3.existingSecret }}
             - name: SPACES_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.linkwarden.data.s3.accessKey.existingSecret.name | default (include "linkwarden.secrets.s3" .) }}
-                  key: {{ .Values.linkwarden.data.s3.accessKey.existingSecret.key | default "accessKey" }}
+                  name: {{ default (include "linkwarden.secrets.s3" .) .Values.linkwarden.data.s3.existingSecret }}
+                  key: accessKey
             {{- end }}
-            {{- if or .Values.linkwarden.data.s3.secretKey.value .Values.linkwarden.data.s3.secretKey.existingSecret.name }}
+            {{- if or .Values.linkwarden.data.s3.secretKey .Values.linkwarden.data.s3.existingSecret }}
             - name: SPACES_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.linkwarden.data.s3.secretKey.existingSecret.name | default (include "linkwarden.secrets.s3" .) }}
-                  key: {{ .Values.linkwarden.data.s3.secretKey.existingSecret.key | default "secretKey" }}
+                  name: {{ default (include "linkwarden.secrets.s3" .) .Values.linkwarden.data.s3.existingSecret }}
+                  key: secretKey
             {{- end }}
             {{- if or (include "linkwarden.db.uri" .) .Values.linkwarden.database.existingSecret.name }}
             - name: DATABASE_URL
@@ -84,7 +87,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ $v.existingSecret | default (printf "%s-%s" (include "linkwarden.auth.secrets.base" $) $v.provider) }}
-                  key: clientSecret          
+                  key: clientSecret
             {{- end -}}
           {{/* Container settings */}}
           ports:
@@ -93,7 +96,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: {{ include "linkwarden.pv.name" . }}
-              mountPath: {{ include "linkwarden.paths.data" .  }}   
+              mountPath: {{ include "linkwarden.paths.data" .  }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -114,7 +117,7 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           {{- end }}
           {{- if .Values.readinessProbe.enabled }}
-          livenessProbe:
+          readinessProbe:
             httpGet:
               path: /
               port: http
@@ -125,7 +128,7 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           {{- end }}
           {{- if .Values.startupProbe.enabled }}
-          livenessProbe:
+          startupProbe:
             httpGet:
               path: /
               port: http

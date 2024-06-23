@@ -10,7 +10,7 @@ annotations:
   artifacthub.io/prerelease: "false"
   artifacthub.io/images: |
     - name: linkwarden
-      image: ghcr.io/linkwarden/linkwarden:v2.4.8
+      image: ghcr.io/linkwarden/linkwarden:v2.5.3
   artifacthub.io/links: |
     - name: Source
       url: https://github.com/fmjstudios/helm
@@ -21,10 +21,10 @@ annotations:
   org.opencontainers.image.vendor: "FMJ Studios"
   org.opencontainers.image.licenses: "MIT"
 apiVersion: v2
-appVersion: 2.4.8
+appVersion: 2.5.3
 kubeVersion: ">=1.26"
 name: linkwarden
-version: 0.0.1
+version: 0.1.0
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
