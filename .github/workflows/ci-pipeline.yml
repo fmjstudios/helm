@@ -1,4 +1,4 @@
-name: '[CI/CD] Continuous Integration Pipeline'
+name: 'Continuous Integration Pipeline'
 
 on:
   workflow_dispatch:
