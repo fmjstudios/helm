@@ -1,3 +1,0 @@
-# MD034/no-bare-urls : Bare URL used : https://github.com/DavidAnson/markdownlint/blob/v0.34.0/doc/md034.md
-# NOTE: disabled because the tables in the READMEs might contain chart values which are bare URLs
-MD034: false

@@ -1,0 +1,18 @@
+# MD013/line-length : Line length : https://github.com/DavidAnson/markdownlint/blob/v0.34.0/doc/md013.md
+MD013:
+  # Number of characters
+  line_length: 240
+  # Number of characters for headings
+  heading_line_length: 80
+  # Number of characters for code blocks
+  code_block_line_length: 80
+  # Include code blocks
+  code_blocks: true
+  # Include headings
+  headings: true
+  # Exclude Tables
+  tables: false
+
+# MD034/no-bare-urls : Bare URL used : https://github.com/DavidAnson/markdownlint/blob/v0.34.0/doc/md034.md
+# NOTE: disabled because the tables in the READMEs might contain chart values which are bare URLs
+MD034: false
