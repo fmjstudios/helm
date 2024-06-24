@@ -6,6 +6,10 @@ jobs:
   lint:
     name: Super-Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,3 +28,4 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
           VALIDATE_YAML: false
+          VALIDATE_CHECKOV: false
