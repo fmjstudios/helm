@@ -1,4 +1,4 @@
-# FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="175" height="175" align="right" />
+# FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/c22886d7585246836d5e4e597484b92b51c76f0c/logo/png/logo.png" alt="Linkstack Logo" width="175" height="175" align="right" loading="lazy"/>
 
 LinkStack provides you with a configurable self-hosted website similar to [Linktree](https://linktr.ee/). Many social
 media platforms only allow you to add one link, with this you can simply link to your LinkStack page and have all the
@@ -23,7 +23,7 @@ helm install my-vaultwarden fmjstudios/linkstack
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/linkstack:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/linkstack:0.1.1
 ```
 
 # Introduction

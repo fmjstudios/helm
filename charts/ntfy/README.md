@@ -1,4 +1,4 @@
-# FMJ Studios - ntfy Helm Chart <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/main/web/public/static/images/pwa-192x192.png" alt="ntfy Logo" width="175" height="175" align="right" loading="lazy">
+# FMJ Studios - ntfy Helm Chart <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/9d3fc20e583564e40af5afb90233f4714fdfcb4c/web/public/static/images/pwa-512x512.png" alt="ntfy Logo" width="175" height="175" align="right" loading="lazy">
 
 ntfy (pronounced notify) is a simple HTTP-based pub-sub notification service. It allows you to send notifications to
 your phone or desktop via scripts from any computer, and/or using a REST API. It's infinitely flexible, and 100% free
@@ -22,7 +22,7 @@ helm install my-vaultwarden fmjstudios/ntfy
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/ntfy:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/ntfy:0.1.1
 ```
 
 # Introduction

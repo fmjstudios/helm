@@ -27,10 +27,10 @@ apiVersion: v2
 appVersion: 1.23.13
 kubeVersion: ">=1.26"
 name: uptime-kuma
-version: 0.1.0
+version: 0.1.1
 description: Uptime-Kuma is an open-source, self-hosted fancy uptime monitoring tool
 home: https://uptime.kuma.pet/
-icon: https://uptime.kuma.pet/img/icon.svg
+icon: https://raw.githubusercontent.com/louislam/uptime-kuma/953058c6a5047c82a58606e442c6e572e215e3ff/public/icon-512x512.png
 keywords:
   - uptime
   - monitoring

@@ -1,4 +1,4 @@
-# FMJ Studios - Cachet Helm Chart <img src="https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="175" height="175" align="right" loading="lazy">
+# FMJ Studios - Cachet Helm Chart <img src="https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="175" height="175" align="right" loading="lazy">
 
 Cachet is an open-source status page system designed to help you keep track of your system status and share it with your
 user base. It is built to be responsive and works seamlessly across different devices. It is perfect for businesses and

@@ -1,4 +1,4 @@
-# FMJ Studios - Paperless-NGX Helm Chart <img src="https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/5842944d1ef817c11a47ed5c19ba8b7886c9fbfe/resources/logo/web/svg/square.svg" alt="Paperless-NGX Logo" width="175" height="175" align="right" />
+# FMJ Studios - Paperless-NGX Helm Chart <img src="https://raw.githubusercontent.com/fmjstudios/artwork/76af35c64fd93c12e851925b0d3801e89978f05a/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png" alt="Paperless-NGX Logo" width="175" height="175" align="right" loading="lazy"/>
 
 Paperless-ngx is a community-supported open-source document management system that transforms your physical documents
 into a searchable online archive so you can keep, well, less paper. Paperless-NGX is the official successor to the
@@ -27,7 +27,7 @@ helm install my-vaultwarden fmjstudios/paperless-ngx
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:0.1.1
 ```
 
 # Introduction

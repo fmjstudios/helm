@@ -1,4 +1,4 @@
-# FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/main/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
+# FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
 
 Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, organize and archive webpages. The
 objective is to organize useful webpages and articles you find across the web in one place, and since useful webpages
@@ -27,7 +27,7 @@ helm install my-vaultwarden fmjstudios/linkwarden
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/linkwarden:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/linkwarden:0.1.1
 ```
 
 # Introduction

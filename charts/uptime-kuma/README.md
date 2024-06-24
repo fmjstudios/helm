@@ -1,4 +1,4 @@
-# FMJ Studios - Uptime-Kuma Helm Chart <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="150" height="150" align="right" />
+# FMJ Studios - Uptime-Kuma Helm Chart <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/953058c6a5047c82a58606e442c6e572e215e3ff/public/icon-512x512.png" alt="Uptime-Kuma Logo" width="175" height="175" align="right" loading="lazy"/>
 
 Uptime-Kuma is an open-source, is an easy-to-use self-hosted monitoring tool. It supports monitoring uptime for HTTP(
 s) / TCP / HTTP(s) Keyword / HTTP(s) Json Query / Ping / DNS Record / Push / Steam Game Server / Docker Containers,
@@ -26,7 +26,7 @@ helm install my-uptime-kuma fmjstudios/uptime-kuma
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.1
 ```
 
 # Introduction

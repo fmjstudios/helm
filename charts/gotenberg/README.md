@@ -1,4 +1,4 @@
-# FMJ Studios - Gotenberg Helm Chart <img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="150" height="150" align="right" />
+# FMJ Studios - Gotenberg Helm Chart <img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="175" height="175" align="right" loading="lazy"/>
 
 Gotenberg is an open-source, Docker-powered stateless API for PDF files. It provides a developer friendly API to
 interact with powerful tools like Chromium and LibreOffice for converting numerous document formats (HTML, Markdown,
@@ -21,7 +21,7 @@ helm install my-vaultwarden fmjstudios/gotenberg
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/gotenberg:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/gotenberg:0.1.1
 ```
 
 # Introduction

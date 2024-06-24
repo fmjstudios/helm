@@ -27,7 +27,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26"
 name: linkwarden
-version: 0.1.0
+version: 0.1.1
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -35,7 +35,7 @@ dependencies:
     version: ~15.5
 description: Linkwarden is an open-source collaborative bookmark manager to collect, organize and preserve webpages
 home: https://linkwarden.app/
-icon: https://linkwarden.app/linkwarden.png
+icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
 keywords:
   - bookmarks
   - archival

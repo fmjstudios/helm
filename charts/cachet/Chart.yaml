@@ -27,7 +27,7 @@ apiVersion: v2
 appVersion: 2.3.15
 kubeVersion: ">=1.26"
 name: cachet
-version: 0.1.0
+version: 0.1.1
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -39,7 +39,7 @@ dependencies:
     version: ~19.5
 description: Cachet is an open-source status page system designed to help you keep track of your system status and share it with your user base
 home: https://cachethq.io/
-icon: https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png
+icon: https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png
 keywords:
   - status
   - status-page

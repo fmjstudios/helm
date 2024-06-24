@@ -1,4 +1,4 @@
-# FMJ Studios - Vaultwarden Helm Chart <img src="https://raw.githubusercontent.com/dani-garcia/vaultwarden/890e668071cffe2833834348e19bbef3c061d014/resources/vaultwarden-icon.svg" alt="Vaultwarden Logo" width="175" height="175" align="right" />
+# FMJ Studios - Vaultwarden Helm Chart <img src="https://raw.githubusercontent.com/fmjstudios/artwork/2fd182517d56ffeee59f82ec75b651e92344d151/projects/vaultwarden/icon/black/vaultwarden-icon-black.png" alt="Vaultwarden Logo" width="175" height="175" align="right" loading="lazy"/>
 
 Vaultwarden is an unofficial Bitwarden server implementation written in Rust. It is compatible with
 the [official Bitwarden clients](https://bitwarden.com/download/), and is ideal for self-hosted deployments where
@@ -24,7 +24,7 @@ helm install my-vaultwarden fmjstudios/vaultwarden
 _OCI-Registry-based installation_
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:0.1.0
+helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:0.1.1
 ```
 
 # Introduction
