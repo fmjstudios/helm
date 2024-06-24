@@ -25,6 +25,7 @@ secrets
 
 # Helm Subcharts
 *.tgz
+Chart.lock
 
 # Distribution folder
 dist/*
