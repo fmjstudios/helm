@@ -10,7 +10,7 @@ on [Docker Hub](https://hub.docker.com/r/binwiederhier/ntfy).
 > their [Website](https://ntfy.sh/) for in-depth [documentation](https://docs.ntfy.sh/)
 > and [configuration guides](https://docs.ntfy.sh/config/).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -25,7 +25,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/ntfy:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a
 ntfy [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
@@ -39,7 +39,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 
 The chart supports the configuration of
 all [ntfy environment variables](https://docs.ntfy.sh/config/) via the `ntfy` key in
-Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image
+Helm's _values_ and makes use of the official Docker Hub container image, although this is configurable via the Image
 Parameters.
 
 ## Parameters

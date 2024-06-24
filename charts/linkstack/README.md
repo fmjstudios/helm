@@ -11,7 +11,7 @@ Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/lin
 > implemenation or to the [documentation](https://docs.linkstack.org/) for guides
 > and [examples](https://docs.linkstack.org/docker/setup/).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -26,7 +26,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/linkstack:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a Linkstack [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster
@@ -37,7 +37,7 @@ a [PodDisruptionBudget](https://kubernetes.io/docs/tasks/run-application/configu
 enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
 The chart supports the configuration of all [Linkstack environment variables](https://docs.linkstack.org/docker/setup/)
-via the `linkstack` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+via the `linkstack` key in Helm's _values_ and makes use of the official Docker Hub container image, although this is
 configurable via the Image Parameters.
 
 ## Parameters

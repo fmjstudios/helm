@@ -15,7 +15,7 @@ the [GitHub Container Registry](https://github.com/linkwarden/linkwarden/pkgs/co
 > their [Website](https://linkwarden.app/) for in-depth [documentation](https://docs.linkwarden.app/)
 > and [configuration guides](https://docs.linkwarden.app/self-hosting/environment-variables).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -30,7 +30,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/linkwarden:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a Linkwarden [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 on
@@ -43,7 +43,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 
 The chart supports the configuration of
 all [Linkwarden environment variables](https://docs.linkwarden.app/self-hosting/environment-variables)
-via the `linkwarden` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+via the `linkwarden` key in Helm's _values_ and makes use of the official Docker Hub container image, although this is
 configurable via the Image
 Parameters.
 

@@ -14,7 +14,7 @@ on [Docker Hub](https://hub.docker.com/r/louislam/uptime-kuma).
 > in-depth [documentation](https://github.com/louislam/uptime-kuma/wiki)
 > and [configuration guides](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -29,7 +29,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps an
 Uptime-Kuma [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
@@ -43,7 +43,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 
 The chart supports the configuration of
 all [Uptime-Kuma environment variables]([StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
-or) via the `uptimeKuma` key in Helm's *values* and makes use of the official Docker Hub container image, although this
+or) via the `uptimeKuma` key in Helm's _values_ and makes use of the official Docker Hub container image, although this
 is configureble via the Image Parameters.
 
 ## Parameters

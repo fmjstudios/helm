@@ -12,7 +12,7 @@ on [Docker Hub](https://hub.docker.com/r/vaultwarden/server).
 > in-depth [documentation](https://github.com/dani-garcia/vaultwarden/wiki)
 > and [configuration templates](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -27,7 +27,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a
 Vaultwarden [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
@@ -41,7 +41,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 
 The chart supports the configuration of
 all [Vaultwarden environment variables](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) via
-the `vaultwarden` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+the `vaultwarden` key in Helm's _values_ and makes use of the official Docker Hub container image, although this is
 configurable via the Image Parameters.
 
 ## Parameters

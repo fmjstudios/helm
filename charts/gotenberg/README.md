@@ -9,7 +9,7 @@ on [Docker Hub](https://hub.docker.com/r/gotenberg/gotenberg).
 > in-depth [documentation](https://gotenberg.dev/docs/getting-started/introduction)
 > and [configuration guides](https://gotenberg.dev/docs/configuration).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -24,7 +24,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/gotenberg:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a Gotenberg [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
 a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
@@ -36,7 +36,7 @@ and [HorizontalPodAutoscaler](https://kubernetes.io/de/docs/tasks/run-applicatio
 enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) are enabled by default.
 
 The chart supports the configuration of all [Gotenberg CLI options](https://gotenberg.dev/docs/configuration) via
-the `gotenberg` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+the `gotenberg` key in Helm's _values_ and makes use of the official Docker Hub container image, although this is
 configurable via the Image Parameters.
 
 ## Parameters

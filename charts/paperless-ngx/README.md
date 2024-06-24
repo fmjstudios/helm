@@ -15,7 +15,7 @@ on [GitHub Container Registry](https://github.com/paperless-ngx/paperless-ngx/pk
 > ther [Website](https://docs.paperless-ngx.com/) for in-depth [documentation](https://docs.paperless-ngx.com/)
 > and [configuration guides](https://docs.paperless-ngx.com/configuration/).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -30,7 +30,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:0.1.1
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a
 Paperless-NGX [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) on
@@ -43,7 +43,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 
 The chart supports the configuration of
 all [Paperless-NGX environment variables](https://docs.paperless-ngx.com/configuration/) via the `paperless` key in
-Helm's *values* and makes use of the official Docker Hub container image, although this is configurable via the Image
+Helm's _values_ and makes use of the official Docker Hub container image, although this is configurable via the Image
 Parameters.
 
 ## Parameters

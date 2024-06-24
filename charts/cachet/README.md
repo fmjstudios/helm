@@ -12,7 +12,7 @@ on [Docker Hub](https://hub.docker.com/r/cachethq/docker/).
 > their [Website](https://cachethq.io/) for in-depth [documentation](https://docs.cachethq.io/introduction.html)
 > and [configuration guides](https://docs.cachethq.io/installation/docker.html).
 
-# ✨ TL;DR
+## ✨ TL;DR
 
 _Repository-based installation_
 
@@ -27,7 +27,7 @@ _OCI-Registry-based installation_
 helm install oci://ghcr.io/fmjstudios/helm/cachet:0.1.0
 ```
 
-# Introduction
+## Introduction
 
 This chart bootstraps a Cachet [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) on
 a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh/) package manager. For cluster networking
@@ -39,7 +39,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 
 The chart supports the configuration of
 all [Cachet environment variables](https://docs.cachethq.io/installation/docker.html)
-via the `cachet` key in Helm's *values* and makes use of the official Docker Hub container image, although this is
+via the `cachet` key in Helm's _values_ and makes use of the official Docker Hub container image, although this is
 configurable via the Image
 Parameters.
 
