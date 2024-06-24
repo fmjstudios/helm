@@ -3,9 +3,9 @@ name: 'Release'
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ['Testing']
-    types: ['completed']
-    branches: ['main']
+    workflows: [ 'Testing' ]
+    types: [ 'completed' ]
+    branches: [ 'main' ]
 
 defaults:
   run:
@@ -33,8 +33,6 @@ jobs:
 
       - name: Set up Helm
         uses: azure/setup-helm@v4.2.0
-        with:
-          version: v3.15.1
 
       - name: Add Helm chart dependency repos
         run: |
