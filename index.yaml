@@ -3,6 +3,70 @@ entries:
   cachet:
   - annotations:
       artifacthub.io/category: monitoring-logging
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Support links via annotations
+        - kind: added
+          description: Verified chart publisher
+        - kind: removed
+          description: obsolete (duplicated) annotations
+      artifacthub.io/images: |
+        - name: cachet
+          image: docker.io/cachethq/docker:2.3.15
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Cachet Homepage
+          url: https://cachethq.io/
+        - name: Cachet Documentation
+          url: https://docs.cachethq.io/introduction.html
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.3.15
+    created: "2024-06-25T08:12:34.149572488Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    description: Cachet is an open-source status page system designed to help you
+      keep track of your system status and share it with your user base
+    digest: 3e2e664db6eef1d16a3769a34d165648323e1d1c409065cf25969bd17a2c94eb
+    home: https://cachethq.io/
+    icon: https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png
+    keywords:
+    - status
+    - status-page
+    - uptime
+    - monitoring
+    - uptime-kuma
+    - cachet
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: cachet
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/cachet-0.1.2/cachet-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/category: monitoring-logging
       artifacthub.io/images: |
         - name: cachet
           image: docker.io/cachethq/docker:2.3.15
@@ -116,6 +180,60 @@ entries:
   gotenberg:
   - annotations:
       artifacthub.io/category: streaming-messaging
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Support links via annotations
+        - kind: added
+          description: Verified chart publisher
+        - kind: removed
+          description: obsolete (duplicated) annotations
+      artifacthub.io/images: |
+        - name: gotenberg
+          image: docker.io/gotenberg/gotenberg:8.7.0
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Gotenberg Homepage
+          url: https://gotenberg.dev/
+        - name: Gotenberg Documentation
+          url: https://gotenberg.dev/docs/getting-started/introduction
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 8.7.0
+    created: "2024-06-25T08:12:34.29497249Z"
+    description: Gotenberg is a Docker-powered stateless API for PDF files.
+    digest: 729b306012cc11cc6acb73117c99f5f613aa4c8f65769ce0f1605066a8817fca
+    home: https://gotenberg.dev/
+    icon: https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png
+    keywords:
+    - documents
+    - conversion
+    - pdf
+    - office
+    - html
+    - markdown
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: gotenberg
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/gotenberg-0.1.2/gotenberg-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/category: streaming-messaging
       artifacthub.io/images: |
         - name: gotenberg
           image: docker.io/gotenberg/gotenberg:8.7.0
@@ -207,6 +325,62 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/gotenberg-0.1.0/gotenberg-0.1.0.tgz
     version: 0.1.0
   linkstack:
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Support links via annotations
+        - kind: added
+          description: Verified chart publisher
+        - kind: removed
+          description: obsolete (duplicated) annotations
+      artifacthub.io/images: |
+        - name: linkstack
+          image: docker.io/linkstackorg/linkstack:latest@sha256:abd691b4293b020a317de8794737671e0315159efcb868e8a4124d6f0611f7ae
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Linkstack GitHub Repository
+          url: https://github.com/LinkStackOrg/LinkStack
+        - name: Linkstack Documentation
+          url: https://docs.linkstack.org/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 4.8.0
+    created: "2024-06-25T08:12:34.412152601Z"
+    description: LinkStack is a highly customizable link sharing platform with an
+      intuitive, easy to use user interface
+    digest: 0fe0da1086e972503a5afc19548985791c64cae7d71d4c5b35cb1e2f7bece1a2
+    home: https://github.com/LinkStackOrg/LinkStack
+    icon: https://raw.githubusercontent.com/LinkStackOrg/branding/c22886d7585246836d5e4e597484b92b51c76f0c/logo/png/logo.png
+    keywords:
+    - personal-website
+    - profile
+    - social
+    - social-accounts
+    - littlelink
+    - linktree
+    - linkstack
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: linkstack
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/linkstack-0.1.2/linkstack-0.1.2.tgz
+    version: 0.1.2
   - annotations:
       artifacthub.io/category: storage
       artifacthub.io/images: |
@@ -304,6 +478,66 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/linkstack-0.1.0/linkstack-0.1.0.tgz
     version: 0.1.0
   linkwarden:
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Support links via annotations
+        - kind: added
+          description: Verified chart publisher
+        - kind: removed
+          description: obsolete (duplicated) annotations
+      artifacthub.io/images: |
+        - name: linkwarden
+          image: ghcr.io/linkwarden/linkwarden:v2.5.3
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Linkwarden Homepage
+          url: https://linkwarden.app/
+        - name: Linkwarden Documentation
+          url: https://docs.linkwarden.app/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2024-06-25T08:12:34.561475273Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    description: Linkwarden is an open-source collaborative bookmark manager to collect,
+      organize and preserve webpages
+    digest: 946efd32cc64b167c74e0f651ab7f72727afc38c478f2ca103f14df226baf29b
+    home: https://linkwarden.app/
+    icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
+    keywords:
+    - bookmarks
+    - archival
+    - collaboration
+    - linkding
+    - linkace
+    - archivebox
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: linkwarden
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/linkwarden-0.1.2/linkwarden-0.1.2.tgz
+    version: 0.1.2
   - annotations:
       artifacthub.io/category: storage
       artifacthub.io/images: |
@@ -506,6 +740,78 @@ entries:
   paperless-ngx:
   - annotations:
       artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Support links via annotations
+        - kind: added
+          description: Verified chart publisher
+        - kind: removed
+          description: obsolete (duplicated) annotations
+      artifacthub.io/images: |
+        - name: paperless-ngx
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.4.0
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Paperless-NGX GitHub Repository
+          url: https://github.com/paperless-ngx/paperless-ngx
+        - name: Paperless-NGX Documentation
+          url: https://docs.paperless-ngx.com/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.10.1
+    created: "2024-06-25T08:12:34.857922822Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    - condition: tika.enabled
+      name: tika
+      repository: https://apache.jfrog.io/artifactory/tika
+      version: ~2.9
+    - condition: gotenberg.enabled
+      name: gotenberg
+      repository: oci://ghcr.io/fmjstudios/helm
+      version: ~0.0.1
+    description: Paperless-NGX is a community-supported supercharged version of paperless
+      - scan, index and archive all your physical documents
+    digest: c7c9a589ba728c8d0c2a782cb3f1c9992987d98bac8f85216fd46e0a40adbfd4
+    home: https://github.com/paperless-ngx/paperless-ngx
+    icon: https://raw.githubusercontent.com/fmjstudios/artwork/76af35c64fd93c12e851925b0d3801e89978f05a/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png
+    keywords:
+    - documents
+    - archival
+    - ocr
+    - conversion
+    - paper
+    - paperless
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: paperless-ngx
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/paperless-ngx-0.1.2/paperless-ngx-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/category: storage
       artifacthub.io/images: |
         - name: paperless-ngx
           image: ghcr.io/paperless-ngx/paperless-ngx:2.4.0
@@ -633,6 +939,61 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/paperless-ngx-0.1.0/paperless-ngx-0.1.0.tgz
     version: 0.1.0
   uptime-kuma:
+  - annotations:
+      artifacthub.io/category: monitoring-logging
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Support links via annotations
+        - kind: added
+          description: Verified chart publisher
+        - kind: removed
+          description: obsolete (duplicated) annotations
+      artifacthub.io/images: |
+        - name: uptime-kuma
+          image: docker.io/louislam/uptime-kuma:1.23.13
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Uptime-Kuma Homepage
+          url: https://uptime.kuma.pet/
+        - name: Uptime-Kuma Documentation
+          url: https://github.com/louislam/uptime-kuma/wiki
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 1.23.13
+    created: "2024-06-25T08:12:34.967188492Z"
+    description: Uptime-Kuma is an open-source, self-hosted fancy uptime monitoring
+      tool
+    digest: 4edad5044af527adab4ddb0266a135e12d4acb86774de226b89f5b60ad860daf
+    home: https://uptime.kuma.pet/
+    icon: https://raw.githubusercontent.com/louislam/uptime-kuma/953058c6a5047c82a58606e442c6e572e215e3ff/public/icon-512x512.png
+    keywords:
+    - uptime
+    - monitoring
+    - website
+    - database
+    - tls
+    - uptime-robot
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: uptime-kuma
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/uptime-kuma-0.1.2/uptime-kuma-0.1.2.tgz
+    version: 0.1.2
   - annotations:
       artifacthub.io/category: monitoring-logging
       artifacthub.io/images: |
@@ -820,4 +1181,4 @@ entries:
     urls:
     - https://github.com/fmjstudios/helm/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-24T10:20:35.146809719Z"
+generated: "2024-06-25T08:12:35.113146888Z"
