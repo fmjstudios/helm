@@ -14,17 +14,17 @@ on [Docker Hub](https://hub.docker.com/r/vaultwarden/server).
 
 ## ✨ TL;DR
 
-_Repository-based installation_
+__Helm Repository Installation__
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install my-vaultwarden fmjstudios/vaultwarden
+helm install vaultwarden fmjstudios/vaultwarden --version 0.1.2
 ```
 
-_OCI-Registry-based installation_
+__OCI Installation__
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:0.1.1
+helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:0.1.2
 ```
 
 ## Introduction
