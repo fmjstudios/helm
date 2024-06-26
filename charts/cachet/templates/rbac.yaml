@@ -22,6 +22,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "cachet.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cachet.labels" . | nindent 4 }}
     app.kubernetes.io/component: cachet
@@ -32,4 +33,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ include "cachet.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
 {{- end -}}

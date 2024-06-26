@@ -40,28 +40,28 @@ and [ClusterRoleBinding](https://kubernetes.io/docs/reference/kubernetes-api/aut
 ### Name overrides
 
 | Name               | Description                                     | Value |
-|--------------------|-------------------------------------------------|-------|
+| ------------------ | ----------------------------------------------- | ----- |
 | `nameOverride`     | String to partially override linkstack.fullname | `""`  |
 | `fullnameOverride` | String to fully override linkstack.fullname     | `""`  |
 
 ### Secret parameters
 
 | Name                 | Description                                        | Value |
-|----------------------|----------------------------------------------------|-------|
+| -------------------- | -------------------------------------------------- | ----- |
 | `secret.annotations` | Annotations for the `service-account-token` Secret | `{}`  |
 | `secret.labels`      | Labels for the `service-account-token` Secret      | `{}`  |
 
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-|---------------|----------------------------------|--------|
+| ------------- | -------------------------------- | ------ |
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                               | Value   |
-|------------------------------|---------------------------------------------------------------------------|---------|
+| ---------------------------- | ------------------------------------------------------------------------- | ------- |
 | `serviceAccount.create`      | Whether a service account should be created                               | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                            | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                 | `{}`    |

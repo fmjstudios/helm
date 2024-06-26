@@ -425,6 +425,18 @@
             "description": "The resource limits/requests for the Linkstack pod",
             "default": {}
         },
+        "volumes": {
+            "type": "array",
+            "description": "Define volumes for the Linkstack pod",
+            "default": [],
+            "items": {}
+        },
+        "volumeMounts": {
+            "type": "array",
+            "description": "Define volumeMounts for the Linkstack pod",
+            "default": [],
+            "items": {}
+        },
         "initContainers": {
             "type": "array",
             "description": "Define initContainers for the main Linkstack server",

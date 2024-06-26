@@ -655,10 +655,27 @@
                 }
             }
         },
+        "replicas": {
+            "type": "number",
+            "description": "The amount of replicas Gotenberg deployment should create",
+            "default": 1
+        },
         "resources": {
             "type": "object",
             "description": "The resource limits/requests for the Gotenberg pod",
             "default": {}
+        },
+        "volumes": {
+            "type": "array",
+            "description": "Define volumes for the Gotenberg pod",
+            "default": [],
+            "items": {}
+        },
+        "volumeMounts": {
+            "type": "array",
+            "description": "Define volumeMounts for the Gotenberg pod",
+            "default": [],
+            "items": {}
         },
         "initContainers": {
             "type": "array",

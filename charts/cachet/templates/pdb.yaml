@@ -3,6 +3,7 @@ apiVersion: {{ include "cachet.pdb.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "cachet.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cachet.labels" . | nindent 4 }}
 spec:

@@ -592,7 +592,7 @@
                 },
                 "extraHosts": {
                     "type": "array",
-                    "description": "A list of extra hosts for the Ingress resource (with vaultwarden.domain)",
+                    "description": "A list of extra hosts for the Ingress resource (with ntfy.baseURL)",
                     "default": [],
                     "items": {}
                 }
@@ -842,6 +842,18 @@
             "type": "object",
             "description": "The resource limits/requests for the ntfy pod",
             "default": {}
+        },
+        "volumes": {
+            "type": "array",
+            "description": "Define volumes for the ntfy pod",
+            "default": [],
+            "items": {}
+        },
+        "volumeMounts": {
+            "type": "array",
+            "description": "Define volumeMounts for the ntfy pod",
+            "default": [],
+            "items": {}
         },
         "initContainers": {
             "type": "array",

@@ -570,6 +570,18 @@
             "description": "The resource limits/requests for the Cachet pod",
             "default": {}
         },
+        "volumes": {
+            "type": "array",
+            "description": "Define volumes for the Cachet pod",
+            "default": [],
+            "items": {}
+        },
+        "volumeMounts": {
+            "type": "array",
+            "description": "Define volumeMounts for the Cachet pod",
+            "default": [],
+            "items": {}
+        },
         "initContainers": {
             "type": "array",
             "description": "Define initContainers for the main Cachet server",

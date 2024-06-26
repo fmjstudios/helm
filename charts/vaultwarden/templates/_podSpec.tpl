@@ -94,6 +94,9 @@ template:
         volumeMounts:
           - name: {{ include "vaultwarden.pv.name" . }}
             mountPath: {{ .Values.vaultwarden.data.rootPath | default "/data" }}
+        {{- if .Values.volumeMounts }}
+          {{- toYaml .Values.volumeMounts | nindent 12 }}
+        {{- end }}
         {{- if .Values.resources }}
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
@@ -135,10 +138,16 @@ template:
           successThreshold: {{ .Values.startupProbe.successThreshold }}
           failureThreshold: {{ .Values.startupProbe.failureThreshold }}
         {{- end }}
+    {{- if .Values.priorityClassName }}
+    priorityClassName: {{ .Values.priorityClassName }}
+    {{- end }}
     volumes:
       - name: {{ include "vaultwarden.pv.name" . }}
         persistentVolumeClaim:
           claimName: {{ .Values.vaultwarden.data.pvc.existingClaim | default (include "vaultwarden.pvc.name" .) }}
+    {{- if .Values.volumes }}
+      {{- toYaml .Values.volumes | nindent 8 }}
+    {{- end }}
     {{- if .Values.nodeSelector }}
     nodeSelector:
       {{- toYaml .Values.nodeSelector | nindent 8 }}

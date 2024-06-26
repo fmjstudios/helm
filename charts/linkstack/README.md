@@ -45,7 +45,7 @@ configurable via the Image Parameters.
 ### Image parameters
 
 | Name                | Description                                                         | Value                                                                     |
-|---------------------|---------------------------------------------------------------------|---------------------------------------------------------------------------|
+| ------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`                                                               |
 | `image.repository`  | The registry repository to pull the image from                      | `linkstackorg/linkstack`                                                  |
 | `image.tag`         | The image tag to pull                                               | `latest`                                                                  |
@@ -56,14 +56,14 @@ configurable via the Image Parameters.
 ### Name overrides
 
 | Name               | Description                                     | Value |
-|--------------------|-------------------------------------------------|-------|
+| ------------------ | ----------------------------------------------- | ----- |
 | `nameOverride`     | String to partially override linkstack.fullname | `""`  |
 | `fullnameOverride` | String to fully override linkstack.fullname     | `""`  |
 
 ### Linkstack Configuration parameters
 
 | Name                               | Description                                                  | Value      |
-|------------------------------------|--------------------------------------------------------------|------------|
+| ---------------------------------- | ------------------------------------------------------------ | ---------- |
 | `linkstack.serverAdmin`            | The admin's email address                                    | `""`       |
 | `linkstack.serverName`             | The http (and https) server name for Apache2                 | `""`       |
 | `linkstack.logLevel`               | The log level for Apache2                                    | `info`     |
@@ -79,14 +79,14 @@ configurable via the Image Parameters.
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-|-------------------------|-----------------------------------------|-------|
+| ----------------------- | --------------------------------------- | ----- |
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                                | Value   |
-|-----------------------|----------------------------------------------------------------------------|---------|
+| --------------------- | -------------------------------------------------------------------------- | ------- |
 | `ingress.enabled`     | Whether to enable Ingress                                                  | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                              | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                        | `""`    |
@@ -97,7 +97,7 @@ configurable via the Image Parameters.
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.ports.http`               | The http port to use on the service                                                     | `80`        |
 | `service.ports.https`              | The https port to use on the service                                                    | `443`       |
@@ -119,14 +119,14 @@ configurable via the Image Parameters.
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-|---------------|----------------------------------|--------|
+| ------------- | -------------------------------- | ------ |
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                                 | Value   |
-|------------------------------|-----------------------------------------------------------------------------|---------|
+| ---------------------------- | --------------------------------------------------------------------------- | ------- |
 | `serviceAccount.create`      | Whether a service account should be created                                 | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                              | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                   | `{}`    |
@@ -136,7 +136,7 @@ configurable via the Image Parameters.
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-|-------------------------------------|-------------------------------------------------------------|---------|
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -147,7 +147,7 @@ configurable via the Image Parameters.
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-|--------------------------------------|--------------------------------------------------------------|---------|
+| ------------------------------------ | ------------------------------------------------------------ | ------- |
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -158,7 +158,7 @@ configurable via the Image Parameters.
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-|------------------------------------|------------------------------------------------------------|---------|
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -169,15 +169,17 @@ configurable via the Image Parameters.
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-|------------------------------------|------------------------------------------------------|--------|
+| ---------------------------------- | ---------------------------------------------------- | ------ |
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                | Description                                         | Value |
-|---------------------|-----------------------------------------------------|-------|
+| ------------------- | --------------------------------------------------- | ----- |
 | `resources`         | The resource limits/requests for the Linkstack pod  | `{}`  |
+| `volumes`           | Define volumes for the Linkstack pod                | `[]`  |
+| `volumeMounts`      | Define volumeMounts for the Linkstack pod           | `[]`  |
 | `initContainers`    | Define initContainers for the main Linkstack server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                      | `{}`  |
 | `tolerations`       | Tolerations for pod assignment                      | `[]`  |
@@ -190,6 +192,6 @@ configurable via the Image Parameters.
 ### Security context settings
 
 | Name                 | Description                                     | Value |
-|----------------------|-------------------------------------------------|-------|
+| -------------------- | ----------------------------------------------- | ----- |
 | `podSecurityContext` | Security context settings for the Linkstack pod | `{}`  |
 | `securityContext`    | General security context settings for           | `{}`  |

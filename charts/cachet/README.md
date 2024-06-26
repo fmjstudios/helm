@@ -48,7 +48,7 @@ Parameters.
 ### Image parameters
 
 | Name                | Description                                                         | Value             |
-|---------------------|---------------------------------------------------------------------|-------------------|
+| ------------------- | ------------------------------------------------------------------- | ----------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`       |
 | `image.repository`  | The registry repository to pull the image from                      | `cachethq/docker` |
 | `image.tag`         | The image tag to pull                                               | `2.3.15`          |
@@ -59,14 +59,14 @@ Parameters.
 ### Name overrides
 
 | Name               | Description                                     | Value |
-|--------------------|-------------------------------------------------|-------|
+| ------------------ | ----------------------------------------------- | ----- |
 | `nameOverride`     | String to partially override linkstack.fullname | `""`  |
 | `fullnameOverride` | String to fully override linkstack.fullname     | `""`  |
 
 ### Cachet Configuration parameters
 
 | Name                                     | Description                                                               | Value        |
-|------------------------------------------|---------------------------------------------------------------------------|--------------|
+| ---------------------------------------- | ------------------------------------------------------------------------- | ------------ |
 | `cachet.url`                             | The public facing URL for the application                                 | `""`         |
 | `cachet.env`                             | Set the environment the application should run within                     | `production` |
 | `cachet.debug`                           | Whether the app should be run in debug mode                               | `false`      |
@@ -104,21 +104,21 @@ Parameters.
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-|-------------------------|-----------------------------------------|-------|
+| ----------------------- | --------------------------------------- | ----- |
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Common Secret parameters
 
 | Name                 | Description                                                        | Value |
-|----------------------|--------------------------------------------------------------------|-------|
+| -------------------- | ------------------------------------------------------------------ | ----- |
 | `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
 | `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                      | Value   |
-|-----------------------|------------------------------------------------------------------|---------|
+| --------------------- | ---------------------------------------------------------------- | ------- |
 | `ingress.enabled`     | Whether to enable Ingress                                        | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                    | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist              | `""`    |
@@ -129,7 +129,7 @@ Parameters.
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -150,14 +150,14 @@ Parameters.
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-|---------------|----------------------------------|--------|
+| ------------- | -------------------------------- | ------ |
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                              | Value   |
-|------------------------------|--------------------------------------------------------------------------|---------|
+| ---------------------------- | ------------------------------------------------------------------------ | ------- |
 | `serviceAccount.create`      | Whether a service account should be created                              | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                           | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                | `{}`    |
@@ -167,7 +167,7 @@ Parameters.
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-|-------------------------------------|-------------------------------------------------------------|---------|
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -178,7 +178,7 @@ Parameters.
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-|--------------------------------------|--------------------------------------------------------------|---------|
+| ------------------------------------ | ------------------------------------------------------------ | ------- |
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -189,7 +189,7 @@ Parameters.
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-|------------------------------------|------------------------------------------------------------|---------|
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -200,15 +200,17 @@ Parameters.
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-|------------------------------------|------------------------------------------------------|--------|
+| ---------------------------------- | ---------------------------------------------------- | ------ |
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                | Description                                      | Value |
-|---------------------|--------------------------------------------------|-------|
+| ------------------- | ------------------------------------------------ | ----- |
 | `resources`         | The resource limits/requests for the Cachet pod  | `{}`  |
+| `volumes`           | Define volumes for the Cachet pod                | `[]`  |
+| `volumeMounts`      | Define volumeMounts for the Cachet pod           | `[]`  |
 | `initContainers`    | Define initContainers for the main Cachet server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                   | `{}`  |
 | `tolerations`       | Tolerations for pod assignment                   | `[]`  |
@@ -221,14 +223,14 @@ Parameters.
 ### Security context settings
 
 | Name                 | Description                                  | Value |
-|----------------------|----------------------------------------------|-------|
+| -------------------- | -------------------------------------------- | ----- |
 | `podSecurityContext` | Security context settings for the Cachet pod | `{}`  |
 | `securityContext`    | General security context settings for        | `{}`  |
 
 ### Bitnami&reg; PostgreSQL parameters
 
 | Name                                 | Description                                                                                            | Value      |
-|--------------------------------------|--------------------------------------------------------------------------------------------------------|------------|
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------ | ---------- |
 | `postgresql.enabled`                 | Enable or disable the PostgreSQL subchart                                                              | `true`     |
 | `postgresql.auth.enablePostgresUser` | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`     |
 | `postgresql.auth.postgresPassword`   | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres` |
@@ -240,7 +242,7 @@ Parameters.
 ### PostgreSQL Primary parameters
 
 | Name                                           | Description                                                    | Value               |
-|------------------------------------------------|----------------------------------------------------------------|---------------------|
+| ---------------------------------------------- | -------------------------------------------------------------- | ------------------- |
 | `postgresql.primary.name`                      | Name of the primary database (eg primary, master, leader, ...) | `primary`           |
 | `postgresql.primary.persistence.enabled`       | Enable PostgreSQL Primary data persistence using PVC           | `true`              |
 | `postgresql.primary.persistence.existingClaim` | Name of an existing PVC to use                                 | `""`                |
@@ -251,7 +253,7 @@ Parameters.
 ### Bitnami&reg; Redis parameters
 
 | Name                  | Description                                                            | Value        |
-|-----------------------|------------------------------------------------------------------------|--------------|
+| --------------------- | ---------------------------------------------------------------------- | ------------ |
 | `redis.enabled`       | Enable or disable the Redis&reg; subchart                              | `false`      |
 | `redis.architecture`  | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone` |
 | `redis.auth.password` | Redis&reg; password                                                    | `""`         |

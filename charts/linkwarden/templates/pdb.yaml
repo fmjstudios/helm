@@ -3,6 +3,7 @@ apiVersion: {{ include "linkwarden.pdb.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "linkwarden.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "linkwarden.labels" . | nindent 4 }}
 spec:

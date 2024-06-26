@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cachet.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cachet.labels" . | nindent 4 }}
 spec:
@@ -90,6 +91,10 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -133,6 +138,10 @@ spec:
           {{- end }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      {{- if .Values.volumes}}
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:

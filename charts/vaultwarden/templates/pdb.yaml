@@ -3,6 +3,7 @@ apiVersion: {{ include "vaultwarden.pdb.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "vaultwarden.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "vaultwarden.labels" . | nindent 4 }}
 spec:

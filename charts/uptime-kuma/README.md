@@ -51,7 +51,7 @@ is configureble via the Image Parameters.
 ### Uptime-Kuma Image parameters
 
 | Name                | Description                                                         | Value                 |
-|---------------------|---------------------------------------------------------------------|-----------------------|
+| ------------------- | ------------------------------------------------------------------- | --------------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`           |
 | `image.repository`  | The registry repository to pull the image from                      | `louislam/uptimeKuma` |
 | `image.tag`         | The image tag to pull                                               | `'1.23.11'`           |
@@ -62,14 +62,14 @@ is configureble via the Image Parameters.
 ### Uptime-Kuma Name overrides
 
 | Name               | Description                                      | Value |
-|--------------------|--------------------------------------------------|-------|
+| ------------------ | ------------------------------------------------ | ----- |
 | `nameOverride`     | String to partially override uptimeKuma.fullname | `""`  |
 | `fullnameOverride` | String to fully override uptimeKuma.fullname     | `""`  |
 
 ### Uptime-Kuma Configuration parameters
 
 | Name                                              | Description                                                                                         | Value         |
-|---------------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------|
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------- |
 | `uptimeKuma.host`                                 | The host address to bind Uptime-Kuma to                                                             | `"::"`        |
 | `uptimeKuma.port`                                 | The port for Uptime-Kuma to listen on                                                               | `3001`        |
 | `uptimeKuma.disableFrameSameOrigin`               | Allow Uptime-Kuma to be embedded inside HTML 'iframes' of other origins                             | `false`       |
@@ -95,21 +95,21 @@ is configureble via the Image Parameters.
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-|-------------------------|-----------------------------------------|-------|
+| ----------------------- | --------------------------------------- | ----- |
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Common Secret parameters
 
 | Name                 | Description                                                        | Value |
-|----------------------|--------------------------------------------------------------------|-------|
+| -------------------- | ------------------------------------------------------------------ | ----- |
 | `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
 | `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
 | Name                  | Description                                                              | Value   |
-|-----------------------|--------------------------------------------------------------------------|---------|
+| --------------------- | ------------------------------------------------------------------------ | ------- |
 | `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
 | `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
 | `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
@@ -120,7 +120,7 @@ is configureble via the Image Parameters.
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -141,14 +141,14 @@ is configureble via the Image Parameters.
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-|---------------|----------------------------------|--------|
+| ------------- | -------------------------------- | ------ |
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                                  | Value   |
-|------------------------------|------------------------------------------------------------------------------|---------|
+| ---------------------------- | ---------------------------------------------------------------------------- | ------- |
 | `serviceAccount.create`      | Whether a service account should be created                                  | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                               | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                    | `{}`    |
@@ -158,7 +158,7 @@ is configureble via the Image Parameters.
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-|-------------------------------------|-------------------------------------------------------------|---------|
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -169,7 +169,7 @@ is configureble via the Image Parameters.
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-|--------------------------------------|--------------------------------------------------------------|---------|
+| ------------------------------------ | ------------------------------------------------------------ | ------- |
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -180,7 +180,7 @@ is configureble via the Image Parameters.
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-|------------------------------------|------------------------------------------------------------|---------|
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -191,15 +191,17 @@ is configureble via the Image Parameters.
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-|------------------------------------|------------------------------------------------------|--------|
+| ---------------------------------- | ---------------------------------------------------- | ------ |
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                | Description                                           | Value |
-|---------------------|-------------------------------------------------------|-------|
+| ------------------- | ----------------------------------------------------- | ----- |
 | `resources`         | The resource limits/requests for the Uptime-Kuma pod  | `{}`  |
+| `volumes`           | Define volumes for the Paperless pod                  | `[]`  |
+| `volumeMounts`      | Define volumeMounts for the Paperless pod             | `[]`  |
 | `initContainers`    | Define initContainers for the main Uptime-Kuma server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                        | `{}`  |
 | `tolerations`       | Tolerations for pod assignment                        | `[]`  |
@@ -212,6 +214,6 @@ is configureble via the Image Parameters.
 ### Security context settings
 
 | Name                 | Description                                       | Value |
-|----------------------|---------------------------------------------------|-------|
+| -------------------- | ------------------------------------------------- | ----- |
 | `podSecurityContext` | Security context settings for the Uptime-Kuma pod | `{}`  |
 | `securityContext`    | General security context settings for             | `{}`  |

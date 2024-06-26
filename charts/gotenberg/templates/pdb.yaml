@@ -3,6 +3,7 @@ apiVersion: {{ include "gotenberg.pdb.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "gotenberg.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gotenberg.labels" . | nindent 4 }}
 spec:

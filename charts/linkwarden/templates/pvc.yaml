@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "linkwarden.pvc.name" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "linkwarden.labels" . | nindent 4 }}
   annotations:

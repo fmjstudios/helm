@@ -47,7 +47,7 @@ Parameters.
 ### ntfy Image parameters
 
 | Name                | Description                                                         | Value                |
-|---------------------|---------------------------------------------------------------------|----------------------|
+| ------------------- | ------------------------------------------------------------------- | -------------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`          |
 | `image.repository`  | The registry repository to pull the image from                      | `binwiederhier/ntfy` |
 | `image.tag`         | The image tag to pull                                               | `v2.11.0`            |
@@ -58,20 +58,20 @@ Parameters.
 ### Name overrides
 
 | Name               | Description                                | Value |
-|--------------------|--------------------------------------------|-------|
+| ------------------ | ------------------------------------------ | ----- |
 | `nameOverride`     | String to partially override ntfy.fullname | `""`  |
 | `fullnameOverride` | String to fully override ntfy.fullname     | `""`  |
 
 ### Workload overrides
 
 | Name   | Description                                                            | Value         |
-|--------|------------------------------------------------------------------------|---------------|
+| ------ | ---------------------------------------------------------------------- | ------------- |
 | `kind` | The kind of workload to deploy ntfy as (`StatefulSet` or `Deployment`) | `StatefulSet` |
 
 ### ntfy Configuration parameters
 
 | Name                                         | Description                                                                                            | Value           |
-|----------------------------------------------|--------------------------------------------------------------------------------------------------------|-----------------|
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------- |
 | `ntfy.baseURL`                               | The public facing URL for the service (e.g. https://ntfy.example.com)                                  | `""`            |
 | `ntfy.listenHTTP`                            | The listen address for the HTTP server (e.g. ":80", "127.0.0.1:80")                                    | `""`            |
 | `ntfy.listenHTTPS`                           | The listen address for the HTTPS server (e.g. ":443", "127.0.0.1:443") -                               | `""`            |
@@ -155,32 +155,32 @@ Parameters.
 ### ConfigMap parameters
 
 | Name                    | Description                             | Value |
-|-------------------------|-----------------------------------------|-------|
+| ----------------------- | --------------------------------------- | ----- |
 | `configMap.annotations` | Annotations for the ConfigMap resource  | `{}`  |
 | `configMap.labels`      | Extra Labels for the ConfigMap resource | `{}`  |
 
 ### Common Secret parameters
 
 | Name                 | Description                                                        | Value |
-|----------------------|--------------------------------------------------------------------|-------|
+| -------------------- | ------------------------------------------------------------------ | ----- |
 | `secret.annotations` | Common annotations for the SMTP, HIBP, Admin and Database secrets  | `{}`  |
 | `secret.labels`      | Common extra labels for the SMTP, HIBP, Admin and Database secrets | `{}`  |
 
 ### Ingress parameters
 
-| Name                  | Description                                                              | Value   |
-|-----------------------|--------------------------------------------------------------------------|---------|
-| `ingress.enabled`     | Whether to enable Ingress                                                | `false` |
-| `ingress.className`   | The IngressClass to use for the pod's ingress                            | `""`    |
-| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                      | `""`    |
-| `ingress.annotations` | Annotations for the Ingress resource                                     | `{}`    |
-| `ingress.tls`         | A list of hostnames and secret names to use for TLS                      | `[]`    |
-| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with vaultwarden.domain) | `[]`    |
+| Name                  | Description                                                        | Value   |
+| --------------------- | ------------------------------------------------------------------ | ------- |
+| `ingress.enabled`     | Whether to enable Ingress                                          | `false` |
+| `ingress.className`   | The IngressClass to use for the pod's ingress                      | `""`    |
+| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist                | `""`    |
+| `ingress.annotations` | Annotations for the Ingress resource                               | `{}`    |
+| `ingress.tls`         | A list of hostnames and secret names to use for TLS                | `[]`    |
+| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with ntfy.baseURL) | `[]`    |
 
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
+| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -201,14 +201,14 @@ Parameters.
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-|---------------|----------------------------------|--------|
+| ------------- | -------------------------------- | ------ |
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                            | Value   |
-|------------------------------|------------------------------------------------------------------------|---------|
+| ---------------------------- | ---------------------------------------------------------------------- | ------- |
 | `serviceAccount.create`      | Whether a service account should be created                            | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                         | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                              | `{}`    |
@@ -218,7 +218,7 @@ Parameters.
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value   |
-|-------------------------------------|-------------------------------------------------------------|---------|
+| ----------------------------------- | ----------------------------------------------------------- | ------- |
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `false` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`     |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `1`     |
@@ -229,7 +229,7 @@ Parameters.
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value   |
-|--------------------------------------|--------------------------------------------------------------|---------|
+| ------------------------------------ | ------------------------------------------------------------ | ------- |
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `false` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`     |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `1`     |
@@ -240,7 +240,7 @@ Parameters.
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value   |
-|------------------------------------|------------------------------------------------------------|---------|
+| ---------------------------------- | ---------------------------------------------------------- | ------- |
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `false` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`     |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `1`     |
@@ -251,15 +251,17 @@ Parameters.
 ### PodDisruptionBudget parameters
 
 | Name                               | Description                                          | Value  |
-|------------------------------------|------------------------------------------------------|--------|
+| ---------------------------------- | ---------------------------------------------------- | ------ |
 | `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
 | `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
 
 ### Pod settings
 
 | Name                | Description                                    | Value |
-|---------------------|------------------------------------------------|-------|
+| ------------------- | ---------------------------------------------- | ----- |
 | `resources`         | The resource limits/requests for the ntfy pod  | `{}`  |
+| `volumes`           | Define volumes for the ntfy pod                | `[]`  |
+| `volumeMounts`      | Define volumeMounts for the ntfy pod           | `[]`  |
 | `initContainers`    | Define initContainers for the main ntfy server | `[]`  |
 | `nodeSelector`      | Node labels for pod assignment                 | `{}`  |
 | `tolerations`       | Tolerations for pod assignment                 | `[]`  |
@@ -272,6 +274,6 @@ Parameters.
 ### Security context settings
 
 | Name                 | Description                                | Value |
-|----------------------|--------------------------------------------|-------|
+| -------------------- | ------------------------------------------ | ----- |
 | `podSecurityContext` | Security context settings for the ntfy pod | `{}`  |
 | `securityContext`    | General security context settings for      | `{}`  |

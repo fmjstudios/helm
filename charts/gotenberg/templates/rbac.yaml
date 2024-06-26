@@ -16,6 +16,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "gotenberg.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gotenberg.labels" . | nindent 4 }}
     app.kubernetes.io/component: gotenberg
@@ -26,4 +27,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ include "gotenberg.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
 {{- end -}}

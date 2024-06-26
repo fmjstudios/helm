@@ -505,6 +505,12 @@ podDisruptionBudget:
 ## @section Pod settings
 ##
 
+## Gotenberg replicas
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+## @param replicas The amount of replicas Gotenberg deployment should create
+##
+replicas: 1
+
 ## Gotenberg resource settings
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources The resource limits/requests for the Gotenberg pod
@@ -517,6 +523,16 @@ resources:
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumes Define volumes for the Gotenberg pod
+##
+volumes: []
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumeMounts Define volumeMounts for the Gotenberg pod
+##
+volumeMounts: []
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define initContainers for the main Gotenberg server

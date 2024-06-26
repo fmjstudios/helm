@@ -22,6 +22,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "paperless.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "paperless.labels" . | nindent 4 }}
     app.kubernetes.io/component: paperless
@@ -32,4 +33,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ include "paperless.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
 {{- end -}}

@@ -895,6 +895,16 @@ resources:
 #   cpu: 100m
 #   memory: 128Mi
 
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumes Define volumes for the Paperless pod
+##
+volumes: []
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumeMounts Define volumeMounts for the Paperless pod
+##
+volumeMounts: []
+
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define initContainers for the main Paperless server
 ##

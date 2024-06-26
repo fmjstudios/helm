@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "linkstack.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "linkstack.labels" . | nindent 4 }}
 spec:
@@ -52,6 +53,9 @@ spec:
           volumeMounts:
             - name: {{ include "linkstack.pv.name" . }}
               mountPath: {{ .Values.linkstack.data.rootPath }}
+          {{- if .Values.volumeMounts }}
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -100,6 +104,9 @@ spec:
         - name: {{ include "linkstack.pv.name" . }}
           persistentVolumeClaim:
             claimName: {{ default (include "linkstack.pvc.name" .) .Values.linkstack.data.pvc.existingClaim }}
+      {{- if .Values.volumes}}
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
