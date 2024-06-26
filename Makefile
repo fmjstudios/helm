@@ -55,11 +55,13 @@ CONFIG_DIR := $(ROOT_DIR)/config
 CONFIG_SSL_DIR := $(CONFIG_DIR)/ssl
 CONFIG_K8S_DIR := $(CONFIG_DIR)/k8s
 SECRETS_DIR := $(ROOT_DIR)/secrets
+CI_DIR := $(ROOT_DIR)/.github
 ALL_CHARTS := $(sort $(dir $(wildcard charts/*/)))
 
 # Documentation
 DOCS_DIR := $(ROOT_DIR)/docs
 GIT_CLIFF_CONFIG := $(DOCS_DIR)/cliff.toml
+MARKDOWNLINT_CONFIG := $(CI_DIR)/linters/.markdown-lint.yml
 
 DATE := $(shell date '+%d.%m.%y-%T')
 
@@ -180,11 +182,11 @@ else
 all: dist-dir
 	for chart in $(ALL_CHARTS); do \
   		$(MAKE) gen CHART=$$chart; \
-  	done
+  	done \
   	$(call log_success, "Generated updated JSON schemas and documentation for all Charts")
 	for chart in $(ALL_CHARTS); do \
   		$(MAKE) build CHART=$$chart; \
-  	done
+  	done \
   	$(call log_success, "Building all Charts into $(OUT_DIR)")
 endif
 
@@ -390,3 +392,7 @@ ifndef REGISTRY_USER
 else
 	gh auth token | helm registry login ghcr.io -u $(REGISTRY_USER) --password-stdin
 endif
+
+.PHONY: markdownlint
+markdownlint:
+	markdownlint -c $(MARKDOWNLINT_CONFIG) '**/*.md'
