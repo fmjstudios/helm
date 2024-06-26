@@ -1,6 +1,6 @@
 name: 'Run Super-Linter'
 
-on: [ 'push', 'pull_request' ]
+on: ['push', 'pull_request']
 
 jobs:
   lint:
@@ -28,4 +28,7 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
           VALIDATE_YAML: false
+          # random issues
           VALIDATE_CHECKOV: false
+          # disabled due to README tables for values.yaml
+          VALIDATE_NATURAL_LANGUAGE: false
