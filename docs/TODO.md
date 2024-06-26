@@ -23,7 +23,8 @@
 
 ## ✏️ Planned Changes
 
-- [ ] Add optional settings to define extra arguments for the deployed containers
+- [X] ~~Add optional settings to define extra arguments for the deployed containers~~ -> not useful for current
+  applications
 - [ ] Add [Pod/ServiceMonitor and PrometheusRule manifests](https://prometheus-operator.dev/docs/operator/api/) for each
   chart
 
