@@ -180,14 +180,8 @@ all:
 	echo "$$ALL_INFO"
 else
 all: dist-dir
-	for chart in $(ALL_CHARTS); do \
-  		$(MAKE) gen CHART=$$chart; \
-  	done \
-  	$(call log_success, "Generated updated JSON schemas and documentation for all Charts")
-	for chart in $(ALL_CHARTS); do \
-  		$(MAKE) build CHART=$$chart; \
-  	done \
-  	$(call log_success, "Building all Charts into $(OUT_DIR)")
+	for chart in $(ALL_CHARTS); do $(MAKE) gen CHART=$$chart; done
+	for chart in $(ALL_CHARTS); do $(MAKE) build CHART=$$chart;	done
 endif
 
 define BUILD_INFO
