@@ -6,7 +6,7 @@
 - [ ] [BookStack](https://www.bookstackapp.com/) chart
 - [ ] [Maildev](https://github.com/maildev/maildev) chart
 - [ ] [GoBackup](https://gobackup.github.io/) chart
-- [ ] [Kubenav](https://github.com/kubenav/kubenav) chart
+- [X] [Kubenav](https://github.com/kubenav/kubenav) chart
 - [ ] [Shopware 6](https://github.com/shopware/shopware) chart
 - [ ] [Shlink](https://shlink.io/) chart
 - [ ] [AnonAddy](https://addy.io/) chart
@@ -30,8 +30,4 @@
 
 ## 💡 Ideas
 
-_None_
-
 ## 🔗 Links
-
-_None_

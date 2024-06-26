@@ -17,17 +17,17 @@ the [GitHub Container Registry](https://github.com/linkwarden/linkwarden/pkgs/co
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install linkwarden fmjstudios/linkwarden --version 0.1.3
+helm install linkwarden fmjstudios/linkwarden --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/linkwarden:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/linkwarden:X.Y.Z
 ```
 
 ## Introduction

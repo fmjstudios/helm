@@ -17,17 +17,17 @@ on [GitHub Container Registry](https://github.com/paperless-ngx/paperless-ngx/pk
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install paperless-ngx fmjstudios/paperless-ngx --version 0.1.3
+helm install paperless-ngx fmjstudios/paperless-ngx --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:X.Y.Z
 ```
 
 ## Introduction

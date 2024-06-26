@@ -5,22 +5,25 @@
 [![CI Status](https://github.com/fmjstudios/helm/actions/workflows/release.yaml/badge.svg)](https://github.com/fmjstudios/helm/blob/main/.github/workflows/ci-pipeline.yml)
 [![Renovate](https://img.shields.io/badge/Renovate-enabled-brightgreen?logo=renovatebot&logoColor=1DDEDD)](https://renovatebot.com/)
 
-A collection of open-source [MIT][license]-licensed _Helm Charts_ written and maintained by `FMJ Studios` for use
-with [Kubernetes][kubernetes] `v1.26` and above. Have a look [at the table below](#-overview) to get a list of the
-included charts, their versions and the default container images. This repository relies on the _GNU Make_ build
-system. The [`Makefile`](Makefile) also includes `targets` to set up the development environment. Refer to
-the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more information.
+A collection of open-source [MIT][license]-licensed [_Helm Charts_][helm] written and maintained by `FMJ Studios` for
+use with [Kubernetes][kubernetes] `v1.26` and above. Have a look [at the table below](#-overview) to get a list of the
+included charts, their versions and the default container images. The charts are also published
+to [ArtifactHub][artifacthub], where they can be found in
+the [`fmjstudios`](https://artifacthub.io/packages/search?repo=fmjstudios&sort=relevance) repository. This GitHub
+repository relies on the _GNU Make_ build system to ease the development workflows. The [`Makefile`](Makefile) also
+includes `targets` to set up the development environment. Refer to the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more
+information.
 
 ## ✨ TL;DR
 
-_Repository-based installation_
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
 helm install <RELEASE_NAME> fmjstudios/<CHART_NAME>
 ```
 
-_OCI-Registry-based installation_
+### OCI Installation
 
 ```shell
 helm install oci://ghcr.io/fmjstudios/helm/<CHART_NAME>:<VERSION>
@@ -75,8 +78,6 @@ contact details to reach out directly.
 <!-- File references -->
 
 [license]: LICENSE
-
-[makefile]: Makefile
 
 <!-- General links -->
 

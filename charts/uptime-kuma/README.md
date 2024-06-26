@@ -16,17 +16,17 @@ on [Docker Hub](https://hub.docker.com/r/louislam/uptime-kuma).
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install uptime-kuma fmjstudios/uptime-kuma --version 0.1.3
+helm install uptime-kuma fmjstudios/uptime-kuma --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:X.Y.Z
 ```
 
 ## Introduction

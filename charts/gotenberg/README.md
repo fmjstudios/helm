@@ -11,17 +11,17 @@ on [Docker Hub](https://hub.docker.com/r/gotenberg/gotenberg).
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install gotenberg fmjstudios/gotenberg --version 0.1.3
+helm install gotenberg fmjstudios/gotenberg --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/gotenberg:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/gotenberg:X.Y.Z
 ```
 
 ## Introduction

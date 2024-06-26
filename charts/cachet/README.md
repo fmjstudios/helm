@@ -14,17 +14,17 @@ on [Docker Hub](https://hub.docker.com/r/cachethq/docker/).
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install cachet fmjstudios/cachet --version 0.1.3
+helm install cachet fmjstudios/cachet --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/cachet:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/cachet:X.Y.Z
 ```
 
 ## Introduction

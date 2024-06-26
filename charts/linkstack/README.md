@@ -13,17 +13,17 @@ Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/lin
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install linkstack fmjstudios/linkstack --version 0.1.3
+helm install linkstack fmjstudios/linkstack --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/linkstack:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/linkstack:X.Y.Z
 ```
 
 ## Introduction

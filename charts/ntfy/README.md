@@ -12,17 +12,17 @@ on [Docker Hub](https://hub.docker.com/r/binwiederhier/ntfy).
 
 ## ✨ TL;DR
 
-__Helm Repository Installation__
+### Helm Repository Installation
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install ntfy fmjstudios/ntfy --version 0.1.3
+helm install ntfy fmjstudios/ntfy --version X.Y.Z
 ```
 
-__OCI Installation__
+### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/ntfy:0.1.3
+helm install oci://ghcr.io/fmjstudios/helm/ntfy:X.Y.Z
 ```
 
 ## Introduction
