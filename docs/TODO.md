@@ -19,7 +19,7 @@
 - [ ] [Activepieces](https://www.activepieces.com/docs/install/configurations/environment-variables) chart
 
 > [!NOTE]
-> (Most likely) next up are `Shopware 6`, `Shlink`, `GoBackup` and `Outline`
+> Next charts are `GoBackup`, `Activepieces`, `Shopware 6`, `Outline` and `Shlink`
 
 ## ✏️ Planned Changes
 
@@ -29,5 +29,11 @@
   chart
 
 ## 💡 Ideas
+
+- [ ] Use [official __Shopware AG__ base Docker image](https://github.com/shopware/docker?tab=readme-ov-file) for
+  Helm
+  chart reference (`shopware-cli`)
+- [ ] Support Reverse HTTP Cache for `Shopware 6` chart
+  with [prebuilt image](https://github.com/shopware/varnish-shopware/tree/main)
 
 ## 🔗 Links
