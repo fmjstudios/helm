@@ -1,0 +1,35 @@
+1. Obtain the "advertise address" for your Kubernetes cluster:
+export API_SERVER_ADDR=$(kubectl -n kube-system get pod -l component=kube-apiserver -o=jsonpath="{.items[0].metadata.annotations.kubeadm\.kubernetes\.io/kube-apiserver\.advertise-address\.endpoint}")
+
+2. Get the Kubernetes CA certificate data
+export CA_CERT_DATA=$(kubectl get secret -n {{ .Release.Namespace }} {{ include "kubenav.secret.saToken" . }} -o jsonpath="{.data.ca\.crt}")
+
+3. Get the token for the Kubenav ServiceAccount
+export SA_TOKEN=$(kubectl get secret -n {{ .Release.Namespace }} {{ include "kubenav.secret.saToken" . }} -o jsonpath="{.data.token}")
+
+3. Get the namespace of the Kubenav ServiceAccount
+export SA_NAMESPACE=$(kubectl get secret -n {{ .Release.Namespace }} {{ include "kubenav.secret.saToken" . }} -o jsonpath="{.data.namespace}")
+
+5. Get the name of your cluster
+export CLUSTER_NAME=$(kubectl config current-context)
+
+echo "
+---
+apiVersion: v1
+kind: Config
+clusters:
+  - name: ${CLUSTER_NAME}
+    cluster:
+      certificate-authority-data: ${CA_CERT_DATA}
+      server: ${API_SERVER_ADDR}
+contexts:
+  - name: {{ include "kubenav.serviceAccountName" . }}@${CLUSTER_NAME}
+    context:
+      cluster: ${CLUSTER_NAME}
+      namespace: ${SA_NAMESPACE}
+      user: {{ include "kubenav.serviceAccountName" . }}
+users:
+  - name: {{ include "kubenav.serviceAccountName" . }}
+    user:
+      token: ${SA_TOKEN}
+"

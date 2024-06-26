@@ -1,0 +1,56 @@
+# Default Helm values for fmjstudios/kubenav.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Name overrides
+##
+
+## @param nameOverride String to partially override linkstack.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override linkstack.fullname
+##
+fullnameOverride: ""
+
+## @section Secret parameters
+##
+
+## Kubenav Secret settings
+## @param secret.annotations Annotations for the `service-account-token` Secret
+## @param secret.labels Labels for the `service-account-token` Secret
+
+secret:
+  annotations: { }
+  labels: { }
+
+## @section RBAC parameters
+##
+
+## Kubenav RBAC settings
+## @param rbac.create Whether to create RBAC resources
+## @param rbac.rules Extra rules to add to the Role
+##
+rbac:
+  create: true
+  rules: []
+
+## @section Service Account parameters
+##
+
+## Kubenav Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create Whether a service account should be created
+## @param serviceAccount.automount Whether to automount the service account token
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name A custom name for the service account, otherwise kubenav.fullname is used
+## @param serviceAccount.secrets A list of secrets mountable by this service account
+##
+serviceAccount:
+  create: true
+  automount: false
+  annotations: { }
+  name: ""
+  secrets: []
