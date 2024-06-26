@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 1.30.5
 kubeVersion: ">=1.26"
 name: vaultwarden
-version: 0.1.2
+version: 0.1.3
 description: Vaultwarden is an open-source, community-supported, Bitwarden-comptabile server written in Rust
 home: https://github.com/dani-garcia/vaultwarden
 icon: https://raw.githubusercontent.com/fmjstudios/artwork/2fd182517d56ffeee59f82ec75b651e92344d151/projects/vaultwarden/icon/black/vaultwarden-icon-black.png
@@ -45,9 +45,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: added
-      description: Support links via annotations
-    - kind: added
-      description: Verified chart publisher
-    - kind: removed
-      description: obsolete (duplicated) annotations
+    - kind: fixed
+      description: invalid version comparision in Service

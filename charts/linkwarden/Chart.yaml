@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26"
 name: linkwarden
-version: 0.1.2
+version: 0.1.3
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -51,9 +51,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: added
-      description: Support links via annotations
-    - kind: added
-      description: Verified chart publisher
-    - kind: removed
-      description: obsolete (duplicated) annotations
+    - kind: fixed
+      description: invalid version comparision in Service

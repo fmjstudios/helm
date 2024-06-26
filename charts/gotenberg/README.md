@@ -15,13 +15,13 @@ __Helm Repository Installation__
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install gotenberg fmjstudios/gotenberg --version 0.1.2
+helm install gotenberg fmjstudios/gotenberg --version 0.1.3
 ```
 
 __OCI Installation__
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/gotenberg:0.1.2
+helm install oci://ghcr.io/fmjstudios/helm/gotenberg:0.1.3
 ```
 
 ## Introduction

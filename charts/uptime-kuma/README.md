@@ -20,13 +20,13 @@ __Helm Repository Installation__
 
 ```shell
 helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install uptime-kuma fmjstudios/uptime-kuma --version 0.1.2
+helm install uptime-kuma fmjstudios/uptime-kuma --version 0.1.3
 ```
 
 __OCI Installation__
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.2
+helm install oci://ghcr.io/fmjstudios/helm/uptime-kuma:0.1.3
 ```
 
 ## Introduction
