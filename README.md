@@ -41,6 +41,7 @@ helm install oci://ghcr.io/fmjstudios/helm/<CHART_NAME>:<VERSION>
 | [LinkStack <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="32px" height="32px" align="right" loading="lazy">][linkstack_chart]                                                        |      0.1.2      | [linkstackorg/linkstack][linkstack_images]          |
 | [ntfy <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/main/web/public/static/images/ntfy.png" alt="ntfy Logo" width="32px" height="32px" align="right" loading="lazy">][ntfy_chart]                                                                     |      0.1.2      | [binwiederhier/ntfy][ntfy_images]                   |
 | [Cachet <img src="https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="32px" height="32px" align="right" loading="lazy">][cachet_chart]                                                                 |      0.1.2      | [cachethq/docker][cachet_images]                    |
+| [Kubenav <img src="https://raw.githubusercontent.com/kubenav/kubenav/290f1776b03c359b8115125fa37a4b8dd73b6464/utils/images/app-icons/android.png" alt="Kubenav Logo" width="32px" height="32px" align="right" loading="lazy">][kubenav_chart]                          |      0.1.0      | `None`                                              |
 
 [//]: # ("Stolen" from https://github.com/gabe565/charts/blob/main/README.md because I really liked the look)
 
@@ -74,6 +75,8 @@ contact details to reach out directly.
 [ntfy_chart]: charts/ntfy
 
 [cachet_chart]: charts/cachet
+
+[kubenav_chart]: charts/kubenav
 
 <!-- File references -->
 
