@@ -64,8 +64,71 @@ Create the name of the service account to use
 {{/*
 Define Secret names
 */}}
-{{- define "gobackup.secret.db" }}
-{{- printf "%s-%s-credentials" (include "gobackup.fullname" .) .type }}
+{{- define "gobackup.secret.webAuth" }}
+{{- printf "%s-web-credentials" (include "gobackup.fullname" .) }}
+{{- end }}
+
+{{- define "gobackup.secret.database" }}
+{{- printf "%s-database-%s-%s-credentials" (include "gobackup.fullname" .) .model .type }}
+{{- end }}
+
+{{- define "gobackup.secret.storage" }}
+{{- printf "%s-storage-%s-%s-credentials" (include "gobackup.fullname" .) .model .type }}
+{{- end }}
+
+{{- define "gobackup.secret.notifier" }}
+{{- printf "%s-notifier-%s-%s-credentials" (include "gobackup.fullname" .) .model .type }}
+{{- end }}
+
+{{- define "gobackup.secret.encryption.password" }}
+{{- printf "%s-%s-openssl-passphrase" (include "gobackup.fullname" .) .model }}
+{{- end }}
+
+{{/*
+Define env variable names
+*/}}
+{{- define "gobackup.env.username" }}
+{{- printf "%s_%s_USERNAME" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.password" }}
+{{- printf "%s_%s_PASSWORD" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.privateKey" }}
+{{- printf "%s_%s_PRIVATE_KEY" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.passphrase" }}
+{{- printf "%s_%s_PASSPHRASE" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.accessKey" }}
+{{- printf "%s_%s_SECRET_ACCESS_KEY" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.secretKey" }}
+{{- printf "%s_%s_SECRET_KEY" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.credentials" }}
+{{- printf "%s_%s_CREDENTIALS" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.clientId" }}
+{{- printf "%s_%s_CLIENT_ID" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.clientSecret" }}
+{{- printf "%s_%s_CLIENT_SECRET" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.token" }}
+{{- printf "%s_%s_TOKEN" .model .type | upper }}
+{{- end }}
+
+{{- define "gobackup.env.encryption.password" }}
+{{- printf "%s_OPENSSL_ENCRYPTION_PASSPHRASE" .model | upper }}
 {{- end }}
 
 {{/*

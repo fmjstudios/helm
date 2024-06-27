@@ -1,0 +1,265 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gobackup.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gobackup.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "gobackup.selectorLabels" . | nindent 6 }}
+  {{- if .Values.strategy -}}
+  strategy:
+  {{- toYaml .Values.strategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- if .Values.podAnnotations }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- if .Values.podAnnotations }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      labels:
+        {{- include "gobackup.selectorLabels" . | nindent 8 }}
+        {{- if .Values.podLabels -}}
+        {{- toYaml .Values.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "gobackup.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "v%s" .Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- if or .Values.gobackup.web.username .Values.gobackup.web.existingSecret }}
+            - name: WEB_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.webAuth" .) .Values.gobackup.web.existingSecret }}
+                  key: username
+            - name: WEB_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.webAuth" .) .Values.gobackup.web.existingSecret }}
+                  key: password
+            {{- end }}
+            {{- range $_, $model := .Values.gobackup.models }}
+            {{- /* DATABASES */ -}}
+            {{- range $_, $database := $model.databases }}
+            - name: {{ include "gobackup.env.username" (merge $ (dict "model" $model.name "type" $database.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.database" (merge $ (dict "model" $model.name "type" $database.type))) $database.existingSecret }}
+                  key: username
+            - name: {{ include "gobackup.env.password" (merge $ (dict "model" $model.name "type" $database.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.database" (merge $ (dict "model" $model.name "type" $database.type))) $database.existingSecret }}
+                  key: password
+            {{- end }}
+            {{- /* STORAGES */ -}}
+            {{- if $model.storages }}
+            {{- range $_, $storage := $model.storages }}
+            {{- if (has $storage.type (include "gobackup.config.storages.basicAuth" . | fromJsonArray )) }}
+            - name: {{ include "gobackup.env.username" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: username
+            - name: {{ include "gobackup.env.password" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: password
+            {{- end }}
+            {{- if (has $storage.type (include "gobackup.config.storages.basicAuthKP" . | fromJsonArray )) }}
+            - name: {{ include "gobackup.env.username" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: username
+            - name: {{ include "gobackup.env.password" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: password
+            - name: {{ include "gobackup.env.privateKey" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: privateKey
+            - name: {{ include "gobackup.env.passphrase" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: passphrase
+            {{- end }}
+            {{- if eq $storage.type "gcs" }}
+            - name: {{ include "gobackup.env.credentials" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: credentials
+            {{- end }}
+            {{- if eq $storage.type "azure" }}
+            - name: {{ include "gobackup.env.clientId" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: clientId
+            - name: {{ include "gobackup.env.clientSecret" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: clientSecret
+            {{- end }}
+            {{- if (has $storage.type (include "gobackup.config.storages.s3" . | fromJsonArray )) }}
+            - name: {{ include "gobackup.env.accessKey" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: accessKey
+            - name: {{ include "gobackup.env.secretKey" (merge $ (dict "model" $model.name "type" $storage.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.storage" (merge $ (dict "model" $model.name "type" $storage.type))) $storage.existingSecret }}
+                  key: secretKey
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- /* NOTIFIERS */ -}}
+            {{- if $model.notifiers }}
+            {{- range $_, $notifier := $model.notifiers }}
+            {{- if eq $notifier.type "mail" }}
+            - name: {{ include "gobackup.env.username" (merge $ (dict "model" $model.name "type" $notifier.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.notifier" (merge $ (dict "model" $model.name "type" $notifier.type))) $notifier.existingSecret }}
+                  key: username
+            - name: {{ include "gobackup.env.password" (merge $ (dict "model" $model.name "type" $notifier.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.notifier" (merge $ (dict "model" $model.name "type" $notifier.type))) $notifier.existingSecret }}
+                  key: password
+            {{- end }}
+            {{- if eq $notifier.type "ses" }}
+            - name: {{ include "gobackup.env.accessKey" (merge $ (dict "model" $model.name "type" $notifier.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.notifier" (merge $ (dict "model" $model.name "type" $notifier.type))) $notifier.existingSecret }}
+                  key: accessKey
+            - name: {{ include "gobackup.env.secretKey" (merge $ (dict "model" $model.name "type" $notifier.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.notifier" (merge $ (dict "model" $model.name "type" $notifier.type))) $notifier.existingSecret }}
+                  key: secretKey
+            {{- end }}
+            {{- if (has $notifier.type (list "telegram" "github" "postmark" "sendgrid")) }}
+            - name: {{ include "gobackup.env.token" (merge $ (dict "model" $model.name "type" $notifier.type)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.notifier" (merge $ (dict "model" $model.name "type" $notifier.type))) $notifier.existingSecret }}
+                  key: token
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- /* NOTIFIERS */ -}}
+            {{- if $model.encryption.password }}
+            - name: {{ include "gobackup.env.encryption.password" (merge $ (dict "model" $model.name)) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "gobackup.secret.encryption.password" (merge $ (dict "model" $model.name))) $model.encryption.existingSecret }}
+                  key: passphrase
+            {{- end }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.gobackup.web.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: {{ printf "%s-config" (include "gobackup.fullname" .) }}
+              mountPath: /etc/gobackup
+          {{- if .Values.volumeMounts }}
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.startupProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      volumes:
+        - name: {{ printf "%s-config" (include "gobackup.fullname" .) }}
+          configMap:
+            name: {{ include "gobackup.fullname" . }}
+      {{- if .Values.volumes}}
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+      {{- if .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      {{- if .Values.initContainers }}
+      initContainers:
+        {{- toYaml .Values.initContainers | nindent 8 }}
+      {{- end }}

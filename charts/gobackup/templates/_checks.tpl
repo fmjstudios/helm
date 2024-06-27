@@ -2,7 +2,7 @@
   Check whether the given database types are supported
 */}}
 {{- define "gobackup.checks.databases" -}}
-{{- $allowedList := include "gobackup.conf.databases" . | fromJsonArray }}
+{{- $allowedList := include "gobackup.config.databases" . | fromJsonArray }}
 {{- $modelsLength := len .Values.gobackup.models }}
   {{- if (gt $modelsLength 0) }}
   {{- range $_, $v := .Values.gobackup.models }}
@@ -24,7 +24,7 @@
   Check whether the given storage types are supported
 */}}
 {{- define "gobackup.checks.storages" -}}
-{{- $allowedList := include "gobackup.conf.storages" . | fromJsonArray }}
+{{- $allowedList := include "gobackup.config.storages" . | fromJsonArray }}
 {{- $modelsLength := len .Values.gobackup.models }}
   {{- if (gt $modelsLength 0) }}
   {{- range $_, $v := .Values.gobackup.models }}
@@ -46,7 +46,7 @@
   Check whether the given notifier types are supported
 */}}
 {{- define "gobackup.checks.notifiers" -}}
-{{- $allowedList := include "gobackup.conf.notifiers" . | fromJsonArray }}
+{{- $allowedList := include "gobackup.config.notifiers" . | fromJsonArray }}
 {{- $modelsLength := len .Values.gobackup.models }}
   {{- if (gt $modelsLength 0) }}
   {{- range $_, $v := .Values.gobackup.models }}

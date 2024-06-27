@@ -1,0 +1,54 @@
+gobackup:
+  workdir: /tmp
+  web:
+    host: gobackup.helm.private
+    port: 2703
+    username: admin
+    password: password
+
+  ## Models configuration
+  ## ref: https://gobackup.github.io/configuration
+  ##
+  models:
+    - name: default
+      description: Default model
+      default: default
+      schedule:
+        cron: "*/5 * * * *"
+      scripts:
+        before: |
+          echo "Running GoBackup model default"
+        after: |
+          echo "Ran GoBackup model default"
+
+      databases:
+        - name: postgresql_default
+          type: postgresql
+          config:
+            host: gobackup-postgresql-cluster
+            port: 5432
+            database: gobackup
+            username: admin
+            password: gobackup
+
+      storages:
+        - name: s3_default
+          type: s3
+          config:
+            bucket: gobackup
+            region: eu-north-1
+            path: /apps/default
+          existingSecret: s3-credentials
+
+      notifiers:
+        - name: github
+          type: github
+          config:
+            url:https://github.com/fmjstudios/helm/pull/111
+          token: your-github-access-token
+          existingSecret: ""
+
+      compression: tgz
+      encryption: { }
+      archive: { }
+      splitter: { }
