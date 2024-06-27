@@ -102,7 +102,7 @@ template:
             {{- end }}
         volumeMounts:
           - name: {{ printf "%s-config" (include "ntfy.fullname" .) }}
-            mountPath: /var/lib/ntfy/server.yml
+            mountPath: /var/lib/ntfy
             {{- if (or .Values.ntfy.cache.file .Values.ntfy.auth.file .Values.ntfy.attachment.cacheDir) }}
           - name: {{ include "ntfy.pv" . }}
             mountPath: {{ .Values.ntfy.data.rootPath }}
