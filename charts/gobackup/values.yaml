@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: []
+  pullSecrets: [ ]
 
 ## @section Name overrides
 ##
@@ -51,7 +51,196 @@ fullnameOverride: ""
 
 ## GoBackup configuration
 ## ref: https://gobackup.github.io/configuration
-gobackup: { }
+gobackup:
+  ## @param gobackup.workdir [default: /tmp] Define a working directory for GoBackup to generate temporary files
+  ##
+  workdir: /tmp
+
+  ## Web UI configuration
+  ##
+  web:
+    ## @param gobackup.web.host [string] The host to bind the network socket to
+    ##
+    host: ""
+    ## @param gobackup.web.port [string] The port to bind the network socket to
+    ##
+    port: ""
+    ## @param gobackup.web.username [string] The HTTP Basic Auth username
+    ##
+    username: ""
+    ## @param gobackup.web.password [string] The HTTP Basic Auth password
+    ##
+    password: ""
+    ## @param gobackup.web.existingSecret [string] The name of a `basic-auth` secret containing aforementioned credentials
+    ##
+    existingSecret: ""
+
+  ## Models configuration
+  ## ref: https://gobackup.github.io/configuration
+  ##
+  models: [ ]
+  ## The name of the model to create (the YAML keys everything is nested under, e.g. `model_name1` in ref)
+  ## ref: https://gobackup.github.io/configuration#config-file-example
+  ##
+  # - name: ""
+  ## Define a description for this GoBackup model
+  ## ref: https://gobackup.github.io/configuration#modelconfig
+  ##
+  # description: ""
+  ## Set a default storage name
+  ## ref: https://gobackup.github.io/configuration#modelconfig
+  ##
+  # default: ""
+  ## Configure a schedule on which the model should run
+  ## ref: https://gobackup.github.io/schedule
+  ##
+  # schedule: { }
+  ## Configure scripts to run before or after GoBackup model execution
+  ## ref: https://gobackup.github.io/configuration#config-file-example
+  ##
+  # scripts: { }
+  ##  before: |
+  ##    echo "Running GoBackup model XYZ"
+  ##  after: |
+  ##    echo "Ran GoBackup model XYZ"
+  ##
+
+  ## Configure the databases in the model
+  ## ref: https://gobackup.github.io/configuration#databaseconfig
+  ##
+  ## `name` is the name of the parent YAML key
+  ## `type` is the type of database to back up
+  ## `config` is the configuration properties for said database type
+  ## `existingSecret` is an existing `basic-auth` Secret from which the credential will be used
+  ##
+  ## e.g. for PostgreSQL (https://gobackup.github.io/configuration/databases/postgresql), to produce the example shown
+  ## you would set the following object:
+  ##
+  ## name: my_app
+  ## type: postgresql
+  ## config:
+  ##   host: localhost
+  ##   port: 5432
+  ##   database: my_app_production
+  ##   user: root
+  ##   password: root
+  ##   ...
+  ##
+  # databases: [ ]
+  ##  - name: postgresql
+  ##    type: postgresql
+  ##    config: { }
+  ##    existingSecret: ""
+
+  ## Configure the storages in the model
+  ## ref: https://gobackup.github.io/configuration/storages
+  ##
+  ## `name` is the name of the parent YAML key
+  ## `type` is the type of storage to back up to
+  ## `config` is the configuration properties for said storage type
+  ## `existingSecret` is an existing `basic-auth` Secret from which credentials will be used
+  ##
+  ## The `existingSecret` will look for the following keys within the secret, depending on the type of storage:
+  ##    - ftp - `username` and `password` (basic-auth)
+  ##    - sftp - `username`, `password`, `privateKey` and `passphrase`
+  ##    - scp - `username`, `password`, `privateKey` and `passphrase`
+  ##    - webdav - `username` and `password` (basic-auth)
+  ##    - s3 - `accessKey` and `secretKey`
+  ##    - oss - `accessKey` and `secretKey`
+  ##    - gcs - `credentials`
+  ##    - azure - `clientId` and `clientSecret`
+  ##    - r2 - `accessKey` and `secretKey`
+  ##    - spaces - `accessKey` and `secretKey`
+  ##    - b2 - `accessKey` and `secretKey`
+  ##    - cos - `accessKey` and `secretKey`
+  ##    - us3 - `accessKey` and `secretKey`
+  ##    - kodo - `accessKey` and `secretKey`
+  ##    - bos - `accessKey` and `secretKey`
+  ##    - minio - `accessKey` and `secretKey`
+  ##    - obs - `accessKey` and `secretKey`
+  ##    - tos - `accessKey` and `secretKey`
+  ##    - upyun - `accessKey` and `secretKey`
+  ##
+  ## e.g. for S3 (https://gobackup.github.io/configuration/storages/s3), to produce the example shown
+  ## you would set the following object:
+  ##
+  ## name: s3
+  ## type: s3
+  ## config:
+  ##   bucket: my_app_backup
+  ##   region: us-east-1
+  ##   path: backups
+  ##   ...
+  ##
+  # storages: [ ]
+  ##  - name: s3
+  ##    type: s3
+  ##    config: { }
+  ##    existingSecret: ""
+
+
+  ## Configure the notifiers in the model
+  ## ref: https://gobackup.github.io/configuration/notifiers
+  ##
+  ## `name` is the name of the parent YAML key
+  ## `type` is the type of storage to back up to
+  ## `config` is the configuration properties for said storage type
+  ## `existingSecret` is an existing `basic-auth` Secret from which credentials will be used
+  ##
+  ## The `existingSecret` will look for the following keys within the secret, depending on the type of notifier:
+  ##    - mail - `username` and `password` (basic-auth)
+  ##    - telegram - `token`
+  ##    - github - `token`
+  ##    - ses - `accessKey` and `secretKey`
+  ##    - postmark - `token`
+  ##    - sendgrid - `token`
+  ##
+  ##
+  ## e.g. for SES (https://gobackup.github.io/configuration/notifiers/ses), to produce the example shown
+  ## you would set the following object:
+  ##
+  ## name: ses
+  ## type: ses
+  ## config:
+  ##   from: from@example.com
+  ##   to: to@example.com
+  ##   region: us-east-1
+  ##   ...
+  ##
+  # notifiers: [ ]
+  ##  - name: mail
+  ##    type: mail
+  ##    config: { }
+  ##    existingSecret: ""
+
+  ## The compression format used for created backups (e.g. `tgz`)
+  ## ref: https://gobackup.github.io/configuration/compressor/tar#formats
+  ##
+  # compression: "
+
+  ## The encryption configuration (locked to type `openssl`)
+  ## ref: https://gobackup.github.io/configuration/encryptor/openssl
+  ##
+  # encryption: { }
+
+  ## The archival configuration
+  ## ref: https://gobackup.github.io/configuration/archive
+  ##
+  # archive: { }
+
+  ## The splitter configuration
+  ## ref: https://gobackup.github.io/configuration/splitter
+  ##
+  # splitter: { }
+
+
+## GoBackup ConfigMap settings
+## @param configMap.annotations Annotations for the ConfigMap resource
+## @param configMap.labels Extra Labels for the ConfigMap resource
+
+configMap:
+annotations: { }
+labels: { }
 
 ## @section Common Secret parameters
 ##
@@ -82,12 +271,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   hosts:
-    []
+    [ ]
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -118,7 +307,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: []
+  extraPorts: [ ]
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -150,7 +339,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: []
+  loadBalancerSourceRanges: [ ]
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -158,7 +347,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: []
+  externalIPs: [ ]
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -184,7 +373,7 @@ service:
 ##
 rbac:
   create: true
-  rules: []
+  rules: [ ]
 
 ## @section Service Account parameters
 ##
@@ -202,7 +391,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: []
+  secrets: [ ]
 
 ## @section Liveness Probe parameters
 ##
@@ -320,17 +509,17 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumes Define volumes for the GoBackup pod
 ##
-volumes: []
+volumes: [ ]
 
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumeMounts Define volumeMounts for the GoBackup pod
 ##
-volumeMounts: []
+volumeMounts: [ ]
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define initContainers for the main GoBackup server
 ##
-initContainers: []
+initContainers: [ ]
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -340,7 +529,7 @@ nodeSelector: { }
 ## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: []
+tolerations: [ ]
 
 ## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

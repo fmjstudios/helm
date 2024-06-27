@@ -64,8 +64,8 @@ Create the name of the service account to use
 {{/*
 Define Secret names
 */}}
-{{- define "gobackup.secret.web" }}
-{{- printf "%s-web-credentials" (include "gobackup.fullname" .) }}
+{{- define "gobackup.secret.db" }}
+{{- printf "%s-%s-credentials" (include "gobackup.fullname" .) .type }}
 {{- end }}
 
 {{/*
