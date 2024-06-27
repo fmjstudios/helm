@@ -1,4 +1,4 @@
-{{/* 
+{{/*
   Check whether a domain is given if the Ingress is enabled
 */}}
 {{- define "linkwarden.checks.domain" -}}
@@ -9,7 +9,7 @@
   {{- end }}
 {{- end -}}
 
-{{/* 
+{{/*
   Check whether the given SSO providers are allowed - if any are actually provided
 */}}
 {{- define "linkwarden.checks.providers" -}}
