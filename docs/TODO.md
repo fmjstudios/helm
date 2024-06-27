@@ -5,7 +5,7 @@
 - [ ] [Karma (Alertmanager Dashboard)](https://github.com/prymitive/karma) chart
 - [ ] [BookStack](https://www.bookstackapp.com/) chart
 - [ ] [Maildev](https://github.com/maildev/maildev) chart
-- [ ] [GoBackup](https://gobackup.github.io/) chart
+- [X] [GoBackup](https://gobackup.github.io/) chart
 - [X] [Kubenav](https://github.com/kubenav/kubenav) chart
 - [ ] [Shopware 6](https://github.com/shopware/shopware) chart
 - [ ] [Shlink](https://shlink.io/) chart
@@ -19,7 +19,7 @@
 - [ ] [Activepieces](https://www.activepieces.com/docs/install/configurations/environment-variables) chart
 
 > [!NOTE]
-> Next charts are `GoBackup`, `Activepieces`, `Shopware 6`, `Outline` and `Shlink`
+> Next charts are `Activepieces`, `Shopware 6`, `Outline` and `Shlink`
 
 ## ✏️ Planned Changes
 
