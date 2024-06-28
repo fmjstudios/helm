@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-#
+# shellcheck shell=bash
+
 # Colorize strings logged to stdout.
 
 #######################################

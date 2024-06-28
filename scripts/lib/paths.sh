@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-#
+# shellcheck shell=bash
+
 # BASH functions to obtain correct paths.
 
 #######################################

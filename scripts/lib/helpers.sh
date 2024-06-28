@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-#
+# shellcheck shell=bash
+
 # BASH helper functions for various tasks.
 
 # Determine if an array contains a certain string

@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-#
+# shellcheck shell=bash
+
 # Run commands with elevated privileges.
 
 # Check if the current user is root
