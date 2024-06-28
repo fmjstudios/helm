@@ -264,7 +264,7 @@
                         },
                         "senderFrom": {
                             "type": "string",
-                            "description": "The e-mail address of the sender (e.g. \"ntfy@example.com\")",
+                            "description": "The e-=mail address of the sender (e.g. \"ntfy@example.com\")",
                             "default": "\"\""
                         },
                         "senderUser": {
@@ -292,7 +292,7 @@
                                 },
                                 "domain": {
                                     "type": "string",
-                                    "description": "The e-mail domain (e.g. \"example.com\")",
+                                    "description": "The email domain (e.g. \"example.com\")",
                                     "default": "\"\""
                                 },
                                 "addrPrefix": {
@@ -399,7 +399,7 @@
                         },
                         "delayLimit": {
                             "type": "string",
-                            "description": "The maximum delay of a message when using the \"Delay\" header (e.g. \"3d\")",
+                            "description": "The maximum delay of a message when using the \"Delay\" header (e.g. \"12h\")",
                             "default": "\"\""
                         }
                     }
@@ -479,7 +479,7 @@
                         },
                         "billingContact": {
                             "type": "string",
-                            "description": "is an email address or website displayed in the \"Upgrade tier\" dialog to let people reach",
+                            "description": "is an email address or site displayed in the \"Upgrade tier\" dialog to let people reach",
                             "default": "\"\""
                         }
                     }

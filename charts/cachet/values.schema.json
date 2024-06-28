@@ -53,7 +53,7 @@
             "properties": {
                 "url": {
                     "type": "string",
-                    "description": "The public facing URL for the application",
+                    "description": "The public facing URL for the application. Reused in Ingress if set.",
                     "default": "\"\""
                 },
                 "env": {
@@ -319,7 +319,7 @@
                 },
                 "extraHosts": {
                     "type": "array",
-                    "description": "A list of extra hosts for the Ingress resource (with cachet.url)",
+                    "description": "A list of extra hosts for the Ingress resource",
                     "default": [],
                     "items": {}
                 }

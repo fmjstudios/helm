@@ -1,11 +1,11 @@
 # FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/c22886d7585246836d5e4e597484b92b51c76f0c/logo/png/logo.png" alt="Linkstack Logo" width="175" height="175" align="right" loading="lazy"/>
 
-LinkStack provides you with a configurable self-hosted website similar to [Linktree](https://linktr.ee/). Many social
+LinkStack provides you with a configurable self-hosted site similar to [Linktree](https://linktr.ee/). Many social
 media platforms only allow you to add one link, with this you can simply link to your LinkStack page and have all the
 links you want displayed on one site. You can share all your links to your social media platform or important links to
-easy accessible and hosted on your own web-server or web-hosting provider. On this website, other users can register and
-create their own links, you can access other user via the Admin Panel. It delivers all of these features within a single
-Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
+easy accessible and hosted on your own web-server or web-hosting provider. On this site, other users can register
+and create their own links, you can access other user via the Admin Panel. It delivers all of these features within a
+single Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
 
 > Head to the [Linkstack GitHub Repository](https://github.com/LinkStackOrg/LinkStack) for in-depth view at the
 > implemenation or to the [documentation](https://docs.linkstack.org/) for guides
@@ -65,7 +65,7 @@ configurable via the Image Parameters.
 | Name                               | Description                                                  | Value      |
 | ---------------------------------- | ------------------------------------------------------------ | ---------- |
 | `linkstack.serverAdmin`            | The admin's email address                                    | `""`       |
-| `linkstack.serverName`             | The http (and https) server name for Apache2                 | `""`       |
+| `linkstack.serverName`             | The http (and HTTPS) server name for Apache2                 | `""`       |
 | `linkstack.logLevel`               | The log level for Apache2                                    | `info`     |
 | `linkstack.timeZone`               | A valid PHP timezone                                         | `UTC`      |
 | `linkstack.phpMemoryLimit`         | The memory limit for PHP                                     | `256M`     |
@@ -100,7 +100,7 @@ configurable via the Image Parameters.
 | ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.ports.http`               | The http port to use on the service                                                     | `80`        |
-| `service.ports.https`              | The https port to use on the service                                                    | `443`       |
+| `service.ports.https`              | The HTTPS port to use on the service                                                    | `443`       |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
 | `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
 | `service.annotations`              | Annotations for the service resource                                                    | `{}`        |

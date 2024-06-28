@@ -276,7 +276,7 @@
                         },
                         "forceScriptName": {
                             "type": "string",
-                            "description": "To host paperless under a subpath url like example.com/paperless you set this value to /paperless. No trailing slash!",
+                            "description": "To host paperless under a subpath URL like example.com/paperless you set this value to /paperless. No trailing slash!",
                             "default": "\"\""
                         },
                         "staticURL": {
@@ -869,7 +869,7 @@
                                 },
                                 "tagBarcodeMapping": {
                                     "type": "string",
-                                    "description": "Override the default dictionary of filter regex and substitute expressions",
+                                    "description": "Override the default dictionary of filter regular expression and substitute expressions",
                                     "default": ""
                                 }
                             }

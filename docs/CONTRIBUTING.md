@@ -5,7 +5,7 @@ accepted.
 
 ## ⚒️ Building
 
-The project uses the `Make` build system with targets defined in the projects top-level [`Makefile`](../Makefile). The
+The project uses the `Make` build tool with targets defined in the projects top-level [`Makefile`](../Makefile). The
 file includes a debug mode that will print usage information for each `make` target when the variable `PRINT_HELP=y` is
 defined. It will not execute any commands, but solely print the information so no actions will be taken on your machine.
 
@@ -118,12 +118,12 @@ The `<type>` and `<summary>` fields are mandatory, the `(<scope>)` field is opti
 Must be one of the following:
 
 * **feat**: New features
-* **fix**: Bug fixes
+* **fix**: bugfixes
 * **docs**: Documentation changes
 * **refactor**: Code changes which neither add features nor fix bugs
 * **test**: Adding tests or improving upon existing tests
 * **chore**: Miscellaneous maintenance tasks which can generally be ignored
-* **build**: Changes or improvements to the build system or to the projects dependencies (_supported Scopes_: `make`)
+* **build**: Changes or improvements to the build tool or to the projects dependencies (_supported Scopes_: `make`)
 * **ci**: Changes to CI configuration files and scripts (_supported Scopes_: `actions`)
 
 #### Scopes
@@ -133,7 +133,7 @@ The following is the list of supported scopes:
 * `charts` - Changes affecting a multitude of charts at once
 * `charts/*` - Changes affecting single charts
 * `k8s` - Changes to Kubernetes manifests (development setup)
-* `make` - Changes affecting the Make-based build system
+* `make` - Changes affecting the Make-based build tool
 * `scripts` - Changes to scripts
 * `config` - Changes to configuration files
 
@@ -209,7 +209,7 @@ PRs.
 * Must follow [Charts best practices](https://helm.sh/docs/topics/chart_best_practices/)
 * Must pass CI jobs for linting and installing changed charts with
   the [chart-testing](https://github.com/helm/chart-testing) tool
-* Any change to a chart requires a version bump following [semver](https://semver.org/) principles.
+* Any change to a chart requires a version bump following [SemVer](https://semver.org/) principles.
   See [Immutability](#immutability) and [Versioning](#versioning) below
 
 Once changes have been merged, the release job will automatically run to package and release changed charts.
@@ -221,7 +221,7 @@ documentation.
 
 ### Versioning
 
-The chart `version` should follow [semver](https://semver.org/).
+The chart `version` should follow [SemVer](https://semver.org/).
 
 New charts should start at `0.1.0`. They will be upgraded to a _stable_ `1.0.0` after they have been used in production
 clusters for more than a month without issues. This is obviously hard to do, but as [I](https://github.com/FMJdev)

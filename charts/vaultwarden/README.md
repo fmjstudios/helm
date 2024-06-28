@@ -172,7 +172,7 @@ configurable via the Image Parameters.
 | `vaultwarden.pushNotifications.installationKey`          | Installation Key from 'https://bitwarden.com/host'                                                                | `""`                       |
 | `vaultwarden.pushNotifications.relayUri`                 | Set a custom relay URI for push notifications                                                                     | `""`                       |
 | `vaultwarden.pushNotifications.identityUri`              | Set a custom identity URI for push notifications                                                                  | `""`                       |
-| `vaultwarden.hibpApiKey.value`                           | The HIBP API key value                                                                                            | `""`                       |
+| `vaultwarden.hibpApiKey.value`                           | The HIBP API key-value                                                                                            | `""`                       |
 | `vaultwarden.hibpApiKey.existingSecret.name`             | The name of an existing Secret containing the HIBP API key                                                        | `""`                       |
 | `vaultwarden.hibpApiKey.existingSecret.key`              | The key within an existing Secret which contains the key                                                          | `""`                       |
 | `vaultwarden.jobScheduler.pollIntervalMS`                | The poll interval for the job schedular in milliseconds                                                           | `30000`                    |
@@ -194,7 +194,7 @@ configurable via the Image Parameters.
 | `vaultwarden.icons.redirectCode`                         | The HTTP code to use for redirects to external services                                                           | `302`                      |
 | `vaultwarden.icons.disableDownloading`                   | Disable icon downloading                                                                                          | `false`                    |
 | `vaultwarden.icons.downloadTimeout`                      | Icon download timeout                                                                                             | `10`                       |
-| `vaultwarden.icons.blacklistRegex`                       | Icon blacklist Regex                                                                                              | `""`                       |
+| `vaultwarden.icons.blacklistRegex`                       | Icon blacklist regular expression                                                                                 | `""`                       |
 | `vaultwarden.icons.blacklistNonGlobalIPs`                | Any IP which is not defined as a global IP will be blacklisted.                                                   | `true`                     |
 | `vaultwarden.icons.cache.ttl`                            | Cache time-to-live for successfully obtained icons, in seconds                                                    | `259200`                   |
 | `vaultwarden.icons.cache.negttl`                         | Cache time-to-live for icons which weren't available, in seconds                                                  | `259200`                   |

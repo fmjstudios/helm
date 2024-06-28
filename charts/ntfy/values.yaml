@@ -227,7 +227,7 @@ ntfy:
     ## @param ntfy.smtp.senderAddr [string] The hostname:port of the SMTP server (e.g. "mail.example.com:587")
     ##
     senderAddr: ""
-    ## @param ntfy.smtp.senderFrom [string] The e-mail address of the sender (e.g. "ntfy@example.com")
+    ## @param ntfy.smtp.senderFrom [string] The e-=mail address of the sender (e.g. "ntfy@example.com")
     ##
     senderFrom: ""
     ## @param ntfy.smtp.senderUser [string] The username of the SMTP user (e.g. "ntfy@example.com")
@@ -246,7 +246,7 @@ ntfy:
       ## @param ntfy.smtp.incoming.listen [string] The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")
       ##
       listen: ""
-      ## @param ntfy.smtp.incoming.domain [string] The e-mail domain (e.g. "example.com")
+      ## @param ntfy.smtp.incoming.domain [string] The email domain (e.g. "example.com")
       ##
       domain: ""
       ## @param ntfy.smtp.incoming.addrPrefix [string] Optional prefix to prevent spam. If set to "ntfy-" for example,
@@ -314,7 +314,7 @@ ntfy:
     ## @param ntfy.message.sizeLimit [string] The maximum size of a message body (e.g. "4k")
     ##
     sizeLimit: ""
-    ## @param ntfy.message.delayLimit [string] The maximum delay of a message when using the "Delay" header (e.g. "3d")
+    ## @param ntfy.message.delayLimit [string] The maximum delay of a message when using the "Delay" header (e.g. "12h")
     ##
     delayLimit: ""
 
@@ -368,7 +368,7 @@ ntfy:
     ##
     existingSecret: ""
 
-    ## @param ntfy.stripe.billingContact [string] is an email address or website displayed in the "Upgrade tier" dialog to let people reach
+    ## @param ntfy.stripe.billingContact [string] is an email address or site displayed in the "Upgrade tier" dialog to let people reach
     ##   out with billing questions. If unset, nothing will be displayed
     ##
     billingContact: ""

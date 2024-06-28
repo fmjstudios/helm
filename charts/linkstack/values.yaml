@@ -57,7 +57,7 @@ linkstack:
   ##
   serverAdmin: admin@example.com
 
-  ## @param linkstack.serverName [string] The http (and https) server name for Apache2
+  ## @param linkstack.serverName [string] The http (and HTTPS) server name for Apache2
   ##
   serverName: ""
 
@@ -156,7 +156,7 @@ service:
     ## @param service.ports.http [default: 80] The http port to use on the service
     ##
     http: 8080
-    ## @param service.ports.https [default: 443] The https port to use on the service
+    ## @param service.ports.https [default: 443] The HTTPS port to use on the service
     ##
     https: 8443
   ## @param service.nodePort [default: 30080] The Node port to use on the service

@@ -58,7 +58,7 @@
                 },
                 "serverName": {
                     "type": "string",
-                    "description": "The http (and https) server name for Apache2",
+                    "description": "The http (and HTTPS) server name for Apache2",
                     "default": "\"\""
                 },
                 "logLevel": {
@@ -188,7 +188,7 @@
                         },
                         "https": {
                             "type": "number",
-                            "description": "The https port to use on the service",
+                            "description": "The HTTPS port to use on the service",
                             "default": "443"
                         }
                     }

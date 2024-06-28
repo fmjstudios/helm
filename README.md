@@ -10,7 +10,7 @@ use with [Kubernetes][kubernetes] `v1.26` and above. Have a look [at the table b
 included charts, their versions and the default container images. The charts are also published
 to [ArtifactHub][artifacthub], where they can be found in
 the [`fmjstudios`](https://artifacthub.io/packages/search?repo=fmjstudios&sort=relevance) repository. This GitHub
-repository relies on the _GNU Make_ build system to ease the development workflows. The [`Makefile`](Makefile) also
+repository relies on the _GNU Make_ build tool to ease the development workflows. The [`Makefile`](Makefile) also
 includes `targets` to set up the development environment. Refer to the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more
 information.
 

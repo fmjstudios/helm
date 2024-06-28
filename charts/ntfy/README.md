@@ -107,12 +107,12 @@ Parameters.
 | `ntfy.attachment.fileSizeLimit`              | The maximum size of a single attachment (e.g. "15M")                                                   | `""`            |
 | `ntfy.attachment.expiryDuration`             | The duration after which uploaded attachments are deleted (e.g. "3h")                                  | `""`            |
 | `ntfy.smtp.senderAddr`                       | The hostname:port of the SMTP server (e.g. "mail.example.com:587")                                     | `""`            |
-| `ntfy.smtp.senderFrom`                       | The e-mail address of the sender (e.g. "ntfy@example.com")                                             | `""`            |
+| `ntfy.smtp.senderFrom`                       | The e-=mail address of the sender (e.g. "ntfy@example.com")                                            | `""`            |
 | `ntfy.smtp.senderUser`                       | The username of the SMTP user (e.g. "ntfy@example.com")                                                | `""`            |
 | `ntfy.smtp.senderPass`                       | The password of the SMTP user (e.g. "ntfy@example.com")                                                | `""`            |
 | `ntfy.smtp.existingSecret`                   | An existing secret with a `username` and `password` key                                                | `""`            |
 | `ntfy.smtp.incoming.listen`                  | The IP address and port the SMTP server will listen on (e.g. ":25" or "0.0.0.0:25")                    | `""`            |
-| `ntfy.smtp.incoming.domain`                  | The e-mail domain (e.g. "example.com")                                                                 | `""`            |
+| `ntfy.smtp.incoming.domain`                  | The email domain (e.g. "example.com")                                                                  | `""`            |
 | `ntfy.smtp.incoming.addrPrefix`              | Optional prefix to prevent spam. If set to "ntfy-" for example,                                        | `""`            |
 | `ntfy.web.publicKey`                         | is the generated VAPID public key, (e.g. "AA...")                                                      | `""`            |
 | `ntfy.web.privateKey`                        | is the generated VAPID private key, (e.g. "AA...")                                                     | `""`            |
@@ -129,7 +129,7 @@ Parameters.
 | `ntfy.upstream.accessToken`                  | the token used to authenticate with the upstream APNS server                                           | `""`            |
 | `ntfy.upstream.existingSecret`               | A existing Secret containing a `token` key                                                             | `""`            |
 | `ntfy.message.sizeLimit`                     | The maximum size of a message body (e.g. "4k")                                                         | `""`            |
-| `ntfy.message.delayLimit`                    | The maximum delay of a message when using the "Delay" header (e.g. "3d")                               | `""`            |
+| `ntfy.message.delayLimit`                    | The maximum delay of a message when using the "Delay" header (e.g. "12h")                              | `""`            |
 | `ntfy.visitor.subscriptionLimit`             | The number of subscriptions per visitor (IP address)                                                   | `30`            |
 | `ntfy.visitor.requestLimitBurst`             | The initial bucket of requests each visitor has (e.g. "60")                                            | `60`            |
 | `ntfy.visitor.requestLimitReplenish`         | The rate at which the bucket is refilled (e.g. "5s")                                                   | `5s`            |
@@ -143,7 +143,7 @@ Parameters.
 | `ntfy.stripe.secretKey`                      | The key used for the Stripe API communication                                                          | `""`            |
 | `ntfy.stripe.webhookKey`                     | The webhook key used for the Stripe API communication                                                  | `""`            |
 | `ntfy.stripe.existingSecret`                 | An existing secret containing a `secretKey` and `weboohKey` keys                                       | `""`            |
-| `ntfy.stripe.billingContact`                 | is an email address or website displayed in the "Upgrade tier" dialog to let people reach              | `""`            |
+| `ntfy.stripe.billingContact`                 | is an email address or site displayed in the "Upgrade tier" dialog to let people reach                 | `""`            |
 | `ntfy.metrics.enabled`                       | enables the /metrics endpoint for the ntfy server                                                      | `false`         |
 | `ntfy.metrics.listenHTTP`                    | exposes the metrics endpoint via a dedicated [IP]:port. If set, this option                            | `""`            |
 | `ntfy.metrics.profileListenHTTP`             | If enabled, ntfy will listen on a dedicated listen IP/port                                             | `""`            |

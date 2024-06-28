@@ -83,12 +83,12 @@
                 },
                 "paginationTakeCount": {
                     "type": "number",
-                    "description": "The number of links to fetch every time you reach the bottom of the webpage",
+                    "description": "The number of links to fetch every time you reach the bottom of the web page",
                     "default": "20"
                 },
                 "autoscrollTimeout": {
                     "type": "number",
-                    "description": "The amount of time to wait for the website to be archived (in seconds).",
+                    "description": "The amount of time to wait for the web page to be archived (in seconds).",
                     "default": "30"
                 },
                 "rearchiveLimit": {
@@ -294,7 +294,7 @@
                     "properties": {
                         "enabled": {
                             "type": "boolean",
-                            "description": "Enable E-mail integration within Linkwarden",
+                            "description": "Enable email integration within Linkwarden",
                             "default": "false"
                         },
                         "fromAddress": {

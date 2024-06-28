@@ -592,7 +592,7 @@ vaultwarden:
   ## HaveIBeenPwned API Key, request it here: https://haveibeenpwned.com/API/Key
   ##
   hibpApiKey:
-    ## @param vaultwarden.hibpApiKey.value [string] The HIBP API key value
+    ## @param vaultwarden.hibpApiKey.value [string] The HIBP API key-value
     ##
     value: ""
 
@@ -730,7 +730,7 @@ vaultwarden:
     ## The default is 10 seconds, but this could be to low on slower network connections
     ##
     downloadTimeout: 10
-    ## @param vaultwarden.icons.blacklistRegex [default: ""] Icon blacklist Regex
+    ## @param vaultwarden.icons.blacklistRegex [default: ""] Icon blacklist regular expression
     ## Any domains or IPs that match this regex won't be fetched by the icon service.
     ## Useful to hide other servers in the local network. Check the WIKI for more details
     ## NOTE: Always enclose this regex withing single quotes!

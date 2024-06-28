@@ -67,7 +67,7 @@ Parameters.
 
 | Name                                     | Description                                                               | Value        |
 | ---------------------------------------- | ------------------------------------------------------------------------- | ------------ |
-| `cachet.url`                             | The public facing URL for the application                                 | `""`         |
+| `cachet.url`                             | The public facing URL for the application. Reused in Ingress if set.      | `""`         |
 | `cachet.env`                             | Set the environment the application should run within                     | `production` |
 | `cachet.debug`                           | Whether the app should be run in debug mode                               | `false`      |
 | `cachet.emoji`                           | Enable GitHub Emoji's                                                     | `false`      |
@@ -117,14 +117,14 @@ Parameters.
 
 ### Ingress parameters
 
-| Name                  | Description                                                      | Value   |
-| --------------------- | ---------------------------------------------------------------- | ------- |
-| `ingress.enabled`     | Whether to enable Ingress                                        | `false` |
-| `ingress.className`   | The IngressClass to use for the pod's ingress                    | `""`    |
-| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist              | `""`    |
-| `ingress.annotations` | Annotations for the Ingress resource                             | `{}`    |
-| `ingress.tls`         | A list of hostnames and secret names to use for TLS              | `[]`    |
-| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource (with cachet.url) | `[]`    |
+| Name                  | Description                                         | Value   |
+| --------------------- | --------------------------------------------------- | ------- |
+| `ingress.enabled`     | Whether to enable Ingress                           | `false` |
+| `ingress.className`   | The IngressClass to use for the pod's ingress       | `""`    |
+| `ingress.whitelist`   | A comma-separated list of IP addresses to whitelist | `""`    |
+| `ingress.annotations` | Annotations for the Ingress resource                | `{}`    |
+| `ingress.tls`         | A list of hostnames and secret names to use for TLS | `[]`    |
+| `ingress.extraHosts`  | A list of extra hosts for the Ingress resource      | `[]`    |
 
 ### Service parameters
 

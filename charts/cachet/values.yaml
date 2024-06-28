@@ -52,7 +52,7 @@ fullnameOverride: ""
 ## Cachet configuration
 ## ref: https://docs.cachethq.io/installation/guide.html
 cachet:
-  ## @param cachet.url [string] The public facing URL for the application
+  ## @param cachet.url [string] The public facing URL for the application. Reused in Ingress if set.
   ##
   url: ""
   ## @param cachet.env [default: production] Set the environment the application should run within
@@ -216,7 +216,7 @@ secret:
 ## @param ingress.whitelist A comma-separated list of IP addresses to whitelist
 ## @param ingress.annotations Annotations for the Ingress resource
 ## @param ingress.tls A list of hostnames and secret names to use for TLS
-## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with cachet.url)
+## @param ingress.extraHosts A list of extra hosts for the Ingress resource
 
 ingress:
   enabled: false

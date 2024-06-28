@@ -676,7 +676,7 @@
                     "properties": {
                         "value": {
                             "type": "string",
-                            "description": "The HIBP API key value",
+                            "description": "The HIBP API key-value",
                             "default": "\"\""
                         },
                         "existingSecret": {
@@ -811,7 +811,7 @@
                         },
                         "blacklistRegex": {
                             "type": "string",
-                            "description": "Icon blacklist Regex",
+                            "description": "Icon blacklist regular expression",
                             "default": "\"\""
                         },
                         "blacklistNonGlobalIPs": {

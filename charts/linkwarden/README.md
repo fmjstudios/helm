@@ -1,8 +1,8 @@
 # FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
 
-Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, organize and archive webpages. The
-objective is to organize useful webpages and articles you find across the web in one place, and since useful webpages
-can go away (see the inevitability of Link Rot), Linkwarden also saves a copy of each webpage as a Screenshot and PDF,
+Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, organize and archive web pages. The
+objective is to organize useful web pages and articles you find across the web in one place, and since useful web pages
+can go away (see the inevitability of Link Rot), Linkwarden also saves a copy of each web page as a Screenshot and PDF,
 ensuring accessibility even if the original content is no longer available.
 
 Additionally, Linkwarden is designed with collaboration in mind, sharing links with the public and/or allowing multiple
@@ -75,8 +75,8 @@ Parameters.
 | `linkwarden.nextAuthSecret.value`               | A secret string to encrypt JWTs and hash email verification tokens                                                                                     | `""`         |
 | `linkwarden.nextAuthSecret.existingSecret.name` | The name of an existing secret containing the secret string                                                                                            | `""`         |
 | `linkwarden.nextAuthSecret.existingSecret.key`  | The key within before mentioned secret containing the actual string                                                                                    | `""`         |
-| `linkwarden.paginationTakeCount`                | The number of links to fetch every time you reach the bottom of the webpage                                                                            | `20`         |
-| `linkwarden.autoscrollTimeout`                  | The amount of time to wait for the website to be archived (in seconds).                                                                                | `30`         |
+| `linkwarden.paginationTakeCount`                | The number of links to fetch every time you reach the bottom of the web page                                                                           | `20`         |
+| `linkwarden.autoscrollTimeout`                  | The amount of time to wait for the web page to be archived (in seconds).                                                                               | `30`         |
 | `linkwarden.rearchiveLimit`                     | Adjusts how often a user can trigger a new archive for each link (in minutes).                                                                         | `5`          |
 | `linkwarden.maxFileSize`                        | Optionally set a maximum file size                                                                                                                     | `""`         |
 | `linkwarden.maxLinksPerUser`                    | Optionally set the maximum amount of links a single user can create                                                                                    | `""`         |
@@ -109,7 +109,7 @@ Parameters.
 | `linkwarden.auth.enableCredentials`             | Enable credential logins for Linkwarden                                                                                                                | `true`       |
 | `linkwarden.auth.disableNewSSOUsers`            | Disable new SSO users                                                                                                                                  | `false`      |
 | `linkwarden.auth.sso`                           | A list of SSO providers to enable within Linkwarden                                                                                                    | `[]`         |
-| `linkwarden.smtp.enabled`                       | Enable E-mail integration within Linkwarden                                                                                                            | `false`      |
+| `linkwarden.smtp.enabled`                       | Enable email integration within Linkwarden                                                                                                             | `false`      |
 | `linkwarden.smtp.fromAddress`                   | The address from which Linkwarden should send emails                                                                                                   | `""`         |
 | `linkwarden.smtp.server`                        | The server from which Linkwarden should send emails                                                                                                    | `""`         |
 

@@ -72,10 +72,10 @@ linkwarden:
       ## @param linkwarden.nextAuthSecret.existingSecret.key [string] The key within before mentioned secret containing the actual string
       ##
       key: ""
-  ## @param linkwarden.paginationTakeCount [default: 20] The number of links to fetch every time you reach the bottom of the webpage
+  ## @param linkwarden.paginationTakeCount [default: 20] The number of links to fetch every time you reach the bottom of the web page
   ##
   paginationTakeCount: 20
-  ## @param linkwarden.autoscrollTimeout [default: 30] The amount of time to wait for the website to be archived (in seconds).
+  ## @param linkwarden.autoscrollTimeout [default: 30] The amount of time to wait for the web page to be archived (in seconds).
   ##
   autoscrollTimeout: 30
   ## @param linkwarden.rearchiveLimit [default: 5] Adjusts how often a user can trigger a new archive for each link (in minutes).
@@ -220,7 +220,7 @@ linkwarden:
   ## SMTP settings
   ##
   smtp:
-    ## @param linkwarden.smtp.enabled [default: false] Enable E-mail integration within Linkwarden
+    ## @param linkwarden.smtp.enabled [default: false] Enable email integration within Linkwarden
     ##
     enabled: false
 

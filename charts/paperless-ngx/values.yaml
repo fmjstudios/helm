@@ -204,7 +204,7 @@ paperless:
     ## @param paperless.hosting.trustedProxies [string] This may be needed to prevent IP address spoofing if you are using e.g. fail2ban with log entries for failed authorization attempts
     ##
     trustedProxies: ""
-    ## @param paperless.hosting.forceScriptName [string] To host paperless under a subpath url like example.com/paperless you set this value to /paperless. No trailing slash!
+    ## @param paperless.hosting.forceScriptName [string] To host paperless under a subpath URL like example.com/paperless you set this value to /paperless. No trailing slash!
     ##
     forceScriptName: ""
     ## @param paperless.hosting.staticURL [string] Unless you're hosting Paperless off a subdomain like /paperless/, you probably don't need to change this
@@ -590,7 +590,7 @@ paperless:
       ## ref: https://docs.paperless-ngx.com/configuration/#PAPERLESS_CONSUMER_ENABLE_TAG_BARCODE
       ##
       enableTagBarcode: false
-      ## @param paperless.consume.barcodes.tagBarcodeMapping Override the default dictionary of filter regex and substitute expressions
+      ## @param paperless.consume.barcodes.tagBarcodeMapping Override the default dictionary of filter regular expression and substitute expressions
       ## NOTE: Built-in default is '{"TAG:(.*)": "\\g<1>"}'
       ## ref: https://docs.paperless-ngx.com/configuration/#PAPERLESS_CONSUMER_TAG_BARCODE_MAPPING
       ##
