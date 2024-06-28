@@ -94,6 +94,14 @@ jobs:
       - name: Set up Chart-Testing
         uses: helm/chart-testing-action@v2.6.1
 
+      - name: Run chart-testing (list-changed)
+        id: ct-list-changed
+        run: |
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run kind to create a Kubernetes cluster
         if: steps.ct-list-changed.outputs.changed == 'true'
         uses: helm/kind-action@v1
