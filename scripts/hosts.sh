@@ -6,9 +6,16 @@
 # Libraries
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
+# shellcheck source=scripts/lib/helpers.sh
 . "${SCRIPT_DIR}/lib/helpers.sh"
+
+# shellcheck source=scripts/lib/paths.sh
 . "${SCRIPT_DIR}/lib/paths.sh"
+
+# shellcheck source=scripts/lib/permissions.sh
 . "${SCRIPT_DIR}/lib/permissions.sh"
+
+# shellcheck source=scripts/lib/stdout.sh
 . "${SCRIPT_DIR}/lib/stdout.sh"
 
 # Constants
@@ -32,6 +39,8 @@ ${CONFIG_START}
 127.0.0.1               linkstack.helm.private          # Linkstack
 127.0.0.1               ntfy.helm.private               # ntfy
 127.0.0.1               cachet.helm.private             # Cachet
+127.0.0.1               gobackup.helm.private           # GoBackup
+127.0.0.1               activepieces.helm.private       # Activepieces
 
 ${CONFIG_END}
 EOF
