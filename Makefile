@@ -62,6 +62,7 @@ ALL_CHARTS := $(sort $(dir $(wildcard charts/*/)))
 DOCS_DIR := $(ROOT_DIR)/docs
 GIT_CLIFF_CONFIG := $(DOCS_DIR)/cliff.toml
 MARKDOWNLINT_CONFIG := $(CI_DIR)/linters/.markdown-lint.yml
+GITLEAKS_CONFIG := $(CI_DIR)/linters/.gitleaks.toml
 
 DATE := $(shell date '+%d.%m.%y-%T')
 
@@ -387,6 +388,25 @@ else
 	gh auth token | helm registry login ghcr.io -u $(REGISTRY_USER) --password-stdin
 endif
 
+.PHONY: lint
+lint: markdownlint actionlint shellcheck shfmt
+
 .PHONY: markdownlint
 markdownlint:
 	markdownlint -c $(MARKDOWNLINT_CONFIG) '**/*.md'
+
+.PHONY: actionlint
+actionlint:
+	actionlint
+
+.PHONY: gitleaks
+gitleaks:
+	gitleaks detect --no-banner --no-git --redact --config $(GITLEAKS_CONFIG) --verbose --source .
+
+.PHONY: shellcheck
+shellcheck:
+	shellcheck scripts/**/*.sh -x
+
+.PHONY: shfmt
+shfmt:
+	shfmt -d .
