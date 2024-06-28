@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: []
+  pullSecrets: [ ]
 
 ## @section Name overrides
 ##
@@ -88,7 +88,7 @@ gobackup:
       ## @param gobackup.models[0].description Define a description for this GoBackup model
       ## ref: https://gobackup.github.io/configuration#modelconfig
       ##
-      description: Default model
+      description: "Default GoBackup model"
       ## @param gobackup.models[0].default Set a default storage name
       ## ref: https://gobackup.github.io/configuration#modelconfig
       ##
@@ -104,12 +104,10 @@ gobackup:
       scripts:
         ## @param gobackup.models[0].scripts.before A script to be executed before the backup
         ##
-        before: |
-          echo "Running GoBackup model backup"
+        before: ""
         ## @param gobackup.models[0].scripts.after A script to be executed after the backup
         ##
-        after: |
-          echo "Ran GoBackup model backup"
+        after: ""
 
       ## @param gobackup.models[0].databases Configure the databases in the model
       ## ref: https://gobackup.github.io/configuration#databaseconfig
@@ -132,7 +130,7 @@ gobackup:
       ##   password: root
       ##   ...
       ##
-      databases: []
+      databases: [ ]
       ##  - name: postgresql
       ##    type: postgresql
       ##    config: { }
@@ -178,7 +176,7 @@ gobackup:
       ##   path: backups
       ##   ...
       ##
-      storages: []
+      storages: [ ]
       ##  - name: s3
       ##    type: s3
       ##    config: { }
@@ -213,7 +211,7 @@ gobackup:
       ##   region: us-east-1
       ##   ...
       ##
-      notifiers: []
+      notifiers: [ ]
       ##  - name: mail
       ##    type: mail
       ##    config: { }
@@ -281,12 +279,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   hosts:
-    []
+    [ ]
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -317,7 +315,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: []
+  extraPorts: [ ]
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -349,7 +347,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: []
+  loadBalancerSourceRanges: [ ]
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -357,7 +355,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: []
+  externalIPs: [ ]
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -383,7 +381,7 @@ service:
 ##
 rbac:
   create: true
-  rules: []
+  rules: [ ]
 
 ## @section Service Account parameters
 ##
@@ -401,7 +399,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: []
+  secrets: [ ]
 
 ## @section Liveness Probe parameters
 ##
@@ -519,17 +517,17 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumes Define volumes for the GoBackup pod
 ##
-volumes: []
+volumes: [ ]
 
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumeMounts Define volumeMounts for the GoBackup pod
 ##
-volumeMounts: []
+volumeMounts: [ ]
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define initContainers for the main GoBackup server
 ##
-initContainers: []
+initContainers: [ ]
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -539,7 +537,7 @@ nodeSelector: { }
 ## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: []
+tolerations: [ ]
 
 ## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

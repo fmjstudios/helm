@@ -61,31 +61,29 @@ configurable via the Image Parameters.
 
 ### GoBackup Configuration parameters
 
-| Name                                | Description                                                                                           | Value                                   |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `gobackup.workdir`                  | Define a working directory for GoBackup to generate temporary files                                   | `/tmp`                                  |
-| `gobackup.web.host`                 | The public facing hostname for the web UI. Will be re-used in Ingress if set.                         | `""`                                    |
-| `gobackup.web.port`                 | The port to bind the network socket to                                                                | `2703`                                  |
-| `gobackup.web.username`             | The HTTP Basic Auth username                                                                          | `""`                                    |
-| `gobackup.web.password`             | The HTTP Basic Auth password                                                                          | `""`                                    |
-| `gobackup.web.existingSecret`       | The name of a `basic-auth` secret containing aforementioned credentials                               | `""`                                    |
-| `gobackup.models[0].name`           | The name of the model to create (the YAML keys everything is nested under, e.g. `model_name1` in ref) | `default`                               |
-| `gobackup.models[0].description`    | Define a description for this GoBackup model                                                          | `Default model`                         |
-| `gobackup.models[0].default`        | Set a default storage name                                                                            | `default`                               |
-| `gobackup.models[0].schedule`       | Configure a schedule on which the model should run                                                    | `{}`                                    |
-| `gobackup.models[0].scripts.before` | A script to be executed before the backup                                                             | `echo "Running GoBackup model backup"
-` |
-| `gobackup.models[0].scripts.after`  | A script to be executed after the backup                                                              | `echo "Ran GoBackup model backup"
-`     |
-| `gobackup.models[0].databases`      | Configure the databases in the model                                                                  | `[]`                                    |
-| `gobackup.models[0].storages`       | Configure the storages in the model                                                                   | `[]`                                    |
-| `gobackup.models[0].notifiers`      | Configure the notifiers in the model                                                                  | `[]`                                    |
-| `gobackup.models[0].compression`    | The compression format used for created backups (e.g. `tgz`)                                          | `""`                                    |
-| `gobackup.models[0].encryption`     | The encryption configuration (locked to type `openssl`)                                               | `{}`                                    |
-| `gobackup.models[0].archive`        | Configure archival of directories                                                                     | `{}`                                    |
-| `gobackup.models[0].splitter`       | Configure backup chunking                                                                             | `{}`                                    |
-| `configMap.annotations`             | Annotations for the ConfigMap resource                                                                | `{}`                                    |
-| `configMap.labels`                  | Extra Labels for the ConfigMap resource                                                               | `{}`                                    |
+| Name                                | Description                                                                                           | Value                    |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------ |
+| `gobackup.workdir`                  | Define a working directory for GoBackup to generate temporary files                                   | `/tmp`                   |
+| `gobackup.web.host`                 | The public facing hostname for the web UI. Will be re-used in Ingress if set.                         | `""`                     |
+| `gobackup.web.port`                 | The port to bind the network socket to                                                                | `2703`                   |
+| `gobackup.web.username`             | The HTTP Basic Auth username                                                                          | `""`                     |
+| `gobackup.web.password`             | The HTTP Basic Auth password                                                                          | `""`                     |
+| `gobackup.web.existingSecret`       | The name of a `basic-auth` secret containing aforementioned credentials                               | `""`                     |
+| `gobackup.models[0].name`           | The name of the model to create (the YAML keys everything is nested under, e.g. `model_name1` in ref) | `default`                |
+| `gobackup.models[0].description`    | Define a description for this GoBackup model                                                          | `Default GoBackup model` |
+| `gobackup.models[0].default`        | Set a default storage name                                                                            | `default`                |
+| `gobackup.models[0].schedule`       | Configure a schedule on which the model should run                                                    | `{}`                     |
+| `gobackup.models[0].scripts.before` | A script to be executed before the backup                                                             | `""`                     |
+| `gobackup.models[0].scripts.after`  | A script to be executed after the backup                                                              | `""`                     |
+| `gobackup.models[0].databases`      | Configure the databases in the model                                                                  | `[]`                     |
+| `gobackup.models[0].storages`       | Configure the storages in the model                                                                   | `[]`                     |
+| `gobackup.models[0].notifiers`      | Configure the notifiers in the model                                                                  | `[]`                     |
+| `gobackup.models[0].compression`    | The compression format used for created backups (e.g. `tgz`)                                          | `""`                     |
+| `gobackup.models[0].encryption`     | The encryption configuration (locked to type `openssl`)                                               | `{}`                     |
+| `gobackup.models[0].archive`        | Configure archival of directories                                                                     | `{}`                     |
+| `gobackup.models[0].splitter`       | Configure backup chunking                                                                             | `{}`                     |
+| `configMap.annotations`             | Annotations for the ConfigMap resource                                                                | `{}`                     |
+| `configMap.labels`                  | Extra Labels for the ConfigMap resource                                                               | `{}`                     |
 
 ### Common Secret parameters
 
