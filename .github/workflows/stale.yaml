@@ -2,7 +2,7 @@ name: 'Close stale Issues & Pull Requests'
 
 on:
   schedule:
-    - cron: '* 2 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
