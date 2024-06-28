@@ -1,0 +1,683 @@
+# Default Helm values for fmjstudios/activepieces.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Activepieces Image parameters
+##
+
+## Activepieces Server Image
+## ref: https://hub.docker.com/r/binwiederhier/activepieces
+## @param image.registry The Docker registry to pull the image from
+## @param image.repository The registry repository to pull the image from
+## @param image.tag The image tag to pull
+## @param image.digest The image digest to pull
+## @param image.pullPolicy The Kubernetes image pull policy
+## @param image.pullSecrets A list of secrets to use for pulling images from private registries
+
+image:
+  registry: docker.io
+  repository: activepieces/activepieces
+  tag: 0.28.0
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: [ ]
+
+## @section Name overrides
+##
+
+## @param nameOverride String to partially override activepieces.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override activepieces.fullname
+##
+fullnameOverride: ""
+
+## @section Workload overrides
+##
+
+## @param kind The kind of workload to deploy Activepieces as (`StatefulSet` or `Deployment`)
+##
+kind: StatefulSet
+
+## @section Activepieces Configuration parameters
+##
+
+## Activepieces configuration
+## ref: https://www.activepieces.com/docs/install/configurations/environment-variables
+activepieces:
+  ## @param activepieces.domain The public facing domain name for the Activepieces service, reused in Ingress.
+  ##
+  domain: ""
+  ## @param activepieces.configPath Specify the path to store SQLite3 and local settings, prefixed with activepieces.data.rootPath
+  ##
+  configPath: ""
+  ## @param activepieces.database Specify the path to store SQLite3 and local settings
+  ##
+  database: "sqlite3"
+
+  ## Data configuration
+  ##
+  data:
+    ## @param activepieces.data.rootPath [default: /var/lib/ntfy] The root path for ntfy to store its' files
+    ##
+    rootPath: /var/lib/activepieces
+
+    ## Kubernetes PVC settings
+    ##
+    pvc:
+      ## @param activepieces.data.pvc.size [default: 5Gi] The size given to the new PVC
+      ##
+      size: 5Gi
+      ## @param activepieces.data.pvc.storageClass [default: standard] The storageClass given to the new PVC
+      ##
+      storageClass: standard
+      ## @param activepieces.data.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to the new PVC
+      ##
+      reclaimPolicy: Retain
+      ## @param activepieces.data.pvc.existingClaim [string] Provide the name to an existing PVC
+      ##
+      existingClaim: ""
+
+  ## PostgreSQL configuration
+  ##
+  postgresql:
+    ## @param activepieces.postgresql.database The name of the PostgreSQL database
+    ##
+    database: activepieces
+    ## @param activepieces.postgresql.host The hostname or IP address of the PostgreSQL server
+    ##
+    host: activepieces-postgresql
+    ## @param activepieces.postgresql.port The port number for the PostgreSQL server
+    ##
+    port: 5432
+    ## @param activepieces.postgresql.username The username for the PostgreSQL user
+    ##
+    username: activepieces
+    ## @param activepieces.postgresql.password The password for the PostgreSQL server
+    ##
+    password: activepieces
+    ## @param activepieces.postgresql.existingSecret The name of an existing `basic-auth` Secret to use the credentials from
+    ##
+    existingSecret: ""
+    ## @param activepieces.postgresql.useSSL Use SSL to connect to the PostgreSQL database
+    ##
+    useSSL: false
+    ## @param activepieces.postgresql.sslCA Use SSL Certificate to connect to the postgres database
+    ##
+    sslCA: ""
+
+  ## Redis configuration
+  ##
+  redis:
+    ## @param activepieces.redis.database The name of the Redis database
+    ##
+    database: 0
+    ## @param activepieces.redis.host The hostname or IP address of the Redis server
+    ##
+    host: activepieces-redis-master
+    ## @param activepieces.redis.port The port number for the Redis server
+    ##
+    port: 5432
+    ## @param activepieces.redis.username The username for the Redis user
+    ##
+    username: ""
+    ## @param activepieces.redis.password The password for the Redis server
+    ##
+    password: activepieces
+    ## @param activepieces.redis.existingSecret The name of an existing `basic-auth` Secret to use the credentials from
+    ##
+    existingSecret: ""
+    ## @param activepieces.redis.useSSL Use SSL to connect to the Redis database
+    ##
+    useSSL: false
+
+  ## Queue configuration
+  ##
+  queue:
+    ## @param activepieces.queue.mode The queue mode to use. Valid values are `MEMORY` and `REDIS`.
+    ##
+    mode: MEMORY
+    ## @param activepieces.queue.enableUI Enable the queue UI (only works with redis)
+    ##
+    enableUI: false
+    ## @param activepieces.queue.username The username for the queue UI
+    ##
+    username: false
+    ## @param activepieces.queue.password The password for the queue UI
+    ##
+    password: false
+    ## @param activepieces.queue.existingSecret The name of an existing `basic-auth` Secret to use the credentials from
+    ##
+    existingSecret: ""
+
+  ## Pieces configuration
+  ##
+  pieces:
+    ## @param activepieces.pieces.source Define the source for pieces: `FILE` for local development, `DB` for database.
+    ## ref: https://www.activepieces.com/docs/install/configurations/environment-variables#setting-piece-source
+    ##
+    source: CLOUD_AND_DB
+    ## @param activepieces.pieces.syncMode Define the syncing method for Activepieces to download and use pieces.
+    ## `NONE` for no metadata syncing / ‘OFFICIAL_AUTO’ for automatic syncing for pieces metadata from cloud
+    ##
+    syncMode: OFFICIAL_AUTO
+
+  ## CoPilot configuration
+  ##
+  copilot:
+    ## @param activepieces.copilot.instanceType Define the instance type. Possible values are `AZURE_OPENAI`, `OPENAI`.
+    ##
+    instanceType: OPENAI
+    ## OpenAI configuration
+    ##
+    openAI:
+      ## @param activepieces.copilot.openAI.apiKey Define the OpenAI API key. This is required only if you want to enable code copilot
+      ##
+      apiKey: ""
+      ## @param activepieces.copilot.openAI.endpoint Define the OpenAI Endpoint. This is required only if you want to enable code copilot
+      ##
+      endpoint: ""
+      ## @param activepieces.copilot.openAI.apiVersion Define the OpenAI API version. This is required only if you want to enable code copilot
+      ##
+      apiVersion: ""
+      ## @param activepieces.copilot.openAI.existingSecret The name of an existing Secret containing a `apiKey`
+      ##
+      existingSecret: ""
+
+  ## Encryption configuration
+  ##
+  encryption:
+    ## @param activepieces.encryption.connection The encryption key used for connections
+    ##
+    connection: ""
+    ## @param activepieces.encryption.jwt Encryption key used for generating JWT tokens
+    ##
+    jwt: ""
+    ## @param activepieces.encryption.existingSecret The name of an existing Secret containing a `connection` and `jwt` key, from which the encryption keys will be sourced
+    ##
+    existingSecret: ""
+
+  ## Sandbox configuration
+  ##
+  sandbox:
+    ## @param activepieces.sandbox.executionMode Define the execution mode. Valid values are `UNSANDBOXED` and `SANDBOXED`
+    ##
+    executionMode: UNSANDBOXED
+    ## @param activepieces.sandbox.runTimeSeconds Maximum allowed runtime for a flow
+    ##
+    runTimeSeconds: false
+    ## @param activepieces.sandbox.propagatedEnvVars Environment variables that will be propagated to the sandboxed code.
+    ## If you are using it for pieces, we strongly suggests keeping everything in the authentication object to make sure it works across AP instances
+    ##
+    propagatedEnvVars: ""
+
+  ## @param activepieces.dataRetentionDays The number of days to retain execution data, logs and events
+  ##
+  dataRetentionDays: ""
+  ## @param activepieces.workerConcurrency The number of flows to be processed at the same time
+  ##
+  workerConcurrency: 10
+  ## @param activepieces.triggerPollInterval The polling interval determines how frequently the system checks for new data updates for pieces with scheduled triggers
+  ##
+  triggerPollInterval: 5
+  ## @param activepieces.enableCloudAuth Turn off the utilization of oAuth2 applications
+  ##
+  enableCloudAuth: false
+  ## @param activepieces.telemetry Enable the collection of telemetry information
+  ##
+  telemetry: false
+  ## @param activepieces.templateSourceURL The endpoint which is queried for templates, remove this and templates will be removed from the UI
+  ## Setting this overrides the (built-in) default of "https://cloud.activepieces.com/api/v1/flow-templates".
+  ##
+  templateSourceURL: ""
+  ## @param activepieces.webhookTimeoutSeconds The default timeout for webhooks
+  ##
+  webhookTimeoutSeconds: 30
+
+## @section ConfigMap parameters
+##
+
+## Activepieces ConfigMap settings
+## @param configMap.annotations Annotations for the ConfigMap resource
+## @param configMap.labels Extra Labels for the ConfigMap resource
+
+configMap:
+  annotations: { }
+  labels: { }
+
+## @section Common Secret parameters
+##
+
+## Activepieces Common Secret settings
+## @param secret.annotations Common annotations for the SMTP, HIBP, Admin and Database secrets
+## @param secret.labels Common extra labels for the SMTP, HIBP, Admin and Database secrets
+
+secret:
+  annotations: { }
+  labels: { }
+
+## @section Ingress parameters
+##
+
+## Activepieces Ingress settings
+## @param ingress.enabled Whether to enable Ingress
+## @param ingress.className The IngressClass to use for the pod's ingress
+## @param ingress.whitelist A comma-separated list of IP addresses to whitelist
+## @param ingress.annotations Annotations for the Ingress resource
+## @param ingress.tls A list of hostnames and secret names to use for TLS
+## @param ingress.extraHosts A list of extra hosts for the Ingress resource (with activepieces.baseURL)
+
+ingress:
+  enabled: false
+  className: ""
+  whitelist: ""
+  annotations: { }
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  tls: [ ]
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+  extraHosts:
+    [ ]
+  # - host: domain.tld
+  #   paths:
+  #     - path: /
+  #       pathType: ImplementationSpecific
+
+## @section Service parameters
+##
+
+## Activepieces Service settings
+service:
+  ## @param service.type [default: ClusterIP] The type of service to create
+  ##
+  type: ClusterIP
+  ## @param service.port [default: 80] The port to use on the service
+  ##
+  port: 80
+  ## @param service.nodePort [default: 30080] The Node port to use on the service
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ## NOTE: choose port between <30000-32767>
+  ##
+  nodePort: 30080
+  ## @param service.extraPorts Extra ports to add to the service
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
+  ## e.g.
+  ## extraPorts:
+  ##   - name: https
+  ##     protocol: TCP
+  ##     port: 443
+  ##     targetPort: 9377
+  ##
+  extraPorts: [ ]
+  ## @param service.annotations [object] Annotations for the service resource
+  ##
+  annotations: { }
+  ## @param service.labels [object] Labels for the service resource
+  ##
+  labels: { }
+  ## @param service.externalTrafficPolicy [default: Cluster] The external traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+  ## @param service.internalTrafficPolicy [default: Cluster] The internal traffic policy for the service
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  internalTrafficPolicy: Cluster
+  ## @param service.clusterIP [string] Define a static cluster IP for the service
+  ##
+  clusterIP: ""
+  ## @param service.loadBalancerIP Set the Load Balancer IP
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ##
+  loadBalancerIP: ""
+  ## @param service.loadBalancerClass Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+  ##
+  loadBalancerClass: ""
+  ## @param service.loadBalancerSourceRanges Service Load Balancer source ranges
+  ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ## e.g.
+  ## loadBalancerSourceRanges:
+  ##   - 10.10.10.0/24
+  ##
+  loadBalancerSourceRanges: [ ]
+  ## @param service.externalIPs Service External IPs
+  ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  ## e.g.
+  ## externalIPs:
+  ##   - 10.10.10.1
+  ##   - 201.22.30.1
+  ##
+  externalIPs: [ ]
+  ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+  ## If "ClientIP", consecutive client requests will be directed to the same Pod
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+  ##
+  sessionAffinity: None
+  ## @param service.sessionAffinityConfig Additional settings for the sessionAffinity
+  ## sessionAffinityConfig:
+  ##   clientIP:
+  ##     timeoutSeconds: 300
+  ##
+  sessionAffinityConfig: { }
+  ## @param service.ipFamilyPolicy [object] The ipFamilyPolicy
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
+  ##
+  ipFamilyPolicy: ""
+
+## @section RBAC parameters
+##
+
+## Activepieces RBAC settings
+## @param rbac.create Whether to create RBAC resources
+## @param rbac.rules Extra rules to add to the Role
+##
+rbac:
+  create: true
+  rules: [ ]
+
+## @section Service Account parameters
+##
+
+## Activepieces Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create Whether a service account should be created
+## @param serviceAccount.automount Whether to automount the service account token
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name A custom name for the service account, otherwise activepieces.fullname is used
+## @param serviceAccount.secrets A list of secrets mountable by this service account
+##
+serviceAccount:
+  create: true
+  automount: false
+  annotations: { }
+  name: ""
+  secrets: [ ]
+
+## @section Liveness Probe parameters
+##
+
+## Activepieces Liveness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+livenessProbe:
+  ## @param livenessProbe.enabled Enable or disable the use of liveness probes
+  ##
+  enabled: false
+  ## @param livenessProbe.initialDelaySeconds Configure the initial delay seconds for the liveness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param livenessProbe.timeoutSeconds Configure the initial delay seconds for the liveness probe
+  ##
+  timeoutSeconds: 1
+  ## @param livenessProbe.periodSeconds Configure the seconds for each period of the liveness probe
+  ##
+  periodSeconds: 10
+  ## @param livenessProbe.successThreshold Configure the success threshold for the liveness probe
+  ##
+  successThreshold: 1
+  ## @param livenessProbe.failureThreshold Configure the failure threshold for the liveness probe
+  ##
+  failureThreshold: 10
+
+## @section Readiness Probe parameters
+##
+
+## Activepieces Readiness Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+readinessProbe:
+  ## @param readinessProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param readinessProbe.initialDelaySeconds Configure the initial delay seconds for the readiness probe
+  ##
+  initialDelaySeconds: 5
+  ## @param readinessProbe.timeoutSeconds Configure the initial delay seconds for the readiness probe
+  ##
+  timeoutSeconds: 1
+  ## @param readinessProbe.periodSeconds Configure the seconds for each period of the readiness probe
+  ##
+  periodSeconds: 10
+  ## @param readinessProbe.successThreshold Configure the success threshold for the readiness probe
+  ##
+  successThreshold: 1
+  ## @param readinessProbe.failureThreshold Configure the failure threshold for the readiness probe
+  ##
+  failureThreshold: 3
+
+## @section Startup Probe parameters
+##
+
+## Activepieces Startup Probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+##
+startupProbe:
+  ## @param startupProbe.enabled Enable or disable the use of readiness probes
+  ##
+  enabled: false
+  ## @param startupProbe.initialDelaySeconds Configure the initial delay seconds for the startup probe
+  ##
+  initialDelaySeconds: 5
+  ## @param startupProbe.timeoutSeconds Configure the initial delay seconds for the startup probe
+  ##
+  timeoutSeconds: 1
+  ## @param startupProbe.periodSeconds Configure the seconds for each period of the startup probe
+  ##
+  periodSeconds: 10
+  ## @param startupProbe.successThreshold Configure the success threshold for the startup probe
+  ##
+  successThreshold: 1
+  ## @param startupProbe.failureThreshold Configure the failure threshold for the startup probe
+  ##
+  failureThreshold: 10
+
+## @section PodDisruptionBudget parameters
+##
+
+## Activepieces pod disruption budget settings
+## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
+## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+##
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+  # maxUnavailable:
+
+## @section Pod settings
+##
+
+## Activepieces resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the Activepieces pod
+##
+resources:
+  { }
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumes Define volumes for the Activepieces pod
+##
+volumes: [ ]
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumeMounts Define volumeMounts for the Activepieces pod
+##
+volumeMounts: [ ]
+
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers Define initContainers for the main Activepieces server
+##
+initContainers: [ ]
+
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: { }
+
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: [ ]
+
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: { }
+
+## @param strategy Specify a deployment strategy for the Activepieces pod
+##
+strategy:
+  { }
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxUnavailable: 1
+
+## @param podAnnotations Extra annotations for the Activepieces pod
+##
+podAnnotations: { }
+
+## @param podLabels Extra labels for the Activepieces pod
+##
+podLabels: { }
+#  pod-security.kubernetes.io/warn: privileged
+#  pod-security.kubernetes.io/audit: privileged
+#  pod-security.kubernetes.io/enforce: baseline
+
+## @param priorityClassName The name of an existing PriorityClass
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+##
+priorityClassName: ""
+
+## @section Security context settings
+##
+
+## @param podSecurityContext Security context settings for the Activepieces pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext:
+  { }
+# fsGroup: 1001
+# supplementalGroups:
+#   - 1001
+
+## @param securityContext General security context settings for
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext:
+  { }
+# allowPrivilegeEscalation: false
+# privileged: false
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsGroup: 1001
+# runAsUser: 1001
+# capabilities:
+#   drop:
+#     - ALL
+
+## @section Bitnami&reg; PostgreSQL parameters
+##
+
+## PostgreSQL configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
+  ##
+  enabled: true
+  ## Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-user-on-first-run
+  ##
+  auth:
+    ## @param postgresql.auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
+    ##
+    enablePostgresUser: true
+    ## @param postgresql.auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
+    ##
+    postgresPassword: "activepieces"
+    ## @param postgresql.auth.username Name for a custom user to create
+    ##
+    username: "activepieces"
+    ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
+    ##
+    password: "activepieces"
+    ## @param postgresql.auth.database Name for a custom database to create
+    ##
+    database: "activepieces"
+    ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
+    ##
+    usePasswordFiles: false
+  ## PostgreSQL Primary parameters
+  ##
+  primary:
+    ## @param postgresql.primary.name Name of the primary database (eg primary, master, leader, ...)
+    ##
+    name: primary
+    ## PostgreSQL Primary persistence configuration
+    ##
+    persistence:
+      ## @param postgresql.primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
+      ##
+      enabled: true
+      ## @param postgresql.primary.persistence.existingClaim Name of an existing PVC to use
+      ##
+      existingClaim: ""
+      ## @param postgresql.primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      storageClass: ""
+      ## @param postgresql.primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+      ##
+      accessModes:
+        - ReadWriteOnce
+      ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ##
+      size: 5Gi
+
+## @section Bitnami&reg; Redis parameters
+##
+
+## Redis configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+redis:
+  ## @param redis.enabled Enable or disable the Redis&reg; subchart
+  ##
+  enabled: true
+  ## @param redis.architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
+  ##
+  architecture: standalone
+
+  ## Redis&reg; Authentication parameters
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/redis#setting-the-server-password-on-first-run
+  ##
+  auth:
+    ## @param redis.auth.password Redis&reg; password
+    password: "activepieces"

@@ -1,0 +1,843 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "The Docker registry to pull the image from",
+                    "default": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The registry repository to pull the image from",
+                    "default": "activepieces/activepieces"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull",
+                    "default": "0.28.0"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "The image digest to pull",
+                    "default": ""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "The Kubernetes image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "A list of secrets to use for pulling images from private registries",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "description": "String to partially override activepieces.fullname",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "description": "String to fully override activepieces.fullname",
+            "default": ""
+        },
+        "kind": {
+            "type": "string",
+            "description": "The kind of workload to deploy Activepieces as (`StatefulSet` or `Deployment`)",
+            "default": "StatefulSet"
+        },
+        "activepieces": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "description": "The public facing domain name for the Activepieces service, reused in Ingress.",
+                    "default": ""
+                },
+                "configPath": {
+                    "type": "string",
+                    "description": "Specify the path to store SQLite3 and local settings, prefixed with activepieces.data.rootPath",
+                    "default": ""
+                },
+                "database": {
+                    "type": "string",
+                    "description": "Specify the path to store SQLite3 and local settings",
+                    "default": "sqlite3"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "rootPath": {
+                            "type": "string",
+                            "description": "The root path for ntfy to store its' files",
+                            "default": "/var/lib/ntfy"
+                        },
+                        "pvc": {
+                            "type": "object",
+                            "properties": {
+                                "size": {
+                                    "type": "string",
+                                    "description": "The size given to the new PVC",
+                                    "default": "5Gi"
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "The storageClass given to the new PVC",
+                                    "default": "standard"
+                                },
+                                "reclaimPolicy": {
+                                    "type": "string",
+                                    "description": "The resourcePolicy given to the new PVC",
+                                    "default": "Retain"
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Provide the name to an existing PVC",
+                                    "default": "\"\""
+                                }
+                            }
+                        }
+                    }
+                },
+                "postgresql": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "string",
+                            "description": "The name of the PostgreSQL database",
+                            "default": "activepieces"
+                        },
+                        "host": {
+                            "type": "string",
+                            "description": "The hostname or IP address of the PostgreSQL server",
+                            "default": "activepieces-postgresql"
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port number for the PostgreSQL server",
+                            "default": 5432
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "The username for the PostgreSQL user",
+                            "default": "activepieces"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The password for the PostgreSQL server",
+                            "default": "activepieces"
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "The name of an existing `basic-auth` Secret to use the credentials from",
+                            "default": ""
+                        },
+                        "useSSL": {
+                            "type": "boolean",
+                            "description": "Use SSL to connect to the PostgreSQL database",
+                            "default": false
+                        },
+                        "sslCA": {
+                            "type": "string",
+                            "description": "Use SSL Certificate to connect to the postgres database",
+                            "default": ""
+                        }
+                    }
+                },
+                "redis": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "number",
+                            "description": "The name of the Redis database",
+                            "default": 0
+                        },
+                        "host": {
+                            "type": "string",
+                            "description": "The hostname or IP address of the Redis server",
+                            "default": "activepieces-redis-master"
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port number for the Redis server",
+                            "default": 5432
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "The username for the Redis user",
+                            "default": ""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "The password for the Redis server",
+                            "default": "activepieces"
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "The name of an existing `basic-auth` Secret to use the credentials from",
+                            "default": ""
+                        },
+                        "useSSL": {
+                            "type": "boolean",
+                            "description": "Use SSL to connect to the Redis database",
+                            "default": false
+                        }
+                    }
+                },
+                "queue": {
+                    "type": "object",
+                    "properties": {
+                        "mode": {
+                            "type": "string",
+                            "description": "The queue mode to use. Valid values are `MEMORY` and `REDIS`.",
+                            "default": "MEMORY"
+                        },
+                        "enableUI": {
+                            "type": "boolean",
+                            "description": "Enable the queue UI (only works with redis)",
+                            "default": false
+                        },
+                        "username": {
+                            "type": "boolean",
+                            "description": "The username for the queue UI",
+                            "default": false
+                        },
+                        "password": {
+                            "type": "boolean",
+                            "description": "The password for the queue UI",
+                            "default": false
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "The name of an existing `basic-auth` Secret to use the credentials from",
+                            "default": ""
+                        }
+                    }
+                },
+                "pieces": {
+                    "type": "object",
+                    "properties": {
+                        "source": {
+                            "type": "string",
+                            "description": "Define the source for pieces: `FILE` for local development, `DB` for database.",
+                            "default": "CLOUD_AND_DB"
+                        },
+                        "syncMode": {
+                            "type": "string",
+                            "description": "Define the syncing method for Activepieces to download and use pieces.",
+                            "default": "OFFICIAL_AUTO"
+                        }
+                    }
+                },
+                "copilot": {
+                    "type": "object",
+                    "properties": {
+                        "instanceType": {
+                            "type": "string",
+                            "description": "Define the instance type. Possible values are `AZURE_OPENAI`, `OPENAI`.",
+                            "default": "OPENAI"
+                        },
+                        "openAI": {
+                            "type": "object",
+                            "properties": {
+                                "apiKey": {
+                                    "type": "string",
+                                    "description": "Define the OpenAI API key. This is required only if you want to enable code copilot",
+                                    "default": ""
+                                },
+                                "endpoint": {
+                                    "type": "string",
+                                    "description": "Define the OpenAI Endpoint. This is required only if you want to enable code copilot",
+                                    "default": ""
+                                },
+                                "apiVersion": {
+                                    "type": "string",
+                                    "description": "Define the OpenAI API version. This is required only if you want to enable code copilot",
+                                    "default": ""
+                                },
+                                "existingSecret": {
+                                    "type": "string",
+                                    "description": "The name of an existing Secret containing a `apiKey`",
+                                    "default": ""
+                                }
+                            }
+                        }
+                    }
+                },
+                "encryption": {
+                    "type": "object",
+                    "properties": {
+                        "connection": {
+                            "type": "string",
+                            "description": "The encryption key used for connections",
+                            "default": ""
+                        },
+                        "jwt": {
+                            "type": "string",
+                            "description": "Encryption key used for generating JWT tokens",
+                            "default": ""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "The name of an existing Secret containing a `connection` and `jwt` key, from which the encryption keys will be sourced",
+                            "default": ""
+                        }
+                    }
+                },
+                "sandbox": {
+                    "type": "object",
+                    "properties": {
+                        "executionMode": {
+                            "type": "string",
+                            "description": "Define the execution mode. Valid values are `UNSANDBOXED` and `SANDBOXED`",
+                            "default": "UNSANDBOXED"
+                        },
+                        "runTimeSeconds": {
+                            "type": "boolean",
+                            "description": "Maximum allowed runtime for a flow",
+                            "default": false
+                        },
+                        "propagatedEnvVars": {
+                            "type": "string",
+                            "description": "Environment variables that will be propagated to the sandboxed code.",
+                            "default": ""
+                        }
+                    }
+                },
+                "dataRetentionDays": {
+                    "type": "string",
+                    "description": "The number of days to retain execution data, logs and events",
+                    "default": ""
+                },
+                "workerConcurrency": {
+                    "type": "number",
+                    "description": "The number of flows to be processed at the same time",
+                    "default": 10
+                },
+                "triggerPollInterval": {
+                    "type": "number",
+                    "description": "The polling interval determines how frequently the system checks for new data updates for pieces with scheduled triggers",
+                    "default": 5
+                },
+                "enableCloudAuth": {
+                    "type": "boolean",
+                    "description": "Turn off the utilization of oAuth2 applications",
+                    "default": false
+                },
+                "telemetry": {
+                    "type": "boolean",
+                    "description": "Enable the collection of telemetry information",
+                    "default": false
+                },
+                "templateSourceURL": {
+                    "type": "string",
+                    "description": "The endpoint which is queried for templates, remove this and templates will be removed from the UI",
+                    "default": ""
+                },
+                "webhookTimeoutSeconds": {
+                    "type": "number",
+                    "description": "The default timeout for webhooks",
+                    "default": 30
+                }
+            }
+        },
+        "configMap": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the ConfigMap resource",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Extra Labels for the ConfigMap resource",
+                    "default": {}
+                }
+            }
+        },
+        "secret": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "description": "Common annotations for the SMTP, HIBP, Admin and Database secrets",
+                    "default": {}
+                },
+                "labels": {
+                    "type": "object",
+                    "description": "Common extra labels for the SMTP, HIBP, Admin and Database secrets",
+                    "default": {}
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable Ingress",
+                    "default": false
+                },
+                "className": {
+                    "type": "string",
+                    "description": "The IngressClass to use for the pod's ingress",
+                    "default": ""
+                },
+                "whitelist": {
+                    "type": "string",
+                    "description": "A comma-separated list of IP addresses to whitelist",
+                    "default": ""
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the Ingress resource",
+                    "default": {}
+                },
+                "tls": {
+                    "type": "array",
+                    "description": "A list of hostnames and secret names to use for TLS",
+                    "default": [],
+                    "items": {}
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "description": "A list of extra hosts for the Ingress resource (with activepieces.baseURL)",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of service to create",
+                    "default": "ClusterIP"
+                },
+                "port": {
+                    "type": "number",
+                    "description": "The port to use on the service",
+                    "default": "80"
+                },
+                "nodePort": {
+                    "type": "number",
+                    "description": "The Node port to use on the service",
+                    "default": "30080"
+                },
+                "extraPorts": {
+                    "type": "array",
+                    "description": "Extra ports to add to the service",
+                    "default": [],
+                    "items": {}
+                },
+                "externalTrafficPolicy": {
+                    "type": "string",
+                    "description": "The external traffic policy for the service",
+                    "default": "Cluster"
+                },
+                "internalTrafficPolicy": {
+                    "type": "string",
+                    "description": "The internal traffic policy for the service",
+                    "default": "Cluster"
+                },
+                "clusterIP": {
+                    "type": "string",
+                    "description": "Define a static cluster IP for the service",
+                    "default": "\"\""
+                },
+                "loadBalancerIP": {
+                    "type": "string",
+                    "description": "Set the Load Balancer IP",
+                    "default": ""
+                },
+                "loadBalancerClass": {
+                    "type": "string",
+                    "description": "Define Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)",
+                    "default": ""
+                },
+                "loadBalancerSourceRanges": {
+                    "type": "array",
+                    "description": "Service Load Balancer source ranges",
+                    "default": [],
+                    "items": {}
+                },
+                "externalIPs": {
+                    "type": "array",
+                    "description": "Service External IPs",
+                    "default": [],
+                    "items": {}
+                },
+                "sessionAffinity": {
+                    "type": "string",
+                    "description": "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\"",
+                    "default": "None"
+                },
+                "sessionAffinityConfig": {
+                    "type": "object",
+                    "description": "Additional settings for the sessionAffinity",
+                    "default": {}
+                }
+            }
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether to create RBAC resources",
+                    "default": true
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Extra rules to add to the Role",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether a service account should be created",
+                    "default": true
+                },
+                "automount": {
+                    "type": "boolean",
+                    "description": "Whether to automount the service account token",
+                    "default": false
+                },
+                "annotations": {
+                    "type": "object",
+                    "description": "Annotations to add to the service account",
+                    "default": {}
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A custom name for the service account, otherwise activepieces.fullname is used",
+                    "default": ""
+                },
+                "secrets": {
+                    "type": "array",
+                    "description": "A list of secrets mountable by this service account",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of liveness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the liveness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the liveness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the liveness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the liveness probe",
+                    "default": 10
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the readiness probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the readiness probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the readiness probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the readiness probe",
+                    "default": 3
+                }
+            }
+        },
+        "startupProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the use of readiness probes",
+                    "default": false
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 5
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "description": "Configure the initial delay seconds for the startup probe",
+                    "default": 1
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "description": "Configure the seconds for each period of the startup probe",
+                    "default": 10
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "description": "Configure the success threshold for the startup probe",
+                    "default": 1
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "description": "Configure the failure threshold for the startup probe",
+                    "default": 10
+                }
+            }
+        },
+        "podDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the pod disruption budget",
+                    "default": "true"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "description": "The minium amount of pods which need to be available",
+                    "default": "1"
+                }
+            }
+        },
+        "resources": {
+            "type": "object",
+            "description": "The resource limits/requests for the Activepieces pod",
+            "default": {}
+        },
+        "volumes": {
+            "type": "array",
+            "description": "Define volumes for the Activepieces pod",
+            "default": [],
+            "items": {}
+        },
+        "volumeMounts": {
+            "type": "array",
+            "description": "Define volumeMounts for the Activepieces pod",
+            "default": [],
+            "items": {}
+        },
+        "initContainers": {
+            "type": "array",
+            "description": "Define initContainers for the main Activepieces server",
+            "default": [],
+            "items": {}
+        },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node labels for pod assignment",
+            "default": {}
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod assignment",
+            "default": [],
+            "items": {}
+        },
+        "affinity": {
+            "type": "object",
+            "description": "Affinity for pod assignment",
+            "default": {}
+        },
+        "strategy": {
+            "type": "object",
+            "description": "Specify a deployment strategy for the Activepieces pod",
+            "default": {}
+        },
+        "podAnnotations": {
+            "type": "object",
+            "description": "Extra annotations for the Activepieces pod",
+            "default": {}
+        },
+        "podLabels": {
+            "type": "object",
+            "description": "Extra labels for the Activepieces pod",
+            "default": {}
+        },
+        "priorityClassName": {
+            "type": "string",
+            "description": "The name of an existing PriorityClass",
+            "default": ""
+        },
+        "podSecurityContext": {
+            "type": "object",
+            "description": "Security context settings for the Activepieces pod",
+            "default": {}
+        },
+        "securityContext": {
+            "type": "object",
+            "description": "General security context settings for",
+            "default": {}
+        },
+        "postgresql": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the PostgreSQL subchart",
+                    "default": true
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "enablePostgresUser": {
+                            "type": "boolean",
+                            "description": "Assign a password to the \"postgres\" admin user. Otherwise, remote access will be blocked for this user",
+                            "default": true
+                        },
+                        "postgresPassword": {
+                            "type": "string",
+                            "description": "Password for the \"postgres\" admin user. Ignored if `auth.existingSecret` is provided",
+                            "default": "activepieces"
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "Name for a custom user to create",
+                            "default": "activepieces"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "Password for the custom user to create. Ignored if `auth.existingSecret` is provided",
+                            "default": "activepieces"
+                        },
+                        "database": {
+                            "type": "string",
+                            "description": "Name for a custom database to create",
+                            "default": "activepieces"
+                        },
+                        "usePasswordFiles": {
+                            "type": "boolean",
+                            "description": "Mount credentials as a files instead of using an environment variable",
+                            "default": false
+                        }
+                    }
+                },
+                "primary": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the primary database (eg primary, master, leader, ...)",
+                            "default": "primary"
+                        },
+                        "persistence": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enable PostgreSQL Primary data persistence using PVC",
+                                    "default": true
+                                },
+                                "existingClaim": {
+                                    "type": "string",
+                                    "description": "Name of an existing PVC to use",
+                                    "default": ""
+                                },
+                                "storageClass": {
+                                    "type": "string",
+                                    "description": "PVC Storage Class for PostgreSQL Primary data volume",
+                                    "default": ""
+                                },
+                                "accessModes": {
+                                    "type": "array",
+                                    "description": "PVC Access Mode for PostgreSQL volume",
+                                    "default": [
+                                        "ReadWriteOnce"
+                                    ],
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "size": {
+                                    "type": "string",
+                                    "description": "PVC Storage Request for PostgreSQL volume",
+                                    "default": "5Gi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "redis": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable the Redis&reg; subchart",
+                    "default": true
+                },
+                "architecture": {
+                    "type": "string",
+                    "description": "Redis&reg; architecture. Allowed values: `standalone` or `replication`",
+                    "default": "standalone"
+                },
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "password": {
+                            "type": "string",
+                            "description": "Redis&reg; password",
+                            "default": "activepieces"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

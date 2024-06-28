@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "activepieces.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: activepieces
+    {{- include "activepieces.labels" . | nindent 4 }}
+    {{- if .Values.configMap.labels }}
+    {{- toYaml .Values.configMap.labels | nindent 4 }}
+    {{- end }}
+  {{- if .Values.configMap.annotations }}
+  annotations:
+  {{- toYaml .Values.configMap.annotations | nindent 4 }}
+  {{- end }}
+data:
+  AP_CONFIG_PATH: {{ .Values.activepieces.configPath }}
+  AP_DB_TYPE: {{ .Values.activepieces.database }}
+  {{- if .Values.activepieces.domain }}
+  AP_FRONTEND_URL: {{ include "activepieces.ingress.url" . }}
+  {{- end }}
+  {{- /*
+    POSTGRESQL SETTINGS
+  */}}
+  {{- if .Values.activepieces.postgresql.database }}
+  AP_POSTGRES_DATABASE: {{ .Values.activepieces.postgresql.database }}
+  {{- end }}
+  {{- if .Values.activepieces.postgresql.host }}
+  AP_POSTGRES_HOST: {{ .Values.activepieces.postgresql.host }}
+  {{- end }}
+  {{- if .Values.activepieces.postgresql.port }}
+  AP_POSTGRES_PORT: {{ .Values.activepieces.postgresql.port }}
+  {{- end }}
+  {{- if .Values.activepieces.postgresql.useSSL }}
+  AP_POSTGRES_USE_SSL: {{ .Values.activepieces.postgresql.useSSL }}
+  {{- end }}
+  {{- if .Values.activepieces.postgresql.sslCA }}
+  AP_POSTGRES_SSL_CA: {{ .Values.activepieces.postgresql.sslCA }}
+  {{- end }}
+  {{- /*
+    REDIS SETTINGS
+  */}}
+  {{- if .Values.activepieces.redis.database }}
+  AP_REDIS_DB: {{ .Values.activepieces.redis.database }}
+  {{- end }}
+  {{- if .Values.activepieces.redis.host }}
+  AP_REDIS_HOST: {{ .Values.activepieces.redis.host }}
+  {{- end }}
+  {{- if .Values.activepieces.redis.port }}
+  AP_REDIS_PORT: {{ .Values.activepieces.redis.port }}
+  {{- end }}
+  {{- if .Values.activepieces.redis.useSSL }}
+  AP_REDIS_USE_SSL: {{ .Values.activepieces.redis.useSSL }}
+  {{- end }}
+  {{- /*
+    QUEUE SETTINGS
+  */}}
+  {{- if .Values.activepieces.queue.mode }}
+  AP_QUEUE_MODE: {{ .Values.activepieces.queue.mode }}
+  {{- end }}
+  {{- if .Values.activepieces.queue.enableUI }}
+  AP_QUEUE_UI_ENABLED: {{ .Values.activepieces.queue.enableUI }}
+  {{- end }}
+  {{- /*
+    PIECES SETTINGS
+  */}}
+  {{- if .Values.activepieces.pieces.source }}
+  AP_PIECES_SOURCE: {{ .Values.activepieces.pieces.source }}
+  {{- end }}
+  {{- if .Values.activepieces.pieces.syncMode }}
+  AP_PIECES_SYNC_MODE: {{ .Values.activepieces.pieces.syncMode }}
+  {{- end }}
+  {{- /*
+    COPILOT SETTINGS
+  */}}
+  {{- if .Values.activepieces.copilot.instanceType }}
+  AP_COPILOT_INSTANCE_TYPE: {{ .Values.activepieces.copilot.instanceType }}
+  {{- end }}
+  {{- if .Values.activepieces.copilot.openAI.endpoint }}
+  AP_AZURE_OPENAI_ENDPOINT: {{ .Values.activepieces.copilot.openAI.endpoint }}
+  {{- end }}
+  {{- if .Values.activepieces.copilot.openAI.apiVersion }}
+  AP_AZURE_OPENAI_API_VERSION: {{ .Values.activepieces.copilot.openAI.apiVersion }}
+  {{- end }}
+  {{- /*
+    SANDBOX SETTINGS
+  */}}
+  {{- if .Values.activepieces.sandbox.executionMode }}
+  AP_EXECUTION_MODE: {{ .Values.activepieces.sandbox.executionMode }}
+  {{- end }}
+  {{- if .Values.activepieces.sandbox.runTimeSeconds }}
+  AP_SANDBOX_RUN_TIME_SECONDS: {{ .Values.activepieces.sandbox.runTimeSeconds }}
+  {{- end }}
+  {{- if .Values.activepieces.sandbox.propagatedEnvVars }}
+  AP_SANDBOX_PROPAGATED_ENV_VARS: {{ .Values.activepieces.sandbox.propagatedEnvVars }}
+  {{- end }}
+  {{- /*
+    GENERAL SETTINGS
+  */}}
+  {{- if .Values.activepieces.workerConcurrency }}
+  AP_FLOW_WORKER_CONCURRENCY: {{ .Values.activepieces.workerConcurrency }}
+  {{- end }}
+  {{- if .Values.activepieces.dataRetentionDays }}
+  AP_EXECUTION_DATA_RETENTION_DAYS: {{ .Values.activepieces.dataRetentionDays }}
+  {{- end }}
+  {{- if .Values.activepieces.enableCloudAuth }}
+  AP_CLOUD_AUTH_ENABLED: {{ .Values.activepieces.enableCloudAuth }}
+  {{- end }}
+  {{- if .Values.activepieces.triggerPollInterval }}
+  AP_TRIGGER_DEFAULT_POLL_INTERVAL: {{ .Values.activepieces.triggerPollInterval }}
+  {{- end }}
+  {{- if .Values.activepieces.telemetry }}
+  AP_TELEMETRY_ENABLED: {{ .Values.activepieces.telemetry }}
+  {{- end }}
+  {{- if .Values.activepieces.templateSourceURL }}
+  AP_TEMPLATES_SOURCE_URL: {{ .Values.activepieces.templateSourceURL }}
+  {{- end }}
+  {{- if .Values.activepieces.webhookTimeoutSeconds }}
+  AP_WEBHOOK_TIMEOUT_SECONDS: {{ .Values.activepieces.webhookTimeoutSeconds }}
+  {{- end }}
