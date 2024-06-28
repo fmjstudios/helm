@@ -1,5 +1,62 @@
 apiVersion: v1
 entries:
+  activepieces:
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/images: |
+        - name: gobackup
+          image: docker.io/activepieces/activepieces:0.28.0
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Activepieces Homepage
+          url: https://www.activepieces.com/
+        - name: Activepieces Documentation
+          url: https://www.activepieces.com/docs/getting-started/introduction
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 0.28.0
+    created: "2024-06-28T12:15:29.376043245Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    description: Activepieces is an open source all-in-one automation tool with 100+
+      integrations
+    digest: 6d5b73a2dc29f78a9cf2834e9d1501b0d3e9170e5819e854d2a1f1b998af3eb9
+    home: https://www.activepieces.com/
+    icon: https://raw.githubusercontent.com/fmjstudios/artwork/3f3537b0377b8c95bfac77ae5cb7779c4698d659/projects/activepieces/icon/color/activepieces-icon-color.png
+    keywords:
+    - automation
+    - workflow
+    - activepieces
+    - zapier
+    - n8n
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: activepieces
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/activepieces-0.1.0/activepieces-0.1.0.tgz
+    version: 0.1.0
   cachet:
   - annotations:
       artifacthub.io/category: monitoring-logging
@@ -302,6 +359,69 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/cachet-0.1.0/cachet-0.1.0.tgz
     version: 0.1.0
   gobackup:
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: added
+          description: RBAC manifests
+        - kind: added
+          description: Networking manifests (Ingress, Service)
+        - kind: added
+          description: full Deployment
+        - kind: added
+          description: Configuration manifests (ConfigMap, Secret)
+        - kind: added
+          description: PDB
+        - kind: added
+          description: values.yaml schema file
+        - kind: changed
+          description: updated README with values table
+      artifacthub.io/images: |
+        - name: gobackup
+          image: docker.io/huacnlee/gobackup:v2.11.2
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: GoBackup Documentation
+          url: https://gobackup.github.io/
+        - name: GoBackup GitHub Repository
+          url: https://github.com/gobackup/gobackup
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.11.2
+    created: "2024-06-28T12:15:29.47875357Z"
+    description: GoBackup is a CLI and Web UI for database backups to local, cloud
+      or remote storage with notification support
+    digest: 92d742f40bf85245a0f7a81ce8687e9df9b23fcdfb33f3a9ba4083e021be2771
+    home: https://gobackup.github.io/
+    icon: https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png
+    keywords:
+    - cli
+    - web-ui
+    - backup
+    - database
+    - cloud-storage
+    - s3
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: gobackup
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/gobackup-0.1.1/gobackup-0.1.1.tgz
+    version: 0.1.1
   - annotations:
       artifacthub.io/category: storage
       artifacthub.io/changes: |-
@@ -2353,4 +2473,4 @@ entries:
     urls:
     - https://github.com/fmjstudios/helm/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-27T22:51:53.123883908Z"
+generated: "2024-06-28T12:15:29.561256076Z"
