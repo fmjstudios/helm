@@ -23,10 +23,10 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # VALIDATE_ALL_CODEBASE: false
-          VALIDATE_BASH: false
+          BASH_EXEC_IGNORE_LIBRARIES: true
           VALIDATE_JSCPD: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
+          # cannot handle Helm templates
           VALIDATE_YAML: false
           # random issues
           VALIDATE_CHECKOV: false
