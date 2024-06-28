@@ -16,7 +16,7 @@
 - [ ] [Metabase](https://metabase.com) chart
 - [ ] [DBGate](https://github.com/dbgate/dbgate) chart
 - [ ] [Statping-ng](https://github.com/statping-ng/statping-ng/wiki) chart
-- [ ] [Activepieces](https://www.activepieces.com/docs/install/configurations/environment-variables) chart
+- [X] [Activepieces](https://www.activepieces.com/docs/install/configurations/environment-variables) chart
 
 > [!NOTE]
 > Next charts are `Activepieces`, `Shopware 6`, `Outline` and `Shlink`
