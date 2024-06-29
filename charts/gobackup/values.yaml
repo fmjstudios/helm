@@ -60,8 +60,9 @@ gobackup:
   ##
   web:
     ## @param gobackup.web.host [string] The public facing hostname for the web UI. Will be re-used in Ingress if set.
+    ## @param gobackup.web.host [string] The host the network socket should bind to. You will most likely never change this.
     ##
-    host: ""
+    host: 0.0.0.0
     ## @param gobackup.web.port [default: 2703] The port to bind the network socket to
     ##
     port: 2703
