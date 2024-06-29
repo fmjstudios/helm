@@ -1,7 +1,7 @@
 gobackup:
   workdir: /tmp
   web:
-    host: gobackup.helm.private
+    host: 0.0.0.0
     port: 2703
     username: admin
     password: password
@@ -12,7 +12,7 @@ gobackup:
   models:
     - name: default
       description: Default model
-      default: default
+      default: local_default
       schedule:
         cron: "*/5 * * * *"
       scripts:
@@ -25,30 +25,37 @@ gobackup:
         - name: postgresql_default
           type: postgresql
           config:
-            host: gobackup-postgresql-cluster
+            host: activepieces-postgresql.default.svc.cluster.local
             port: 5432
-            database: gobackup
-            username: admin
-            password: gobackup
-
-      storages:
-        - name: s3_default
-          type: s3
-          config:
-            bucket: gobackup
-            region: eu-north-1
-            path: /apps/default
-          existingSecret: s3-credentials
-
-      notifiers:
-        - name: github
-          type: github
-          config:
-            url:https://github.com/fmjstudios/helm/pull/111
-          token: your-github-access-token
+            database: activepieces
+            username: activepieces
+            password: activepieces
           existingSecret: ""
 
+      storages:
+        - name: local_default
+          type: local
+          config:
+            path: /tmp/backups
+          existingSecret: ""
+
+      notifiers: []
       compression: tgz
       encryption: { }
       archive: { }
       splitter: { }
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: development-issuer
+  tls:
+    - secretName: gobackup-ingress-tls
+      hosts:
+        - gobackup.helm.private
+  hosts:
+    - host: gobackup.helm.private
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
