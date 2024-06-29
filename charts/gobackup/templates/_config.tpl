@@ -77,7 +77,7 @@ split_with:
 {{- define "gobackup.config.templates.database" -}}
 {{ .name }}:
   type: {{ .type }}
-  {{- toYaml .config | nindent 2 }}
+  {{- toYaml (omit .config "username" "password") | nindent 2 }}
   username: ${ {{- include "gobackup.env.username" (dict "model" .model "type" .type) -}} }
   password: ${ {{- include "gobackup.env.password" (dict "model" .model "type" .type) -}} }
 {{- end }}
@@ -85,7 +85,7 @@ split_with:
 {{- define "gobackup.config.templates.storage" -}}
 {{ .name }}:
   type: {{ .type }}
-  {{- toYaml .config | nindent 2 }}
+  {{- toYaml (omit .config "username" "password" "private_key" "passphrase" "credentials" "client_id" "client_secret" "access_key_id" "secret_access_key") | nindent 2 }}
   {{- if (has .type (include "gobackup.config.storages.basicAuth" . | fromJsonArray )) }}
   username: ${ {{- include "gobackup.env.username" (dict "model" .model "type" .type) -}} }
   password: ${ {{- include "gobackup.env.password" (dict "model" .model "type" .type) -}} }
@@ -112,7 +112,7 @@ split_with:
 {{- define "gobackup.config.templates.notifiers" -}}
 {{ .name }}:
   type: {{ .type }}
-  {{- toYaml .config | nindent 2 }}
+  {{- toYaml (omit .config "username" "password" "access_key_id" "secret_access_key" "token") | nindent 2 }}
   {{- if eq .type "mail" }}
   username: ${ {{- include "gobackup.env.username" (dict "model" .model "type" .type) -}} }
   password: ${ {{- include "gobackup.env.password" (dict "model" .model "type" .type) -}} }
