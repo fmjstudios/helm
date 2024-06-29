@@ -61,7 +61,7 @@
                     "properties": {
                         "host": {
                             "type": "string",
-                            "description": "The public facing hostname for the web UI. Will be re-used in Ingress if set.",
+                            "description": "The host the network socket should bind to. You will most likely never change this.",
                             "default": "\"\""
                         },
                         "port": {
@@ -235,7 +235,7 @@
                 "port": {
                     "type": "number",
                     "description": "The port to use on the service",
-                    "default": "80"
+                    "default": "8273"
                 },
                 "nodePort": {
                     "type": "number",

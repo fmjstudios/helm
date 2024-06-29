@@ -64,7 +64,7 @@ configurable via the Image Parameters.
 | Name                                | Description                                                                                           | Value                    |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------ |
 | `gobackup.workdir`                  | Define a working directory for GoBackup to generate temporary files                                   | `/tmp`                   |
-| `gobackup.web.host`                 | The public facing hostname for the web UI. Will be re-used in Ingress if set.                         | `""`                     |
+| `gobackup.web.host`                 | The host the network socket should bind to. You will most likely never change this.                   | `""`                     |
 | `gobackup.web.port`                 | The port to bind the network socket to                                                                | `2703`                   |
 | `gobackup.web.username`             | The HTTP Basic Auth username                                                                          | `""`                     |
 | `gobackup.web.password`             | The HTTP Basic Auth password                                                                          | `""`                     |
@@ -108,7 +108,7 @@ configurable via the Image Parameters.
 | Name                               | Description                                                                             | Value       |
 | ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
-| `service.port`                     | The port to use on the service                                                          | `80`        |
+| `service.port`                     | The port to use on the service                                                          | `8273`      |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
 | `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
 | `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
