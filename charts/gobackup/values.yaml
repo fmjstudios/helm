@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: [ ]
+  pullSecrets: []
 
 ## @section Name overrides
 ##
@@ -59,7 +59,6 @@ gobackup:
   ## Web UI configuration
   ##
   web:
-    ## @param gobackup.web.host [string] The public facing hostname for the web UI. Will be re-used in Ingress if set.
     ## @param gobackup.web.host [string] The host the network socket should bind to. You will most likely never change this.
     ##
     host: 0.0.0.0
@@ -131,7 +130,7 @@ gobackup:
       ##   password: root
       ##   ...
       ##
-      databases: [ ]
+      databases: []
       ##  - name: postgresql
       ##    type: postgresql
       ##    config: { }
@@ -177,7 +176,7 @@ gobackup:
       ##   path: backups
       ##   ...
       ##
-      storages: [ ]
+      storages: []
       ##  - name: s3
       ##    type: s3
       ##    config: { }
@@ -212,7 +211,7 @@ gobackup:
       ##   region: us-east-1
       ##   ...
       ##
-      notifiers: [ ]
+      notifiers: []
       ##  - name: mail
       ##    type: mail
       ##    config: { }
@@ -280,12 +279,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   hosts:
-    [ ]
+    []
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -299,9 +298,9 @@ service:
   ## @param service.type [default: ClusterIP] The type of service to create
   ##
   type: ClusterIP
-  ## @param service.port [default: 80] The port to use on the service
+  ## @param service.port [default: 8273] The port to use on the service
   ##
-  port: 8000
+  port: 8273
   ## @param service.nodePort [default: 30080] The Node port to use on the service
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ## NOTE: choose port between <30000-32767>
@@ -316,7 +315,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: [ ]
+  extraPorts: []
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -348,7 +347,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: [ ]
+  loadBalancerSourceRanges: []
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -356,7 +355,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: [ ]
+  externalIPs: []
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -382,7 +381,7 @@ service:
 ##
 rbac:
   create: true
-  rules: [ ]
+  rules: []
 
 ## @section Service Account parameters
 ##
@@ -400,7 +399,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: [ ]
+  secrets: []
 
 ## @section Liveness Probe parameters
 ##
@@ -518,17 +517,17 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumes Define volumes for the GoBackup pod
 ##
-volumes: [ ]
+volumes: []
 
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumeMounts Define volumeMounts for the GoBackup pod
 ##
-volumeMounts: [ ]
+volumeMounts: []
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define initContainers for the main GoBackup server
 ##
-initContainers: [ ]
+initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -538,7 +537,7 @@ nodeSelector: { }
 ## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: [ ]
+tolerations: []
 
 ## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
