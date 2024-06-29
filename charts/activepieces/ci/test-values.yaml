@@ -74,9 +74,9 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: development-issuer
   tls:
-    - secretName: gobackup-ingress-tls
+    - secretName: activepieces-ingress-tls
       hosts:
-        - gobackup.helm.private
+        - activepieces.helm.private
 
 postgresql:
   enabled: true
