@@ -341,10 +341,14 @@ prune:
 		--name $(PROJ_NAME)
 	$(SCRIPT_DIR)/hosts.sh remove
 
-.PHONY: clean
-clean:
+.PHONY: clean-dist
+clean-dist:
 	$(call log_notice, "Removing temporary distribution directories..")
 	@rm -rf $(OUT_DIR)
+
+.PHONY: clean-secrets
+clean-secrets:
+	$(call log_notice, "Removing secret directories..")
 	@rm -rf $(SECRETS_DIR)
 
 .PHONY: tools-check
