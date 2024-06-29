@@ -77,56 +77,56 @@ configurable via the Image Parameters.
 
 ### Activepieces Configuration parameters
 
-| Name                                         | Description                                                                                                              | Value                       |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
-| `activepieces.domain`                        | The public facing domain name for the Activepieces service, reused in Ingress.                                           | `""`                        |
-| `activepieces.configPath`                    | Specify the path to store SQLite3 and local settings, prefixed with activepieces.data.rootPath                           | `""`                        |
-| `activepieces.database`                      | Specify the path to store SQLite3 and local settings                                                                     | `sqlite3`                   |
-| `activepieces.data.rootPath`                 | The root path for ntfy to store its' files                                                                               | `/var/lib/ntfy`             |
-| `activepieces.data.pvc.size`                 | The size given to the new PVC                                                                                            | `5Gi`                       |
-| `activepieces.data.pvc.storageClass`         | The storageClass given to the new PVC                                                                                    | `standard`                  |
-| `activepieces.data.pvc.reclaimPolicy`        | The resourcePolicy given to the new PVC                                                                                  | `Retain`                    |
-| `activepieces.data.pvc.existingClaim`        | Provide the name to an existing PVC                                                                                      | `""`                        |
-| `activepieces.postgresql.database`           | The name of the PostgreSQL database                                                                                      | `activepieces`              |
-| `activepieces.postgresql.host`               | The hostname or IP address of the PostgreSQL server                                                                      | `activepieces-postgresql`   |
-| `activepieces.postgresql.port`               | The port number for the PostgreSQL server                                                                                | `5432`                      |
-| `activepieces.postgresql.username`           | The username for the PostgreSQL user                                                                                     | `activepieces`              |
-| `activepieces.postgresql.password`           | The password for the PostgreSQL server                                                                                   | `activepieces`              |
-| `activepieces.postgresql.existingSecret`     | The name of an existing `basic-auth` Secret to use the credentials from                                                  | `""`                        |
-| `activepieces.postgresql.useSSL`             | Use SSL to connect to the PostgreSQL database                                                                            | `false`                     |
-| `activepieces.postgresql.sslCA`              | Use SSL Certificate to connect to the postgres database                                                                  | `""`                        |
-| `activepieces.redis.database`                | The name of the Redis database                                                                                           | `0`                         |
-| `activepieces.redis.host`                    | The hostname or IP address of the Redis server                                                                           | `activepieces-redis-master` |
-| `activepieces.redis.port`                    | The port number for the Redis server                                                                                     | `5432`                      |
-| `activepieces.redis.username`                | The username for the Redis user                                                                                          | `""`                        |
-| `activepieces.redis.password`                | The password for the Redis server                                                                                        | `activepieces`              |
-| `activepieces.redis.existingSecret`          | The name of an existing `basic-auth` Secret to use the credentials from                                                  | `""`                        |
-| `activepieces.redis.useSSL`                  | Use SSL to connect to the Redis database                                                                                 | `false`                     |
-| `activepieces.queue.mode`                    | The queue mode to use. Valid values are `MEMORY` and `REDIS`.                                                            | `MEMORY`                    |
-| `activepieces.queue.enableUI`                | Enable the queue UI (only works with redis)                                                                              | `false`                     |
-| `activepieces.queue.username`                | The username for the queue UI                                                                                            | `false`                     |
-| `activepieces.queue.password`                | The password for the queue UI                                                                                            | `false`                     |
-| `activepieces.queue.existingSecret`          | The name of an existing `basic-auth` Secret to use the credentials from                                                  | `""`                        |
-| `activepieces.pieces.source`                 | Define the source for pieces: `FILE` for local development, `DB` for database.                                           | `CLOUD_AND_DB`              |
-| `activepieces.pieces.syncMode`               | Define the syncing method for Activepieces to download and use pieces.                                                   | `OFFICIAL_AUTO`             |
-| `activepieces.copilot.instanceType`          | Define the instance type. Possible values are `AZURE_OPENAI`, `OPENAI`.                                                  | `OPENAI`                    |
-| `activepieces.copilot.openAI.apiKey`         | Define the OpenAI API key. This is required only if you want to enable code copilot                                      | `""`                        |
-| `activepieces.copilot.openAI.endpoint`       | Define the OpenAI Endpoint. This is required only if you want to enable code copilot                                     | `""`                        |
-| `activepieces.copilot.openAI.apiVersion`     | Define the OpenAI API version. This is required only if you want to enable code copilot                                  | `""`                        |
-| `activepieces.copilot.openAI.existingSecret` | The name of an existing Secret containing a `apiKey`                                                                     | `""`                        |
-| `activepieces.encryption.connection`         | The encryption key used for connections                                                                                  | `""`                        |
-| `activepieces.encryption.jwt`                | Encryption key used for generating JWT tokens                                                                            | `""`                        |
-| `activepieces.encryption.existingSecret`     | The name of an existing Secret containing a `connection` and `jwt` key, from which the encryption keys will be sourced   | `""`                        |
-| `activepieces.sandbox.executionMode`         | Define the execution mode. Valid values are `UNSANDBOXED` and `SANDBOXED`                                                | `UNSANDBOXED`               |
-| `activepieces.sandbox.runTimeSeconds`        | Maximum allowed runtime for a flow                                                                                       | `false`                     |
-| `activepieces.sandbox.propagatedEnvVars`     | Environment variables that will be propagated to the sandboxed code.                                                     | `""`                        |
-| `activepieces.dataRetentionDays`             | The number of days to retain execution data, logs and events                                                             | `""`                        |
-| `activepieces.workerConcurrency`             | The number of flows to be processed at the same time                                                                     | `10`                        |
-| `activepieces.triggerPollInterval`           | The polling interval determines how frequently the system checks for new data updates for pieces with scheduled triggers | `5`                         |
-| `activepieces.enableCloudAuth`               | Turn off the utilization of oAuth2 applications                                                                          | `false`                     |
-| `activepieces.telemetry`                     | Enable the collection of telemetry information                                                                           | `false`                     |
-| `activepieces.templateSourceURL`             | The endpoint which is queried for templates, remove this and templates will be removed from the UI                       | `""`                        |
-| `activepieces.webhookTimeoutSeconds`         | The default timeout for webhooks                                                                                         | `30`                        |
+| Name                                         | Description                                                                                                              | Value                                                  |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ |
+| `activepieces.domain`                        | The public facing domain name for the Activepieces service, reused in Ingress.                                           | `localhost`                                            |
+| `activepieces.configPath`                    | Specify the path to store SQLite3 and local settings, prefixed with activepieces.data.rootPath                           | `""`                                                   |
+| `activepieces.database`                      | Specify the path to store SQLite3 and local settings. Values are `sqlite3` or `postgres`.                                | `sqlite3`                                              |
+| `activepieces.data.rootPath`                 | The root path for ntfy to store its' files                                                                               | `/var/lib/ntfy`                                        |
+| `activepieces.data.pvc.size`                 | The size given to the new PVC                                                                                            | `5Gi`                                                  |
+| `activepieces.data.pvc.storageClass`         | The storageClass given to the new PVC                                                                                    | `standard`                                             |
+| `activepieces.data.pvc.reclaimPolicy`        | The resourcePolicy given to the new PVC                                                                                  | `Retain`                                               |
+| `activepieces.data.pvc.existingClaim`        | Provide the name to an existing PVC                                                                                      | `""`                                                   |
+| `activepieces.postgresql.database`           | The name of the PostgreSQL database                                                                                      | `activepieces`                                         |
+| `activepieces.postgresql.host`               | The hostname or IP address of the PostgreSQL server                                                                      | `activepieces-postgresql`                              |
+| `activepieces.postgresql.port`               | The port number for the PostgreSQL server                                                                                | `5432`                                                 |
+| `activepieces.postgresql.username`           | The username for the PostgreSQL user                                                                                     | `activepieces`                                         |
+| `activepieces.postgresql.password`           | The password for the PostgreSQL server                                                                                   | `activepieces`                                         |
+| `activepieces.postgresql.existingSecret`     | The name of an existing `basic-auth` Secret to use the credentials from                                                  | `""`                                                   |
+| `activepieces.postgresql.useSSL`             | Use SSL to connect to the PostgreSQL database                                                                            | `false`                                                |
+| `activepieces.postgresql.sslCA`              | Use SSL Certificate to connect to the postgres database                                                                  | `""`                                                   |
+| `activepieces.redis.database`                | The name of the Redis database                                                                                           | `0`                                                    |
+| `activepieces.redis.host`                    | The hostname or IP address of the Redis server                                                                           | `activepieces-redis-master`                            |
+| `activepieces.redis.port`                    | The port number for the Redis server                                                                                     | `6379`                                                 |
+| `activepieces.redis.username`                | The username for the Redis user                                                                                          | `""`                                                   |
+| `activepieces.redis.password`                | The password for the Redis server                                                                                        | `activepieces`                                         |
+| `activepieces.redis.existingSecret`          | The name of an existing `basic-auth` Secret to use the credentials from                                                  | `""`                                                   |
+| `activepieces.redis.useSSL`                  | Use SSL to connect to the Redis database                                                                                 | `false`                                                |
+| `activepieces.queue.mode`                    | The queue mode to use. Valid values are `memory` and `redis`.                                                            | `memory`                                               |
+| `activepieces.queue.enableUI`                | Enable the queue UI (only works with redis)                                                                              | `false`                                                |
+| `activepieces.queue.username`                | The username for the queue UI                                                                                            | `""`                                                   |
+| `activepieces.queue.password`                | The password for the queue UI                                                                                            | `""`                                                   |
+| `activepieces.queue.existingSecret`          | The name of an existing `basic-auth` Secret to use the credentials from                                                  | `""`                                                   |
+| `activepieces.pieces.source`                 | Define the source for pieces: `FILE` for local development, `DB` for database.                                           | `CLOUD_AND_DB`                                         |
+| `activepieces.pieces.syncMode`               | Define the syncing method for Activepieces to download and use pieces.                                                   | `OFFICIAL_AUTO`                                        |
+| `activepieces.copilot.instanceType`          | Define the instance type. Possible values are `AZURE_OPENAI`, `OPENAI`.                                                  | `OPENAI`                                               |
+| `activepieces.copilot.openAI.apiKey`         | Define the OpenAI API key. This is required only if you want to enable code copilot                                      | `""`                                                   |
+| `activepieces.copilot.openAI.endpoint`       | Define the OpenAI Endpoint. This is required only if you want to enable code copilot                                     | `""`                                                   |
+| `activepieces.copilot.openAI.apiVersion`     | Define the OpenAI API version. This is required only if you want to enable code copilot                                  | `""`                                                   |
+| `activepieces.copilot.openAI.existingSecret` | The name of an existing Secret containing a `apiKey`                                                                     | `""`                                                   |
+| `activepieces.encryption.connection`         | The encryption key used for connections                                                                                  | `""`                                                   |
+| `activepieces.encryption.jwt`                | Encryption key used for generating JWT tokens                                                                            | `""`                                                   |
+| `activepieces.encryption.existingSecret`     | The name of an existing Secret containing a `connection` and `jwt` key, from which the encryption keys will be sourced   | `""`                                                   |
+| `activepieces.sandbox.executionMode`         | Define the execution mode. Valid values are `UNSANDBOXED` and `SANDBOXED`                                                | `UNSANDBOXED`                                          |
+| `activepieces.sandbox.runTimeSeconds`        | Maximum allowed runtime for a flow                                                                                       | `false`                                                |
+| `activepieces.sandbox.propagatedEnvVars`     | Environment variables that will be propagated to the sandboxed code.                                                     | `""`                                                   |
+| `activepieces.dataRetentionDays`             | The number of days to retain execution data, logs and events                                                             | `""`                                                   |
+| `activepieces.workerConcurrency`             | The number of flows to be processed at the same time                                                                     | `10`                                                   |
+| `activepieces.triggerPollInterval`           | The polling interval determines how frequently the system checks for new data updates for pieces with scheduled triggers | `5`                                                    |
+| `activepieces.enableCloudAuth`               | Enable the utilization of oAuth2 applications                                                                            | `true`                                                 |
+| `activepieces.telemetry`                     | Enable the collection of telemetry information                                                                           | `false`                                                |
+| `activepieces.templateSourceURL`             | The endpoint which is queried for templates, remove this and templates will be removed from the UI.                      | `https://cloud.activepieces.com/api/v1/flow-templates` |
+| `activepieces.webhookTimeoutSeconds`         | The default timeout for webhooks                                                                                         | `30`                                                   |
 
 ### ConfigMap parameters
 
@@ -258,7 +258,7 @@ configurable via the Image Parameters.
 
 | Name                                           | Description                                                                                            | Value               |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
-| `postgresql.enabled`                           | Enable or disable the PostgreSQL subchart                                                              | `true`              |
+| `postgresql.enabled`                           | Enable or disable the PostgreSQL subchart                                                              | `false`             |
 | `postgresql.auth.enablePostgresUser`           | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`              |
 | `postgresql.auth.postgresPassword`             | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `activepieces`      |
 | `postgresql.auth.username`                     | Name for a custom user to create                                                                       | `activepieces`      |
@@ -274,8 +274,9 @@ configurable via the Image Parameters.
 
 ### Bitnami&reg; Redis parameters
 
-| Name                  | Description                                                            | Value          |
-| --------------------- | ---------------------------------------------------------------------- | -------------- |
-| `redis.enabled`       | Enable or disable the Redis&reg; subchart                              | `true`         |
-| `redis.architecture`  | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone`   |
-| `redis.auth.password` | Redis&reg; password                                                    | `activepieces` |
+| Name                          | Description                                                            | Value          |
+| ----------------------------- | ---------------------------------------------------------------------- | -------------- |
+| `redis.enabled`               | Enable or disable the Redis&reg; subchart                              | `false`        |
+| `redis.architecture`          | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone`   |
+| `redis.auth.password`         | Redis&reg; password                                                    | `activepieces` |
+| `redis.auth.usePasswordFiles` | Mount credentials as files instead of using an environment variable    | `true`         |

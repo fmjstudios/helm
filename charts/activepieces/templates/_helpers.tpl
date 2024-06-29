@@ -136,5 +136,5 @@ Define Ingress scheme and URL
 Define storage paths
 */}}
 {{- define "activepieces.data.path" }}
-{{ printf "%s%s" (trimSuffix "/" .Values.activepieces.data.rootPath) (trimPrefix "/" .Values.activepieces.configPath) }}
+{{- trimSuffix "/" (printf "%s/%s" (trimSuffix "/" .Values.activepieces.data.rootPath) (trimSuffix "/" .Values.activepieces.configPath)) }}
 {{- end }}

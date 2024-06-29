@@ -7,5 +7,5 @@ metadata:
   labels:
     {{- include "activepieces.labels" . | nindent 4 }}
 spec:
-  {{ include "activepieces.podSpec" . | nindent 2 }}
+  {{- include "activepieces.podSpec" . | nindent 2 }}
 {{- end }}

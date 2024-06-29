@@ -1,0 +1,95 @@
+kind: StatefulSet
+
+activepieces:
+  domain: activepieces.helm.private
+  configPath: ""
+  database: postgres
+
+  data:
+    rootPath: /var/lib/activepieces
+    pvc:
+      size: 5Gi
+      storageClass: standard
+      reclaimPolicy: Retain
+      existingClaim: ""
+
+  postgresql:
+    database: activepieces
+    host: activepieces-postgresql
+    port: 5432
+    username: activepieces
+    password: activepieces
+    existingSecret: ""
+    useSSL: false
+    sslCA: ""
+
+  redis:
+    database: 0
+    host: activepieces-redis-master
+    port: 6379
+    username: ""
+    password: activepieces
+    existingSecret: ""
+    useSSL: false
+
+  queue:
+    mode: redis
+    enableUI: true
+    username: admin
+    password: password
+    existingSecret: ""
+
+  pieces:
+    source: CLOUD_AND_DB
+    syncMode: OFFICIAL_AUTO
+
+  copilot:
+    instanceType: OPENAI
+    openAI:
+      apiKey: ""
+      endpoint: ""
+      apiVersion: ""
+      existingSecret: ""
+
+  encryption:
+    connection: ""
+    jwt: ""
+    existingSecret: ""
+
+  sandbox:
+    executionMode: UNSANDBOXED
+    runTimeSeconds: false
+    propagatedEnvVars: ""
+
+  dataRetentionDays: ""
+  workerConcurrency: 10
+  triggerPollInterval: 5
+  enableCloudAuth: false
+  telemetry: false
+  webhookTimeoutSeconds: 30
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: development-issuer
+  tls:
+    - secretName: gobackup-ingress-tls
+      hosts:
+        - gobackup.helm.private
+
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: true
+    postgresPassword: admin
+    username: activepieces
+    password: activepieces
+    database: activepieces
+    usePasswordFiles: false
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    password: activepieces

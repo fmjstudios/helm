@@ -16,14 +16,12 @@ updateStrategy:
 {{- end }}
 template:
   metadata:
-      {{- if .Values.podAnnotations }}
     annotations:
       checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
-      {{- end }}
     labels:
         {{- include "activepieces.selectorLabels" . | nindent 8 }}
         {{- if .Values.podLabels -}}
@@ -40,22 +38,21 @@ template:
       - name: {{ .Chart.Name }}
         image: {{ include "activepieces.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        envFrom:
+          - configMapRef:
+              name: {{ include "activepieces.fullname" . }}
         env:
-          {{- if (or .Values.activepieces.encryption.connection .Values.activepieces.encryption.existingSecret) }}
           - name: AP_ENCRYPTION_KEY
             valueFrom:
               secretKeyRef:
                 name: {{ default (include "activepieces.secrets.encryption" .) .Values.activepieces.encryption.existingSecret }}
                 key: connection
-          {{- end }}
-          {{- if (or .Values.activepieces.encryption.jwt .Values.activepieces.encryption.existingSecret) }}
           - name: AP_JWT_SECRET
             valueFrom:
               secretKeyRef:
                 name: {{ default (include "activepieces.secrets.encryption" .) .Values.activepieces.encryption.existingSecret }}
                 key: jwt
-          {{- end }}
-          {{- if .Values.activepieces.queue.enableUI and (or .Values.activepieces.queue.username .Values.activepieces.queue.existingSecret) }}
+          {{- if and .Values.activepieces.queue.enableUI (or .Values.activepieces.queue.username .Values.activepieces.queue.existingSecret) }}
           - name: AP_QUEUE_UI_USERNAME
             valueFrom:
               secretKeyRef:
@@ -67,7 +64,7 @@ template:
                 name: {{ default (include "activepieces.secrets.queue" .) .Values.activepieces.queue.existingSecret }}
                 key: password
           {{- end }}
-          {{- if (eq .Values.activepieces.database "postgresql") and (or .Values.activepieces.postgresql.username .Values.activepieces.postgresql.existingSecret) }}
+          {{- if and (eq .Values.activepieces.database "postgres") (or .Values.activepieces.postgresql.username .Values.activepieces.postgresql.existingSecret) }}
           - name: AP_POSTGRES_USERNAME
             valueFrom:
               secretKeyRef:
@@ -79,12 +76,14 @@ template:
                 name: {{ default (include "activepieces.secrets.postgresql" .) .Values.activepieces.postgresql.existingSecret }}
                 key: password
           {{- end }}
-          {{- if or .Values.activepieces.redis.username .Values.activepieces.redis.password .Values.activepieces.redis.existingSecret }}
+          {{- if and (eq .Values.activepieces.queue.mode "redis") (or .Values.activepieces.redis.password .Values.activepieces.redis.existingSecret) }}
+          {{- if .Values.activepieces.redis.username }}
           - name: AP_REDIS_USER
             valueFrom:
               secretKeyRef:
                 name: {{ default (include "activepieces.secrets.redis" .) .Values.activepieces.redis.existingSecret }}
                 key: username
+          {{- end }}
           - name: AP_REDIS_PASSWORD
             valueFrom:
               secretKeyRef:

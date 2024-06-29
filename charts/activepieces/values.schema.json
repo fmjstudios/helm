@@ -59,7 +59,7 @@
                 "domain": {
                     "type": "string",
                     "description": "The public facing domain name for the Activepieces service, reused in Ingress.",
-                    "default": ""
+                    "default": "localhost"
                 },
                 "configPath": {
                     "type": "string",
@@ -68,7 +68,7 @@
                 },
                 "database": {
                     "type": "string",
-                    "description": "Specify the path to store SQLite3 and local settings",
+                    "description": "Specify the path to store SQLite3 and local settings. Values are `sqlite3` or `postgres`.",
                     "default": "sqlite3"
                 },
                 "data": {
@@ -167,7 +167,7 @@
                         "port": {
                             "type": "number",
                             "description": "The port number for the Redis server",
-                            "default": 5432
+                            "default": 6379
                         },
                         "username": {
                             "type": "string",
@@ -196,8 +196,8 @@
                     "properties": {
                         "mode": {
                             "type": "string",
-                            "description": "The queue mode to use. Valid values are `MEMORY` and `REDIS`.",
-                            "default": "MEMORY"
+                            "description": "The queue mode to use. Valid values are `memory` and `redis`.",
+                            "default": "memory"
                         },
                         "enableUI": {
                             "type": "boolean",
@@ -205,14 +205,14 @@
                             "default": false
                         },
                         "username": {
-                            "type": "boolean",
+                            "type": "string",
                             "description": "The username for the queue UI",
-                            "default": false
+                            "default": ""
                         },
                         "password": {
-                            "type": "boolean",
+                            "type": "string",
                             "description": "The password for the queue UI",
-                            "default": false
+                            "default": ""
                         },
                         "existingSecret": {
                             "type": "string",
@@ -328,8 +328,8 @@
                 },
                 "enableCloudAuth": {
                     "type": "boolean",
-                    "description": "Turn off the utilization of oAuth2 applications",
-                    "default": false
+                    "description": "Enable the utilization of oAuth2 applications",
+                    "default": true
                 },
                 "telemetry": {
                     "type": "boolean",
@@ -338,8 +338,8 @@
                 },
                 "templateSourceURL": {
                     "type": "string",
-                    "description": "The endpoint which is queried for templates, remove this and templates will be removed from the UI",
-                    "default": ""
+                    "description": "The endpoint which is queried for templates, remove this and templates will be removed from the UI.",
+                    "default": "https://cloud.activepieces.com/api/v1/flow-templates"
                 },
                 "webhookTimeoutSeconds": {
                     "type": "number",
@@ -730,7 +730,7 @@
                 "enabled": {
                     "type": "boolean",
                     "description": "Enable or disable the PostgreSQL subchart",
-                    "default": true
+                    "default": false
                 },
                 "auth": {
                     "type": "object",
@@ -820,7 +820,7 @@
                 "enabled": {
                     "type": "boolean",
                     "description": "Enable or disable the Redis&reg; subchart",
-                    "default": true
+                    "default": false
                 },
                 "architecture": {
                     "type": "string",
@@ -834,6 +834,11 @@
                             "type": "string",
                             "description": "Redis&reg; password",
                             "default": "activepieces"
+                        },
+                        "usePasswordFiles": {
+                            "type": "boolean",
+                            "description": "Mount credentials as files instead of using an environment variable",
+                            "default": true
                         }
                     }
                 }

@@ -14,107 +14,111 @@ metadata:
   {{- toYaml .Values.configMap.annotations | nindent 4 }}
   {{- end }}
 data:
-  AP_CONFIG_PATH: {{ .Values.activepieces.configPath }}
-  AP_DB_TYPE: {{ .Values.activepieces.database }}
+  AP_CONFIG_PATH: {{ include "activepieces.data.path" . | quote }}
+  AP_DB_TYPE: {{ .Values.activepieces.database | upper | quote }}
   {{- if .Values.activepieces.domain }}
-  AP_FRONTEND_URL: {{ include "activepieces.ingress.url" . }}
+  AP_FRONTEND_URL: {{ include "activepieces.ingress.url" . | quote }}
   {{- end }}
   {{- /*
     POSTGRESQL SETTINGS
   */}}
+  {{- if (eq .Values.activepieces.database "postgres") }}
   {{- if .Values.activepieces.postgresql.database }}
-  AP_POSTGRES_DATABASE: {{ .Values.activepieces.postgresql.database }}
+  AP_POSTGRES_DATABASE: {{ .Values.activepieces.postgresql.database | quote }}
   {{- end }}
   {{- if .Values.activepieces.postgresql.host }}
-  AP_POSTGRES_HOST: {{ .Values.activepieces.postgresql.host }}
+  AP_POSTGRES_HOST: {{ .Values.activepieces.postgresql.host | quote }}
   {{- end }}
   {{- if .Values.activepieces.postgresql.port }}
-  AP_POSTGRES_PORT: {{ .Values.activepieces.postgresql.port }}
+  AP_POSTGRES_PORT: {{ .Values.activepieces.postgresql.port | quote }}
   {{- end }}
   {{- if .Values.activepieces.postgresql.useSSL }}
-  AP_POSTGRES_USE_SSL: {{ .Values.activepieces.postgresql.useSSL }}
+  AP_POSTGRES_USE_SSL: {{ .Values.activepieces.postgresql.useSSL | quote }}
   {{- end }}
   {{- if .Values.activepieces.postgresql.sslCA }}
-  AP_POSTGRES_SSL_CA: {{ .Values.activepieces.postgresql.sslCA }}
+  AP_POSTGRES_SSL_CA: {{ .Values.activepieces.postgresql.sslCA | quote }}
+  {{- end }}
   {{- end }}
   {{- /*
     REDIS SETTINGS
   */}}
+  {{- if and (eq .Values.activepieces.queue.mode "redis") (or .Values.activepieces.redis.password .Values.activepieces.redis.existingSecret)}}
   {{- if .Values.activepieces.redis.database }}
-  AP_REDIS_DB: {{ .Values.activepieces.redis.database }}
+  AP_REDIS_DB: {{ .Values.activepieces.redis.database | quote }}
   {{- end }}
   {{- if .Values.activepieces.redis.host }}
-  AP_REDIS_HOST: {{ .Values.activepieces.redis.host }}
+  AP_REDIS_HOST: {{ .Values.activepieces.redis.host | quote }}
   {{- end }}
   {{- if .Values.activepieces.redis.port }}
-  AP_REDIS_PORT: {{ .Values.activepieces.redis.port }}
+  AP_REDIS_PORT: {{ .Values.activepieces.redis.port | quote }}
   {{- end }}
   {{- if .Values.activepieces.redis.useSSL }}
-  AP_REDIS_USE_SSL: {{ .Values.activepieces.redis.useSSL }}
+  AP_REDIS_USE_SSL: {{ .Values.activepieces.redis.useSSL | quote }}
+  {{- end }}
   {{- end }}
   {{- /*
     QUEUE SETTINGS
   */}}
   {{- if .Values.activepieces.queue.mode }}
-  AP_QUEUE_MODE: {{ .Values.activepieces.queue.mode }}
+  AP_QUEUE_MODE: {{ .Values.activepieces.queue.mode | upper | quote }}
   {{- end }}
-  {{- if .Values.activepieces.queue.enableUI }}
-  AP_QUEUE_UI_ENABLED: {{ .Values.activepieces.queue.enableUI }}
+  {{- if and .Values.activepieces.queue.enableUI (eq .Values.activepieces.queue.mode "REDIS") }}
+  AP_QUEUE_UI_ENABLED: {{ .Values.activepieces.queue.enableUI | quote }}
   {{- end }}
   {{- /*
     PIECES SETTINGS
   */}}
   {{- if .Values.activepieces.pieces.source }}
-  AP_PIECES_SOURCE: {{ .Values.activepieces.pieces.source }}
+  AP_PIECES_SOURCE: {{ .Values.activepieces.pieces.source | upper | quote }}
   {{- end }}
   {{- if .Values.activepieces.pieces.syncMode }}
-  AP_PIECES_SYNC_MODE: {{ .Values.activepieces.pieces.syncMode }}
+  AP_PIECES_SYNC_MODE: {{ .Values.activepieces.pieces.syncMode | upper | quote }}
   {{- end }}
   {{- /*
     COPILOT SETTINGS
   */}}
   {{- if .Values.activepieces.copilot.instanceType }}
-  AP_COPILOT_INSTANCE_TYPE: {{ .Values.activepieces.copilot.instanceType }}
+  AP_COPILOT_INSTANCE_TYPE: {{ .Values.activepieces.copilot.instanceType | upper | quote }}
   {{- end }}
   {{- if .Values.activepieces.copilot.openAI.endpoint }}
-  AP_AZURE_OPENAI_ENDPOINT: {{ .Values.activepieces.copilot.openAI.endpoint }}
+  AP_AZURE_OPENAI_ENDPOINT: {{ .Values.activepieces.copilot.openAI.endpoint | quote }}
   {{- end }}
   {{- if .Values.activepieces.copilot.openAI.apiVersion }}
-  AP_AZURE_OPENAI_API_VERSION: {{ .Values.activepieces.copilot.openAI.apiVersion }}
+  AP_AZURE_OPENAI_API_VERSION: {{ .Values.activepieces.copilot.openAI.apiVersion | quote }}
   {{- end }}
   {{- /*
     SANDBOX SETTINGS
   */}}
   {{- if .Values.activepieces.sandbox.executionMode }}
-  AP_EXECUTION_MODE: {{ .Values.activepieces.sandbox.executionMode }}
+  AP_EXECUTION_MODE: {{ .Values.activepieces.sandbox.executionMode | upper | quote }}
   {{- end }}
   {{- if .Values.activepieces.sandbox.runTimeSeconds }}
-  AP_SANDBOX_RUN_TIME_SECONDS: {{ .Values.activepieces.sandbox.runTimeSeconds }}
+  AP_SANDBOX_RUN_TIME_SECONDS: {{ .Values.activepieces.sandbox.runTimeSeconds | quote }}
   {{- end }}
   {{- if .Values.activepieces.sandbox.propagatedEnvVars }}
-  AP_SANDBOX_PROPAGATED_ENV_VARS: {{ .Values.activepieces.sandbox.propagatedEnvVars }}
+  AP_SANDBOX_PROPAGATED_ENV_VARS: {{ .Values.activepieces.sandbox.propagatedEnvVars | quote }}
   {{- end }}
   {{- /*
     GENERAL SETTINGS
   */}}
   {{- if .Values.activepieces.workerConcurrency }}
-  AP_FLOW_WORKER_CONCURRENCY: {{ .Values.activepieces.workerConcurrency }}
+  AP_FLOW_WORKER_CONCURRENCY: {{ .Values.activepieces.workerConcurrency | quote }}
   {{- end }}
   {{- if .Values.activepieces.dataRetentionDays }}
-  AP_EXECUTION_DATA_RETENTION_DAYS: {{ .Values.activepieces.dataRetentionDays }}
+  AP_EXECUTION_DATA_RETENTION_DAYS: {{ .Values.activepieces.dataRetentionDays | quote }}
   {{- end }}
   {{- if .Values.activepieces.enableCloudAuth }}
-  AP_CLOUD_AUTH_ENABLED: {{ .Values.activepieces.enableCloudAuth }}
+  AP_CLOUD_AUTH_ENABLED: {{ .Values.activepieces.enableCloudAuth | quote }}
   {{- end }}
   {{- if .Values.activepieces.triggerPollInterval }}
-  AP_TRIGGER_DEFAULT_POLL_INTERVAL: {{ .Values.activepieces.triggerPollInterval }}
+  AP_TRIGGER_DEFAULT_POLL_INTERVAL: {{ .Values.activepieces.triggerPollInterval | quote }}
   {{- end }}
   {{- if .Values.activepieces.telemetry }}
-  AP_TELEMETRY_ENABLED: {{ .Values.activepieces.telemetry }}
+  AP_TELEMETRY_ENABLED: {{ .Values.activepieces.telemetry | quote }}
   {{- end }}
   {{- if .Values.activepieces.templateSourceURL }}
-  AP_TEMPLATES_SOURCE_URL: {{ .Values.activepieces.templateSourceURL }}
+  AP_TEMPLATES_SOURCE_URL: {{ .Values.activepieces.templateSourceURL | quote }}
   {{- end }}
   {{- if .Values.activepieces.webhookTimeoutSeconds }}
-  AP_WEBHOOK_TIMEOUT_SECONDS: {{ .Values.activepieces.webhookTimeoutSeconds }}
+  AP_WEBHOOK_TIMEOUT_SECONDS: {{ .Values.activepieces.webhookTimeoutSeconds | quote }}
   {{- end }}

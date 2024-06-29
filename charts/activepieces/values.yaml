@@ -33,7 +33,7 @@ image:
   ## pullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  pullSecrets: [ ]
+  pullSecrets: []
 
 ## @section Name overrides
 ##
@@ -61,13 +61,13 @@ kind: StatefulSet
 activepieces:
   ## @param activepieces.domain The public facing domain name for the Activepieces service, reused in Ingress.
   ##
-  domain: ""
+  domain: localhost
   ## @param activepieces.configPath Specify the path to store SQLite3 and local settings, prefixed with activepieces.data.rootPath
   ##
   configPath: ""
-  ## @param activepieces.database Specify the path to store SQLite3 and local settings
+  ## @param activepieces.database Specify the path to store SQLite3 and local settings. Values are `sqlite3` or `postgres`.
   ##
-  database: "sqlite3"
+  database: sqlite3
 
   ## Data configuration
   ##
@@ -131,7 +131,7 @@ activepieces:
     host: activepieces-redis-master
     ## @param activepieces.redis.port The port number for the Redis server
     ##
-    port: 5432
+    port: 6379
     ## @param activepieces.redis.username The username for the Redis user
     ##
     username: ""
@@ -148,18 +148,18 @@ activepieces:
   ## Queue configuration
   ##
   queue:
-    ## @param activepieces.queue.mode The queue mode to use. Valid values are `MEMORY` and `REDIS`.
+    ## @param activepieces.queue.mode The queue mode to use. Valid values are `memory` and `redis`.
     ##
-    mode: MEMORY
+    mode: memory
     ## @param activepieces.queue.enableUI Enable the queue UI (only works with redis)
     ##
     enableUI: false
     ## @param activepieces.queue.username The username for the queue UI
     ##
-    username: false
+    username: ""
     ## @param activepieces.queue.password The password for the queue UI
     ##
-    password: false
+    password: ""
     ## @param activepieces.queue.existingSecret The name of an existing `basic-auth` Secret to use the credentials from
     ##
     existingSecret: ""
@@ -234,16 +234,15 @@ activepieces:
   ## @param activepieces.triggerPollInterval The polling interval determines how frequently the system checks for new data updates for pieces with scheduled triggers
   ##
   triggerPollInterval: 5
-  ## @param activepieces.enableCloudAuth Turn off the utilization of oAuth2 applications
+  ## @param activepieces.enableCloudAuth Enable the utilization of oAuth2 applications
   ##
-  enableCloudAuth: false
+  enableCloudAuth: true
   ## @param activepieces.telemetry Enable the collection of telemetry information
   ##
   telemetry: false
-  ## @param activepieces.templateSourceURL The endpoint which is queried for templates, remove this and templates will be removed from the UI
-  ## Setting this overrides the (built-in) default of "https://cloud.activepieces.com/api/v1/flow-templates".
+  ## @param activepieces.templateSourceURL The endpoint which is queried for templates, remove this and templates will be removed from the UI.
   ##
-  templateSourceURL: ""
+  templateSourceURL: "https://cloud.activepieces.com/api/v1/flow-templates"
   ## @param activepieces.webhookTimeoutSeconds The default timeout for webhooks
   ##
   webhookTimeoutSeconds: 30
@@ -288,12 +287,12 @@ ingress:
   annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
   extraHosts:
-    [ ]
+    []
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -309,7 +308,7 @@ service:
   type: ClusterIP
   ## @param service.port [default: 80] The port to use on the service
   ##
-  port: 80
+  port: 8080
   ## @param service.nodePort [default: 30080] The Node port to use on the service
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ## NOTE: choose port between <30000-32767>
@@ -324,7 +323,7 @@ service:
   ##     port: 443
   ##     targetPort: 9377
   ##
-  extraPorts: [ ]
+  extraPorts: []
   ## @param service.annotations [object] Annotations for the service resource
   ##
   annotations: { }
@@ -356,7 +355,7 @@ service:
   ## loadBalancerSourceRanges:
   ##   - 10.10.10.0/24
   ##
-  loadBalancerSourceRanges: [ ]
+  loadBalancerSourceRanges: []
   ## @param service.externalIPs Service External IPs
   ## https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ## e.g.
@@ -364,7 +363,7 @@ service:
   ##   - 10.10.10.1
   ##   - 201.22.30.1
   ##
-  externalIPs: [ ]
+  externalIPs: []
   ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
   ## If "ClientIP", consecutive client requests will be directed to the same Pod
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -390,7 +389,7 @@ service:
 ##
 rbac:
   create: true
-  rules: [ ]
+  rules: []
 
 ## @section Service Account parameters
 ##
@@ -408,7 +407,7 @@ serviceAccount:
   automount: false
   annotations: { }
   name: ""
-  secrets: [ ]
+  secrets: []
 
 ## @section Liveness Probe parameters
 ##
@@ -520,17 +519,17 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumes Define volumes for the Activepieces pod
 ##
-volumes: [ ]
+volumes: []
 
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 ## @param volumeMounts Define volumeMounts for the Activepieces pod
 ##
-volumeMounts: [ ]
+volumeMounts: []
 
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 ## @param initContainers Define initContainers for the main Activepieces server
 ##
-initContainers: [ ]
+initContainers: []
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -540,7 +539,7 @@ nodeSelector: { }
 ## @param tolerations Tolerations for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: [ ]
+tolerations: []
 
 ## @param affinity Affinity for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -606,7 +605,7 @@ securityContext:
 postgresql:
   ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
   ##
-  enabled: true
+  enabled: false
   ## Authentication parameters
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
@@ -618,16 +617,16 @@ postgresql:
     enablePostgresUser: true
     ## @param postgresql.auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
     ##
-    postgresPassword: "activepieces"
+    postgresPassword: activepieces
     ## @param postgresql.auth.username Name for a custom user to create
     ##
-    username: "activepieces"
+    username: activepieces
     ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
     ##
-    password: "activepieces"
+    password: activepieces
     ## @param postgresql.auth.database Name for a custom database to create
     ##
-    database: "activepieces"
+    database: activepieces
     ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
     ##
     usePasswordFiles: false
@@ -670,7 +669,7 @@ postgresql:
 redis:
   ## @param redis.enabled Enable or disable the Redis&reg; subchart
   ##
-  enabled: true
+  enabled: false
   ## @param redis.architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
   ##
   architecture: standalone
@@ -681,3 +680,6 @@ redis:
   auth:
     ## @param redis.auth.password Redis&reg; password
     password: "activepieces"
+    ## @param redis.auth.usePasswordFiles Mount credentials as files instead of using an environment variable
+    ##
+    usePasswordFiles: true
