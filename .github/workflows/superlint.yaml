@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Superlinter
-        uses: super-linter/super-linter@v6.6.0
+        uses: super-linter/super-linter@v6.7.0
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
