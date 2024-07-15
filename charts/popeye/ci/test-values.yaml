@@ -1,0 +1,57 @@
+popeye:
+  config: |
+    popeye:
+      # Checks resources against reported metrics usage.
+      # If over/under these thresholds a linter warning will be issued.
+      # Your cluster must run a metrics-server for these to take place!
+      allocations:
+        cpu:
+          underPercUtilization: 200 # Checks if cpu is under allocated by more than 200% at current load.
+          overPercUtilization: 50   # Checks if cpu is over allocated by more than 50% at current load.
+        memory:
+          underPercUtilization: 200 # Checks if mem is under allocated by more than 200% at current load.
+          overPercUtilization: 50   # Checks if mem is over allocated by more than 50% usage at current load.
+
+      resources:
+        # Configure node resources.
+        node:
+          # Limits set a cpu/mem threshold in % ie if cpu|mem > limit a lint warning is triggered.
+          limits:
+            # CPU checks if current CPU utilization on a node is greater than 90%.
+            cpu:    90
+            # Memory checks if current Memory utilization on a node is greater than 80%.
+            memory: 80
+
+        # Configure pod resources
+        pod:
+          # Restarts check the restarts count and triggers a lint warning if above threshold.
+          restarts: 5
+          # Check container resource utilization in percent.
+          # Issues a lint warning if about these threshold.
+          limits:
+            cpu:    80
+            memory: 75
+
+      # [New!] overrides code severity
+      overrides:
+        # Code specifies a custom severity level ie critical=3, warn=2, info=1
+        - code: "rx:^20"
+          severity: 1
+
+      # Configure a list of allowed registries to pull images from.
+      # Any resources not using the following registries will be flagged!
+      registries:
+        - quay.io
+        - docker.io
+        - ghcr.io
+
+  args:
+    file: /etc/popeye/spinach.yaml
+    all-namespaces: true
+    push-gtwy-url: "fuck-you.wtf:9128" # this shouldn't show up in the rendered manifest
+
+  scans:
+    destinations:
+      - push-gtwy
+    pushGateway:
+      url: "push-gateway.monitoring.svc.cluster.local:9128"

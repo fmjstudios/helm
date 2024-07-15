@@ -1,0 +1,325 @@
+# Default Helm values for fmjstudios/popeye.
+# Reference: https://github.com/fmjstudios/helm
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Popeye Image parameters
+##
+
+## Popeye Server Image
+## ref: https://hub.docker.com/r/binwiederhier/popeye
+## @param image.registry The Docker registry to pull the image from
+## @param image.repository The registry repository to pull the image from
+## @param image.tag The image tag to pull
+## @param image.digest The image digest to pull
+## @param image.pullPolicy The Kubernetes image pull policy
+## @param image.pullSecrets A list of secrets to use for pulling images from private registries
+
+image:
+  registry: docker.io
+  repository: derailed/popeye
+  tag: v0.21.3
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## @section Name overrides
+##
+
+## @param nameOverride String to partially override popeye.fullname
+##
+nameOverride: ""
+
+## @param fullnameOverride String to fully override popeye.fullname
+##
+fullnameOverride: ""
+
+## @section CronJob parameters
+##
+
+## CronJob config
+##
+cronjob:
+  ## @param cronjob.labels Labels to attach to the CronJob manifest
+  ##
+  labels: { }
+  ## @param cronjob.annotations Annotations to attach to the CronJob manifest
+  ##
+  annotations: { }
+  ## @param cronjob.schedule The schedule to for the CronJob. Once an hour per default.
+  ##
+  schedule: "* */1 * * *"
+  ## @param cronjob.concurrencyPolicy Concurrency is disabled for Popeye by default.
+  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#concurrency-policy
+  ##
+  concurrencyPolicy: Forbid
+  ## @param cronjob.restartPolicy Popeye containers should exit and never be auto-recreated
+  ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
+  ##
+  restartPolicy: Never
+
+## @section Popeye Configuration parameters
+##
+
+## Popeye configuration
+## ref: https://popeyecli.io/
+popeye:
+  ## @param popeye.config The SpinachYAML configuration for popeye
+  ## ref: https://popeyecli.io/#spinachyaml
+  ## NOTE: this file will be mounted at /etc/popeye/spinach.yaml so be sure to add the argument if you're making use of
+  ##        the configuration file
+  ##
+  config: ""
+  #  # spinach.yaml
+  #
+  #  popeye:
+  #    # Checks resources against reported metrics usage.
+  #    # If over/under these thresholds a linter warning will be issued.
+  #    # Your cluster must run a metrics-server for these to take place!
+  #    allocations:
+  #      cpu:
+  #        underPercUtilization: 200 # Checks if cpu is under allocated by more than 200% at current load.
+  #        overPercUtilization: 50   # Checks if cpu is over allocated by more than 50% at current load.
+  #      memory:
+  #        underPercUtilization: 200 # Checks if mem is under allocated by more than 200% at current load.
+  #        overPercUtilization: 50   # Checks if mem is over allocated by more than 50% usage at current load.
+  #
+  #    resources:
+  #      # Configure node resources.
+  #      node:
+  #        # Limits set a cpu/mem threshold in % ie if cpu|mem > limit a lint warning is triggered.
+  #        limits:
+  #          # CPU checks if current CPU utilization on a node is greater than 90%.
+  #          cpu:    90
+  #          # Memory checks if current Memory utilization on a node is greater than 80%.
+  #          memory: 80
+  #
+  #      # Configure pod resources
+  #      pod:
+  #        # Restarts check the restarts count and triggers a lint warning if above threshold.
+  #        restarts: 5
+  #        # Check container resource utilization in percent.
+  #        # Issues a lint warning if about these threshold.
+  #        limits:
+  #          cpu:    80
+  #          memory: 75
+  #
+  #    # [New!] overrides code severity
+  #    overrides:
+  #      # Code specifies a custom severity level ie critical=3, warn=2, info=1
+  #      - code: "rx:^20"
+  #        severity: 1
+  #
+  #    # Configure a list of allowed registries to pull images from.
+  #    # Any resources not using the following registries will be flagged!
+  #    registries:
+  #      - quay.io
+  #      - docker.io
+  #      - ghcr.io
+
+  ## @param popeye.args Define the CLI arguments and flags that the container's entrypoint will execute
+  ## NOTE: Boolean flags such as `save` are to be set to `true` to be appended. Arguments for the Push Gateway or S3
+  ##        integration are configured later in the `scans` section and as such are not to be configured here as they
+  ##        will not be used
+  ##
+  args: { }
+  # file: /etc/popeye/spinach.yaml
+  # all-namespaces: true
+
+
+  ## Scan Configuration
+  ## Configure Popeye to save its' scans either to an S3 bucket (and/or) push them to a Prometheus Push-Gateway
+  ##
+  scans:
+    ## @param popeye.scans.destinations [array] Set Scan destinations for Popeye. Valid keys are `s3` and `push-gtwy`.
+    ## NOTE: if either of the two valid keys are defined, the corresponding `url` or `bucket` key MUST also be defined,
+    ##        as they are required values
+    ##
+    destinations: []
+    ## Push-Gateway configuration
+    ##
+    pushGateway:
+      ## @param popeye.scans.pushGateway.url [string] Set the URL for the Push Gateway service
+      ##
+      url: ""
+      ## @param popeye.scans.pushGateway.user [string] Set the HTTP Basic Auth username for the Push Gateway service
+      ##
+      user: ""
+      ## @param popeye.scans.pushGateway.password [string] Set the HTTP Basic Auth password for the Push Gateway service
+      ##
+      password: ""
+      ## @param popeye.scans.pushGateway.existingSecret [string] Provide an existing `basic-auth` Secret to use as a credential source for the Push Gateway service
+      ##
+      existingSecret: ""
+    ## S3 configuration
+    ##
+    s3:
+      ## @param popeye.scans.s3.bucket [string] Set the S3 bucket name
+      ##
+      bucket: ""
+      ## @param popeye.scans.s3.region [string] Set the S3 region to use
+      ##
+      region: ""
+      ## @param popeye.scans.s3.endpoint [string] Set a custom S3 endpoint to use instead of the AWS one
+      ## NOTE: this is primarily used when using third-party S3 providers like Linode, DigitalOcean etc. and generally not used for AWS
+      ##
+      endpoint: ""
+      ## @param popeye.scans.s3.accessKey [string] Set the S3 Access Key
+      ##
+      accessKey: ""
+      ## @param popeye.scans.s3.secretKey [string] Set the S3 Secret Key
+      ##
+      secretKey: ""
+      ## @param popeye.scans.s3.existingSecret [string] Provide an existing Secret to with `accessKey` and `secretKey` keys to use as a credential source
+      ##
+      existingSecret: ""
+
+## Popeye ConfigMap settings
+## @param configMap.annotations Annotations for the ConfigMap resource
+## @param configMap.labels Extra Labels for the ConfigMap resource
+
+configMap:
+  annotations: { }
+  labels: { }
+
+## @section Common Secret parameters
+##
+
+## Popeye Common Secret settings
+## @param secret.annotations Common annotations for the S3 secret
+## @param secret.labels Common extra labels for the S3 secret
+
+secret:
+  annotations: { }
+  labels: { }
+
+## @section RBAC parameters
+##
+
+## Popeye RBAC settings
+## @param rbac.create Whether to create RBAC resources
+## @param rbac.rules Extra rules to add to the Role
+##
+rbac:
+  create: true
+  rules: []
+
+## @section Service Account parameters
+##
+
+## Popeye Service Account settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create Whether a service account should be created
+## @param serviceAccount.automount Whether to automount the service account token
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name A custom name for the service account, otherwise gobackup.fullname is used
+## @param serviceAccount.secrets A list of secrets mountable by this service account
+##
+serviceAccount:
+  create: true
+  automount: false
+  annotations: { }
+  name: ""
+  secrets: []
+
+
+## @section Pod settings
+##
+
+## Popeye resource settings
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources The resource limits/requests for the Popeye pod
+##
+resources:
+  { }
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumes Define volumes for the Popeye pod
+##
+volumes: []
+
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+## @param volumeMounts Define volumeMounts for the Popeye pod
+##
+volumeMounts: []
+
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## @param initContainers Define initContainers for the main Popeye server
+##
+initContainers: []
+
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: { }
+
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: { }
+
+## @param podAnnotations Extra annotations for the Popeye pod
+##
+podAnnotations: { }
+
+## @param podLabels Extra labels for the Popeye pod
+##
+podLabels: { }
+#  pod-security.kubernetes.io/warn: privileged
+#  pod-security.kubernetes.io/audit: privileged
+#  pod-security.kubernetes.io/enforce: baseline
+
+## @param priorityClassName The name of an existing PriorityClass
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+##
+priorityClassName: ""
+
+## @section Security context settings
+##
+
+## @param podSecurityContext Security context settings for the Popeye pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+podSecurityContext:
+  { }
+# fsGroup: 1001
+# supplementalGroups:
+#   - 1001
+
+## @param securityContext General security context settings for
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext:
+  { }
+# allowPrivilegeEscalation: false
+# privileged: false
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsGroup: 1001
+# runAsUser: 1001
+# capabilities:
+#   drop:
+#     - ALL

@@ -1,0 +1,104 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "popeye.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: popeye
+      {{- include "popeye.labels" $ | nindent 4 }}
+      {{- if $.Values.cronjob.labels }}
+      {{- toYaml $.Values.cronjob.labels | nindent 4 }}
+      {{- end }}
+    {{- if $.Values.cronjob.annotations }}
+    annotations:
+      {{- toYaml $.Values.cronjob.annotations | nindent 4 -}}
+    {{- end }}
+spec:
+  schedule: {{ .Values.cronjob.schedule | quote }}
+  concurrencyPolicy: {{ .Values.cronjob.concurrencyPolicy }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- if .Values.podAnnotations }}
+          annotations:
+            {{- if .Values.podAnnotations }}
+            {{- toYaml .Values.podAnnotations | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          labels:
+            {{- include "popeye.selectorLabels" . | nindent 12 }}
+            {{- if .Values.podLabels -}}
+            {{- toYaml .Values.podLabels | nindent 12 }}
+            {{- end }}
+        spec:
+          serviceAccountName: {{ include "popeye.serviceAccountName" . }}
+          restartPolicy: {{ .Values.cronjob.restartPolicy }}
+          containers:
+            - name: popeye
+              image: {{ include "popeye.image" . }}
+              imagePullPolicy: IfNotPresent
+              command:
+                {{- include "popeye.args" . | nindent 16 -}}
+              {{- if and (has "s3" .Values.popeye.scans.destinations) (or .Values.popeye.scans.s3.accessKey .Values.popeye.scans.s3.existingSecret)}}
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ default .Values.popeye.scans.s3.accessKey .Values.popeye.scans.s3.existingSecret }}
+                      key: accessKey
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ default .Values.popeye.scans.s3.secretKey .Values.popeye.scans.s3.existingSecret }}
+                      key: secretKey
+              {{- end }}
+              {{- if .Values.resources }}
+              resources:
+                  {{- toYaml .Values.resources | nindent 16 }}
+                {{- end }}
+                {{- if .Values.securityContext }}
+              securityContext:
+                  {{- toYaml .Values.securityContext | nindent 16 }}
+                {{- end }}
+              {{- if or .Values.volumeMounts .Values.popeye.config }}
+              volumeMounts:
+                - mountPath: /etc/popeye/spinach.yaml
+                  name: {{ printf "%s-config" (include "popeye.fullname" .) }}
+                {{- if .Values.volumeMounts }}
+                {{- toYaml .Values.volumeMounts | nindent 16 }}
+                {{- end }}
+              {{- end }}
+          {{- if or .Values.popeye.config .Values.volumes }}
+          volumes:
+            - name: {{ printf "%s-config" (include "popeye.fullname" .) }}
+              configMap:
+                name: {{ include "popeye.configmap.spinach" . }}
+                defaultMode: 420 # 0655 in octal
+            {{- if .Values.volumes }}
+            {{- toYaml .Values.volumes | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.priorityClassName }}
+          priorityClassName: {{ .Values.priorityClassName }}
+          {{- end }}
+          {{- if .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml .Values.nodeSelector | nindent 12 }}
+          {{- end }}
+          {{- if .Values.affinity }}
+          affinity:
+            {{- toYaml .Values.affinity | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tolerations }}
+          tolerations:
+            {{- toYaml .Values.tolerations | nindent 12 }}
+          {{- end }}
+          {{- if .Values.podSecurityContext }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.initContainers }}
+          initContainers:
+            {{- toYaml .Values.initContainers | nindent 12 }}
+          {{- end }}

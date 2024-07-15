@@ -1,0 +1,20 @@
+{{- if .Values.popeye.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "popeye.configmap.spinach" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: popeye
+    {{- include "popeye.labels" . | nindent 4 }}
+    {{- if .Values.configMap.labels }}
+    {{- toYaml .Values.configMap.labels | nindent 4 }}
+    {{- end }}
+  {{- if .Values.configMap.annotations }}
+  annotations:
+  {{- toYaml .Values.configMap.annotations | nindent 4 }}
+  {{- end }}
+data:
+  spinach.yaml: |
+    {{ .Values.popeye.config | nindent 4 }}
+  {{- end }}
