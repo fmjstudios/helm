@@ -284,7 +284,39 @@
                             "description": "A list of SSO providers to enable within Linkwarden",
                             "default": "[]",
                             "items": {
-                                "type": "string"
+                                "type": "object",
+                                "properties": {
+                                    "provider": {
+                                        "type": "string",
+                                        "description": "The SSO Identity Provider",
+                                        "default": ""
+                                    },
+                                    "customName": {
+                                        "type": "string",
+                                        "description": "A custom name for the Identity Provider",
+                                        "default": ""
+                                    },
+                                    "issuer": {
+                                        "type": "string",
+                                        "description": "The Issuer of the JWTs",
+                                        "default": ""
+                                    },
+                                    "existingSecret": {
+                                        "type": "string",
+                                        "description": "An existing secret with the clientID and clientSecret",
+                                        "default": ""
+                                    },
+                                    "clientID": {
+                                        "type": "string",
+                                        "description": "The ClientID",
+                                        "default": ""
+                                    },
+                                    "clientSecret": {
+                                        "type": "string",
+                                        "description": "The ClientSecret",
+                                        "default": ""
+                                    }
+                                }
                             }
                         }
                     }
