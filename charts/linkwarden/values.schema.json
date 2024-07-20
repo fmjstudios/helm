@@ -51,6 +51,11 @@
         "linkwarden": {
             "type": "object",
             "properties": {
+                "replicas": {
+                    "type": "number",
+                    "description": "The number of Linkwarden replicas (pods) to deploy",
+                    "default": 1
+                },
                 "domain": {
                     "type": "string",
                     "description": "The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and",

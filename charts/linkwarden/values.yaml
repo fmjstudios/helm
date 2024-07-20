@@ -53,6 +53,10 @@ fullnameOverride: ""
 ## ref: https://github.com/dani-garcia/linkwarden/wiki/Configuration-overview
 
 linkwarden:
+  ## @param linkwarden.replicas [number] The number of Linkwarden replicas (pods) to deploy
+  ##
+  replicas: 1
+
   ## @param linkwarden.domain [string] The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and
   ## as the 'host' entry within the Ingress configuration
   ##
