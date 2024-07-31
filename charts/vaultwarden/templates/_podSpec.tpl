@@ -2,7 +2,6 @@
   Define the Kubernetes pod spec to be reused within the Deployment/StatefulSet.
 */}}
 {{- define "vaultwarden.podSpec" -}}
-serviceName: {{ include "vaultwarden.fullname" . }}
 replicas: 1
 selector:
   matchLabels:
@@ -11,7 +10,6 @@ selector:
 strategy:
 {{- else }}
 updateStrategy:
-{{- end }}
   {{- toYaml .Values.strategy | nindent 4 }}
 {{- end }}
 template:
