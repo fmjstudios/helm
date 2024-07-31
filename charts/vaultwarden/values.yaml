@@ -316,6 +316,9 @@ vaultwarden:
     ## @param vaultwarden.websocket.enabled [default: true] Whether to enable Websocket push notifications
     ##
     enabled: true
+    ## @param vaultwarden.websocket.port [default: 3012] The port websocket should bind to
+    ##
+    port: 3012
 
   ## Database settings
   ##
