@@ -368,6 +368,11 @@
                             "type": "boolean",
                             "description": "Whether to enable Websocket push notifications",
                             "default": "true"
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "The port websocket should bind to",
+                            "default": "3012"
                         }
                     }
                 },
