@@ -226,4 +226,6 @@ data:
   {{- /*
     Experimental Vaultwaroden configuration
   */}}
+  {{- if .Values.vaultwarden.experimental.featureFlags }}
   EXPERIMENTAL_CLIENT_FEATURE_FLAGS: {{ join "," .Values.vaultwarden.experimental.featureFlags | quote }}
+  {{- end }}
