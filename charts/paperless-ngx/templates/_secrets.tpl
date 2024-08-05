@@ -26,21 +26,6 @@ Set the names of the secrets
 {{- end }}
 
 {{/*
-Build connection URI's
-*/}}
-{{- define "paperless.redis.password" -}}
-{{- if .Values.paperless.redis.existingSecret }}
-{{- printf "%s" ((lookup "v1" "Secret" .Release.Namespace (.Values.paperless.redis.existingSecret)).data.password) }}
-{{- else }}
-{{- printf "%s" .Values.paperless.redis.password }}
-{{- end }}
-{{- end }}
-
-{{- define "paperless.redis.uri" -}}
-{{- printf "redis://%s:%s@%s:%d" .Values.paperless.redis.username (include "paperless.redis.password" .) .Values.paperless.redis.host (int .Values.paperless.redis.port) }}
-{{- end }}
-
-{{/*
   Detect or generate a secret key for the installation
 */}}
 {{- define "paperless.secretkey" -}}

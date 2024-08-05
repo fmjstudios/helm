@@ -45,11 +45,19 @@ spec:
             - configMapRef:
                 name: {{ include "paperless.configmaps.general" . }}
           env:
-            - name: PAPERLESS_REDIS
+            - name: paperless_redis_host
+              value: {{ .Values.paperless.redis.host }}
+            - name: paperless_redis_port
+              value: {{ .Values.paperless.redis.port | quote }}
+            - name: paperless_redis_username
+              value: {{ default "" .Values.paperless.redis.username }}
+            - name: paperless_redis_password
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "paperless.secrets.redis" . }}
-                  key: uri
+                  name: {{ default (include "paperless.secrets.redis" .) .Values.paperless.redis.existingSecret }}
+                  key: password
+            - name: PAPERLESS_REDIS
+              value: "redis://$(paperless_redis_username):$(paperless_redis_password)@$(paperless_redis_host):$(paperless_redis_port)"
             - name: PAPERLESS_DBUSER
               valueFrom:
                 secretKeyRef:
