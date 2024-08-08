@@ -24,6 +24,8 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASH_EXEC_IGNORE_LIBRARIES: true
+          # mostly false positives
+          VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_JSCPD: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
           # cannot handle Helm templates
