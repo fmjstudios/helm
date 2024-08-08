@@ -4,5 +4,5 @@ target-branch: main
 chart-dirs:
   - charts
 chart-repos:
-  - bitnami=oci://registry-1.docker.io/bitnamicharts
+  - bitnami=https://charts.bitnami.com/bitnami
 helm-extra-args: --timeout 600s
