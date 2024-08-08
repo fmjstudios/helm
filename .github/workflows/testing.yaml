@@ -18,8 +18,28 @@ defaults:
     shell: bash
 
 jobs:
+  changes:
+    name: Determine if charts have changed
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check-change.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changes
+        id: check-change
+        run: |
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
   lint:
     name: Lint Helm Charts
+    needs: ['changes']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,21 +61,14 @@ jobs:
       - name: Set up Chart-Testing
         uses: helm/chart-testing-action@v2.6.1
 
-      - name: Run chart-testing (list-changed)
-        id: ct-list-changed
-        run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
-          if [[ -n "$changed" ]]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Run chart-testing (lint)
-        if: steps.ct-list-changed.outputs.changed == 'true'
+        if: needs.changes.outputs.changed == 'true'
         run: |
           ct lint --config config/ct-config.yaml
 
   lint-artifacthub:
     name: Lint Helm Charts with ArtifactHub Linter
+    needs: ['changes']
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -72,7 +85,7 @@ jobs:
 
   test:
     name: Test Helm Charts
-    needs: ['lint', 'lint-artifacthub']
+    needs: ['changes', 'lint', 'lint-artifacthub']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -94,21 +107,17 @@ jobs:
       - name: Set up Chart-Testing
         uses: helm/chart-testing-action@v2.6.1
 
-      - name: Run chart-testing (list-changed)
-        id: ct-list-changed
-        run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
-          if [[ -n "$changed" ]]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Run chart-testing (lint)
+        if: needs.changes.outputs.changed == 'true'
+        run: ct lint --config config/ct-config.yaml
 
       - name: Run kind to create a Kubernetes cluster
-        if: steps.ct-list-changed.outputs.changed == 'true'
+        if: needs.changes.outputs.changed == 'true'
         uses: helm/kind-action@v1
         with:
           config: config/k8s/cluster/kind-config.yaml
 
       - name: Run chart-testing (install)
-        if: steps.ct-list-changed.outputs.changed == 'true'
+        if: needs.changes.outputs.changed == 'true'
         run: |
           ct install --config config/ct-config.yaml
