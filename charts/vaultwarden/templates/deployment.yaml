@@ -7,5 +7,5 @@ metadata:
   labels:
     {{- include "vaultwarden.labels" . | nindent 4 }}
 spec:
-  {{- include "vaultwarden.podSpec" . | nindent 2}}
+  {{- include "vaultwarden.podSpec" . | nindent 2 }}
 {{- end -}}
