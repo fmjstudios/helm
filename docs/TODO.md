@@ -33,5 +33,7 @@
   chart reference (`shopware-cli`)
 - [ ] Support Reverse HTTP Cache for `Shopware 6` chart
   with [prebuilt image](https://github.com/shopware/varnish-shopware/tree/main)
+- [ ] Use the [`AUTHORS`](../.github/AUTHORS) file as base for a [
+  `.all-contributorsrc`](https://allcontributors.org/docs/en/overview) file
 
 ## 🔗 Links
