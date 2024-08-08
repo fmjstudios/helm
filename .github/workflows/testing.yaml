@@ -2,6 +2,12 @@ name: 'Testing'
 
 on:
   workflow_dispatch:
+    inputs:
+      forceTest:
+        default: true
+        description: Force the running of tests
+        required: true
+        type: boolean
   push:
     branches:
       - main
@@ -65,7 +71,7 @@ jobs:
         uses: helm/chart-testing-action@v2.6.1
 
       - name: Run chart-testing (lint)
-        if: needs.changes.outputs.changed == 'true'
+        if: ${{ needs.changes.outputs.changed == 'true' || github.event.inputs.forceTest }}
         run: |
           ct lint --config config/ct-config.yaml
 
@@ -111,16 +117,16 @@ jobs:
         uses: helm/chart-testing-action@v2.6.1
 
       - name: Run chart-testing (lint)
-        if: needs.changes.outputs.changed == 'true'
+        if: ${{ needs.changes.outputs.changed == 'true' || github.event.inputs.forceTest }}
         run: ct lint --config config/ct-config.yaml
 
       - name: Run kind to create a Kubernetes cluster
-        if: needs.changes.outputs.changed == 'true'
+        if: ${{ needs.changes.outputs.changed == 'true' || github.event.inputs.forceTest }}
         uses: helm/kind-action@v1
         with:
           config: config/k8s/cluster/kind-config.yaml
 
       - name: Run chart-testing (install)
-        if: needs.changes.outputs.changed == 'true'
+        if: ${{ needs.changes.outputs.changed == 'true' || github.event.inputs.forceTest }}
         run: |
           ct install --config config/ct-config.yaml
