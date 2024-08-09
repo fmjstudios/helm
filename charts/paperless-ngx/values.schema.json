@@ -381,7 +381,7 @@
                         },
                         "existingSecret": {
                             "type": "string",
-                            "description": "The name of an existing Secret with a `username` and `password` key",
+                            "description": "The name of an existing Secret with a `uri` key containing the full Redis URI",
                             "default": "\"\""
                         },
                         "prefix": {

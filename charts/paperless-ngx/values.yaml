@@ -265,7 +265,7 @@ paperless:
   redis:
     ## @param paperless.redis.host [string] The hostname for the Redis instance
     ##
-    host: ""
+    host: paperless-redis-master
     ## @param paperless.redis.port [default: 6379] The port for the Redis instance
     ##
     port: 6379
@@ -274,8 +274,9 @@ paperless:
     username: ""
     ## @param paperless.redis.password [string] The password for the Redis instance
     ##
-    password: ""
-    ## @param paperless.redis.existingSecret [string] The name of an existing Secret with a `username` and `password` key
+    password: paperless
+    ## @param paperless.redis.existingSecret [string] The name of an existing Secret with a `uri` key containing the full Redis URI
+    ## NOTE: since you provide a custom URI with an existing Secret the previous properties are entirely ignored
     ##
     existingSecret: ""
     ## @param paperless.redis.prefix [string]
@@ -287,19 +288,19 @@ paperless:
   postgresql:
     ## @param paperless.postgresql.host [string] The hostname for the PostgreSQL database
     ##
-    host: ""
+    host: paperless-postgresql
     ## @param paperless.postgresql.port [default: 5432] The port for the PostgreSQL database
     ##
     port: 5432
     ## @param paperless.postgresql.name [string] The database name for the PostgreSQL database
     ##
-    name: ""
+    name: paperless
     ## @param paperless.postgresql.user [string] The username for the PostgreSQL database
     ##
-    user: ""
+    user: paperless
     ## @param paperless.postgresql.password [string] The password for the PostgreSQL database
     ##
-    password: ""
+    password: paperless
     ## @param paperless.postgresql.existingSecret [string] An existing BasicAuth secret containing the PostgreSQL credentials
     ##
     existingSecret: ""

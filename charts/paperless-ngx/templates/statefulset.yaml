@@ -48,7 +48,7 @@ spec:
             - name: PAPERLESS_REDIS
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "paperless.secrets.redis" . }}
+                  name: {{ default (include "paperless.secrets.redis" .) .Values.paperless.redis.existingSecret }}
                   key: uri
             - name: PAPERLESS_DBUSER
               valueFrom:
