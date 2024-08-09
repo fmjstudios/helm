@@ -3,9 +3,9 @@
 
 apiVersion: v2
 appVersion: 2.3.15
-kubeVersion: ">=1.26"
+kubeVersion: ">=1.26.0-0"
 name: cachet
-version: 0.2.0
+version: 0.2.1
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
