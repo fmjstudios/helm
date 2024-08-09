@@ -1,0 +1,51 @@
+# Copyright FMJ Studios
+# SPDX-License-Identifier: MIT
+
+apiVersion: v2
+appVersion: 25.0.2
+kubeVersion: ">=1.26.0-0"
+name: keycloak-operator
+version: 0.1.0
+description: Keycloak is an open source software product to allow single sign-on with identity and access management
+home: https://github.com/keycloak/keycloak
+icon: https://raw.githubusercontent.com/keycloak/keycloak-misc/main/logo/logo.png
+keywords:
+  - identity
+  - identity-provider
+  - single-sign-on
+  - sso
+  - ldap
+  - oauth
+  - saml
+  - federation
+  - keycloak
+sources:
+  - "https://github.com/fmjstudios/helm"
+maintainers:
+  - name: FMJ Studios Helm Authors
+    email: info@fmj.studio
+  - name: FMJdev
+    email: info@fmj.dev
+annotations:
+  artifacthub.io/category: security
+  artifacthub.io/license: MIT
+  artifacthub.io/signKey: |
+    fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+    url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/images: |
+    - name: keycloak-operator
+      image: quay.io/keycloak/keycloak-operator:25.0.2
+  artifacthub.io/links: |
+    - name: Source
+      url: https://github.com/fmjstudios/helm
+    - name: Support
+      url: https://github.com/fmjstudios/helm/issues
+    - name: Keycloak GitHub Repository
+      url: https://github.com/keycloak/keycloak
+    - name: Keycloak Documentation
+      url: https://www.keycloak.org/guides
+  org.opencontainers.image.vendor: "FMJ Studios"
+  org.opencontainers.image.licenses: "MIT"
+  # ref: https://artifacthub.io/docs/topics/annotations/helm/
+  # artifacthub.io/changes: |
