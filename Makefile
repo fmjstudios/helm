@@ -80,6 +80,27 @@ EXECUTABLES := $(helm) $(helmfile) $(kind) $(npx) $(cfssl) $(cfssljson) $(kubect
 # Packages
 README_GEN_PACKAGE := @bitnami/readme-generator-for-helm
 
+define USAGE
+$(PROJ_NAME) Makefile
+
+Targets:
+--------
+env            - Create a development Cluster with $(kind)
+build          - Build a Helm Chart's .tgz bundle
+install        - Install a Helm Chart onto the development Cluster
+upgrade        - Upgrade a currently installed Helm Chart
+template       - Template a Helm Chart
+dry-install    - Dry-Install a Helm Chart (requires dev environment)
+secrets        - Generate Secrets before running the dev environment
+prune          - Remove the running development cluster created with $(kind)
+clean-dist     - Remove the distribution directory for Helm Charts
+clean-secrets  - Remove generated Cluster secrets
+tools-check    - Check if you have the required tools installed
+registry-login - Log in to the GHCR container registry
+lint           - Run CI linting tools ahead of time (requires tools not covered in 'tools-check')
+endef
+
+
 # Internal Helm variables
 ifdef CHART
 CHART_NAME := $(shell basename $(CHART))
@@ -356,10 +377,13 @@ gen:
 		-s $(CHART)/values.schema.json
 endif
 
-
 # ---------------------------
 #   Housekeeping
 # ---------------------------
+
+.PHONY: help
+help:
+	 $(call log_notice, $$USAGE)
 
 .PHONY: prune
 prune:
