@@ -245,6 +245,9 @@
                             "default": "\"\""
                         },
                         "existingSecret": {
+                            "type": "string",
+                            "description": "The name of the existing secret containing the fully qualified PostgreSQL uri under a `uri` key",
+                            "default": "\"\""
                         }
                     }
                 },

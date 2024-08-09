@@ -69,12 +69,12 @@ spec:
                   name: {{ default (include "linkwarden.secrets.s3" .) .Values.linkwarden.data.s3.existingSecret }}
                   key: secretKey
             {{- end }}
-            {{- if or (include "linkwarden.db.uri" .) .Values.linkwarden.database.existingSecret.name }}
+            {{- if or (include "linkwarden.db.uri" .) .Values.linkwarden.database.existingSecret }}
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.linkwarden.database.existingSecret.name | default (include "linkwarden.secrets.db" .) }}
-                  key: {{ .Values.linkwarden.database.existingSecret.key | default "uri" }}
+                  name: {{ default .Values.linkwarden.database.existingSecret (include "linkwarden.secrets.db" .) }}
+                  key: uri
             {{- end }}
             {{/* Authentication settings */}}
             {{- range $_, $v := .Values.linkwarden.auth.sso -}}

@@ -164,6 +164,7 @@ linkwarden:
     ##
     password: "linkwarden"
     ## @param linkwarden.database.host [string] The hostname for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
+    ## NOTE: by default the hostname is built from your release name as in 'myrelease-postgresql'
     ##
     host: ""
     ## @param linkwarden.database.port [default: 5432] The port for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
@@ -175,15 +176,9 @@ linkwarden:
     ## @param linkwarden.database.uri [string] The URI for the PostgreSQL database - ignored if existingSecret is set
     ##
     uri: ""
-    ## Provide an existing secret containing the entire Database URI at the specified key
+    ## @param linkwarden.database.existingSecret [string] The name of the existing secret containing the fully qualified PostgreSQL uri under a `uri` key
     ##
-    existingSecret:
-      ## @param linkwarden.database.existingSecret.name [string] The name of the existing secret
-      ##
-      name: ""
-      ## @param linkwarden.database.existingSecret.key [string] The name of the key within the aforementioned existing secret
-      ##
-      key: ""
+    existingSecret: ""
 
   ## Authentication settings
   ##
@@ -203,7 +198,6 @@ linkwarden:
     ## SSO Providers
     ## Officially supported and tested are only Authentik and Keycloak other SSO providers are solely provided for completeness
     ## ref: https://docs.linkwarden.app/self-hosting/sso-oauth
-    ## @param linkwarden.auth.sso [array] A list of SSO providers to enable within Linkwarden
     ## @param linkwarden.auth.sso [array, object] A list of SSO providers to enable within Linkwarden
     ##
     sso:
