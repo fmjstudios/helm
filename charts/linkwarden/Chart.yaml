@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26"
 name: linkwarden
-version: 0.2.0
+version: 0.2.1
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -52,8 +52,10 @@ annotations:
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
     - kind: fixed
-      description: add missing namespace references
-    - kind: added
-      description: volumes and volumeMounts configuration within values.yaml
-    - kind: changed
-      description: updated values.schema.json
+      description: values file defining metadata for the Chart's schema 
+    - kind: fixed
+      description: update generated values.schema.json
+    - kind: fixed
+      description: invalid values references within loops
+    - kind: fixed
+      description: added missing environment variables for S3 configuration

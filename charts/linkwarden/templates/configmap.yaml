@@ -61,8 +61,6 @@ metadata:
   labels:
     app.kubernetes.io/component: linkwarden
     {{- include "linkwarden.labels" $ | nindent 4 }}
-    {{- if .Values.configMap.labels }}
-    {{- toYaml .Values.configMap.labels | nindent 4 }}
     {{- if $.Values.configMap.labels }}
     {{- toYaml $.Values.configMap.labels | nindent 4 }}
     {{- end }}
