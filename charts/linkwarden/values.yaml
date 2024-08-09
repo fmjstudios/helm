@@ -204,6 +204,7 @@ linkwarden:
     ## Officially supported and tested are only Authentik and Keycloak other SSO providers are solely provided for completeness
     ## ref: https://docs.linkwarden.app/self-hosting/sso-oauth
     ## @param linkwarden.auth.sso [array] A list of SSO providers to enable within Linkwarden
+    ## @param linkwarden.auth.sso [array, object] A list of SSO providers to enable within Linkwarden
     ##
     sso:
       []

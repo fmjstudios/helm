@@ -245,19 +245,6 @@
                             "default": "\"\""
                         },
                         "existingSecret": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "The name of the existing secret",
-                                    "default": "\"\""
-                                },
-                                "key": {
-                                    "type": "string",
-                                    "description": "The name of the key within the aforementioned existing secret",
-                                    "default": "\"\""
-                                }
-                            }
                         }
                     }
                 },
@@ -278,14 +265,6 @@
                             "type": "boolean",
                             "description": "Disable new SSO users",
                             "default": "false"
-                        },
-                        "sso": {
-                            "type": "array",
-                            "description": "A list of SSO providers to enable within Linkwarden",
-                            "default": "[]",
-                            "items": {
-                                "type": "string"
-                            }
                         }
                     }
                 },
