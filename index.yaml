@@ -1204,6 +1204,62 @@ entries:
   linkwarden:
   - annotations:
       artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: removed
+          description: convert 'existingSecret' from object to string and fixed key to 'uri'
+      artifacthub.io/images: |
+        - name: linkwarden
+          image: ghcr.io/linkwarden/linkwarden:v2.5.3
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Linkwarden Homepage
+          url: https://linkwarden.app/
+        - name: Linkwarden Documentation
+          url: https://docs.linkwarden.app/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2024-08-09T10:10:18.324358654Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    description: Linkwarden is an open-source collaborative bookmark manager to collect,
+      organize and preserve webpages
+    digest: 5e24a304b5982b7179734741b21c5434d449d289071d7e6ac7eed135c14c3bc5
+    home: https://linkwarden.app/
+    icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
+    keywords:
+    - bookmarks
+    - archival
+    - collaboration
+    - linkding
+    - linkace
+    - archivebox
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: linkwarden
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/linkwarden-0.3.0/linkwarden-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/category: storage
       artifacthub.io/changes: "- kind: fixed\n  description: values file defining
         metadata for the Chart's schema \n- kind: fixed\n  description: update generated
         values.schema.json\n- kind: fixed\n  description: invalid values references
@@ -1797,6 +1853,78 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/ntfy-0.1.0/ntfy-0.1.0.tgz
     version: 0.1.0
   paperless-ngx:
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: fixed
+          description: update confusing existingSecret behavior
+        - kind: added
+          description: add values defaults for enabled sub-charts
+        - kind: changed
+          description: update documentation
+      artifacthub.io/images: |
+        - name: paperless-ngx
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.4.0
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Paperless-NGX GitHub Repository
+          url: https://github.com/paperless-ngx/paperless-ngx
+        - name: Paperless-NGX Documentation
+          url: https://docs.paperless-ngx.com/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.10.1
+    created: "2024-08-09T10:10:18.494399845Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    - condition: tika.enabled
+      name: tika
+      repository: https://apache.jfrog.io/artifactory/tika
+      version: ~2.9
+    - condition: gotenberg.enabled
+      name: gotenberg
+      repository: oci://ghcr.io/fmjstudios/helm
+      version: ~0.0.1
+    description: Paperless-NGX is a community-supported supercharged version of paperless
+      - scan, index and archive all your physical documents
+    digest: 7eecd6373ab1863b3aa374a761798527a66fdea1da8cef0cd418545739dd97e9
+    home: https://github.com/paperless-ngx/paperless-ngx
+    icon: https://raw.githubusercontent.com/fmjstudios/artwork/76af35c64fd93c12e851925b0d3801e89978f05a/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png
+    keywords:
+    - documents
+    - archival
+    - ocr
+    - conversion
+    - paper
+    - paperless
+    kubeVersion: '>=1.26'
+    maintainers:
+    - email: info@fmj.studio
+      name: FMJ Studios Helm Authors
+    - email: info@fmj.dev
+      name: FMJdev
+    name: paperless-ngx
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/paperless-ngx-0.2.1/paperless-ngx-0.2.1.tgz
+    version: 0.2.1
   - annotations:
       artifacthub.io/category: storage
       artifacthub.io/changes: |-
@@ -2747,4 +2875,4 @@ entries:
     urls:
     - https://github.com/fmjstudios/helm/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-09T09:40:32.541267Z"
+generated: "2024-08-09T10:10:18.494488903Z"
