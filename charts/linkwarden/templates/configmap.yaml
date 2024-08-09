@@ -53,10 +53,12 @@ metadata:
     {{- include "linkwarden.labels" $ | nindent 4 }}
     {{- if .Values.configMap.labels }}
     {{- toYaml .Values.configMap.labels | nindent 4 }}
+    {{- if $.Values.configMap.labels }}
+    {{- toYaml $.Values.configMap.labels | nindent 4 }}
     {{- end }}
-  {{- if .Values.configMap.annotations }}
+  {{- if $.Values.configMap.annotations }}
   annotations:
-  {{- toYaml .Values.configMap.annotations | nindent 4 }}
+  {{- toYaml $.Values.configMap.annotations | nindent 4 }}
   {{- end }}
 data:
   {{ include "linkwarden.auth.envs.nextPublicEnable" $providerArg }}: "true"
