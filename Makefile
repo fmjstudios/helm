@@ -230,6 +230,33 @@ else
 endif
 endif
 
+define UPGRADE_INFO
+# Upgrade a installed Helm Chart in the currently configured cluster. The chart may
+# be picked with the 'CHART' Make variable. By default the default values are
+# used but they may be configured with the 'VALUES' Make variable. The variable
+# however is restricted to chart-local files.
+#
+# Arguments:
+#   PRINT_HELP: 'y' or 'n'
+#   RELEASE_NAME: The Helm release to install the chart as
+#   CHART: charts/.. (any subdirectory)
+#   VALUES: chart-local path to values (e.g. "ci/test-values.yaml")
+#   HELM_ARGS: #   HELM_ARGS: extra Helm arguments (e.g. --upgrade)
+endef
+.PHONY: upgrade
+ifeq ($(PRINT_HELP), y)
+upgrade:
+	echo "$$UPGRADE_INFO"
+else
+upgrade:
+	$(call log_success, "Upgrading Helm Chart $(CHART_NAME) using values: $(VALUES)")
+ifdef VALUES
+	$(helm) upgrade $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --install $(HELM_ARGS)
+else
+	$(helm) upgrade $(RELEASE_NAME) $(CHART) --install $(HELM_ARGS)
+endif
+endif
+
 define TEMPLATE_INFO
 # Run Helm's template engine on some or all files of a Helm Chart.
 # The chart may be picked with the 'CHART' Make variable whereas 'FILE'
