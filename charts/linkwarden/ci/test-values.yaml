@@ -11,16 +11,19 @@ linkwarden:
   database:
     user: "linkwarden"
     password: "linkwarden"
-    host: ""
     port: 5432
     name: "linkwarden"
-    uri: ""
 
   auth:
     disableRegistration: false
     enableCredentials: true
     disableNewSSOUsers: false
     sso: []
+#      - provider: "authentik"
+#        customName: "authentik-custom"
+#        issuer: "authentik"
+#        clientId: "someId"
+#        clientSecret: "someSecret"
 
 ingress:
   enabled: true
