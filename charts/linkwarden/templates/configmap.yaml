@@ -16,7 +16,17 @@ metadata:
 data:
   NEXTAUTH_URL: {{ (include "linkwarden.ingress.url" .) | quote }}
   PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount | quote }}
+  {{- if eq .Values.linkwarden.data.storageType "filesystem" }}
   STORAGE_FOLDER: {{ include "linkwarden.paths.data" . | quote }}
+  {{- end }}
+  {{- if eq .Values.linkwarden.data.storageType "s3" }}
+  SPACES_ENDPOINT: {{ .Values.linkwarden.data.s3.endpoint }}
+  SPACES_REGION: {{ .Values.linkwarden.data.s3.region }}
+  SPACES_BUCKET_NAME: {{ .Values.linkwarden.data.s3.bucketName }}
+  {{- if .Values.linkwarden.data.s3.forcePathStyle }}
+  SPACES_FORCE_PATH_STYLE: {{ .Values.linkwarden.data.s3.forcePathStyle }}
+  {{- end }}
+  {{- end }}
   AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout | quote }}
   RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit | quote }}
   {{- if .Values.linkwarden.maxFileSize }}
