@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.10.1
 kubeVersion: ">=1.26"
 name: paperless-ngx
-version: 0.2.0
+version: 0.2.1
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -64,8 +64,8 @@ annotations:
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
     - kind: fixed
-      description: add missing namespace references
+      description: update confusing existingSecret behavior
     - kind: added
-      description: volumes and volumeMounts configuration within values.yaml
+      description: add values defaults for enabled sub-charts
     - kind: changed
-      description: updated values.schema.json
+      description: update documentation
