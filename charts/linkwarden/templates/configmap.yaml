@@ -52,7 +52,7 @@ data:
 {{- $providerArg := (dict "provider" $v.provider) }}
 {{- $provider := $v.provider }}
 {{- $issuer := $v.issuer }}
-{{- $issuerList := include "linkwarden.auth.providers.withIssuers" . | fromJsonArray }}
+{{- $issuerList := include "linkwarden.auth.providers.withIssuers" $ | fromJsonArray }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

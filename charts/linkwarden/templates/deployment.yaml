@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "linkwarden.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.linkwarden.replicas }}
   selector:
     matchLabels:
       {{- include "linkwarden.selectorLabels" . | nindent 6 }}
