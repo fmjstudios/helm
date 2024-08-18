@@ -34,7 +34,7 @@ We would like these checks to pass before we even continue reviewing your change
 
 #### Which issue this PR fixes
 
-*(optional, in `fixes #<issue number>(, fixes #<issue_number>, ...)` format, will close that issue when PR gets merged)*
+_(optional, in `fixes #<issue number>(, fixes #<issue_number>, ...)` format, will close that issue when PR gets merged)_
 
 - fixes #
 
@@ -47,4 +47,4 @@ We would like these checks to pass before we even continue reviewing your change
 - [ ] Chart Version bumped
 - [ ] User name added to [`AUTHORS`](AUTHORS) file
 - [ ] Title of the PR starts with a valid commit scope as detailed in the [CONTRIBUTING](../docs/CONTRIBUTING.md) (e.g.
-  `fix(charts/linkwarden): ...`)
+      `fix(charts/linkwarden): ...`)

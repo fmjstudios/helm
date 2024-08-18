@@ -48,7 +48,7 @@ Parameters.
 ### Popeye Image parameters
 
 | Name                | Description                                                         | Value             |
-|---------------------|---------------------------------------------------------------------|-------------------|
+| ------------------- | ------------------------------------------------------------------- | ----------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`       |
 | `image.repository`  | The registry repository to pull the image from                      | `derailed/popeye` |
 | `image.tag`         | The image tag to pull                                               | `v0.21.3`         |
@@ -59,14 +59,14 @@ Parameters.
 ### Name overrides
 
 | Name               | Description                                  | Value |
-|--------------------|----------------------------------------------|-------|
+| ------------------ | -------------------------------------------- | ----- |
 | `nameOverride`     | String to partially override popeye.fullname | `""`  |
 | `fullnameOverride` | String to fully override popeye.fullname     | `""`  |
 
 ### CronJob parameters
 
 | Name                        | Description                                                | Value         |
-|-----------------------------|------------------------------------------------------------|---------------|
+| --------------------------- | ---------------------------------------------------------- | ------------- |
 | `cronjob.labels`            | Labels to attach to the CronJob manifest                   | `{}`          |
 | `cronjob.annotations`       | Annotations to attach to the CronJob manifest              | `{}`          |
 | `cronjob.schedule`          | The schedule to for the CronJob. Once an hour per default. | `* */1 * * *` |
@@ -76,7 +76,7 @@ Parameters.
 ### Popeye Configuration parameters
 
 | Name                                      | Description                                                                                        | Value |
-|-------------------------------------------|----------------------------------------------------------------------------------------------------|-------|
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------- | ----- |
 | `popeye.config`                           | The SpinachYAML configuration for popeye                                                           | `""`  |
 | `popeye.args`                             | Define the CLI arguments and flags that the container's entrypoint will execute                    | `{}`  |
 | `popeye.scans.destinations`               | Set Scan destinations for Popeye. Valid keys are `s3` and `push-gtwy`.                             | `[]`  |
@@ -96,21 +96,21 @@ Parameters.
 ### Common Secret parameters
 
 | Name                 | Description                           | Value |
-|----------------------|---------------------------------------|-------|
+| -------------------- | ------------------------------------- | ----- |
 | `secret.annotations` | Common annotations for the S3 secret  | `{}`  |
 | `secret.labels`      | Common extra labels for the S3 secret | `{}`  |
 
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-|---------------|----------------------------------|--------|
+| ------------- | -------------------------------- | ------ |
 | `rbac.create` | Whether to create RBAC resources | `true` |
 | `rbac.rules`  | Extra rules to add to the Role   | `[]`   |
 
 ### Service Account parameters
 
 | Name                         | Description                                                                | Value   |
-|------------------------------|----------------------------------------------------------------------------|---------|
+| ---------------------------- | -------------------------------------------------------------------------- | ------- |
 | `serviceAccount.create`      | Whether a service account should be created                                | `true`  |
 | `serviceAccount.automount`   | Whether to automount the service account token                             | `false` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                  | `{}`    |
@@ -120,7 +120,7 @@ Parameters.
 ### Pod settings
 
 | Name                | Description                                      | Value |
-|---------------------|--------------------------------------------------|-------|
+| ------------------- | ------------------------------------------------ | ----- |
 | `resources`         | The resource limits/requests for the Popeye pod  | `{}`  |
 | `volumes`           | Define volumes for the Popeye pod                | `[]`  |
 | `volumeMounts`      | Define volumeMounts for the Popeye pod           | `[]`  |
@@ -135,6 +135,6 @@ Parameters.
 ### Security context settings
 
 | Name                 | Description                                  | Value |
-|----------------------|----------------------------------------------|-------|
+| -------------------- | -------------------------------------------- | ----- |
 | `podSecurityContext` | Security context settings for the Popeye pod | `{}`  |
 | `securityContext`    | General security context settings for        | `{}`  |

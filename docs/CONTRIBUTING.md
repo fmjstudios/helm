@@ -117,33 +117,33 @@ The `<type>` and `<summary>` fields are mandatory, the `(<scope>)` field is opti
 
 Must be one of the following:
 
-* **feat**: New features
-* **fix**: bugfixes
-* **docs**: Documentation changes
-* **refactor**: Code changes which neither add features nor fix bugs
-* **test**: Adding tests or improving upon existing tests
-* **chore**: Miscellaneous maintenance tasks which can generally be ignored
-* **build**: Changes or improvements to the build tool or to the projects dependencies (_supported Scopes_: `make`)
-* **ci**: Changes to CI configuration files and scripts (_supported Scopes_: `actions`)
+- **feat**: New features
+- **fix**: bugfixes
+- **docs**: Documentation changes
+- **refactor**: Code changes which neither add features nor fix bugs
+- **test**: Adding tests or improving upon existing tests
+- **chore**: Miscellaneous maintenance tasks which can generally be ignored
+- **build**: Changes or improvements to the build tool or to the projects dependencies (_supported Scopes_: `make`)
+- **ci**: Changes to CI configuration files and scripts (_supported Scopes_: `actions`)
 
 #### Scopes
 
 The following is the list of supported scopes:
 
-* `charts` - Changes affecting a multitude of charts at once
-* `charts/*` - Changes affecting single charts
-* `k8s` - Changes to Kubernetes manifests (development setup)
-* `make` - Changes affecting the Make-based build tool
-* `scripts` - Changes to scripts
-* `config` - Changes to configuration files
+- `charts` - Changes affecting a multitude of charts at once
+- `charts/*` - Changes affecting single charts
+- `k8s` - Changes to Kubernetes manifests (development setup)
+- `make` - Changes affecting the Make-based build tool
+- `scripts` - Changes to scripts
+- `config` - Changes to configuration files
 
 #### Summary
 
 Use the summary field to provide a succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize the first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
 
 #### <a name="commit-body"></a>Commit Message Body
 
@@ -192,8 +192,8 @@ If the commit reverts a previous commit, it should begin with `revert:`, followe
 
 The content of the commit message body should contain:
 
-* information about the SHA of the commit being reverted in the following format: `This reverts commit <SHA>`,
-* a clear description of the reason for reverting the commit message.
+- information about the SHA of the commit being reverted in the following format: `This reverts commit <SHA>`,
+- a clear description of the reason for reverting the commit message.
 
 ## ✅ How to Contribute
 
@@ -206,10 +206,10 @@ PRs.
 
 ### Technical Requirements
 
-* Must follow [Charts best practices](https://helm.sh/docs/topics/chart_best_practices/)
-* Must pass CI jobs for linting and installing changed charts with
+- Must follow [Charts best practices](https://helm.sh/docs/topics/chart_best_practices/)
+- Must pass CI jobs for linting and installing changed charts with
   the [chart-testing](https://github.com/helm/chart-testing) tool
-* Any change to a chart requires a version bump following [SemVer](https://semver.org/) principles.
+- Any change to a chart requires a version bump following [SemVer](https://semver.org/) principles.
   See [Immutability](#immutability) and [Versioning](#versioning) below
 
 Once changes have been merged, the release job will automatically run to package and release changed charts.

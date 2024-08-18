@@ -34,7 +34,7 @@ helm install oci://ghcr.io/fmjstudios/helm/<CHART_NAME>:<VERSION>
 <div align="center">
 
 | Chart                                                                                                                                                                                                                                                                                     | Current Version | Default Container Images                               |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------:|--------------------------------------------------------|
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------: | ------------------------------------------------------ |
 | [Vaultwarden <img src="https://raw.githubusercontent.com/dani-garcia/vaultwarden/890e668071cffe2833834348e19bbef3c061d014/resources/vaultwarden-icon.svg" alt="Vaultwarden Logo" width="32px" height="32px" align="right" loading="lazy">][vaultwarden_chart]                             |      0.2.2      | [vaultwarden/server][vaultwarden_images]               |
 | [Uptime-Kuma <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="32px" height="32px" align="right" loading="lazy">][uptimekuma_chart]                                                |      0.2.1      | [louislam/uptime-kuma][uptime_kuma_images]             |
 | [Linkwarden <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/main/assets/logo.png" alt="Linkwarden Logo" width="32px" height="32px" align="right" loading="lazy">][linkwarden_chart]                                                                                     |      0.3.1      | [linkwarden/linkwarden][linkwarden_images]             |
@@ -49,7 +49,7 @@ helm install oci://ghcr.io/fmjstudios/helm/<CHART_NAME>:<VERSION>
 | [Popeye <img src="https://github.com/derailed/popeye/blob/d09ec25f3834d2c6a171486b9726b0a91793e3f0/assets/popeye_logo.png?raw=true" alt="Popeye Logo" width="32px" height="32px" align="right" loading="lazy">][popeye_chart]                                                             |      0.1.1      | [derailed/popeye][popeye_images]                       |
 | [Keycloak Operator <img src="https://github.com/keycloak/keycloak-misc/blob/dee033f2d6d6b5c3a6ce8eb84e285f7e5626dbf6/logo/icon.png?raw=true" alt="Keycloak Logo" width="32px" height="32px" align="right" loading="lazy">][keycloak_operator_chart]                                       |      0.1.0      | [keycloak/keycloak-operator][keycloak_operator_images] |
 
-[//]: # ("Stolen" from https://github.com/gabe565/charts/blob/main/README.md because I really liked the look)
+[//]: # '"Stolen" from https://github.com/gabe565/charts/blob/main/README.md because I really liked the look'
 
 </div>
 
@@ -69,29 +69,17 @@ contact details to reach out directly.
 <!-- Chart references -->
 
 [gotenberg_chart]: charts/gotenberg
-
 [linkwarden_chart]: charts/linkwarden
-
 [paperless_chart]: charts/paperless-ngx
-
 [uptimekuma_chart]: charts/uptime-kuma
-
 [vaultwarden_chart]: charts/vaultwarden
-
 [linkstack_chart]: charts/linkstack
-
 [ntfy_chart]: charts/ntfy
-
 [cachet_chart]: charts/cachet
-
 [kubenav_chart]: charts/kubenav
-
 [gobackup_chart]: charts/gobackup
-
 [activepieces_chart]: charts/activepieces
-
 [popeye_chart]: charts/popeye
-
 [keycloak_operator_chart]: ./charts/keycloak-operator
 
 <!-- File references -->
@@ -101,33 +89,20 @@ contact details to reach out directly.
 <!-- General links -->
 
 [kubernetes]: https://kubernetes.io
-
 [helm]: https://helm.sh
-
 [artifacthub]: https://artifacthub.io/
 
 <!-- Overview links -->
 
 [vaultwarden_images]: https://hub.docker.com/r/vaultwarden/server
-
 [uptime_kuma_images]: https://hub.docker.com/r/louislam/uptime-kuma
-
 [linkwarden_images]: https://github.com/linkwarden/linkwarden/pkgs/container/linkwarden
-
 [gotenberg_images]: https://hub.docker.com/r/gotenberg/gotenberg
-
 [paperless_ngx_images]: https://github.com/paperless-ngx/paperless-ngx/pkgs/container/paperless-ngx
-
 [linkstack_images]: https://hub.docker.com/r/linkstackorg/linkstack
-
 [ntfy_images]: https://hub.docker.com/r/binwiederhier/ntfy
-
 [cachet_images]: https://hub.docker.com/r/cachethq/docker
-
 [gobackup_images]: https://hub.docker.com/r/huacnlee/gobackup
-
 [activepieces_images]: https://hub.docker.com/r/activepieces/activepieces
-
 [popeye_images]: https://hub.docker.com/r/derailed/popeye
-
 [keycloak_operator_images]: https://quay.io/repository/keycloak/keycloak-operator
