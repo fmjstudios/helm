@@ -28,8 +28,24 @@ Set the names of the secrets
 {{/*
 Build connection URI's
 */}}
+{{- define "paperless.postgresql.host" -}}
+{{- if .Values.paperless.postgresql.host -}}
+{{- printf "%s" .Values.paperless.postgresql.host }}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name "postgresql" }}
+{{- end -}}
+{{- end }}
+
+{{- define "paperless.redis.host" -}}
+{{- if .Values.paperless.redis.host -}}
+{{- printf "%s" .Values.paperless.redis.host }}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name "redis-master" }}
+{{- end -}}
+{{- end }}
+
 {{- define "paperless.redis.uri" -}}
-{{- printf "redis://%s:%s@%s:%d" .Values.paperless.redis.username .Values.paperless.redis.password .Values.paperless.redis.host (int .Values.paperless.redis.port) }}
+{{- printf "redis://%s:%s@%s:%d" .Values.paperless.redis.username .Values.paperless.redis.password (include "paperless.redis.host" .) (int .Values.paperless.redis.port) }}
 {{- end }}
 
 {{/*

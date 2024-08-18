@@ -169,7 +169,7 @@ data:
     Database (PostgreSQL) configuration
   */}}
   PAPERLESS_DBENGINE: "postgresql"
-  PAPERLESS_DBHOST: {{ .Values.paperless.postgresql.host | quote }}
+  PAPERLESS_DBHOST: {{ (include "paperless.postgresql.host" .) | quote }}
   PAPERLESS_DBPORT: {{ .Values.paperless.postgresql.port | quote }}
   PAPERLESS_DBNAME: {{ .Values.paperless.postgresql.name | quote }}
   {{- if .Values.paperless.postgresql.sslMode }}

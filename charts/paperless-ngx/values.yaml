@@ -263,9 +263,10 @@ paperless:
   ## Redis configuration
   ##
   redis:
-    ## @param paperless.redis.host [string] The hostname for the Redis instance
+    ## @param paperless.redis.host [string] Specify a custom hostname for the Redis instance.
+    ## NOTE: By default a generated value based on the release name will be used (e.g.: my_release-redis-master)
     ##
-    host: paperless-redis-master
+    host: ""
     ## @param paperless.redis.port [default: 6379] The port for the Redis instance
     ##
     port: 6379
@@ -286,9 +287,10 @@ paperless:
   ## PostgreSQL configuration
   ##
   postgresql:
-    ## @param paperless.postgresql.host [string] The hostname for the PostgreSQL database
+    ## @param paperless.postgresql.host [string] Specify a custom hostname for the PostgreSQL database
+    ## NOTE: By default a generated value based on the release name will be used (e.g.: my_release-postgresql)
     ##
-    host: paperless-postgresql
+    host: ""
     ## @param paperless.postgresql.port [default: 5432] The port for the PostgreSQL database
     ##
     port: 5432
@@ -630,7 +632,7 @@ paperless:
 ## @section ConfigMap parameters
 ##
 
-## Vaultwarden ConfigMap settings
+## Paperless ConfigMap settings
 ## @param configMap.annotations Annotations for the ConfigMap resource
 ## @param configMap.labels Extra Labels for the ConfigMap resource
 
@@ -641,7 +643,7 @@ configMap:
 ## @section Common Secret parameters
 ##
 
-## Vaultwarden Common Secret settings
+## Paperless Common Secret settings
 ## @param secret.annotations Common annotations for the SMTP, HIBP, Admin and Database secrets
 ## @param secret.labels Common extra labels for the SMTP, HIBP, Admin and Database secrets
 
@@ -652,7 +654,7 @@ secret:
 ## @section Ingress parameters
 ##
 
-## Vaultwarden Ingress settings
+## Paperless Ingress settings
 ## @param ingress.enabled Whether to enable Ingress
 ## @param ingress.className The IngressClass to use for the pod's ingress
 ## @param ingress.whitelist A comma-separated list of IP addresses to whitelist
@@ -681,12 +683,12 @@ ingress:
 ## @section Service parameters
 ##
 
-## Vaultwarden Service settings
+## Paperless Service settings
 service:
   ## @param service.type [default: ClusterIP] The type of service to create
   ##
   type: ClusterIP
-  ## @param service.port [default: 80] The port to use on the service
+  ## @param service.port [default: 8000] The port to use on the service
   ##
   port: 8000
   ## @param service.nodePort [default: 30080] The Node port to use on the service

@@ -361,7 +361,7 @@
                     "properties": {
                         "host": {
                             "type": "string",
-                            "description": "The hostname for the Redis instance",
+                            "description": "Specify a custom hostname for the Redis instance.",
                             "default": "\"\""
                         },
                         "port": {
@@ -396,7 +396,7 @@
                     "properties": {
                         "host": {
                             "type": "string",
-                            "description": "The hostname for the PostgreSQL database",
+                            "description": "Specify a custom hostname for the PostgreSQL database",
                             "default": "\"\""
                         },
                         "port": {
@@ -991,7 +991,7 @@
                 "port": {
                     "type": "number",
                     "description": "The port to use on the service",
-                    "default": "80"
+                    "default": "8000"
                 },
                 "nodePort": {
                     "type": "number",
