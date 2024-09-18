@@ -463,9 +463,6 @@ service:
   ## @param service.type [default: ClusterIP] The type of service to create
   ##
   type: ClusterIP
-  ## @param service.port [default: 80] The port to use on the service
-  ##
-  port: 80
   ## @param service.nodePort [default: 30080] The Node port to use on the service
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ## NOTE: choose port between <30000-32767>
@@ -536,7 +533,13 @@ service:
   ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
   ##
   ipFamilyPolicy: ""
-
+  ports:
+    ## @param service.ports.http [default: 8080] The port to use on the service for HTTP traffic
+    ##
+    http: 8080
+    ## @param service.ports.https [default: ""] The port to use on the service for HTTPS traffic in case ntfy.listenHTTPS is active.
+    ##
+    https: ""
 ## @section RBAC parameters
 ##
 
