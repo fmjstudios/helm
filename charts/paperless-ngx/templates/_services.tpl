@@ -1,4 +1,4 @@
-{{/*
+{{- /*
   Define the hostnames to the various services
 */}}
 {{- define "paperless.paths.postgresql" -}}
