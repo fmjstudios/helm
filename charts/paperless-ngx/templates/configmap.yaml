@@ -193,11 +193,11 @@ data:
   {{- if .Values.paperless.tika.enabled }}
   PAPERLESS_TIKA_ENABLED: {{ .Values.paperless.tika.enabled | quote }}
   PAPERLESS_TIKA_ENDPOINT: {{ (include "paperless.tika.endpoint" .) | quote }}
-  {{- end }}
   {{- /*
     Gotenberg configuration
   */}}
   PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ (include "paperless.gotenberg.endpoint" .) | quote }}
+  {{- end }}
   {{- /*
     SMTP configuration
   */}}
