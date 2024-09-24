@@ -1,4 +1,4 @@
-{{/*
+{{- /*
 Define the PV name
 */}}
 {{- define "paperless.pv.data.name" -}}
@@ -9,7 +9,7 @@ Define the PV name
 {{- printf "%s-media-pv" (include "paperless.fullname" .) }}
 {{- end -}}
 
-{{/*
+{{- /*
 Define the PVC name
 */}}
 {{- define "paperless.pvc.data.name" -}}
@@ -21,7 +21,7 @@ Define the PVC name
 {{- end -}}
 
 
-{{/*
+{{- /*
 Define the absolute data path
 */}}
 {{- define "paperless.paths.base" -}}
