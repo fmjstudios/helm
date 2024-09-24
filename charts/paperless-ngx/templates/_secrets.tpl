@@ -56,12 +56,20 @@ Build connection URI's
 {{- end -}}
 {{- end }}
 
+{{- define "paperless.tika.uri" -}}
+{{- printf "http://%s:%d" (include "paperless.tika.endpoint" .) 9998 }}
+{{- end }}
+
 {{- define "paperless.gotenberg.endpoint" -}}
 {{- if .Values.paperless.gotenberg.endpoint -}}
 {{- printf "%s" .Values.paperless.gotenberg.endpoint }}
 {{- else -}}
 {{- printf "%s-%s" .Release.Name "gotenberg" }}
 {{- end -}}
+{{- end }}
+
+{{- define "paperless.gotenberg.uri" -}}
+{{- printf "http://%s:%d" (include "paperless.gotenberg.endpoint" .) 80 }}
 {{- end }}
 
 {{/*
