@@ -192,12 +192,12 @@ data:
   */}}
   {{- if .Values.paperless.tika.enabled }}
   PAPERLESS_TIKA_ENABLED: {{ .Values.paperless.tika.enabled | quote }}
-  PAPERLESS_TIKA_ENDPOINT: {{ .Values.paperless.tika.endpoint | quote }}
-  {{- end }}
+  PAPERLESS_TIKA_ENDPOINT: {{ (include "paperless.tika.uri" .) | quote }}
   {{- /*
     Gotenberg configuration
   */}}
-  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ .Values.paperless.gotenberg.endpoint | quote }}
+  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ (include "paperless.gotenberg.uri" .) | quote }}
+  {{- end }}
   {{- /*
     SMTP configuration
   */}}
