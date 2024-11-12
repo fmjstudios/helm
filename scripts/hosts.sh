@@ -53,8 +53,8 @@ function hosts::usage() {
 	echo
 	echo "Usage: $(basename "${0}") <COMMAND>"
 	echo
-	echo "add     - Insert the new configuration in ${HOST_CONFIG[*]}"
-	echo "remove  - Remove the configuration from ${HOST_CONFIG[*]}"
+	echo "add     - Insert the new configuration in ${HOST_CONFIGS[*]}"
+	echo "remove  - Remove the configuration from ${HOST_CONFIGS[*]}"
 	echo "help    - Print this usage information"
 	echo
 }
@@ -63,8 +63,8 @@ function hosts::usage() {
 #   'add' function
 # ----------------------
 function hosts::add() {
-	log::yellow "Adding custom host configuration to ${HOST_CONFIG[*]}"
-	read -rp "Are you sure you want to modify the system host files ${HOST_CONFIG[*]}? (y/N) " choice
+	log::yellow "Adding custom host configuration to ${HOST_CONFIGS[*]}"
+	read -rp "Are you sure you want to modify the system host files ${HOST_CONFIGS[*]}? (y/N) " choice
 	case "${choice}" in
 	y | Y)
 		log::green "Confirmed modification to host configuration files. Installing..."
@@ -91,8 +91,8 @@ function hosts::add() {
 function hosts::remove() {
 	local sed_result
 
-	log::yellow "Removing custom host configuration from ${HOST_CONFIG[*]}"
-	read -rp "Are you sure you want to modify the system host file ${HOST_CONFIG[*]}? (y/N) " choice
+	log::yellow "Removing custom host configuration from ${HOST_CONFIGS[*]}"
+	read -rp "Are you sure you want to modify the system host file ${HOST_CONFIGS[*]}? (y/N) " choice
 	case "${choice}" in
 	y | Y)
 		log::green "Confirmed modification to host configuration files. Removing..."
