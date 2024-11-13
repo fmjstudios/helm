@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 0.28.0
 kubeVersion: ">=1.26.0-0"
 name: activepieces
-version: 0.2.1
+version: 0.2.2
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -27,7 +27,7 @@ keywords:
 sources:
   - "https://github.com/fmjstudios/helm"
 maintainers:
-  - name: FMJ Studios Helm Authors
+  - name: fmjstudios
     email: info@fmj.studio
   - name: FMJdev
     email: info@fmj.dev
