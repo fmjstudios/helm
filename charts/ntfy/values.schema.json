@@ -98,7 +98,7 @@
                 },
                 "behindProxy": {
                     "type": "boolean",
-                    "description": "Wether or not ntfy is hosted behind a proxy",
+                    "description": "Whether or not ntfy is hosted behind a proxy",
                     "default": "false"
                 },
                 "keepaliveInterval": {
@@ -606,11 +606,6 @@
                     "description": "The type of service to create",
                     "default": "ClusterIP"
                 },
-                "port": {
-                    "type": "number",
-                    "description": "The port to use on the service",
-                    "default": "80"
-                },
                 "nodePort": {
                     "type": "number",
                     "description": "The Node port to use on the service",
@@ -668,6 +663,22 @@
                     "type": "object",
                     "description": "Additional settings for the sessionAffinity",
                     "default": {}
+                },
+                "ports": {
+                    "type": "object",
+                    "properties": {
+                        "http": {
+                            "type": "number",
+                            "description": "The port to use on the service for HTTP traffic",
+                            "default": "8080"
+                        },
+                        "https": {
+                            "type": "number",
+                            "description": "The port to use on the service for HTTPS traffic in case ntfy.listenHTTPS is active.",
+                            "default": 8443,
+                            "nullable": true
+                        }
+                    }
                 }
             }
         },
@@ -833,7 +844,7 @@
                 },
                 "minAvailable": {
                     "type": "number",
-                    "description": "The minium amount of pods which need to be available",
+                    "description": "The minimum amount of pods which need to be available",
                     "default": "1"
                 }
             }
