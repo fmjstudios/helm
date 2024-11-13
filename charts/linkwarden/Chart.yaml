@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
-version: 0.3.2
+version: 0.3.3
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -24,7 +24,7 @@ keywords:
 sources:
   - "https://github.com/fmjstudios/helm"
 maintainers:
-  - name: FMJ Studios Helm Authors
+  - name: fmjstudios
     email: info@fmj.studio
   - name: FMJdev
     email: info@fmj.dev
