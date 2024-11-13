@@ -190,10 +190,10 @@ is configureble via the Image Parameters.
 
 ### PodDisruptionBudget parameters
 
-| Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
-| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
-| `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
+| Name                               | Description                                           | Value  |
+| ---------------------------------- | ----------------------------------------------------- | ------ |
+| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                      | `true` |
+| `podDisruptionBudget.minAvailable` | The minimum amount of pods which need to be available | `1`    |
 
 ### Pod settings
 

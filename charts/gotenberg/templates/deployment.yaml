@@ -70,10 +70,10 @@ spec:
           {{- /*
             Chromium settings
           */}}
-          {{- if ne .Values.gotenberg.chromium.restartAfter "0" }}
+          {{- if ne (.Values.gotenberg.chromium.restartAfter | toString) "0" }}
             - --chromium-restart-after={{ .Values.gotenberg.chromium.restartAfter }}
           {{- end }}
-          {{- if ne .Values.gotenberg.chromium.maxQueueSize "0" }}
+          {{- if ne (.Values.gotenberg.chromium.maxQueueSize | toString) "0" }}
             - --chromium-max-queue-size={{ .Values.gotenberg.chromium.maxQueueSize }}
           {{- end }}
           {{- if .Values.gotenberg.chromium.autoStart }}
@@ -124,10 +124,10 @@ spec:
           {{- /*
             LibreOffice settings
           */}}
-          {{- if ne .Values.gotenberg.libreOffice.restartAfter "10" }}
+          {{- if ne (.Values.gotenberg.libreOffice.restartAfter | toString) "10" }}
             - --libreoffice-restart-after={{ .Values.gotenberg.libreOffice.restartAfter }}
           {{- end }}
-          {{- if ne .Values.gotenberg.libreOffice.maxQueueSize "0" }}
+          {{- if ne (.Values.gotenberg.libreOffice.maxQueueSize | toString) "0" }}
             - --libreoffice-max-queue-size={{ .Values.gotenberg.libreOffice.maxQueueSize }}
           {{- end }}
           {{- if .Values.gotenberg.libreOffice.autoStart }}
@@ -163,7 +163,7 @@ spec:
           {{- if .Values.gotenberg.webhook.errorDenyList }}
             - --webhook-error-deny-list={{ .Values.gotenberg.webhook.errorDenyList }}
           {{- end }}
-          {{- if ne .Values.gotenberg.webhook.maxRetry "4" }}
+          {{- if ne (.Values.gotenberg.webhook.maxRetry | toString) "4" }}
             - --webhook-max-retry={{ .Values.gotenberg.webhook.maxRetry }}
           {{- end }}
           {{- if ne .Values.gotenberg.webhook.retryMinWait "1s" }}

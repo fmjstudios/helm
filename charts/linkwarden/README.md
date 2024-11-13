@@ -71,6 +71,7 @@ Parameters.
 
 | Name                                            | Description                                                                                                                                            | Value        |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
+| `linkwarden.replicas`                           | The number of Linkwarden replicas (pods) to deploy                                                                                                     | `1`          |
 | `linkwarden.domain`                             | The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and                                                                         | `""`         |
 | `linkwarden.nextAuthSecret.value`               | A secret string to encrypt JWTs and hash email verification tokens                                                                                     | `""`         |
 | `linkwarden.nextAuthSecret.existingSecret.name` | The name of an existing secret containing the secret string                                                                                            | `""`         |
@@ -210,10 +211,10 @@ Parameters.
 
 ### PodDisruptionBudget parameters
 
-| Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
-| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
-| `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
+| Name                               | Description                                           | Value  |
+| ---------------------------------- | ----------------------------------------------------- | ------ |
+| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                      | `true` |
+| `podDisruptionBudget.minAvailable` | The minimum amount of pods which need to be available | `1`    |
 
 ### Pod settings
 

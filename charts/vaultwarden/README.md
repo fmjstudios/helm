@@ -116,7 +116,7 @@ configurable via the Image Parameters.
 | `vaultwarden.email.smtp.timeout`                         | General SMTP settings                                                                                             | `15`                       |
 | `vaultwarden.email.smtp.sendmail.enabled`                | Whether or not to use sendmail for sending emails                                                                 | `false`                    |
 | `vaultwarden.email.smtp.sendmail.path`                   | The path to which sendmail binary to use.                                                                         | `""`                       |
-| `vaultwarden.email.smtp.heloName`                        | Server name sent during the SMTP HELO                                                                             | `""`                       |
+| `vaultwarden.email.smtp.helloName`                       | Server name sent during the SMTP HELLO                                                                            | `""`                       |
 | `vaultwarden.email.smtp.embedImages`                     | Embed images as email attachments                                                                                 | `false`                    |
 | `vaultwarden.email.smtp.acceptInvalidHostnames`          | Accept Invalid Hostnames                                                                                          | `false`                    |
 | `vaultwarden.email.smtp.acceptInvalidCertificates`       | Accept Invalid Certificates                                                                                       | `false`                    |
@@ -125,6 +125,7 @@ configurable via the Image Parameters.
 | `vaultwarden.email.twoFactor.enforceInviteVerification`  | Setup email 2FA regardless of any organization policy                                                             | `false`                    |
 | `vaultwarden.email.twoFactor.autoFallback`               | Automatically setup email 2FA as fallback provider when needed                                                    | `false`                    |
 | `vaultwarden.websocket.enabled`                          | Whether to enable Websocket push notifications                                                                    | `true`                     |
+| `vaultwarden.websocket.port`                             | The port websocket should bind to                                                                                 | `3012`                     |
 | `vaultwarden.database.type`                              | Choose the database type. Can be 'sqlite' or (external) 'mysql'/'postgresql'                                      | `"sqlite"`                 |
 | `vaultwarden.database.user`                              | Provide the username to the (external) Vaultwarden database - ignored if the database type is 'sqlite'            | `""`                       |
 | `vaultwarden.database.password`                          | Provide the password to the (external) Vaultwarden database - ignored if the database type is 'sqlite'            | `""`                       |
@@ -155,7 +156,7 @@ configurable via the Image Parameters.
 | `vaultwarden.signup.verifyResendLimit`                   | How many verificatione mails will be sent in total                                                                | `6`                        |
 | `vaultwarden.signup.domainWhitelist`                     | A comma-separated list of domains which can always register                                                       | `""`                       |
 | `vaultwarden.auth.authenticatorDisableTimeDrift`         | Allow 2FA time drift                                                                                              | `false`                    |
-| `vaultwarden.auth.incomplete2FATimeLimit`                | Minutes to wait before a 2FA login is considere incomplete                                                        | `3`                        |
+| `vaultwarden.auth.incomplete2FATimeLimit`                | Minutes to wait before a 2FA login is considered incomplete                                                       | `3`                        |
 | `vaultwarden.auth.yubikey.enable`                        | Whether to enable authentication via YubiKeys                                                                     | `false`                    |
 | `vaultwarden.auth.yubikey.clientId`                      | Yubikey client ID                                                                                                 | `""`                       |
 | `vaultwarden.auth.yubikey.clientSecret`                  | Yubikey client Secret                                                                                             | `""`                       |
@@ -302,10 +303,10 @@ configurable via the Image Parameters.
 
 ### PodDisruptionBudget parameters
 
-| Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
-| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
-| `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
+| Name                               | Description                                           | Value  |
+| ---------------------------------- | ----------------------------------------------------- | ------ |
+| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                      | `true` |
+| `podDisruptionBudget.minAvailable` | The minimum amount of pods which need to be available | `1`    |
 
 ### Pod settings
 

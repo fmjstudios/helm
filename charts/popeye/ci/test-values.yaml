@@ -48,7 +48,8 @@ popeye:
   args:
     file: /etc/popeye/spinach.yaml
     all-namespaces: true
-    push-gtwy-url: "fuck-you.wtf:9128" # this shouldn't show up in the rendered manifest
+    # this shouldn't show up in the rendered manifest
+    push-gtwy-url: "fuck-you.wtf:9128"
 
   scans:
     destinations:

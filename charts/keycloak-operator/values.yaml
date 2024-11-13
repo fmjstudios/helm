@@ -46,7 +46,6 @@ nameOverride: ""
 ##
 fullnameOverride: ""
 
-
 ## @section Service parameters
 ##
 
@@ -65,10 +64,10 @@ service:
   nodePort: 30080
   ## @param service.annotations [object] Annotations for the service resource
   ##
-  annotations: { }
+  annotations: {}
   ## @param service.labels [object] Labels for the service resource
   ##
-  labels: { }
+  labels: {}
   ## @param service.externalTrafficPolicy [default: Cluster] The external traffic policy for the service
   ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
   ##
@@ -113,7 +112,7 @@ service:
   ##   clientIP:
   ##     timeoutSeconds: 300
   ##
-  sessionAffinityConfig: { }
+  sessionAffinityConfig: {}
   ## @param service.ipFamilyPolicy [object] The ipFamilyPolicy
   ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
   ##
@@ -142,7 +141,7 @@ rbac:
 serviceAccount:
   create: true
   automount: true
-  annotations: { }
+  annotations: {}
   name: ""
 
 ## @section Liveness Probe parameters

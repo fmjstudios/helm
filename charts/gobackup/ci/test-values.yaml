@@ -41,9 +41,9 @@ gobackup:
 
       notifiers: []
       compression: tgz
-      encryption: { }
-      archive: { }
-      splitter: { }
+      encryption: {}
+      archive: {}
+      splitter: {}
 
 ingress:
   enabled: true
