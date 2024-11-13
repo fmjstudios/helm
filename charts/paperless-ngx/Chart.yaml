@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.10.1
 kubeVersion: ">=1.26.0-0"
 name: paperless-ngx
-version: 0.2.4
+version: 0.2.5
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -36,7 +36,7 @@ keywords:
 sources:
   - "https://github.com/fmjstudios/helm"
 maintainers:
-  - name: FMJ Studios Helm Authors
+  - name: fmjstudios
     email: info@fmj.studio
   - name: FMJdev
     email: info@fmj.dev
