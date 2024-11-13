@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.11.2
 kubeVersion: ">=1.26.0-0"
 name: gobackup
-version: 0.2.1
+version: 0.2.2
 description: GoBackup is a CLI and Web UI for database backups to local, cloud or remote storage with notification support
 home: https://gobackup.github.io/
 icon: https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png
@@ -19,7 +19,7 @@ keywords:
 sources:
   - "https://github.com/fmjstudios/helm"
 maintainers:
-  - name: FMJ Studios Helm Authors
+  - name: fmjstudios
     email: info@fmj.studio
   - name: FMJdev
     email: info@fmj.dev
