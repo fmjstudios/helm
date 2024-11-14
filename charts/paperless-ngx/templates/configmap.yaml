@@ -192,12 +192,12 @@ data:
   */}}
   {{- if .Values.paperless.tika.enabled }}
   PAPERLESS_TIKA_ENABLED: {{ .Values.paperless.tika.enabled | quote }}
-  PAPERLESS_TIKA_ENDPOINT: {{ .Values.paperless.tika.endpoint | quote }}
-  {{- end }}
+  PAPERLESS_TIKA_ENDPOINT: {{ (include "paperless.tika.uri" .) | quote }}
   {{- /*
     Gotenberg configuration
   */}}
-  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ .Values.paperless.gotenberg.endpoint | quote }}
+  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: {{ (include "paperless.gotenberg.uri" .) | quote }}
+  {{- end }}
   {{- /*
     SMTP configuration
   */}}
@@ -360,7 +360,7 @@ data:
   {{- if .Values.paperless.consume.dateOrder }}
   PAPERLESS_DATE_ORDER: {{ .Values.paperless.consume.dateOrder | quote }}
   {{- end }}
-  {{/* Polling */}}
+  {{- /* Polling */}}
   {{- if ne (int .Values.paperless.consume.polling.enabled) 0 }}
   PAPERLESS_CONSUMER_POLLING: {{ .Values.paperless.consume.polling.enabled | quote }}
   {{- end }}
@@ -373,7 +373,7 @@ data:
   {{- if ne (float64 .Values.paperless.consume.iNotify.delay) 0.5 }}
   PAPERLESS_CONSUMER_INOTIFY_DELAY: {{ .Values.paperless.consume.iNotify.delay | quote }}
   {{- end }}
-  {{/* Barcodes */}}
+  {{- /* Barcodes */}}
   {{- if .Values.paperless.consume.barcodes.enabled }}
   PAPERLESS_CONSUMER_ENABLE_BARCODES: {{ .Values.paperless.consume.barcodes.enabled | quote }}
   {{- end }}
@@ -401,7 +401,7 @@ data:
   {{- if .Values.paperless.consume.barcodes.tagBarcodeMapping }}
   PAPERLESS_CONSUMER_TAG_BARCODE_MAPPING: {{ .Values.paperless.consume.barcodes.tagBarcodeMapping | quote }}
   {{- end }}
-  {{/* Collation */}}
+  {{- /* Collation */}}
   {{- if .Values.paperless.consume.collate.enableDoubleSided }}
   PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: {{ .Values.paperless.consume.collate.enableDoubleSided | quote }}
   {{- end }}

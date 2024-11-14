@@ -15,23 +15,23 @@
 
 # Return the repository's root path
 lib::paths::root() {
-  path=$(git rev-parse --show-toplevel)
+	path=$(git rev-parse --show-toplevel)
 
-  echo "${path%/}"
+	echo "${path%/}"
 }
 
 # Return the secrets path
 lib::paths::secrets() {
-  root_path=$(lib::paths::root)
+	root_path=$(lib::paths::root)
 
-  path="${root_path}/secrets"
-  echo "${path%/}"
+	path="${root_path}/secrets"
+	echo "${path%/}"
 }
 
 # Return the k8s path
 lib::paths::k8s() {
-  root_path=$(lib::paths::root)
+	root_path=$(lib::paths::root)
 
-  path="${root_path}/k8s"
-  echo "${path%/}"
+	path="${root_path}/k8s"
+	echo "${path%/}"
 }

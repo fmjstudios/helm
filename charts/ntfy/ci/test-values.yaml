@@ -54,10 +54,9 @@ service:
   ports:
     http: 8080
     https: 8443
-  annotations: { }
-  labels: { }
+  annotations: {}
+  labels: {}
   ipFamilyPolicy: ""
-
 
 livenessProbe:
   enabled: true
@@ -68,12 +67,12 @@ readinessProbe:
 startupProbe:
   enabled: true
 
-podSecurityContext: { }
+podSecurityContext: {}
 #  fsGroup: 1001
 # supplementalGroups:
 #   - 1001
 
-securityContext: { }
+securityContext: {}
 #  runAsGroup: 1001
 #  runAsUser: 1001
 #  allowPrivilegeEscalation: false

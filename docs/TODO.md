@@ -33,8 +33,7 @@
       chart reference (`shopware-cli`)
 - [ ] Support Reverse HTTP Cache for `Shopware 6` chart
       with [prebuilt image](https://github.com/shopware/varnish-shopware/tree/main)
-- [ ] Use the [`AUTHORS`](../.github/AUTHORS) file as base for a [
-      `.all-contributorsrc`](https://allcontributors.org/docs/en/overview) file
+- [ ] Use the [`AUTHORS`](../.github/AUTHORS) file as base for a [`.all-contributorsrc`](https://allcontributors.org/docs/en/overview) file
 - [ ] Potentially [install Keycloak Operators CRDs with Hooks](https://handbook.giantswarm.io/docs/dev-and-releng/app-developer-processes/handle_crds_with_helm_3/)
 
 ## 🔗 Links

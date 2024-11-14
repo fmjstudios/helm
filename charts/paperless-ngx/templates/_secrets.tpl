@@ -1,4 +1,4 @@
-{{/*
+{{- /*
 Set the names of the secrets
 */}}
 {{- define "paperless.secrets.general" -}}
@@ -25,7 +25,7 @@ Set the names of the secrets
 {{- printf "%s-allauth" (include "paperless.fullname" .) }}
 {{- end }}
 
-{{/*
+{{- /*
 Build connection URI's
 */}}
 {{- define "paperless.postgresql.host" -}}
@@ -46,6 +46,30 @@ Build connection URI's
 
 {{- define "paperless.redis.uri" -}}
 {{- printf "redis://%s:%s@%s:%d" .Values.paperless.redis.username .Values.paperless.redis.password (include "paperless.redis.host" .) (int .Values.paperless.redis.port) }}
+{{- end }}
+
+{{- define "paperless.tika.endpoint" -}}
+{{- if .Values.paperless.tika.endpoint -}}
+{{- printf "%s" .Values.paperless.tika.endpoint }}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name "tika" }}
+{{- end -}}
+{{- end }}
+
+{{- define "paperless.tika.uri" -}}
+{{- printf "http://%s:%d" (include "paperless.tika.endpoint" .) 9998 }}
+{{- end }}
+
+{{- define "paperless.gotenberg.endpoint" -}}
+{{- if .Values.paperless.gotenberg.endpoint -}}
+{{- printf "%s" .Values.paperless.gotenberg.endpoint }}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name "gotenberg" }}
+{{- end -}}
+{{- end }}
+
+{{- define "paperless.gotenberg.uri" -}}
+{{- printf "http://%s:%d" (include "paperless.gotenberg.endpoint" .) 80 }}
 {{- end }}
 
 {{/*

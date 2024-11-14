@@ -1,5 +1,5 @@
-{{/* 
-  SSO Authentication providers 
+{{/*
+  SSO Authentication providers
 */}}
 {{- define "linkwarden.auth.providers" -}}
   {{- $list := list "fortytwo" "apple" "atlassian" "auth0" "authentik" "battleNet" "box" "bungie" "cognito" "coinbase" "discord" "dropbox" "duende_ids6" "eveOnline" "facebook" "faceit" "foursquare" "freshbooks" "fusionauth" "freshbooks" "github" "gitlab" "google" "hubspot" "ids4" "kakao" "keycloak" "line" "linkedin" "mailchimp" "mailru" "naver" "netlify" "okta" "onelogin" "osso" "osu!" "patreon" "pinterest" "pipedrive" "reddit" "salesforce" "slack" "spotify" "strava" "todoist" "twitch" "unitedEffects" "vk" "wikimedia" "wordpress" "yandex" "zitadel" "zoho" "zoom" }}
@@ -11,7 +11,7 @@
   {{- $list | toJson }}
 {{- end }}
 
-{{/* 
+{{/*
   Define reusable environment variables for SSO configuration
 */}}
 {{- define "linkwarden.auth.envs.nextPublicEnable" -}}

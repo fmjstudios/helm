@@ -19,4 +19,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.uptimeKuma.data.pvc.size }}
-{{- end }}      
+{{- end }}
