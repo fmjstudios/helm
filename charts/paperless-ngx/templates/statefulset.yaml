@@ -107,8 +107,10 @@ spec:
               {{- $mediaDir := .Values.paperless.data.paths.mediaRoot | default "media" }}
             - name: {{ include "paperless.pv.data.name" . }}
               mountPath: {{ include "paperless.paths.base" (dict "path"  $dataDir) }}
+              subPath: data
             - name: {{ include "paperless.pv.data.name" . }}
               mountPath: {{ include "paperless.paths.base" (dict "path"  $mediaDir) }}
+              subPath: media
           {{- if .Values.volumeMounts }}
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           {{- end }}
