@@ -650,7 +650,7 @@
                 },
                 "minAvailable": {
                     "type": "number",
-                    "description": "The minium amount of pods which need to be available",
+                    "description": "The minimum amount of pods which need to be available",
                     "default": "1"
                 }
             }

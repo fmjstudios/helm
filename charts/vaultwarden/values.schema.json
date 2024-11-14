@@ -312,9 +312,9 @@
                                         }
                                     }
                                 },
-                                "heloName": {
+                                "helloName": {
                                     "type": "string",
-                                    "description": "Server name sent during the SMTP HELO",
+                                    "description": "Server name sent during the SMTP HELLO",
                                     "default": "\"\""
                                 },
                                 "embedImages": {
@@ -571,7 +571,7 @@
                         },
                         "incomplete2FATimeLimit": {
                             "type": "number",
-                            "description": "Minutes to wait before a 2FA login is considere incomplete",
+                            "description": "Minutes to wait before a 2FA login is considered incomplete",
                             "default": "3"
                         },
                         "yubikey": {
@@ -1183,7 +1183,7 @@
                 },
                 "minAvailable": {
                     "type": "number",
-                    "description": "The minium amount of pods which need to be available",
+                    "description": "The minimum amount of pods which need to be available",
                     "default": "1"
                 }
             }

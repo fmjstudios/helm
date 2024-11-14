@@ -80,7 +80,7 @@ Parameters.
 | `ntfy.keyFile`                               | The path to a certificate key file (e.g. "/var/lib/ntfy/tls.key")                                      | `""`            |
 | `ntfy.certFile`                              | The path to a certificate file (e.g. "/var/lib/ntfy/tls.crt")                                          | `""`            |
 | `ntfy.firebaseKeyFile`                       | The path to a Firebase key file (e.g. "/var/lib/ntfy/key.json")                                        | `""`            |
-| `ntfy.behindProxy`                           | Wether or not ntfy is hosted behind a proxy                                                            | `false`         |
+| `ntfy.behindProxy`                           | Whether or not ntfy is hosted behind a proxy                                                           | `false`         |
 | `ntfy.keepaliveInterval`                     | Interval in which keepalive messages are sent to the client                                            | `""`            |
 | `ntfy.managerInterval`                       | Interval in which the manager prunes old messages                                                      | `""`            |
 | `ntfy.disallowedTopics`                      | Define topic names that are not allowed                                                                | `[]`            |
@@ -182,7 +182,6 @@ Parameters.
 | Name                               | Description                                                                             | Value       |
 | ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
-| `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
 | `service.extraPorts`               | Extra ports to add to the service                                                       | `[]`        |
 | `service.annotations`              | Annotations for the service resource                                                    | `{}`        |
@@ -197,6 +196,8 @@ Parameters.
 | `service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP"                    | `None`      |
 | `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                             | `{}`        |
 | `service.ipFamilyPolicy`           | The ipFamilyPolicy                                                                      | `{}`        |
+| `service.ports.http`               | The port to use on the service for HTTP traffic                                         | `8080`      |
+| `service.ports.https`              | The port to use on the service for HTTPS traffic in case ntfy.listenHTTPS is active.    | `8443`      |
 
 ### RBAC parameters
 
@@ -250,10 +251,10 @@ Parameters.
 
 ### PodDisruptionBudget parameters
 
-| Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
-| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
-| `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
+| Name                               | Description                                           | Value  |
+| ---------------------------------- | ----------------------------------------------------- | ------ |
+| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                      | `true` |
+| `podDisruptionBudget.minAvailable` | The minimum amount of pods which need to be available | `1`    |
 
 ### Pod settings
 

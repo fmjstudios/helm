@@ -8,7 +8,7 @@ and create their own links, you can access other user via the Admin Panel. It de
 single Docker image available on [Docker Hub](https://hub.docker.com/r/linkstackorg/linkstack).
 
 > Head to the [Linkstack GitHub Repository](https://github.com/LinkStackOrg/LinkStack) for in-depth view at the
-> implemenation or to the [documentation](https://docs.linkstack.org/) for guides
+> implementation or to the [documentation](https://docs.linkstack.org/) for guides
 > and [examples](https://docs.linkstack.org/docker/setup/).
 
 ## ✨ TL;DR
@@ -168,10 +168,10 @@ configurable via the Image Parameters.
 
 ### PodDisruptionBudget parameters
 
-| Name                               | Description                                          | Value  |
-| ---------------------------------- | ---------------------------------------------------- | ------ |
-| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                     | `true` |
-| `podDisruptionBudget.minAvailable` | The minium amount of pods which need to be available | `1`    |
+| Name                               | Description                                           | Value  |
+| ---------------------------------- | ----------------------------------------------------- | ------ |
+| `podDisruptionBudget.enabled`      | Enable the pod disruption budget                      | `true` |
+| `podDisruptionBudget.minAvailable` | The minimum amount of pods which need to be available | `1`    |
 
 ### Pod settings
 

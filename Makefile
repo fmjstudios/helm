@@ -123,11 +123,11 @@ REGISTRY_USER ?=
 
 define log
  @case ${2} in \
-  gray)    echo -e "\e[90m${1}\e[0m" ;; \
-  red)     echo -e "\e[91m${1}\e[0m" ;; \
-  green)   echo -e "\e[92m${1}\e[0m" ;; \
-  yellow)  echo -e "\e[93m${1}\e[0m" ;; \
-  *)       echo -e "\e[97m${1}\e[0m" ;; \
+	gray)    echo -e "\e[90m${1}\e[0m" ;; \
+	red)     echo -e "\e[91m${1}\e[0m" ;; \
+	green)   echo -e "\e[92m${1}\e[0m" ;; \
+	yellow)  echo -e "\e[93m${1}\e[0m" ;; \
+	*)       echo -e "\e[97m${1}\e[0m" ;; \
  esac
 endef
 
@@ -152,14 +152,14 @@ define kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 secretGenerator:
-  - name: root-ca
-    type: "kubernetes.io/tls"
-    namespace: cert-manager
-    files:
-      - tls.crt=ca.pem
-      - tls.key=ca-key.pem
-    options:
-      disableNameSuffixHash: true
+	- name: root-ca
+		type: "kubernetes.io/tls"
+		namespace: cert-manager
+		files:
+			- tls.crt=ca.pem
+			- tls.key=ca-key.pem
+		options:
+			disableNameSuffixHash: true
 endef
 
 # ---------------------------
@@ -302,7 +302,7 @@ ifdef VALUES
 	$(helm) template $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug $(HELM_ARGS)
 else
 	$(helm) template $(RELEASE_NAME) $(CHART) --debug $(HELM_ARGS)
-endif 
+endif
 endif
 
 define DRY_INSTALL_INFO
@@ -356,7 +356,7 @@ endif
 
 define GENERATE_README_INFO
 # Run Bitnami's (VMware) README generator for Helm chart on the specified Chart.
-# The generator will use the configuration file 'reamde-gen.json' in the 'config'
+# The generator will use the configuration file 'readme-gen.json' in the 'config'
 # subdirectory. The chart may be picked with the 'CHART' Make variable.
 #
 # Arguments:
@@ -444,7 +444,15 @@ else
 endif
 
 .PHONY: lint
-lint: markdownlint actionlint shellcheck shfmt
+lint: markdownlint actionlint shellcheck shfmt chart-testing
+
+.PHONY: chart-testing
+chart-testing:
+ifndef CHART
+	ct lint --all
+else
+	ct lint --charts $(CHART)
+endif
 
 .PHONY: markdownlint
 markdownlint:

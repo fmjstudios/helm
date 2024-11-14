@@ -97,18 +97,18 @@ Define the PVC name
 
 
 
-{{/* 
+{{/*
 Obtain the API version for the Pod Disruption Budget
 */}}
 {{- define "vaultwarden.pdb.apiVersion" -}}
 {{- if and (.Capabilities.APIVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
 {{- print "policy/v1" }}
 {{- else -}}
-{{- print "policy/v1beta1" }}  
+{{- print "policy/v1beta1" }}
 {{- end -}}
 {{- end -}}
 
-{{/* 
+{{/*
 Create the database URI from the received values
 */}}
 {{- define "vaultwarden.db.uri" -}}
@@ -126,7 +126,7 @@ Create the database URI from the received values
 {{- end -}}
 {{- end -}}
 
-{{/* 
+{{/*
 Database connection initialization statements
 */}}
 {{- define "vaultwarden.db.conn_init" -}}
@@ -136,7 +136,7 @@ Database connection initialization statements
 {{- end }}
 
 
-{{/* 
+{{/*
 Determine which Kubernetes resource to create: StatefulSet or Deployment
 */}}
 {{- define "vaultwarden.resourceType" -}}

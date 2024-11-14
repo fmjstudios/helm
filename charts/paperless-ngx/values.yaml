@@ -133,7 +133,6 @@ paperless:
   ##
   emptyTrashDelay: ""
 
-
   ## Authentication configuration
   ##
   auth:
@@ -185,7 +184,6 @@ paperless:
       ## @param paperless.auth.social.autoSignup [default: false] Attempt to sign up the user using retrieved email, username etc from the third party authentication system
       ##
       autoSignup: false
-
 
   ## Hosting configuration
   ##
@@ -599,7 +597,6 @@ paperless:
       ##
       tagBarcodeMapping: ""
 
-
     ## Collation configuration
     ##
     collate:
@@ -673,8 +670,7 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-  extraHosts:
-    []
+  extraHosts: []
   # - host: domain.tld
   #   paths:
   #     - path: /
@@ -875,7 +871,7 @@ startupProbe:
 ## Paperless pod disruption budget settings
 ## ref: # https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 ## @param podDisruptionBudget.enabled [default: true] Enable the pod disruption budget
-## @param podDisruptionBudget.minAvailable [default: 1] The minium amount of pods which need to be available
+## @param podDisruptionBudget.minAvailable [default: 1] The minimum amount of pods which need to be available
 ##
 podDisruptionBudget:
   enabled: false
@@ -889,8 +885,7 @@ podDisruptionBudget:
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources The resource limits/requests for the Paperless pod
 ##
-resources:
-  {}
+resources: {}
 # limits:
 #   cpu: 100m
 #   memory: 128Mi
@@ -930,8 +925,7 @@ affinity: {}
 
 ## @param strategy Specify a deployment strategy for the Paperless pod
 ##
-strategy:
-  {}
+strategy: {}
 #  type: RollingUpdate
 #  rollingUpdate:
 #    maxUnavailable: 1
@@ -958,8 +952,7 @@ priorityClassName: ""
 ## @param podSecurityContext Security context settings for the Paperless pod
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
-podSecurityContext:
-  {}
+podSecurityContext: {}
 # fsGroup: 1001
 # supplementalGroups:
 #   - 1001
@@ -967,8 +960,7 @@ podSecurityContext:
 ## @param securityContext General security context settings for
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 ##
-securityContext:
-  {}
+securityContext: {}
 # allowPrivilegeEscalation: false
 # privileged: false
 # readOnlyRootFilesystem: true

@@ -79,6 +79,6 @@ Obtain the API version for the Pod Disruption Budget
 {{- if and (.Capabilities.APIVersions.Has "policy/v1") (semverCompare ">= 1.21-0" .Capabilities.KubeVersion.Version) -}}
 {{- print "policy/v1" }}
 {{- else -}}
-{{- print "policy/v1beta1" }}  
+{{- print "policy/v1beta1" }}
 {{- end -}}
 {{- end -}}

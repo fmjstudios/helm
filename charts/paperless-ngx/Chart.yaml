@@ -36,7 +36,7 @@ keywords:
 sources:
   - "https://github.com/fmjstudios/helm"
 maintainers:
-  - name: FMJ Studios Helm Authors
+  - name: fmjstudios
     email: info@fmj.studio
   - name: FMJdev
     email: info@fmj.dev

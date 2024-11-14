@@ -5,8 +5,8 @@ apiVersion: v2
 appVersion: 1.30.5
 kubeVersion: ">=1.26.0-0"
 name: vaultwarden
-version: 0.2.2
-description: Vaultwarden is an open-source, community-supported, Bitwarden-comptabile server written in Rust
+version: 0.2.3
+description: Vaultwarden is an open-source, community-supported, Bitwarden-compatible server written in Rust
 home: https://github.com/dani-garcia/vaultwarden
 icon: https://raw.githubusercontent.com/fmjstudios/artwork/2fd182517d56ffeee59f82ec75b651e92344d151/projects/vaultwarden/icon/black/vaultwarden-icon-black.png
 keywords:
@@ -18,7 +18,7 @@ keywords:
 sources:
   - "https://github.com/fmjstudios/helm"
 maintainers:
-  - name: FMJ Studios Helm Authors
+  - name: fmjstudios
     email: info@fmj.studio
   - name: FMJdev
     email: info@fmj.dev

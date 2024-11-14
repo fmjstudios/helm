@@ -82,8 +82,8 @@ data:
   SMTP_ACCEPT_INVALID_HOSTNAMES: {{ .Values.vaultwarden.email.smtp.acceptInvalidHostnames | quote }}
   SMTP_ACCEPT_INVALID_CERTS: {{ .Values.vaultwarden.email.smtp.acceptInvalidCertificates | quote }}
   REQUIRE_DEVICE_EMAIL: {{ .Values.vaultwarden.email.smtp.requireDeviceEmail | quote }}
-  {{- if .Values.vaultwarden.email.smtp.heloName }}
-  HELO_NAME: {{ .Values.vaultwarden.email.smtp.heloName | quote }}
+  {{- if .Values.vaultwarden.email.smtp.helloName }}
+  HELLO_NAME: {{ .Values.vaultwarden.email.smtp.helloName | quote }}
   {{- end }}
   {{- if .Values.vaultwarden.email.smtp.sendmail.enabled }}
   {{- with .Values.vaultwarden.email.smtp.sendmail }}

@@ -1,11 +1,11 @@
-{{/* 
+{{/*
   Define the Linkwarden database service name (host)
 */}}
 {{- define "linkwarden.db.host" -}}
 {{- printf "%s-postgresql" .Release.Name }}
 {{- end -}}
 
-{{/* 
+{{/*
 Create the database URI from the received values
 */}}
 {{- define "linkwarden.db.uri" -}}

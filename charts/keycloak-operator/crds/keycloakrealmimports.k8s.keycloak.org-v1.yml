@@ -419,7 +419,7 @@ spec:
                                 type: string
                               authenticatorFlow:
                                 type: boolean
-                              autheticatorFlow:
+                              authenticatorFlow:
                                 type: boolean
                               flowAlias:
                                 type: string

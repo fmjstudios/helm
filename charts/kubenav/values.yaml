@@ -23,8 +23,8 @@ fullnameOverride: ""
 ## @param secret.labels Labels for the `service-account-token` Secret
 
 secret:
-  annotations: { }
-  labels: { }
+  annotations: {}
+  labels: {}
 
 ## @section RBAC parameters
 ##
@@ -51,6 +51,6 @@ rbac:
 serviceAccount:
   create: true
   automount: false
-  annotations: { }
+  annotations: {}
   name: ""
   secrets: []
