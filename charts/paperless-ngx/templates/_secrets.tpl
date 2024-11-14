@@ -1,4 +1,4 @@
-{{/*
+{{- /*
 Set the names of the secrets
 */}}
 {{- define "paperless.secrets.general" -}}
@@ -25,7 +25,7 @@ Set the names of the secrets
 {{- printf "%s-allauth" (include "paperless.fullname" .) }}
 {{- end }}
 
-{{/*
+{{- /*
 Build connection URI's
 */}}
 {{- define "paperless.postgresql.host" -}}
