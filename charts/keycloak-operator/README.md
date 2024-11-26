@@ -9,7 +9,7 @@ instances of Keycloak at will using the newly registered
 Unfortunately the [Keycloak Project](https://www.keycloak.org/) does not provide a way to [install
 the Operator via a Helm Chart](https://www.keycloak.org/operator/installation#_installing_by_using_kubectl_without_operator_lifecycle_manager),
 thus making it challenging to manage. This Helm Chart is built from the
-official [upstream sources](https://github.com/keycloak/keycloak-k8s-resources/blob/25.0.2/kubernetes/kubernetes.yml)
+official [upstream sources](https://github.com/keycloak/keycloak-k8s-resources/blob/26.0.6/kubernetes/kubernetes.yml)
 and closely tracks these for changes. It delivers all of these features within a single Docker image available
 on [quay.io](https://quay.io/repository/keycloak/keycloak-operator).
 
@@ -80,10 +80,10 @@ EOF
 ### Image parameters
 
 | Name                | Description                                                         | Value                        |
-| ------------------- | ------------------------------------------------------------------- | ---------------------------- |
+|---------------------|---------------------------------------------------------------------|------------------------------|
 | `image.registry`    | The Docker registry to pull the image from                          | `quay.io`                    |
 | `image.repository`  | The registry repository to pull the image from                      | `keycloak/keycloak-operator` |
-| `image.tag`         | The image tag to pull                                               | `25.0.2`                     |
+| `image.tag`         | The image tag to pull                                               | `26.0.6`                     |
 | `image.digest`      | The image digest to pull                                            | `""`                         |
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`               |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                         |
@@ -91,14 +91,14 @@ EOF
 ### Name overrides
 
 | Name               | Description                                      | Value |
-| ------------------ | ------------------------------------------------ | ----- |
+|--------------------|--------------------------------------------------|-------|
 | `nameOverride`     | String to partially override kcOperator.fullname | `""`  |
 | `fullnameOverride` | String to fully override kcOperator.fullname     | `""`  |
 
 ### Service parameters
 
 | Name                               | Description                                                                             | Value       |
-| ---------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
+|------------------------------------|-----------------------------------------------------------------------------------------|-------------|
 | `service.type`                     | The type of service to create                                                           | `ClusterIP` |
 | `service.port`                     | The port to use on the service                                                          | `80`        |
 | `service.nodePort`                 | The Node port to use on the service                                                     | `30080`     |
@@ -118,13 +118,13 @@ EOF
 ### RBAC parameters
 
 | Name          | Description                      | Value  |
-| ------------- | -------------------------------- | ------ |
+|---------------|----------------------------------|--------|
 | `rbac.create` | Whether to create RBAC resources | `true` |
 
 ### Service Account parameters
 
 | Name                         | Description                                                                  | Value  |
-| ---------------------------- | ---------------------------------------------------------------------------- | ------ |
+|------------------------------|------------------------------------------------------------------------------|--------|
 | `serviceAccount.create`      | Whether a service account should be created                                  | `true` |
 | `serviceAccount.automount`   | Whether to automount the service account token                               | `true` |
 | `serviceAccount.annotations` | Annotations to add to the service account                                    | `{}`   |
@@ -133,7 +133,7 @@ EOF
 ### Liveness Probe parameters
 
 | Name                                | Description                                                 | Value  |
-| ----------------------------------- | ----------------------------------------------------------- | ------ |
+|-------------------------------------|-------------------------------------------------------------|--------|
 | `livenessProbe.enabled`             | Enable or disable the use of liveness probes                | `true` |
 | `livenessProbe.initialDelaySeconds` | Configure the initial delay seconds for the liveness probe  | `5`    |
 | `livenessProbe.timeoutSeconds`      | Configure the initial delay seconds for the liveness probe  | `10`   |
@@ -144,7 +144,7 @@ EOF
 ### Readiness Probe parameters
 
 | Name                                 | Description                                                  | Value  |
-| ------------------------------------ | ------------------------------------------------------------ | ------ |
+|--------------------------------------|--------------------------------------------------------------|--------|
 | `readinessProbe.enabled`             | Enable or disable the use of readiness probes                | `true` |
 | `readinessProbe.initialDelaySeconds` | Configure the initial delay seconds for the readiness probe  | `5`    |
 | `readinessProbe.timeoutSeconds`      | Configure the initial delay seconds for the readiness probe  | `10`   |
@@ -155,7 +155,7 @@ EOF
 ### Startup Probe parameters
 
 | Name                               | Description                                                | Value  |
-| ---------------------------------- | ---------------------------------------------------------- | ------ |
+|------------------------------------|------------------------------------------------------------|--------|
 | `startupProbe.enabled`             | Enable or disable the use of readiness probes              | `true` |
 | `startupProbe.initialDelaySeconds` | Configure the initial delay seconds for the startup probe  | `5`    |
 | `startupProbe.timeoutSeconds`      | Configure the initial delay seconds for the startup probe  | `10`   |
