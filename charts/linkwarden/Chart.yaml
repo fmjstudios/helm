@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
-version: 0.3.3
+version: 0.3.4
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -51,5 +51,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: removed
-      description: convert 'existingSecret' from object to string and fixed key to 'uri'
+    - kind: fixed
+      description: add missing env to disable registration
