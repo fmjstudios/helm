@@ -29,6 +29,9 @@ data:
   {{- end }}
   AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout | quote }}
   RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit | quote }}
+  {{- if .Values.linkwarden.auth.disableRegistration }}
+  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.linkwarden.auth.disableRegistration | quote }}
+  {{- end }}
   {{- if .Values.linkwarden.maxFileSize }}
   NEXT_PUBLIC_MAX_FILE_SIZE: {{ .Values.linkwarden.maxFileSize | quote }}
   {{- end }}
