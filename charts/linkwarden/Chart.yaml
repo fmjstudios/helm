@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 apiVersion: v2
-appVersion: 2.5.3
+appVersion: v2.8.3
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
 version: 0.3.3
