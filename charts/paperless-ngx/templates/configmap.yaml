@@ -217,6 +217,24 @@ data:
   PAPERLESS_EMAIL_USE_SSL: {{ .Values.paperless.smtp.useSSL | quote }}
   {{- end }}
   {{- /*
+    Email OAuth configuration
+  */}}
+  {{- if .Values.paperless.mail.oauth.callbackBaseURL }}
+  PAPERLESS_OAUTH_CALLBACK_BASE_URL: {{ .Values.paperless.mail.oauth.callbackBaseURL | quote }}
+  {{- end }}
+  {{- if .Values.paperless.mail.oauth.gmail.clientId }}
+  PAPERLESS_GMAIL_OAUTH_CLIENT_ID: {{ .Values.paperless.mail.oauth.gmail.clientId | quote }}
+  {{- end }}
+  {{- if .Values.paperless.mail.oauth.gmail.clientId }}
+  PAPERLESS_GMAIL_OAUTH_CLIENT_SECRET: {{ .Values.paperless.mail.oauth.gmail.clientSecret | quote }}
+  {{- end }}
+  {{- if .Values.paperless.mail.oauth.outlook.clientId }}
+  PAPERLESS_OUTLOOK_OAUTH_CLIENT_ID: {{ .Values.paperless.mail.oauth.outlook.clientId | quote }}
+  {{- end }}
+  {{- if .Values.paperless.mail.oauth.outlook.clientSecret }}
+  PAPERLESS_OUTLOOK_OAUTH_CLIENT_SECRET: {{ .Values.paperless.mail.oauth.outlook.clientSecret | quote }}
+  {{- end }}
+  {{- /*
     Paths configuration
   */}}
   {{- if .Values.paperless.data.paths.consumptionDir }}
