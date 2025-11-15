@@ -1297,6 +1297,26 @@
                     "description": "Enable or disable the PostgreSQL subchart",
                     "default": true
                 },
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "registry": {
+                            "type": "string",
+                            "description": "Registry for the postgres container image",
+                            "default": "docker.io"
+                        },
+                        "repository": {
+                            "type": "string",
+                            "description": "Repository for the postgres container image",
+                            "default": "library/postgres"
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "Tag for the postgres container image",
+                            "default": "16.4-bookworm"
+                        }
+                    }
+                },
                 "auth": {
                     "type": "object",
                     "properties": {
@@ -1386,6 +1406,26 @@
                     "type": "boolean",
                     "description": "Enable or disable the Redis&reg; subchart",
                     "default": true
+                },
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "registry": {
+                            "type": "string",
+                            "description": "Registry for the redis container image",
+                            "default": "docker.io"
+                        },
+                        "repository": {
+                            "type": "string",
+                            "description": "Repository for the redis container image",
+                            "default": "library/redis"
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "Tag for the redis container image",
+                            "default": "7.2.5-bookworm"
+                        }
+                    }
                 },
                 "architecture": {
                     "type": "string",

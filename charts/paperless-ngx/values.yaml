@@ -980,6 +980,17 @@ postgresql:
   ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
   ##
   enabled: true
+  # Image configuration for the postgres container. Use the official postgres image by default, instead of the bitnami image.
+  image:
+    ## @param postgresql.image.registry Registry for the postgres container image
+    ##
+    registry: docker.io
+    ## @param postgresql.image.repository Repository for the postgres container image
+    ##
+    repository: library/postgres
+    ## @param postgresql.image.tag Tag for the postgres container image
+    ##
+    tag: 16.4-bookworm
   ## Authentication parameters
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
@@ -1034,6 +1045,21 @@ postgresql:
       ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
       ##
       size: 5Gi
+    # Extra volume mounts for /var/run/postgresql to allow postgres creating a socket while keeping a read only root filesystem
+    extraVolumeMounts:
+      ## @skip postgresql.primary.extraVolumeMounts[0].name An extra volume mount for the postgres socket
+      ##
+      - name: postgresql-socket
+        ## @skip postgresql.primary.extraVolumeMounts[0].mountPath The path of the postgres socket
+        ##
+        mountPath: /var/run/postgresql
+    extraVolumes:
+      ## @skip postgresql.primary.extraVolumes[0].name An extra volume for the postgres socket
+      ##
+      - name: postgresql-socket
+        ## @skip postgresql.primary.extraVolumes[0].emptyDir An empty dir mount for the postgres socket
+        ##
+        emptyDir: {}
 
 ## @section Bitnami&reg; Redis parameters
 ##
@@ -1044,6 +1070,17 @@ redis:
   ## @param redis.enabled Enable or disable the Redis&reg; subchart
   ##
   enabled: true
+  # Image configuration for the redis container. Use the official redis image by default, instead of the bitnami image.
+  image:
+    ## @param redis.image.registry Registry for the redis container image
+    ##
+    registry: docker.io
+    ## @param redis.image.repository Repository for the redis container image
+    ##
+    repository: library/redis
+    ## @param redis.image.tag Tag for the redis container image
+    ##
+    tag: 7.2.5-bookworm
   ## @param redis.architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
   ##
   architecture: standalone

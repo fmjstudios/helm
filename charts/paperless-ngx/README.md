@@ -350,6 +350,9 @@ Parameters.
 | Name                                           | Description                                                                                            | Value               |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
 | `postgresql.enabled`                           | Enable or disable the PostgreSQL subchart                                                              | `true`              |
+| `postgresql.image.registry`                    | Registry for the postgres container image                                                              | `docker.io`         |
+| `postgresql.image.repository`                  | Repository for the postgres container image                                                            | `library/postgres`  |
+| `postgresql.image.tag`                         | Tag for the postgres container image                                                                   | `16.4-bookworm`     |
 | `postgresql.auth.enablePostgresUser`           | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`              |
 | `postgresql.auth.postgresPassword`             | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres`          |
 | `postgresql.auth.username`                     | Name for a custom user to create                                                                       | `paperless`         |
@@ -365,11 +368,14 @@ Parameters.
 
 ### Bitnami&reg; Redis parameters
 
-| Name                  | Description                                                            | Value        |
-| --------------------- | ---------------------------------------------------------------------- | ------------ |
-| `redis.enabled`       | Enable or disable the Redis&reg; subchart                              | `true`       |
-| `redis.architecture`  | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone` |
-| `redis.auth.password` | Redis&reg; password                                                    | `paperless`  |
+| Name                     | Description                                                            | Value            |
+| ------------------------ | ---------------------------------------------------------------------- | ---------------- |
+| `redis.enabled`          | Enable or disable the Redis&reg; subchart                              | `true`           |
+| `redis.image.registry`   | Registry for the redis container image                                 | `docker.io`      |
+| `redis.image.repository` | Repository for the redis container image                               | `library/redis`  |
+| `redis.image.tag`        | Tag for the redis container image                                      | `7.2.5-bookworm` |
+| `redis.architecture`     | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone`     |
+| `redis.auth.password`    | Redis&reg; password                                                    | `paperless`      |
 
 ### Apache&reg; Tika parameters
 
