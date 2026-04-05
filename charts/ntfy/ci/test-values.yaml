@@ -1,5 +1,5 @@
 ntfy:
-  baseURL: ntfy.helm.private
+  baseURL: ntfy.helm.internal
   listenHTTP: ":8080"
   listenHTTPS: ""
   keyFile: ""
@@ -47,7 +47,7 @@ ingress:
   tls:
     - secretName: ntfy-ingress-tls
       hosts:
-        - ntfy.helm.private
+        - ntfy.helm.internal
 
 service:
   type: ClusterIP

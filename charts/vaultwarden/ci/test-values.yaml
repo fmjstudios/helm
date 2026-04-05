@@ -1,5 +1,5 @@
 vaultwarden:
-  domain: "vaultwarden.helm.private"
+  domain: "vaultwarden.helm.internal"
   adminToken:
     value: "PretendThisIsAnAdminToken"
 
@@ -12,7 +12,7 @@ vaultwarden:
       username: ""
       password: ""
       auth: "Plain"
-      helloName: "vaultwarden.helm.private"
+      helloName: "vaultwarden.helm.internal"
       acceptInvalidHostnames: true
       acceptInvalidCertificates: true
 
@@ -23,7 +23,7 @@ vaultwarden:
   signup:
     allowed: true
     verify: false
-    domainWhitelist: "fmj.studio,helm.private"
+    domainWhitelist: "fmj.studio,helm.internal"
 
   logs:
     level: debug
@@ -37,7 +37,7 @@ ingress:
   tls:
     - secretName: vaultwarden-ingress-tls
       hosts:
-        - "vaultwarden.helm.private"
+        - "vaultwarden.helm.internal"
 
 rbac:
   create: true

@@ -1,5 +1,5 @@
 paperless:
-  domain: paperless.helm.private
+  domain: paperless.helm.internal
   secretKey:
     value: "PretendThisIsASecretKey"
 
@@ -34,9 +34,9 @@ ingress:
   tls:
     - secretName: domain-tld-tls
       hosts:
-        - paperless.helm.private
+        - paperless.helm.internal
   extraHosts:
-    - host: paperless.helm.private
+    - host: paperless.helm.internal
       paths:
         - path: /
           pathType: ImplementationSpecific

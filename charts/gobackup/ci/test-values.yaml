@@ -53,9 +53,9 @@ ingress:
   tls:
     - secretName: gobackup-ingress-tls
       hosts:
-        - gobackup.helm.private
+        - gobackup.helm.internal
   hosts:
-    - host: gobackup.helm.private
+    - host: gobackup.helm.internal
       paths:
         - path: /
           pathType: ImplementationSpecific

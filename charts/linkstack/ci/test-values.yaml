@@ -1,6 +1,6 @@
 linkstack:
   serverAdmin: info@fmj.studio
-  serverName: linkstack.helm.private
+  serverName: linkstack.helm.internal
   logLevel: warn
   timeZone: Europe/Berlin
   phpMemoryLimit: 512M
@@ -16,7 +16,7 @@ ingress:
   tls:
     - secretName: linkstack-ingress-tls
       hosts:
-        - linkstack.helm.private
+        - linkstack.helm.internal
 
 livenessProbe:
   enabled: true

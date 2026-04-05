@@ -1,5 +1,5 @@
 linkwarden:
-  domain: "linkwarden.helm.private"
+  domain: "linkwarden.helm.internal"
   nextAuthSecret:
     value: "PretendThisIsARandomString"
   ignoreUnauthorizedCA: true
@@ -33,7 +33,7 @@ ingress:
   tls:
     - secretName: linkwarden-ingress-tls
       hosts:
-        - "linkwarden.helm.private"
+        - "linkwarden.helm.internal"
 
 livenessProbe:
   enabled: true
@@ -45,7 +45,6 @@ startupProbe:
   enabled: true
 
 postgresql:
-  enabled: true
   auth:
     enablePostgresUser: true
     postgresPassword: "postgres"
