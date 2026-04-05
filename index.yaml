@@ -3,6 +3,68 @@ entries:
   activepieces:
   - annotations:
       artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "Fix (possibly) crashing deployment due to Bitnami's migration to BSI"
+          links:
+            - name: Bitnami Migration Issue
+              url: https://github.com/bitnami/charts/issues/35164
+      artifacthub.io/images: |
+        - name: gobackup
+          image: docker.io/activepieces/activepieces:0.28.0
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Activepieces Homepage
+          url: https://www.activepieces.com/
+        - name: Activepieces Documentation
+          url: https://www.activepieces.com/docs/getting-started/introduction
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 0.28.0
+    created: "2026-04-05T15:06:29.906597052Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    description: Activepieces is an open source all-in-one automation tool with 100+
+      integrations
+    digest: 5f63aedd1d2ab868b0f6cba11a18ed5ee66e2aba8b2908548280a4d00425eac5
+    home: https://www.activepieces.com/
+    icon: https://raw.githubusercontent.com/fmjstudios/artwork/3f3537b0377b8c95bfac77ae5cb7779c4698d659/projects/activepieces/icon/color/activepieces-icon-color.png
+    keywords:
+    - automation
+    - workflow
+    - activepieces
+    - zapier
+    - n8n
+    kubeVersion: '>=1.26.0-0'
+    maintainers:
+    - email: info@fmj.studio
+      name: fmjstudios
+    - email: info@fmj.dev
+      name: FMJdev
+    name: activepieces
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/activepieces-0.2.3/activepieces-0.2.3.tgz
+    version: 0.2.3
+  - annotations:
+      artifacthub.io/category: integration-delivery
       artifacthub.io/images: |
         - name: gobackup
           image: docker.io/activepieces/activepieces:0.28.0
@@ -226,6 +288,69 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/activepieces-0.1.0/activepieces-0.1.0.tgz
     version: 0.1.0
   cachet:
+  - annotations:
+      artifacthub.io/category: monitoring-logging
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "Fix crashing deployment due to Bitnami's migration to BSI"
+          links:
+            - name: Bitnami Migration Issue
+              url: https://github.com/bitnami/charts/issues/35164
+      artifacthub.io/images: |
+        - name: cachet
+          image: docker.io/cachethq/docker:2.3.15
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Cachet Homepage
+          url: https://cachethq.io/
+        - name: Cachet Documentation
+          url: https://docs.cachethq.io/introduction.html
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.3.15
+    created: "2026-04-05T15:06:30.060814976Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    description: Cachet is an open-source status page system designed to help you
+      keep track of your system status and share it with your user base
+    digest: a95cda8b3efdb6166f1eee0f7d7b1718376c9ba23257ef373fcab67808bbe8eb
+    home: https://cachethq.io/
+    icon: https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png
+    keywords:
+    - status
+    - status-page
+    - uptime
+    - monitoring
+    - uptime-kuma
+    - cachet
+    kubeVersion: '>=1.26.0-0'
+    maintainers:
+    - email: info@fmj.studio
+      name: fmjstudios
+    - email: info@fmj.dev
+      name: FMJdev
+    name: cachet
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/cachet-0.2.3/cachet-0.2.3.tgz
+    version: 0.2.3
   - annotations:
       artifacthub.io/category: monitoring-logging
       artifacthub.io/changes: |
@@ -2024,6 +2149,65 @@ entries:
   - annotations:
       artifacthub.io/category: storage
       artifacthub.io/changes: |
+        - kind: fixed
+          description: "Fix crashing deployment due to Bitnami's migration to BSI"
+          links:
+            - name: Bitnami Migration Issue
+              url: https://github.com/bitnami/charts/issues/35164
+      artifacthub.io/images: |
+        - name: linkwarden
+          image: ghcr.io/linkwarden/linkwarden:v2.5.3
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Linkwarden Homepage
+          url: https://linkwarden.app/
+        - name: Linkwarden Documentation
+          url: https://docs.linkwarden.app/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2026-04-05T15:06:30.579424992Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    description: Linkwarden is an open-source collaborative bookmark manager to collect,
+      organize and preserve webpages
+    digest: 3fcfcd69d345aee31f1c4dae66083d7298f62aaf3548f89f2e4634529b91f6d4
+    home: https://linkwarden.app/
+    icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
+    keywords:
+    - bookmarks
+    - archival
+    - collaboration
+    - linkding
+    - linkace
+    - archivebox
+    kubeVersion: '>=1.26.0-0'
+    maintainers:
+    - email: info@fmj.studio
+      name: fmjstudios
+    - email: info@fmj.dev
+      name: FMJdev
+    name: linkwarden
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/linkwarden-0.3.4/linkwarden-0.3.4.tgz
+    version: 0.3.4
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |
         - kind: removed
           description: convert 'existingSecret' from object to string and fixed key to 'uri'
       artifacthub.io/images: |
@@ -2950,6 +3134,77 @@ entries:
     - https://github.com/fmjstudios/helm/releases/download/ntfy-0.1.0/ntfy-0.1.0.tgz
     version: 0.1.0
   paperless-ngx:
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: "Fix crashing deployment due to Bitnami's migration to BSI"
+          links:
+            - name: Bitnami Migration Issue
+              url: https://github.com/bitnami/charts/issues/35164
+      artifacthub.io/images: |
+        - name: paperless-ngx
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.4.0
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Paperless-NGX GitHub Repository
+          url: https://github.com/paperless-ngx/paperless-ngx
+        - name: Paperless-NGX Documentation
+          url: https://docs.paperless-ngx.com/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.10.1
+    created: "2026-04-05T15:06:30.877718357Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.5
+    - condition: tika.enabled
+      name: tika
+      repository: https://apache.jfrog.io/artifactory/tika
+      version: ~2.9
+    - condition: gotenberg.enabled
+      name: gotenberg
+      repository: oci://ghcr.io/fmjstudios/helm
+      version: ~0.0.1
+    description: Paperless-NGX is a community-supported supercharged version of paperless
+      - scan, index and archive all your physical documents
+    digest: 1566428812f2a2f18166608c2f6a2e0c1e00f2e90e6376cdb665928c46752187
+    home: https://github.com/paperless-ngx/paperless-ngx
+    icon: https://raw.githubusercontent.com/fmjstudios/artwork/76af35c64fd93c12e851925b0d3801e89978f05a/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png
+    keywords:
+    - documents
+    - archival
+    - ocr
+    - conversion
+    - paper
+    - paperless
+    kubeVersion: '>=1.26.0-0'
+    maintainers:
+    - email: info@fmj.studio
+      name: fmjstudios
+    - email: info@fmj.dev
+      name: FMJdev
+    name: paperless-ngx
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/paperless-ngx-0.2.8/paperless-ngx-0.2.8.tgz
+    version: 0.2.8
   - annotations:
       artifacthub.io/category: storage
       artifacthub.io/changes: |
@@ -4710,4 +4965,4 @@ entries:
     urls:
     - https://github.com/fmjstudios/helm/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-26T07:05:53.03784594Z"
+generated: "2026-04-05T15:06:31.149241144Z"
