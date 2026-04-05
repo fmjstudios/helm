@@ -117,5 +117,5 @@ Obtain the API version for the Pod Disruption Budget
 Define the absolute data path
 */}}
 {{- define "linkwarden.paths.data" -}}
-{{- printf "/data/%s" .Values.linkwarden.data.filesystem.dataPath }}
+{{- printf "/%s" .Values.linkwarden.data.filesystem.dataPath }}
 {{- end -}}

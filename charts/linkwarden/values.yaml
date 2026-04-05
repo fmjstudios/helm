@@ -126,6 +126,9 @@ linkwarden:
         ## @param linkwarden.data.filesystem.pvc.storageClass [default: standard] The storageClass given to PVCs
         ##
         storageClass: standard
+        ## @param linkwarden.data.filesystem.pvc.volumeName [string] The name of an existing PV for the PVC to bind to (or to create).
+        ##
+        volumeName: ""
         ## @param linkwarden.data.filesystem.pvc.reclaimPolicy [default: Retain] The resourcePolicy given to PVCs
         ##
         reclaimPolicy: Retain

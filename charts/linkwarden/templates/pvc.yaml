@@ -14,6 +14,9 @@ metadata:
     {{- end }}
 spec:
   storageClassName: {{ .Values.linkwarden.data.filesystem.pvc.storageClass | default "standard" }}
+  {{- if .Values.linkwarden.data.filesystem.pvc.volumeName }}
+  volumeName: {{ .Values.linkwarden.data.filesystem.pvc.volumeName }}
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

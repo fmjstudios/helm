@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
-version: 0.3.5
+version: 0.3.6
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -72,3 +72,24 @@ annotations:
           url: https://github.com/fmjstudios/helm/pull/34
         - name: Author
           url: https://github.com/helionmusic
+    - kind: added
+      description: add capability to specify an existing PV for the PVC to bind to (or to create) by @elbandi
+      links:
+        - name: PR #39
+          url: https://github.com/fmjstudios/helm/pull/39
+        - name: Author
+          url: https://github.com/elbandi
+    - kind: fixed
+      description: swap DATABASE_URL secret name order to allow existingSecret to work by @elbandi
+      links:
+        - name: PR #40
+          url: https://github.com/fmjstudios/helm/pull/40
+        - name: Author
+          url: https://github.com/elbandi
+    - kind: fixed
+      description: update dataPath to a relative path by @elbandi
+      links:
+        - name: PR #41
+          url: https://github.com/fmjstudios/helm/pull/41
+        - name: Author
+          url: https://github.com/elbandi

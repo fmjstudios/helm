@@ -73,7 +73,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ default .Values.linkwarden.database.existingSecret (include "linkwarden.secrets.db" .) }}
+                  name: {{ default (include "linkwarden.secrets.db" .) .Values.linkwarden.database.existingSecret }}
                   key: uri
             {{- end }}
             {{/* Authentication settings */}}
@@ -174,7 +174,15 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}
-      {{- if .Values.initContainers }}
       initContainers:
+        - name: "{{ .Chart.Name }}-init"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "cp -r /data/. /tmp/data && chown -R {{ default "1000" .Values.securityContext.runAsUser }}:{{ default "1000" .Values.securityContext.runAsGroup }} /tmp/data"]
+          volumeMounts:
+          - name: {{ include "linkwarden.pv.name" . }}
+            mountPath: /tmp/data
+      {{- if .Values.initContainers }}
         {{- toYaml .Values.initContainers | nindent 8 }}
       {{- end }}

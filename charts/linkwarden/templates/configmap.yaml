@@ -17,7 +17,7 @@ data:
   NEXTAUTH_URL: {{ (include "linkwarden.ingress.url" .) | quote }}
   PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount | quote }}
   {{- if eq .Values.linkwarden.data.storageType "filesystem" }}
-  STORAGE_FOLDER: {{ include "linkwarden.paths.data" . | quote }}
+  STORAGE_FOLDER: {{ .Values.linkwarden.data.filesystem.dataPath | quote }}
   {{- end }}
   {{- if eq .Values.linkwarden.data.storageType "s3" }}
   SPACES_ENDPOINT: {{ .Values.linkwarden.data.s3.endpoint }}

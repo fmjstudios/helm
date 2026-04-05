@@ -99,6 +99,7 @@ Parameters.
 | `linkwarden.data.filesystem.dataPath`           | The relative path for data to be stored in                                                                                                             | `data`       |
 | `linkwarden.data.filesystem.pvc.size`           | The size given to the PVC for the above data paths                                                                                                     | `5Gi`        |
 | `linkwarden.data.filesystem.pvc.storageClass`   | The storageClass given to PVCs                                                                                                                         | `standard`   |
+| `linkwarden.data.filesystem.pvc.volumeName`     | The name of an existing PV for the PVC to bind to (or to create).                                                                                      | `""`         |
 | `linkwarden.data.filesystem.pvc.reclaimPolicy`  | The resourcePolicy given to PVCs                                                                                                                       | `Retain`     |
 | `linkwarden.data.filesystem.pvc.existingClaim`  | Provide the name to an existing PVC                                                                                                                    | `""`         |
 | `linkwarden.data.s3.bucketName`                 | The name of the S3 bucket to be used for the Linkwarden files                                                                                          | `""`         |

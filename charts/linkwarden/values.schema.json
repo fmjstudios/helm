@@ -160,6 +160,11 @@
                                             "description": "The storageClass given to PVCs",
                                             "default": "standard"
                                         },
+                                        "volumeName": {
+                                            "type": "string",
+                                            "description": "The name of an existing PV for the PVC to bind to (or to create).",
+                                            "default": "\"\""
+                                        },
                                         "reclaimPolicy": {
                                             "type": "string",
                                             "description": "The resourcePolicy given to PVCs",
