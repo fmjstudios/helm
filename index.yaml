@@ -2150,6 +2150,81 @@ entries:
       artifacthub.io/category: storage
       artifacthub.io/changes: |
         - kind: fixed
+          description: add missing environment variable to disable registration by @fty4
+          links:
+            - name: PR #26
+              url: https://github.com/fmjstudios/helm/pull/26
+            - name: Author
+              url: https://github.com/fty4
+        - kind: fixed
+          description: SSO auth issuer didn't resolve by @helionmusic
+          links:
+            - name: PR #33
+              url: https://github.com/fmjstudios/helm/pull/33
+            - name: Author
+              url: https://github.com/helionmusic
+        - kind: fixed
+          description: SSO auth existingSecret didn't prevent chart secret from being created by @helionmusic
+          links:
+            - name: PR #34
+              url: https://github.com/fmjstudios/helm/pull/34
+            - name: Author
+              url: https://github.com/helionmusic
+      artifacthub.io/images: |
+        - name: linkwarden
+          image: ghcr.io/linkwarden/linkwarden:v2.5.3
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Linkwarden Homepage
+          url: https://linkwarden.app/
+        - name: Linkwarden Documentation
+          url: https://docs.linkwarden.app/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2026-04-05T18:12:16.882526222Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    description: Linkwarden is an open-source collaborative bookmark manager to collect,
+      organize and preserve webpages
+    digest: 6a679ea55f7ea3bbbe124905829af7a152a92e960378255eb79cac536ff6b510
+    home: https://linkwarden.app/
+    icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
+    keywords:
+    - bookmarks
+    - archival
+    - collaboration
+    - linkding
+    - linkace
+    - archivebox
+    kubeVersion: '>=1.26.0-0'
+    maintainers:
+    - email: info@fmj.studio
+      name: fmjstudios
+    - email: info@fmj.dev
+      name: FMJdev
+    name: linkwarden
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/fmjstudios/helm/releases/download/linkwarden-0.3.5/linkwarden-0.3.5.tgz
+    version: 0.3.5
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |
+        - kind: fixed
           description: "Fix crashing deployment due to Bitnami's migration to BSI"
           links:
             - name: Bitnami Migration Issue
@@ -4965,4 +5040,4 @@ entries:
     urls:
     - https://github.com/fmjstudios/helm/releases/download/vaultwarden-0.1.0/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-05T15:06:31.149241144Z"
+generated: "2026-04-05T18:12:17.044924011Z"
