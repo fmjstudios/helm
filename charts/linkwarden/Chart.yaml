@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
-version: 0.3.4
+version: 0.3.5
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -52,7 +52,23 @@ annotations:
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
     - kind: fixed
-      description: "Fix crashing deployment due to Bitnami's migration to BSI"
+      description: add missing environment variable to disable registration by @fty4
       links:
-        - name: Bitnami Migration Issue
-          url: https://github.com/bitnami/charts/issues/35164
+        - name: PR #26
+          url: https://github.com/fmjstudios/helm/pull/26
+        - name: Author
+          url: https://github.com/fty4
+    - kind: fixed
+      description: SSO auth issuer didn't resolve by @helionmusic
+      links:
+        - name: PR #33
+          url: https://github.com/fmjstudios/helm/pull/33
+        - name: Author
+          url: https://github.com/helionmusic
+    - kind: fixed
+      description: SSO auth existingSecret didn't prevent chart secret from being created by @helionmusic
+      links:
+        - name: PR #34
+          url: https://github.com/fmjstudios/helm/pull/34
+        - name: Author
+          url: https://github.com/helionmusic

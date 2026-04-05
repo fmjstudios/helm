@@ -29,6 +29,9 @@ data:
   {{- end }}
   AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout | quote }}
   RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.rearchiveLimit | quote }}
+    {{- if .Values.linkwarden.auth.disableRegistration }}
+  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.linkwarden.auth.disableRegistration | quote }}
+  {{- end }}
   {{- if .Values.linkwarden.maxFileSize }}
   NEXT_PUBLIC_MAX_FILE_SIZE: {{ .Values.linkwarden.maxFileSize | quote }}
   {{- end }}
@@ -49,6 +52,7 @@ data:
   {{- end }}
 ---
 {{- range $_, $v := .Values.linkwarden.auth.sso }}
+{{- if not $v.existingSecret }}
 {{- $providerArg := (dict "provider" $v.provider) }}
 {{- $provider := $v.provider }}
 {{- $issuer := $v.issuer }}
@@ -73,7 +77,7 @@ data:
   {{- if $v.customName }}
   {{ include "linkwarden.auth.envs.customName" $providerArg }}: {{ $v.customName }}
   {{- end }}
-  {{- if has $issuer $issuerList }}
+  {{- if has $provider $issuerList }}
   {{- if $v.issuer }}
   {{ include "linkwarden.auth.envs.issuer" $providerArg }}: {{ $issuer }}
   {{- end }}
@@ -89,4 +93,5 @@ data:
   {{- end }}
   {{- end }}
 ---
+{{- end }}
 {{- end }}
