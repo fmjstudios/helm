@@ -1,7 +1,7 @@
 # FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
 
 > [!IMPORTANT]
-> This Helm chart relies on the open-source _Bitnami Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
+> This Helm chart relies on the open-source _Bitnami Helm chart `postgresql`. Beginning on August 28th, 2025, \_Bitnami_
 > (_VMware_/_Broadcom_) has changed their public offering and will require a commercial license for the use of their charts and images
 > (_Bitnami Secure Images_/_BSI_). The only images available to the public as of now are a small set of hardened images which are only
 > available at the 'latest' tag and meant for testing and development purposes. As such, the PostgreSQL subchart included in this Helm
@@ -250,7 +250,6 @@ Parameters.
 | `securityContext`    | General security context settings for            | `{}`  |
 
 ### Bitnami&reg; PostgreSQL parameters
-
 
 ### Global parameters
 
