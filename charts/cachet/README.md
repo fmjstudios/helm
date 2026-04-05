@@ -1,7 +1,7 @@
 # FMJ Studios - Cachet Helm Chart <img src="https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="175" height="175" align="right" loading="lazy">
 
 > [!IMPORTANT]
-> This Helm chart relies on the open-source _Bitnami Helm chart `postgresql`. Beginning on August 28th, 2025, \_Bitnami_
+> This Helm chart relies on the open-source _Bitnami_ Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
 > (_VMware_/_Broadcom_) has changed their public offering and will require a commercial license for the use of their charts and images
 > (_Bitnami Secure Images_/_BSI_). The only images available to the public as of now are a small set of hardened images which are only
 > available at the 'latest' tag and meant for testing and development purposes. As such, the PostgreSQL subchart included in this Helm
