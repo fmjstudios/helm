@@ -324,9 +324,9 @@ else
 dry-install:
 	$(call log_success, "Running Helm dry installation for chart: $(CHART)")
 ifdef VALUES
-	$(helm) install $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug --dry-run
+	$(helm) install $(RELEASE_NAME) $(CHART) --values $(CHART)/$(VALUES) --debug --dry-run=client
 else
-	$(helm) install $(RELEASE_NAME) $(CHART) --debug --dry-run
+	$(helm) install $(RELEASE_NAME) $(CHART) --debug --dry-run=client
 endif
 endif
 
