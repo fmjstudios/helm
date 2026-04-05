@@ -1,5 +1,15 @@
 # FMJ Studios - Paperless-NGX Helm Chart <img src="https://raw.githubusercontent.com/fmjstudios/artwork/76af35c64fd93c12e851925b0d3801e89978f05a/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png" alt="Paperless-NGX Logo" width="175" height="175" align="right" loading="lazy"/>
 
+> [!IMPORTANT]
+> This Helm chart relies on the open-source _Bitnami Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
+> (_VMware_/_Broadcom_) has changed their public offering and will require a commercial license for the use of their charts and images
+> (_Bitnami Secure Images_/_BSI_). The only images available to the public as of now are a small set of hardened images which are only
+> available at the 'latest' tag and meant for testing and development purposes. As such, the PostgreSQL subchart included in this Helm
+> chart is provided for convenience, but users are encouraged to use their own PostgreSQL instance, another PostgreSQL Helm chart or
+> (preferably) an Operator-managed PostgreSQL instance like CloudnativePG, if they do not wish to obtain a Bitnami license.
+>
+> _ref: [`bitnami/charts` - Issue 35164](https://github.com/bitnami/charts/issues/35164)_
+
 Paperless-ngx is a community-supported open-source document management system that transforms your physical documents
 into a searchable online archive so you can keep, well, less paper. Paperless-NGX is the official successor to the
 original [Paperless](https://github.com/the-paperless-project/paperless) & [Paperless-ng](https://github.com/jonaswinkler/paperless-ng)
@@ -347,29 +357,45 @@ Parameters.
 
 ### Bitnami&reg; PostgreSQL parameters
 
-| Name                                           | Description                                                                                            | Value               |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
-| `postgresql.enabled`                           | Enable or disable the PostgreSQL subchart                                                              | `true`              |
-| `postgresql.auth.enablePostgresUser`           | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`              |
-| `postgresql.auth.postgresPassword`             | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres`          |
-| `postgresql.auth.username`                     | Name for a custom user to create                                                                       | `paperless`         |
-| `postgresql.auth.password`                     | Password for the custom user to create. Ignored if `auth.existingSecret` is provided                   | `paperless`         |
-| `postgresql.auth.database`                     | Name for a custom database to create                                                                   | `paperless`         |
-| `postgresql.auth.usePasswordFiles`             | Mount credentials as a files instead of using an environment variable                                  | `false`             |
-| `postgresql.primary.name`                      | Name of the primary database (eg primary, master, leader, ...)                                         | `primary`           |
-| `postgresql.primary.persistence.enabled`       | Enable PostgreSQL Primary data persistence using PVC                                                   | `true`              |
-| `postgresql.primary.persistence.existingClaim` | Name of an existing PVC to use                                                                         | `""`                |
-| `postgresql.primary.persistence.storageClass`  | PVC Storage Class for PostgreSQL Primary data volume                                                   | `""`                |
-| `postgresql.primary.persistence.accessModes`   | PVC Access Mode for PostgreSQL volume                                                                  | `["ReadWriteOnce"]` |
-| `postgresql.primary.persistence.size`          | PVC Storage Request for PostgreSQL volume                                                              | `5Gi`               |
+
+### Global parameters
+
+| Name                                             | Description                                                                                                                    | Value                        |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
+| `postgresql.global.imageRegistry`                | Global Docker image registry. Force 'docker.io' - required due to BSI.                                                         | `docker.io`                  |
+| `postgresql.global.security.allowInsecureImages` | Allows skipping image verification. 'bitnamisecure' images meet the charts' security requirements. Others will require 'true'. | `false`                      |
+| `postgresql.image.registry`                      | PostgreSQL image registry                                                                                                      | `REGISTRY_NAME`              |
+| `postgresql.image.repository`                    | PostgreSQL image repository. 'bitnamisecure' is recommended.                                                                   | `REPOSITORY_NAME/postgresql` |
+| `postgresql.image.tag`                           | PostgreSQL image tag. As of August 28th, 2025, only 'latest' is available publicly due to BSI.                                 | `latest`                     |
+| `postgresql.enabled`                             | Enable or disable the PostgreSQL subchart                                                                                      | `true`                       |
+| `postgresql.auth.enablePostgresUser`             | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user                         | `true`                       |
+| `postgresql.auth.postgresPassword`               | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                                           | `postgres`                   |
+| `postgresql.auth.username`                       | Name for a custom user to create                                                                                               | `paperless`                  |
+| `postgresql.auth.password`                       | Password for the custom user to create. Ignored if `auth.existingSecret` is provided                                           | `paperless`                  |
+| `postgresql.auth.database`                       | Name for a custom database to create                                                                                           | `paperless`                  |
+| `postgresql.auth.usePasswordFiles`               | Mount credentials as a files instead of using an environment variable                                                          | `false`                      |
+| `postgresql.primary.name`                        | Name of the primary database (eg primary, master, leader, ...)                                                                 | `primary`                    |
+| `postgresql.primary.persistence.enabled`         | Enable PostgreSQL Primary data persistence using PVC                                                                           | `true`                       |
+| `postgresql.primary.persistence.existingClaim`   | Name of an existing PVC to use                                                                                                 | `""`                         |
+| `postgresql.primary.persistence.storageClass`    | PVC Storage Class for PostgreSQL Primary data volume                                                                           | `""`                         |
+| `postgresql.primary.persistence.accessModes`     | PVC Access Mode for PostgreSQL volume                                                                                          | `["ReadWriteOnce"]`          |
+| `postgresql.primary.persistence.size`            | PVC Storage Request for PostgreSQL volume                                                                                      | `5Gi`                        |
 
 ### Bitnami&reg; Redis parameters
 
-| Name                  | Description                                                            | Value        |
-| --------------------- | ---------------------------------------------------------------------- | ------------ |
-| `redis.enabled`       | Enable or disable the Redis&reg; subchart                              | `true`       |
-| `redis.architecture`  | Redis&reg; architecture. Allowed values: `standalone` or `replication` | `standalone` |
-| `redis.auth.password` | Redis&reg; password                                                    | `paperless`  |
+
+### Global parameters
+
+| Name                                        | Description                                                                                                                    | Value                   |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| `redis.global.imageRegistry`                | Global Docker image registry. Force 'docker.io' - required due to BSI.                                                         | `docker.io`             |
+| `redis.global.security.allowInsecureImages` | Allows skipping image verification. 'bitnamisecure' images meet the charts' security requirements. Others will require 'true'. | `false`                 |
+| `redis.image.registry`                      | Redis image registry                                                                                                           | `REGISTRY_NAME`         |
+| `redis.image.repository`                    | Redis image repository. 'bitnamisecure' is recommended.                                                                        | `REPOSITORY_NAME/redis` |
+| `redis.image.tag`                           | Redis image tag. As of August 28th, 2025, only 'latest' is available publicly due to BSI.                                      | `latest`                |
+| `redis.enabled`                             | Enable or disable the Redis&reg; subchart                                                                                      | `true`                  |
+| `redis.architecture`                        | Redis&reg; architecture. Allowed values: `standalone` or `replication`                                                         | `standalone`            |
+| `redis.auth.password`                       | Redis&reg; password                                                                                                            | `paperless`             |
 
 ### Apache&reg; Tika parameters
 

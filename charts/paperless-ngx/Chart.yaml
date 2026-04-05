@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.10.1
 kubeVersion: ">=1.26.0-0"
 name: paperless-ngx
-version: 0.2.7
+version: 0.2.8
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -64,4 +64,7 @@ annotations:
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
     - kind: fixed
-      description: remove line breaks from comments
+      description: "Fix crashing deployment due to Bitnami's migration to BSI"
+      links:
+        - name: Bitnami Migration Issue
+          url: https://github.com/bitnami/charts/issues/35164

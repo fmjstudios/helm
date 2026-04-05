@@ -637,6 +637,46 @@
         "postgresql": {
             "type": "object",
             "properties": {
+                "global": {
+                    "type": "object",
+                    "properties": {
+                        "imageRegistry": {
+                            "type": "string",
+                            "description": "Global Docker image registry. Force 'docker.io' - required due to BSI.",
+                            "default": "docker.io"
+                        },
+                        "security": {
+                            "type": "object",
+                            "properties": {
+                                "allowInsecureImages": {
+                                    "type": "boolean",
+                                    "description": "Allows skipping image verification. 'bitnamisecure' images meet the charts' security requirements. Others will require 'true'.",
+                                    "default": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "registry": {
+                            "type": "string",
+                            "description": "PostgreSQL image registry",
+                            "default": "REGISTRY_NAME"
+                        },
+                        "repository": {
+                            "type": "string",
+                            "description": "PostgreSQL image repository. 'bitnamisecure' is recommended.",
+                            "default": "REPOSITORY_NAME/postgresql"
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "PostgreSQL image tag. As of August 28th, 2025, only 'latest' is available publicly due to BSI.",
+                            "default": "latest"
+                        }
+                    }
+                },
                 "enabled": {
                     "type": "boolean",
                     "description": "Enable or disable the PostgreSQL subchart",
@@ -727,6 +767,46 @@
         "redis": {
             "type": "object",
             "properties": {
+                "global": {
+                    "type": "object",
+                    "properties": {
+                        "imageRegistry": {
+                            "type": "string",
+                            "description": "Global Docker image registry. Force 'docker.io' - required due to BSI.",
+                            "default": "docker.io"
+                        },
+                        "security": {
+                            "type": "object",
+                            "properties": {
+                                "allowInsecureImages": {
+                                    "type": "boolean",
+                                    "description": "Allows skipping image verification. 'bitnamisecure' images meet the charts' security requirements. Others will require 'true'.",
+                                    "default": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "registry": {
+                            "type": "string",
+                            "description": "Redis image registry",
+                            "default": "REGISTRY_NAME"
+                        },
+                        "repository": {
+                            "type": "string",
+                            "description": "Redis image repository. 'bitnamisecure' is recommended.",
+                            "default": "REPOSITORY_NAME/redis"
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "Redis image tag. As of August 28th, 2025, only 'latest' is available publicly due to BSI.",
+                            "default": "latest"
+                        }
+                    }
+                },
                 "enabled": {
                     "type": "boolean",
                     "description": "Enable or disable the Redis&reg; subchart",

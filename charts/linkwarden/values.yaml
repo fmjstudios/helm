@@ -580,9 +580,35 @@ securityContext: {}
 ## @section Bitnami&reg; PostgreSQL parameters
 ##
 
+## NOTE: Beginning on August 28th, 2025, Bitnami (VMware/Broadcom) has changed their public offering and will require a commercial license for the use of their charts and images (BSI). The only images available to the public as of now are a small set of hardened images which are only available at the 'latest' tag and meant for testing and development purposes. As such, the PostgreSQL subchart included in this Helm chart is provided for convenience, but users are encouraged to use their own PostgreSQL instance, another PostgreSQL Helm chart or (preferably) an Operator-managed PostgreSQL instance like CloudnativePG, if they do not wish to obtain a Bitnami license.
+## ref: https://github.com/bitnami/charts/issues/35164
+
 ## PostgreSQL configuration
 ## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
 postgresql:
+  ## @section Global parameters
+  ## Please, note that this will override the parameters, including dependencies, configured to use the global value. Required due to BSI.
+  ##
+  global:
+    ## @param postgresql.global.imageRegistry Global Docker image registry. Force 'docker.io' - required due to BSI.
+    ##
+    imageRegistry: docker.io
+    ## Security parameters
+    ##
+    security:
+      ## @param postgresql.global.security.allowInsecureImages Allows skipping image verification. 'bitnamisecure' images meet the charts' security requirements. Others will require 'true'.
+      allowInsecureImages: false
+
+  ## Bitnami PostgreSQL image version
+  ## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
+  ## @param postgresql.image.registry [default: REGISTRY_NAME] PostgreSQL image registry
+  ## @param postgresql.image.repository [default: REPOSITORY_NAME/postgresql] PostgreSQL image repository. 'bitnamisecure' is recommended.
+  ## @param postgresql.image.tag PostgreSQL image tag. As of August 28th, 2025, only 'latest' is available publicly due to BSI.
+  image:
+    registry: docker.io
+    repository: bitnamisecure/postgresql
+    tag: latest
+
   ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
   ##
   enabled: true

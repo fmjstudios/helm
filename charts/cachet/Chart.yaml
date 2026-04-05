@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.3.15
 kubeVersion: ">=1.26.0-0"
 name: cachet
-version: 0.2.2
+version: 0.2.3
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -56,8 +56,7 @@ annotations:
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
     - kind: fixed
-      description: add missing namespace references
-    - kind: added
-      description: volumes and volumeMounts configuration within values.yaml
-    - kind: changed
-      description: updated values.schema.json
+      description: "Fix crashing deployment due to Bitnami's migration to BSI"
+      links:
+        - name: Bitnami Migration Issue
+          url: https://github.com/bitnami/charts/issues/35164
