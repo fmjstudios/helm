@@ -22,7 +22,7 @@ dependencies:
   - name: gotenberg
     repository: oci://ghcr.io/adnoctem/helm
     condition: gotenberg.enabled
-    version: ~0.0.1
+    version: ~0.3.0
 description: Paperless-NGX is a community-supported supercharged version of paperless - scan, index and archive all your physical documents
 home: https://github.com/paperless-ngx/paperless-ngx
 icon: https://github.com/adnoctem/artwork/blob/425046029eaed451f5ced22ddc650059dff11878/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png
