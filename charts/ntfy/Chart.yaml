@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.11.0
 kubeVersion: ">=1.26.0-0"
 name: ntfy
-version: 0.2.2
+version: 0.3.0
 description: ntfy lets you send push notifications to your phone or desktop via scripts from any computer, using simple HTTP PUT or POST requests
 home: https://github.com/binwiederhier/ntfy
 icon: https://raw.githubusercontent.com/binwiederhier/ntfy/9d3fc20e583564e40af5afb90233f4714fdfcb4c/web/public/static/images/pwa-512x512.png
@@ -46,9 +46,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: fixed
-      description: add missing namespace references
-    - kind: added
-      description: volumes and volumeMounts configuration within values.yaml
     - kind: changed
-      description: updated values.schema.json
+      description: repository owner changed from fmjstudios to adnoctem

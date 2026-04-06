@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.11.2
 kubeVersion: ">=1.26.0-0"
 name: gobackup
-version: 0.2.2
+version: 0.3.0
 description: GoBackup is a CLI and Web UI for database backups to local, cloud or remote storage with notification support
 home: https://gobackup.github.io/
 icon: https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png
@@ -46,11 +46,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: fixed
-      description: removed invalid host binding
     - kind: changed
-      description: add omit to template to exclude secret keys from configuration file
-    - kind: added
-      description: add checks to prevent Secrets for local storages
-    - kind: changed
-      description: update default Service port
+      description: repository owner changed from fmjstudios to adnoctem

@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.5.3
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
-version: 0.3.6
+version: 0.4.0
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -51,45 +51,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: fixed
-      description: add missing environment variable to disable registration by @fty4
-      links:
-        - name: PR #26
-          url: https://github.com/adnoctem/helm/pull/26
-        - name: Author
-          url: https://github.com/fty4
-    - kind: fixed
-      description: SSO auth issuer didn't resolve by @helionmusic
-      links:
-        - name: PR #33
-          url: https://github.com/adnoctem/helm/pull/33
-        - name: Author
-          url: https://github.com/helionmusic
-    - kind: fixed
-      description: SSO auth existingSecret didn't prevent chart secret from being created by @helionmusic
-      links:
-        - name: PR #34
-          url: https://github.com/adnoctem/helm/pull/34
-        - name: Author
-          url: https://github.com/helionmusic
-    - kind: added
-      description: add capability to specify an existing PV for the PVC to bind to (or to create) by @elbandi
-      links:
-        - name: PR #39
-          url: https://github.com/adnoctem/helm/pull/39
-        - name: Author
-          url: https://github.com/elbandi
-    - kind: fixed
-      description: swap DATABASE_URL secret name order to allow existingSecret to work by @elbandi
-      links:
-        - name: PR #40
-          url: https://github.com/adnoctem/helm/pull/40
-        - name: Author
-          url: https://github.com/elbandi
-    - kind: fixed
-      description: update dataPath to a relative path by @elbandi
-      links:
-        - name: PR #41
-          url: https://github.com/adnoctem/helm/pull/41
-        - name: Author
-          url: https://github.com/elbandi
+    - kind: changed
+      description: repository owner changed from fmjstudios to adnoctem

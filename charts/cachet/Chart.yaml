@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.3.15
 kubeVersion: ">=1.26.0-0"
 name: cachet
-version: 0.2.3
+version: 0.3.0
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -55,8 +55,5 @@ annotations:
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
-    - kind: fixed
-      description: "Fix crashing deployment due to Bitnami's migration to BSI"
-      links:
-        - name: Bitnami Migration Issue
-          url: https://github.com/bitnami/charts/issues/35164
+    - kind: changed
+      description: repository owner changed from fmjstudios to adnoctem
