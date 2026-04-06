@@ -57,7 +57,7 @@ linkwarden:
   ##
   replicas: 1
 
-  ## @param linkwarden.domain [string] The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and
+  ## @param linkwarden.domain [string] The domain name to assign to Linkwarden, to be reused as the NextAuth URL and
   ## as the 'host' entry within the Ingress configuration
   ##
   domain: ""

@@ -52,7 +52,7 @@ fullnameOverride: ""
 ## Paperless configuration
 ## ref: https://docs.paperless-ngx.com/configuration/
 paperless:
-  ## @param paperless.domain [string] Define the domain name for Paperless - will be re-used in Ingress
+  ## @param paperless.domain [string] Define the domain name for Paperless - will be reused in Ingress
   ##
   domain: ""
   ## @param paperless.appTitle [string] If set, overrides the default name "Paperless-ngx"

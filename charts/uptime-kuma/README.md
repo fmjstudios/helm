@@ -44,7 +44,7 @@ enabled. [RBAC manifests](https://kubernetes.io/docs/reference/access-authn-auth
 The chart supports the configuration of
 all [Uptime-Kuma environment variables]([StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 or) via the `uptimeKuma` key in Helm's _values_ and makes use of the official Docker Hub container image, although this
-is configureble via the Image Parameters.
+is configurable via the Image Parameters.
 
 ## Parameters
 

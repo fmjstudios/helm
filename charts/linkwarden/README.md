@@ -82,7 +82,7 @@ Parameters.
 | Name                                            | Description                                                                                                                                            | Value        |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
 | `linkwarden.replicas`                           | The number of Linkwarden replicas (pods) to deploy                                                                                                     | `1`          |
-| `linkwarden.domain`                             | The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and                                                                         | `""`         |
+| `linkwarden.domain`                             | The domain name to assign to Linkwarden, to be reused as the NextAuth URL and                                                                          | `""`         |
 | `linkwarden.nextAuthSecret.value`               | A secret string to encrypt JWTs and hash email verification tokens                                                                                     | `""`         |
 | `linkwarden.nextAuthSecret.existingSecret.name` | The name of an existing secret containing the secret string                                                                                            | `""`         |
 | `linkwarden.nextAuthSecret.existingSecret.key`  | The key within before mentioned secret containing the actual string                                                                                    | `""`         |

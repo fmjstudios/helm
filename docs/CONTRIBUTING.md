@@ -25,7 +25,7 @@ this CA certificate to avoid TLS issues. For Google Chrome this can be done by n
 under `Privacy and security > Security > Manage certificates > Authorities` click `Import` and select the generated
 certificate.
 
-These files will also be re-used when setting up the development environment. Said environment is facilitated
+These files will also be reused when setting up the development environment. Said environment is facilitated
 through `kind` and can be created with:
 
 ```shell
