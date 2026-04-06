@@ -1,4 +1,4 @@
-# FMJ Studios - Kubenav Helm Chart <img src="https://raw.githubusercontent.com/kubenav/kubenav/290f1776b03c359b8115125fa37a4b8dd73b6464/utils/images/app-icons/android.png" alt="Kubenav Logo" width="175" height="175" align="right" loading="lazy">
+# Ad Noctem Collective - Kubenav Helm Chart <img src="https://raw.githubusercontent.com/kubenav/kubenav/290f1776b03c359b8115125fa37a4b8dd73b6464/utils/images/app-icons/android.png" alt="Kubenav Logo" width="175" height="175" align="right" loading="lazy">
 
 _Kubenav_ is a mobile app to manage Kubernetes clusters. The app provides an overview of all resources in a Kubernetes
 cluster, including current status information for workloads. The details view for resources provides additional
@@ -16,14 +16,14 @@ through our [contribution guidelines](https://github.com/kubenav/kubenav/blob/ma
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install kubenav fmjstudios/kubenav --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install kubenav adnoctem/kubenav --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/kubenav:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/kubenav:X.Y.Z
 ```
 
 ## Introduction

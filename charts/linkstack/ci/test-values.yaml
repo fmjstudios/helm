@@ -1,5 +1,5 @@
 linkstack:
-  serverAdmin: info@fmj.studio
+  serverAdmin: info@adnoctem.co
   serverName: linkstack.helm.internal
   logLevel: warn
   timeZone: Europe/Berlin

@@ -1,5 +1,5 @@
-# Default Helm values for fmjstudios/ntfy.
-# Reference: https://github.com/fmjstudios/helm
+# Default Helm values for adnoctem/ntfy.
+# Reference: https://github.com/adnoctem/helm
 
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -539,7 +539,7 @@ service:
     ## @param service.ports.http [default: 8080] The port to use on the service for HTTP traffic
     ##
     http: 8080
-    ## @param service.ports.https [number, nullable] The port to use on the service for HTTPS traffic in case ntfy.listenHTTPS is active.
+    ## @param service.ports.https [default: 8443] The port to use on the service for HTTPS traffic in case ntfy.listenHTTPS is active.
     ##
     https: 8443
 

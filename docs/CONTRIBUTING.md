@@ -1,4 +1,4 @@
-# FMJ Studios - `helm` Repository Contributing Guidelines
+# Ad Noctem Collective - `helm` Repository Contributing Guidelines
 
 Contributions are welcome via GitHub's Pull Requests. This document outlines the process to help get your contribution
 accepted.
@@ -224,7 +224,7 @@ documentation.
 The chart `version` should follow [SemVer](https://semver.org/).
 
 New charts should start at `0.1.0`. They will be upgraded to a _stable_ `1.0.0` after they have been used in production
-clusters for more than a month without issues. This is obviously hard to do, but as [I](https://github.com/FMJdev)
+clusters for more than a month without issues. This is obviously hard to do, but as [I](https://github.com/mvprowess)
 operate a cluster myself I will be taking care of this.
 
 Any breaking (backwards incompatible) changes to a chart should:

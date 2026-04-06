@@ -1,4 +1,4 @@
-# FMJ Studios - Cachet Helm Chart <img src="https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="175" height="175" align="right" loading="lazy">
+# Ad Noctem Collective - Cachet Helm Chart <img src="https://raw.githubusercontent.com/cachethq/art/1a545d3ae52df6ee4d22677acfcc6ab4a90ef231/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="175" height="175" align="right" loading="lazy">
 
 > [!IMPORTANT]
 > This Helm chart relies on the open-source _Bitnami_ Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
@@ -27,14 +27,14 @@ on [Docker Hub](https://hub.docker.com/r/cachethq/docker/).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install cachet fmjstudios/cachet --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install cachet adnoctem/cachet --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/cachet:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/cachet:X.Y.Z
 ```
 
 ## Introduction

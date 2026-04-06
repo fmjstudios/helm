@@ -1,4 +1,4 @@
-# FMJ Studios - Paperless-NGX Helm Chart <img src="https://raw.githubusercontent.com/fmjstudios/artwork/76af35c64fd93c12e851925b0d3801e89978f05a/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png" alt="Paperless-NGX Logo" width="175" height="175" align="right" loading="lazy"/>
+# Ad Noctem Collective - Paperless-NGX Helm Chart <img src="https://github.com/adnoctem/artwork/blob/425046029eaed451f5ced22ddc650059dff11878/projects/paperless-ngx/icon/color/paperless-ngx-icon-color.png" alt="Paperless-NGX Logo" width="175" height="175" align="right" loading="lazy"/>
 
 > [!IMPORTANT]
 > This Helm chart relies on the open-source _Bitnami_ Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
@@ -30,14 +30,14 @@ on [GitHub Container Registry](https://github.com/paperless-ngx/paperless-ngx/pk
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install paperless-ngx fmjstudios/paperless-ngx --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install paperless-ngx adnoctem/paperless-ngx --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/paperless-ngx:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/paperless-ngx:X.Y.Z
 ```
 
 ## Introduction
@@ -401,7 +401,7 @@ Parameters.
 | -------------- | ------------------------------------------ | ------ |
 | `tika.enabled` | Enable or disable the Apache Tika subchart | `true` |
 
-### FMJ Studios Gotenberg parameters
+### Ad Noctem Collective Gotenberg parameters
 
 | Name                                             | Description                                                                      | Value   |
 | ------------------------------------------------ | -------------------------------------------------------------------------------- | ------- |

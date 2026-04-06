@@ -1,4 +1,4 @@
-# FMJ Studios - GoBackup Helm Chart <img src="https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png" alt="GoBackup Logo" width="175" height="175" align="right" loading="lazy"/>
+# Ad Noctem Collective - GoBackup Helm Chart <img src="https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png" alt="GoBackup Logo" width="175" height="175" align="right" loading="lazy"/>
 
 GoBackup is a CLI and Web UI for database backups to local, cloud or remote storage (FTP, SCP, S3, GCS, Aliyun
 OSS ...) with encryption support. It supports running these tasks on a schedule defined within a configuration file.
@@ -15,14 +15,14 @@ on [Docker Hub](https://hub.docker.com/r/huacnlee/gobackup).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install gobackup fmjstudios/gobackup --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install gobackup adnoctem/gobackup --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/gobackup:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/gobackup:X.Y.Z
 ```
 
 ## Introduction

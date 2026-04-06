@@ -1,4 +1,4 @@
-# FMJ Studios - Activepieces Helm Chart <img src="https://raw.githubusercontent.com/fmjstudios/artwork/3f3537b0377b8c95bfac77ae5cb7779c4698d659/projects/activepieces/icon/color/activepieces-icon-color.png" alt="Activepieces Logo" width="175" height="175" align="right" loading="lazy">
+# Ad Noctem Collective - Activepieces Helm Chart <img src="https://github.com/adnoctem/artwork/blob/425046029eaed451f5ced22ddc650059dff11878/projects/activepieces/icon/color/activepieces-icon-color.png" alt="Activepieces Logo" width="175" height="175" align="right" loading="lazy">
 
 > [!IMPORTANT]
 > This Helm chart relies on the open-source _Bitnami_ Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
@@ -32,14 +32,14 @@ on [Docker Hub](https://hub.docker.com/r/activepieces/activepieces).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install activepieces fmjstudios/activepieces --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install activepieces adnoctem/activepieces --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/activepieces:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/activepieces:X.Y.Z
 ```
 
 ## Introduction

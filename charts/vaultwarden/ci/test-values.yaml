@@ -23,7 +23,7 @@ vaultwarden:
   signup:
     allowed: true
     verify: false
-    domainWhitelist: "fmj.studio,helm.internal"
+    domainWhitelist: "adnoctem.co,helm.internal"
 
   logs:
     level: debug

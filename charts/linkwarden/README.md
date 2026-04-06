@@ -1,4 +1,4 @@
-# FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
+# Ad Noctem Collective - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
 
 > [!IMPORTANT]
 > This Helm chart relies on the open-source _Bitnami_ Helm chart `postgresql`. Beginning on August 28th, 2025, _Bitnami_
@@ -30,14 +30,14 @@ the [GitHub Container Registry](https://github.com/linkwarden/linkwarden/pkgs/co
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install linkwarden fmjstudios/linkwarden --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install linkwarden adnoctem/linkwarden --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/linkwarden:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/linkwarden:X.Y.Z
 ```
 
 ## Introduction

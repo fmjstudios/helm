@@ -1,4 +1,4 @@
-# Copyright FMJ Studios
+# Copyright Ad Noctem Collective
 # SPDX-License-Identifier: MIT
 
 apiVersion: v2
@@ -22,32 +22,32 @@ keywords:
   - linkace
   - archivebox
 sources:
-  - "https://github.com/fmjstudios/helm"
+  - "https://github.com/adnoctem/helm"
 maintainers:
-  - name: fmjstudios
-    email: info@fmj.studio
-  - name: FMJdev
-    email: info@fmj.dev
+  - name: adnoctem
+    email: info@adnoctem.co
+  - name: MVProwess
+    email: info@mvprowess.com
 annotations:
   artifacthub.io/category: storage
   artifacthub.io/license: MIT
   artifacthub.io/signKey: |
-    fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
-    url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+    fingerprint: 97DB36A8BD5E342076ED46D63E317D513290CC4B
+    url: https://keys.openpgp.org/vks/v1/by-fingerprint/97DB36A8BD5E342076ED46D63E317D513290CC4B
   artifacthub.io/prerelease: "false"
   artifacthub.io/images: |
     - name: linkwarden
       image: ghcr.io/linkwarden/linkwarden:v2.5.3
   artifacthub.io/links: |
     - name: Source
-      url: https://github.com/fmjstudios/helm
+      url: https://github.com/adnoctem/helm
     - name: Support
-      url: https://github.com/fmjstudios/helm/issues
+      url: https://github.com/adnoctem/helm/issues
     - name: Linkwarden Homepage
       url: https://linkwarden.app/
     - name: Linkwarden Documentation
       url: https://docs.linkwarden.app/
-  org.opencontainers.image.vendor: "FMJ Studios"
+  org.opencontainers.image.vendor: "Ad Noctem Collective"
   org.opencontainers.image.licenses: "MIT"
   # ref: https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/changes: |
@@ -55,41 +55,41 @@ annotations:
       description: add missing environment variable to disable registration by @fty4
       links:
         - name: PR #26
-          url: https://github.com/fmjstudios/helm/pull/26
+          url: https://github.com/adnoctem/helm/pull/26
         - name: Author
           url: https://github.com/fty4
     - kind: fixed
       description: SSO auth issuer didn't resolve by @helionmusic
       links:
         - name: PR #33
-          url: https://github.com/fmjstudios/helm/pull/33
+          url: https://github.com/adnoctem/helm/pull/33
         - name: Author
           url: https://github.com/helionmusic
     - kind: fixed
       description: SSO auth existingSecret didn't prevent chart secret from being created by @helionmusic
       links:
         - name: PR #34
-          url: https://github.com/fmjstudios/helm/pull/34
+          url: https://github.com/adnoctem/helm/pull/34
         - name: Author
           url: https://github.com/helionmusic
     - kind: added
       description: add capability to specify an existing PV for the PVC to bind to (or to create) by @elbandi
       links:
         - name: PR #39
-          url: https://github.com/fmjstudios/helm/pull/39
+          url: https://github.com/adnoctem/helm/pull/39
         - name: Author
           url: https://github.com/elbandi
     - kind: fixed
       description: swap DATABASE_URL secret name order to allow existingSecret to work by @elbandi
       links:
         - name: PR #40
-          url: https://github.com/fmjstudios/helm/pull/40
+          url: https://github.com/adnoctem/helm/pull/40
         - name: Author
           url: https://github.com/elbandi
     - kind: fixed
       description: update dataPath to a relative path by @elbandi
       links:
         - name: PR #41
-          url: https://github.com/fmjstudios/helm/pull/41
+          url: https://github.com/adnoctem/helm/pull/41
         - name: Author
           url: https://github.com/elbandi

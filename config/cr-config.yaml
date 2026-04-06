@@ -1,5 +1,5 @@
 # See https://github.com/helm/chart-releaser#config-file
-owner: fmjstudios
+owner: adnoctem
 git-repo: helm
 sign: true
 generate-release-notes: true

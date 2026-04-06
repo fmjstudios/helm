@@ -22,3 +22,14 @@ repos:
     rev: v1.24.6
     hooks:
       - id: typos
+
+  # Local hooks
+  - repo: local
+    hooks:
+      - id: prettier_fmt
+        name: "Format Markdown and JSON files with Prettier"
+        language: system
+        files: .*\.(md|json)$
+        exclude: "charts/[^/]+$"
+        entry: |
+          bash -c 'prettier --write **/*.{md,json}'

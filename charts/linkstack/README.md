@@ -1,4 +1,4 @@
-# FMJ Studios - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/c22886d7585246836d5e4e597484b92b51c76f0c/logo/png/logo.png" alt="Linkstack Logo" width="175" height="175" align="right" loading="lazy"/>
+# Ad Noctem Collective - Linkstack Helm Chart <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/c22886d7585246836d5e4e597484b92b51c76f0c/logo/png/logo.png" alt="Linkstack Logo" width="175" height="175" align="right" loading="lazy"/>
 
 LinkStack provides you with a configurable self-hosted site similar to [Linktree](https://linktr.ee/). Many social
 media platforms only allow you to add one link, with this you can simply link to your LinkStack page and have all the
@@ -16,14 +16,14 @@ single Docker image available on [Docker Hub](https://hub.docker.com/r/linkstack
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install linkstack fmjstudios/linkstack --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install linkstack adnoctem/linkstack --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/linkstack:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/linkstack:X.Y.Z
 ```
 
 ## Introduction

@@ -1,4 +1,4 @@
-# FMJ Studios - Keycloak Operator Helm Chart <img src="https://raw.githubusercontent.com/keycloak/keycloak-misc/main/logo/logo.png" alt="Keycloak Operator Logo" width="250" height="auto" align="right" loading="lazy"/>
+# Ad Noctem Collective - Keycloak Operator Helm Chart <img src="https://raw.githubusercontent.com/keycloak/keycloak-misc/main/logo/logo.png" alt="Keycloak Operator Logo" width="250" height="auto" align="right" loading="lazy"/>
 
 Keycloak is an open source software product to allow single sign-on with identity and access management aimed at modern
 applications and services. It supports various protocols such as OpenID, OAuth version 2.0 and SAML and provides
@@ -21,14 +21,14 @@ on [quay.io](https://quay.io/repository/keycloak/keycloak-operator).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install vaultwarden fmjstudios/keycloak-operator --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install vaultwarden adnoctem/keycloak-operator --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/keycloak-operator:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/keycloak-operator:X.Y.Z
 ```
 
 ## Introduction
@@ -43,7 +43,7 @@ These are enabled by default.
 
 The chart supports configuring the Kubernetes manifests created for the Operator, however modifications are somewhat
 discouraged, since the official release for vanilla Kubernetes uses static manifests. The Operator itself does not offer
-any sort of configuration (to [my](https://github.com/FMJdev) knowledge). I will try to ensure the chart always matches
+any sort of configuration (to [my](https://github.com/mvprowess) knowledge). I will try to ensure the chart always matches
 the upstream deployment at the given versions.
 
 After deployment the Operator gives you access to the `Keycloak` CR making the deployment of Keycloak (even as a

@@ -62,7 +62,7 @@ jobs:
           config: config/cr-config.yaml
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CR_KEY: ${{ secrets.CR_KEY }}
+          CR_KEY: ${{ secrets.GPG_USER_ID }}
           CR_SIGN: true
 
       - name: Log in to GHCR

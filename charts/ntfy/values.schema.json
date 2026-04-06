@@ -675,8 +675,7 @@
             "https": {
               "type": "number",
               "description": "The port to use on the service for HTTPS traffic in case ntfy.listenHTTPS is active.",
-              "default": 8443,
-              "nullable": true
+              "default": "8443"
             }
           }
         }

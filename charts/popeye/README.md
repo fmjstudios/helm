@@ -1,4 +1,4 @@
-# FMJ Studios - Popeye Helm Chart <img src="https://github.com/derailed/popeye/blob/d09ec25f3834d2c6a171486b9726b0a91793e3f0/assets/popeye_logo.png?raw=true" alt="Popeye Logo" width="175" height="175" align="right" loading="lazy">
+# Ad Noctem Collective - Popeye Helm Chart <img src="https://github.com/derailed/popeye/blob/d09ec25f3834d2c6a171486b9726b0a91793e3f0/assets/popeye_logo.png?raw=true" alt="Popeye Logo" width="175" height="175" align="right" loading="lazy">
 
 Popeye is a utility that scans live Kubernetes cluster and reports potential issues with deployed resources and
 configurations. It sanitizes your cluster based on what's deployed and not what's sitting on disk. By scanning your
@@ -21,14 +21,14 @@ on [Docker Hub](https://hub.docker.com/r/derailed/popeye).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install ntfy fmjstudios/popeye --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install ntfy adnoctem/popeye --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/popeye:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/popeye:X.Y.Z
 ```
 
 ## Introduction

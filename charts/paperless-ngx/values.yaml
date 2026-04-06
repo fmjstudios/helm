@@ -1,5 +1,5 @@
-# Default Helm values for fmjstudios/paperless-ngx.
-# Reference: https://github.com/fmjstudios/helm
+# Default Helm values for adnoctem/paperless-ngx.
+# Reference: https://github.com/adnoctem/helm
 
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -1114,11 +1114,11 @@ tika:
   ##
   enabled: true
 
-## @section FMJ Studios Gotenberg parameters
+## @section Ad Noctem Collective Gotenberg parameters
 ##
 
 ## Gotenberg configuration
-## ref: https://github.com/fmjstudios/helm/blob/main/charts/gotenberg/values.yaml
+## ref: https://github.com/adnoctem/helm/blob/main/charts/gotenberg/values.yaml
 gotenberg:
   ## @param gotenberg.enabled Enable or disable the Gotenberg subchart
   ##

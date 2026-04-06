@@ -1,4 +1,4 @@
-# FMJ Studios - Vaultwarden Helm Chart <img src="https://raw.githubusercontent.com/fmjstudios/artwork/2fd182517d56ffeee59f82ec75b651e92344d151/projects/vaultwarden/icon/black/vaultwarden-icon-black.png" alt="Vaultwarden Logo" width="175" height="175" align="right" loading="lazy"/>
+# Ad Noctem Collective - Vaultwarden Helm Chart <img src="https://github.com/adnoctem/artwork/blob/425046029eaed451f5ced22ddc650059dff11878/projects/vaultwarden/icon/black/vaultwarden-icon-black.png" alt="Vaultwarden Logo" width="175" height="175" align="right" loading="lazy"/>
 
 Vaultwarden is an unofficial Bitwarden server implementation written in Rust. It is compatible with
 the [official Bitwarden clients](https://bitwarden.com/download/), and is ideal for self-hosted deployments where
@@ -17,14 +17,14 @@ on [Docker Hub](https://hub.docker.com/r/vaultwarden/server).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install vaultwarden fmjstudios/vaultwarden --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install vaultwarden adnoctem/vaultwarden --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/vaultwarden:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/vaultwarden:X.Y.Z
 ```
 
 ## Introduction

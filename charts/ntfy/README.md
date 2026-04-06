@@ -1,4 +1,4 @@
-# FMJ Studios - ntfy Helm Chart <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/9d3fc20e583564e40af5afb90233f4714fdfcb4c/web/public/static/images/pwa-512x512.png" alt="ntfy Logo" width="175" height="175" align="right" loading="lazy">
+# Ad Noctem Collective - ntfy Helm Chart <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/9d3fc20e583564e40af5afb90233f4714fdfcb4c/web/public/static/images/pwa-512x512.png" alt="ntfy Logo" width="175" height="175" align="right" loading="lazy">
 
 ntfy (pronounced notify) is a simple HTTP-based pub-sub notification service. It allows you to send notifications to
 your phone or desktop via scripts from any computer, and/or using a REST API. It's infinitely flexible, and 100% free
@@ -15,14 +15,14 @@ on [Docker Hub](https://hub.docker.com/r/binwiederhier/ntfy).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install ntfy fmjstudios/ntfy --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install ntfy adnoctem/ntfy --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/ntfy:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/ntfy:X.Y.Z
 ```
 
 ## Introduction

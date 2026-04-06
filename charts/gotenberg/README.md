@@ -1,4 +1,4 @@
-# FMJ Studios - Gotenberg Helm Chart <img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="175" height="175" align="right" loading="lazy"/>
+# Ad Noctem Collective - Gotenberg Helm Chart <img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="175" height="175" align="right" loading="lazy"/>
 
 Gotenberg is an open-source, Docker-powered stateless API for PDF files. It provides a developer friendly API to
 interact with powerful tools like Chromium and LibreOffice for converting numerous document formats (HTML, Markdown,
@@ -14,14 +14,14 @@ on [Docker Hub](https://hub.docker.com/r/gotenberg/gotenberg).
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install gotenberg fmjstudios/gotenberg --version X.Y.Z
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install gotenberg adnoctem/gotenberg --version X.Y.Z
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/gotenberg:X.Y.Z
+helm install oci://ghcr.io/adnoctem/helm/gotenberg:X.Y.Z
 ```
 
 ## Introduction

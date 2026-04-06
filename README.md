@@ -1,15 +1,15 @@
 # Helm Charts <img src="https://raw.githubusercontent.com/cncf/artwork/892ce913bbce895ddbd99f981917fcf93050a8ca/projects/helm/icon/color/helm-icon-color.svg" alt="Helm Logo" align="right" width="225"/>
 
-[![License](https://img.shields.io/github/license/fmjstudios/helm?label=License)](https://opensource.org/licenses/MIT)
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/fmjstudios)](https://artifacthub.io/packages/search?repo=fmjstudios&sort=relevance)
-[![CI Status](https://github.com/fmjstudios/helm/actions/workflows/release.yaml/badge.svg)](https://github.com/fmjstudios/helm/blob/main/.github/workflows/ci-pipeline.yml)
+[![License](https://img.shields.io/github/license/adnoctem/helm?label=License)](https://opensource.org/licenses/MIT)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/adnoctem)](https://artifacthub.io/packages/search?repo=adnoctem&sort=relevance)
+[![CI Status](https://github.com/adnoctem/helm/actions/workflows/release.yaml/badge.svg)](https://github.com/adnoctem/helm/blob/main/.github/workflows/ci-pipeline.yml)
 [![Renovate](https://img.shields.io/badge/Renovate-enabled-brightgreen?logo=renovatebot&logoColor=1DDEDD)](https://renovatebot.com/)
 
-A collection of open-source [MIT][license]-licensed [_Helm Charts_][helm] written and maintained by `FMJ Studios` for
+A collection of open-source [MIT][license]-licensed [_Helm Charts_][helm] written and maintained by `Ad Noctem Collective` for
 use with [Kubernetes][kubernetes] `v1.26` and above. Have a look [at the table below](#-overview) to get a list of the
 included charts, their versions and the default container images. The charts are also published
 to [ArtifactHub][artifacthub], where they can be found in
-the [`fmjstudios`](https://artifacthub.io/packages/search?repo=fmjstudios&sort=relevance) repository. This GitHub
+the [`adnoctem`](https://artifacthub.io/packages/search?repo=adnoctem&sort=relevance) repository. This GitHub
 repository relies on the _GNU Make_ build tool to ease the development workflows. The [`Makefile`](Makefile) also
 includes `targets` to set up the development environment. Refer to the [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more
 information.
@@ -19,35 +19,35 @@ information.
 ### Helm Repository Installation
 
 ```shell
-helm repo add fmjstudios https://fmjstudios.github.io/helm
-helm install <RELEASE_NAME> fmjstudios/<CHART_NAME>
+helm repo add adnoctem https://adnoctem.github.io/helm
+helm install <RELEASE_NAME> adnoctem/<CHART_NAME>
 ```
 
 ### OCI Installation
 
 ```shell
-helm install oci://ghcr.io/fmjstudios/helm/<CHART_NAME>:<VERSION>
+helm install oci://ghcr.io/adnoctem/helm/<CHART_NAME>:<VERSION>
 ```
 
 ## 📖 Overview
 
 <div align="center">
 
-| Chart                                                                                                                                                                                                                                                                                     | Current Version | Default Container Images                               |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------: | ------------------------------------------------------ |
-| [Vaultwarden <img src="https://raw.githubusercontent.com/dani-garcia/vaultwarden/890e668071cffe2833834348e19bbef3c061d014/resources/vaultwarden-icon.svg" alt="Vaultwarden Logo" width="32px" height="32px" align="right" loading="lazy">][vaultwarden_chart]                             |      0.2.3      | [vaultwarden/server][vaultwarden_images]               |
-| [Uptime-Kuma <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="32px" height="32px" align="right" loading="lazy">][uptimekuma_chart]                                                |      0.2.2      | [louislam/uptime-kuma][uptime_kuma_images]             |
-| [Linkwarden <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/main/assets/logo.png" alt="Linkwarden Logo" width="32px" height="32px" align="right" loading="lazy">][linkwarden_chart]                                                                                     |      0.3.6      | [linkwarden/linkwarden][linkwarden_images]             |
-| [Gotenberg <img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="32px" height="32px" align="right" loading="lazy">][gotenberg_chart]                                                                |      0.2.2      | [gotenberg/gotenberg][gotenberg_images]                |
-| [Paperless-NGX <img src="https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/5842944d1ef817c11a47ed5c19ba8b7886c9fbfe/resources/logo/web/svg/square.svg" alt="Paperless-NGX Logo" width="32px" height="32px" align="right" loading="lazy">][paperless_chart]                    |      0.2.8      | [paperless-ngx/paperless-ngx][paperless_ngx_images]    |
-| [LinkStack <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="32px" height="32px" align="right" loading="lazy">][linkstack_chart]                                                                           |      0.2.2      | [linkstackorg/linkstack][linkstack_images]             |
-| [ntfy <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/main/web/public/static/images/ntfy.png" alt="ntfy Logo" width="32px" height="32px" align="right" loading="lazy">][ntfy_chart]                                                                                        |      0.2.2      | [binwiederhier/ntfy][ntfy_images]                      |
-| [Cachet <img src="https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="32px" height="32px" align="right" loading="lazy">][cachet_chart]                                                                                    |      0.2.2      | [cachethq/docker][cachet_images]                       |
-| [Kubenav <img src="https://raw.githubusercontent.com/kubenav/kubenav/290f1776b03c359b8115125fa37a4b8dd73b6464/utils/images/app-icons/android.png" alt="Kubenav Logo" width="32px" height="32px" align="right" loading="lazy">][kubenav_chart]                                             |      0.1.2      | `None`                                                 |
-| [GoBackup <img src="https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png" alt="GoBackup Logo" width="32px" height="32px" align="right" loading="lazy">][gobackup_chart]                                                                      |      0.2.2      | [huacnlee/gobackup][gobackup_images]                   |
-| [Activepieces <img src="https://raw.githubusercontent.com/fmjstudios/artwork/3f3537b0377b8c95bfac77ae5cb7779c4698d659/projects/activepieces/icon/color/activepieces-icon-color.png" alt="Activepieces Logo" width="32px" height="32px" align="right" loading="lazy">][activepieces_chart] |      0.2.3      | [activepieces/activepieces][activepieces_images]       |
-| [Popeye <img src="https://github.com/derailed/popeye/blob/d09ec25f3834d2c6a171486b9726b0a91793e3f0/assets/popeye_logo.png?raw=true" alt="Popeye Logo" width="32px" height="32px" align="right" loading="lazy">][popeye_chart]                                                             |      0.1.2      | [derailed/popeye][popeye_images]                       |
-| [Keycloak Operator <img src="https://github.com/keycloak/keycloak-misc/blob/dee033f2d6d6b5c3a6ce8eb84e285f7e5626dbf6/logo/icon.png?raw=true" alt="Keycloak Logo" width="32px" height="32px" align="right" loading="lazy">][keycloak_operator_chart]                                       |      0.1.2      | [keycloak/keycloak-operator][keycloak_operator_images] |
+| Chart                                                                                                                                                                                                                                                                                   | Current Version | Default Container Images                               |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------: | ------------------------------------------------------ |
+| [Vaultwarden <img src="https://raw.githubusercontent.com/dani-garcia/vaultwarden/890e668071cffe2833834348e19bbef3c061d014/resources/vaultwarden-icon.svg" alt="Vaultwarden Logo" width="32px" height="32px" align="right" loading="lazy">][vaultwarden_chart]                           |      0.2.3      | [vaultwarden/server][vaultwarden_images]               |
+| [Uptime-Kuma <img src="https://raw.githubusercontent.com/louislam/uptime-kuma/36196f632d499fddef436a3aacf2f11a01958f07/public/icon.svg" alt="Uptime-Kuma Logo" width="32px" height="32px" align="right" loading="lazy">][uptimekuma_chart]                                              |      0.2.2      | [louislam/uptime-kuma][uptime_kuma_images]             |
+| [Linkwarden <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/main/assets/logo.png" alt="Linkwarden Logo" width="32px" height="32px" align="right" loading="lazy">][linkwarden_chart]                                                                                   |      0.3.6      | [linkwarden/linkwarden][linkwarden_images]             |
+| [Gotenberg <img src="https://user-images.githubusercontent.com/8983173/130322857-185831e2-f041-46eb-a17f-0a69d066c4e5.png" alt="Gotenberg Logo" width="32px" height="32px" align="right" loading="lazy">][gotenberg_chart]                                                              |      0.2.2      | [gotenberg/gotenberg][gotenberg_images]                |
+| [Paperless-NGX <img src="https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/5842944d1ef817c11a47ed5c19ba8b7886c9fbfe/resources/logo/web/svg/square.svg" alt="Paperless-NGX Logo" width="32px" height="32px" align="right" loading="lazy">][paperless_chart]                  |      0.2.8      | [paperless-ngx/paperless-ngx][paperless_ngx_images]    |
+| [LinkStack <img src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_color_bg_1.svg" alt="Linkstack Logo" width="32px" height="32px" align="right" loading="lazy">][linkstack_chart]                                                                         |      0.2.2      | [linkstackorg/linkstack][linkstack_images]             |
+| [ntfy <img src="https://raw.githubusercontent.com/binwiederhier/ntfy/main/web/public/static/images/ntfy.png" alt="ntfy Logo" width="32px" height="32px" align="right" loading="lazy">][ntfy_chart]                                                                                      |      0.2.2      | [binwiederhier/ntfy][ntfy_images]                      |
+| [Cachet <img src="https://raw.githubusercontent.com/cachethq/art/master/logo-mark/cachet-logomark-green.png" alt="Cachet Logo" width="32px" height="32px" align="right" loading="lazy">][cachet_chart]                                                                                  |      0.2.2      | [cachethq/docker][cachet_images]                       |
+| [Kubenav <img src="https://raw.githubusercontent.com/kubenav/kubenav/290f1776b03c359b8115125fa37a4b8dd73b6464/utils/images/app-icons/android.png" alt="Kubenav Logo" width="32px" height="32px" align="right" loading="lazy">][kubenav_chart]                                           |      0.1.2      | `None`                                                 |
+| [GoBackup <img src="https://user-images.githubusercontent.com/5518/205909959-12b92929-4ac5-4bb5-9111-6f9a3ed76cf6.png" alt="GoBackup Logo" width="32px" height="32px" align="right" loading="lazy">][gobackup_chart]                                                                    |      0.2.2      | [huacnlee/gobackup][gobackup_images]                   |
+| [Activepieces <img src="https://raw.githubusercontent.com/adnoctem/artwork/3f3537b0377b8c95bfac77ae5cb7779c4698d659/projects/activepieces/icon/color/activepieces-icon-color.png" alt="Activepieces Logo" width="32px" height="32px" align="right" loading="lazy">][activepieces_chart] |      0.2.3      | [activepieces/activepieces][activepieces_images]       |
+| [Popeye <img src="https://github.com/derailed/popeye/blob/d09ec25f3834d2c6a171486b9726b0a91793e3f0/assets/popeye_logo.png?raw=true" alt="Popeye Logo" width="32px" height="32px" align="right" loading="lazy">][popeye_chart]                                                           |      0.1.2      | [derailed/popeye][popeye_images]                       |
+| [Keycloak Operator <img src="https://github.com/keycloak/keycloak-misc/blob/dee033f2d6d6b5c3a6ce8eb84e285f7e5626dbf6/logo/icon.png?raw=true" alt="Keycloak Logo" width="32px" height="32px" align="right" loading="lazy">][keycloak_operator_chart]                                     |      0.1.2      | [keycloak/keycloak-operator][keycloak_operator_images] |
 
 [//]: # '"Stolen" from https://github.com/gabe565/charts/blob/main/README.md because I really liked the look'
 
@@ -60,7 +60,7 @@ formats and versioning tips.
 
 ### 📥 Maintainers
 
-This project is owned and maintained by [FMJ Studios](https://github.com/fmjstudios) refer to
+This project is owned and maintained by [Ad Noctem Collective](https://github.com/adnoctem) refer to
 the [`AUTHORS`](.github/AUTHORS) or [`CODEOWNERS`](.github/CODEOWNERS) for more information. You may also use the linked
 contact details to reach out directly.
 
