@@ -203,6 +203,7 @@ all:
 else
 all: dist-dir
 	for chart in $(ALL_CHARTS); do $(MAKE) gen CHART=$$chart; done
+	prettier --write '**/*.{json,md}'
 	for chart in $(ALL_CHARTS); do $(MAKE) build CHART=$$chart;	done
 endif
 

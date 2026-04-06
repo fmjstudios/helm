@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 26.0.6
 kubeVersion: ">=1.26.0-0"
 name: keycloak-operator
-version: 0.2.0
+version: 0.2.1
 description: Keycloak is an open source software product to allow single sign-on with identity and access management
 home: https://github.com/keycloak/keycloak
 icon: https://raw.githubusercontent.com/keycloak/keycloak-misc/main/logo/logo.png
@@ -51,3 +51,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: repository owner changed from fmjstudios to adnoctem
+    - kind: fixed
+      description: verify rotation of expired GPG key

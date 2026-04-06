@@ -5,7 +5,7 @@ apiVersion: v2
 appVersion: 2.10.1
 kubeVersion: ">=1.26.0-0"
 name: paperless-ngx
-version: 0.3.0
+version: 0.3.1
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
@@ -65,3 +65,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: repository owner changed from fmjstudios to adnoctem
+    - kind: fixed
+      description: verify rotation of expired GPG key
