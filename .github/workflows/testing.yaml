@@ -36,7 +36,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Chart-Testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.8.0
 
       - name: Check changes
         id: check_change
@@ -68,7 +68,7 @@ jobs:
           check-latest: true
 
       - name: Set up Chart-Testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.8.0
 
       - name: Run chart-testing (lint)
         if: ${{ needs.changes.outputs.changed == 'true' || github.event.inputs.forceTest }}
@@ -114,7 +114,7 @@ jobs:
           check-latest: true
 
       - name: Set up Chart-Testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.8.0
 
       - name: Run chart-testing (lint)
         if: ${{ needs.changes.outputs.changed == 'true' || github.event.inputs.forceTest }}
