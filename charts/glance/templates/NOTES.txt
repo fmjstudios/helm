@@ -1,0 +1,15 @@
+Glance {{ .Chart.AppVersion }} is deployed.
+
+Access it locally:
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "glance.fullname" . }} 8080:{{ .Values.service.ports.http }}
+  Open http://localhost:8080/
+{{- if index .Values.glance.server "base-url" }}
+  Use your configured reverse proxy for access under {{ index .Values.glance.server "base-url" }}.
+{{- end }}
+
+Configuration: https://github.com/glanceapp/glance/blob/{{ .Chart.AppVersion }}/docs/configuration.md
+{{- if or .Values.config.existingConfigMap .Values.config.existingSecret .Values.secretFiles .Values.extraEnvVarsSecret .Values.extraEnvVarsConfigMap }}
+
+After changing externally managed configuration or credentials:
+  kubectl --namespace {{ .Release.Namespace }} rollout restart deployment/{{ include "glance.fullname" . }}
+{{- end }}

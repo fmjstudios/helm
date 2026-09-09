@@ -1,0 +1,638 @@
+# Default Helm values for adnoctem/glance.
+# Reference: https://github.com/adnoctem/charts
+#
+# Configuration reference: https://github.com/glanceapp/glance/blob/v0.8.6/docs/configuration.md
+# Native application keys and Go templates are preserved without Helm tpl evaluation.
+# Optional null theme properties are omitted; request bodies and options retain null values.
+# Chart-managed configuration changes roll pods on upgrade. External configuration and
+# Secret changes require a rollout; projected-volume live reload is not guaranteed.
+
+## @section Image parameters
+## @param image.registry Container image registry
+## @param image.repository Glance image repository
+## @param image.tag Image tag; empty uses Chart.appVersion
+## @param image.digest Image digest override
+## @param image.pullPolicy Kubernetes image pull policy
+## @param image.pullSecrets Existing image pull secret names
+image:
+  registry: docker.io
+  repository: glanceapp/glance
+  tag: ""
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+## @section Name overrides
+## @param nameOverride Partially override glance.fullname
+nameOverride: ""
+## @param fullnameOverride Fully override glance.fullname
+fullnameOverride: ""
+
+## @section Glance configuration parameters
+## Native application configuration. Widget-specific examples follow this section.
+glance:
+  server:
+    ## @param glance.server.host Listen address inside the pod
+    host: 0.0.0.0
+    ## @param glance.server.port HTTP listen port; also used for the container port and probes
+    port: 8080
+    ## @param glance.server.proxied Trust forwarded request headers; enable behind a correctly configured reverse proxy
+    proxied: false
+    ## @param glance.server.base-url External URL prefix, e.g. /glance; the reverse proxy must strip this prefix
+    base-url: ""
+    ## @param glance.server.assets-path Directory served at /assets/; must match the assets mount path
+    assets-path: /app/assets
+
+  auth:
+    ## @param glance.auth.secret-key Session signing secret or Glance substitution; required when users are configured
+    ## Generate with `glance secret:make`. Prefer ${secret:auth-key} and secretFiles below.
+    ## The chart omits the entire auth block from generated configuration when users is empty.
+    secret-key: ""
+    ## @param glance.auth.users [object] Username-keyed users; each has password OR password-hash (strings)
+    ## Each username accepts exactly one credential field.
+    ## Example: admin: {password-hash: "${secret:admin-password-hash}"}
+    users: {}
+
+  document:
+    ## @param glance.document.head HTML inserted into the head of every page
+    head: ""
+
+  branding:
+    ## @param glance.branding.hide-footer Hide the application footer
+    hide-footer: false
+    ## @param glance.branding.custom-footer Footer HTML
+    custom-footer: ""
+    ## @param glance.branding.logo-text Navigation logo text
+    logo-text: G
+    ## @param glance.branding.logo-url Navigation logo URL; takes precedence over logo-text
+    logo-url: ""
+    ## @param glance.branding.favicon-url Browser favicon URL
+    favicon-url: ""
+    ## @param glance.branding.app-name Browser and progressive web app name
+    app-name: Glance
+    ## @param glance.branding.app-icon-url Progressive web app icon URL (512 by 512 PNG); empty retains upstream icon
+    app-icon-url: ""
+    ## @param glance.branding.app-background-color Progressive web app CSS background color; empty retains upstream color
+    app-background-color: ""
+
+  theme:
+    ## @param glance.theme.light Use text colors suited to a light background
+    light: false
+    ## @param glance.theme.background-color Background color as space-separated HSL components
+    background-color: "240 8 9"
+    ## @param glance.theme.primary-color Primary HSL color
+    primary-color: "43 50 70"
+    ## @param glance.theme.positive-color [object, nullable] Positive HSL color; null inherits primary-color
+    positive-color: null
+    ## @param glance.theme.negative-color Negative HSL color
+    negative-color: "0 70 70"
+    ## @param glance.theme.contrast-multiplier Text contrast multiplier
+    contrast-multiplier: 1
+    ## @param glance.theme.text-saturation-multiplier Text saturation multiplier
+    text-saturation-multiplier: 1
+    ## @param glance.theme.custom-css-file External CSS URL or an /assets/ URL
+    custom-css-file: ""
+    ## @param glance.theme.disable-picker Disable theme switching
+    disable-picker: false
+    ## @param glance.theme.presets [object] Named themes, including default-dark/default-light overrides
+    ## Each preset models light, background-color, primary-color, positive-color, negative-color,
+    ## contrast-multiplier and text-saturation-multiplier; custom-css-file is not a preset property.
+    presets: {}
+
+  ## @param glance.pages [object, default: []] Ordered pages, each with one to three columns and one or two full columns
+  ## Replace this list to configure your dashboard. Helm replaces lists rather than merging entries.
+  ## The default page uses widgets which need no credentials or server-side external API calls.
+  ## Each page, column or widget can instead be an {$include: filename.yml} object.
+  ## Included files must contain YAML list entries (starting with a dash).
+  pages:
+    - name: Home
+      slug: home
+      width: default
+      desktop-navigation-width: default
+      center-vertically: false
+      hide-desktop-navigation: false
+      show-mobile-header: false
+      head-widgets: []
+      columns:
+        - size: small
+          widgets:
+            - type: clock
+              hour-format: 24h
+              timezones: []
+            - type: calendar
+              first-day-of-week: monday
+        - size: full
+          widgets:
+            - type: search
+              search-engine: duckduckgo
+              autofocus: false
+              new-tab: false
+              bangs: []
+            - type: bookmarks
+              groups:
+                - title: Glance
+                  links:
+                    - title: Configuration
+                      url: https://github.com/glanceapp/glance/blob/main/docs/configuration.md
+            - type: to-do
+              id: home
+
+## Widget field reference (inactive examples, not global widget defaults).
+## Place instances in glance.pages[].columns[].widgets or glance.pages[].head-widgets.
+## Keep every native property, including nested request bodies, options and HTML, intact.
+## Optional fields below illustrate the surface; remove credentials/URLs you do not use.
+## All widgets also accept title (string), title-url (string), hide-header (boolean),
+## cache (duration string, subject to widget support), and css-class (string).
+## Icons accept URLs, local /assets/ paths, si:, sh:, di:, mdi: and auto-invert prefixes.
+## Page widths: default, slim, wide; slim permits at most two columns. Column sizes: small, full.
+## Todo data is browser-local; a server PVC does not persist or synchronize those tasks.
+##
+## RSS: feeds also accept per-feed headers and presentation controls.
+## - type: rss
+##   style: vertical-list
+##   thumbnail-height: 10
+##   card-height: 27
+##   limit: 25
+##   preserve-order: false
+##   single-line-titles: false
+##   collapse-after: 5
+##   feeds:
+##     - url: https://example.com/feed.xml
+##       title: Example
+##       hide-categories: false
+##       hide-description: false
+##       limit: 10
+##       item-link-prefix: ""
+##       thumbnail-link-prefix: "" # Supported by v0.8.6; rewrites relative thumbnail URLs
+##       headers: {}
+##
+## - type: videos
+##   channels: []
+##   playlists: []
+##   limit: 25
+##   style: horizontal-cards
+##   collapse-after: 7
+##   collapse-after-rows: 4
+##   include-shorts: false
+##   video-url-template: https://www.youtube.com/watch?v={VIDEO-ID}
+##
+## - type: hacker-news
+##   limit: 15
+##   collapse-after: 5
+##   comments-url-template: https://news.ycombinator.com/item?id={POST-ID}
+##   sort-by: top
+##   extra-sort-by: ""
+##
+## - type: lobsters
+##   instance-url: https://lobste.rs/
+##   custom-url: ""
+##   limit: 15
+##   collapse-after: 5
+##   sort-by: hot
+##   tags: []
+##
+## - type: reddit
+##   subreddit: selfhosted
+##   style: vertical-list
+##   show-thumbnails: false
+##   show-flairs: false
+##   limit: 15
+##   collapse-after: 5
+##   comments-url-template: https://www.reddit.com/{POST-PATH}
+##   request-url-template: ""
+##   proxy:                 # Alternatively a single HTTP/HTTPS proxy URL string
+##     url: https://proxy.example.com
+##     allow-insecure: false
+##     timeout: 10s
+##   sort-by: hot
+##   top-period: day
+##   search: ""
+##   extra-sort-by: ""
+##   app-auth:
+##     name: "${REDDIT_APP_NAME}"
+##     id: "${REDDIT_APP_CLIENT_ID}"
+##     secret: "${secret:reddit-app-secret}"
+##
+## - type: search
+##   search-engine: duckduckgo  # google, bing, perplexity, kagi, startpage or a URL containing {QUERY}
+##   new-tab: false
+##   autofocus: false
+##   target: _blank
+##   placeholder: Type here to search…
+##   bangs:
+##     - title: GitHub
+##       shortcut: "!gh"
+##       url: https://github.com/search?q={QUERY}
+##
+## - type: group
+##   widgets:               # Group and split-column cannot be children of group
+##     - type: hacker-news
+##     - type: lobsters
+## - type: split-column
+##   max-columns: 2
+##   widgets:               # May contain groups as well as ordinary widgets
+##     - type: hacker-news
+##     - type: lobsters
+##
+## - type: custom-api
+##   url: https://api.example.com/status
+##   headers: {}
+##   method: GET
+##   body-type: json         # json or string; body can be structured data or a string
+##   body: {}
+##   basic-auth:
+##     username: "${API_USERNAME}"
+##     password: "${secret:api-password}"
+##   frameless: false
+##   allow-insecure: false
+##   skip-json-validation: false
+##   template: |
+##     <p>{{ .JSON.String "status" }}</p>
+##   options: {}             # Arbitrary template options; retain their value types
+##   parameters: {}          # Query values may be strings or arrays of strings
+##   subrequests: {}         # Named requests with the same request fields; no nested subrequests
+##
+## - type: extension
+##   url: https://extension.example.com
+##   fallback-content-type: ""
+##   allow-potentially-dangerous-html: false
+##   headers: {}
+##   parameters: {}
+##
+## - type: weather
+##   location: Berlin, Germany
+##   units: metric
+##   hour-format: 12h
+##   hide-location: false
+##   show-area-name: false
+## - type: to-do
+##   id: home
+##
+## - type: monitor
+##   style: compact
+##   show-failing-only: false
+##   sites:
+##     - title: Example
+##       url: https://example.com
+##       check-url: https://example.com/health
+##       error-url: https://status.example.com
+##       icon: si:github
+##       timeout: 3s
+##       allow-insecure: false
+##       same-tab: false
+##       alt-status-codes: []
+##       basic-auth:
+##         username: "${MONITOR_USERNAME}"
+##         password: "${secret:monitor-password}"
+##
+## - type: releases
+##   repositories:           # Strings or GitHub objects with prerelease selection
+##     - repository: glanceapp/glance
+##       include-prereleases: false
+##     - gitlab:inkscape/inkscape
+##     - dockerhub:nginx:stable-alpine
+##     - codeberg:redict/redict
+##   show-source-icon: false
+##   token: "${secret:github-token}"
+##   gitlab-token: "${secret:gitlab-token}"
+##   limit: 10
+##   collapse-after: 5
+##
+## - type: docker-containers
+##   hide-by-default: false
+##   format-container-names: false
+##   sock-path: /var/run/docker.sock
+##   category: ""
+##   running-only: false
+##   containers:             # Name-keyed overrides of Docker's glance.* labels
+##     example:
+##       name: Example
+##       icon: ""
+##       url: https://example.com
+##       same-tab: false
+##       description: ""
+##       hide: false
+##       id: example
+##       parent: ""
+##       category: ""
+##
+## - type: dns-stats
+##   service: pihole          # pihole, pihole-v6 or adguard
+##   allow-insecure: false
+##   url: https://dns.example.com
+##   username: ""            # AdGuard
+##   password: "${secret:dns-password}" # AdGuard or Pi-hole v6
+##   token: "${secret:dns-token}"       # Pi-hole before v6
+##   hide-graph: false
+##   hide-top-domains: false
+##   hour-format: 12h
+##
+## - type: server-stats
+##   servers:
+##     - type: local          # Observes the container's environment by default
+##       name: Glance
+##       hide-swap: false
+##       cpu-temp-sensor: ""
+##       hide-mountpoints-by-default: false
+##       mountpoints:
+##         /:
+##           name: Root
+##           hide: false
+##     - type: remote         # Requires a separately deployed Glance Agent
+##       name: Homelab
+##       hide-swap: false
+##       url: https://agent.example.com
+##       token: "${secret:agent-token}"
+##       timeout: 3s
+##
+## - type: repository
+##   repository: glanceapp/glance
+##   token: "${secret:github-token}"
+##   pull-requests-limit: 3
+##   issues-limit: 3
+##   commits-limit: -1
+##
+## - type: bookmarks
+##   groups:
+##     - title: Links
+##       color: "43 50 70"
+##       same-tab: false
+##       hide-arrow: false
+##       target: _blank
+##       links:
+##         - title: Example
+##           url: https://example.com
+##           description: ""
+##           icon: ""
+##           same-tab: false
+##           hide-arrow: false
+##           target: _blank
+##
+## - type: change-detection
+##   instance-url: https://www.changedetection.io
+##   token: "${secret:changedetection-token}"
+##   limit: 10
+##   collapse-after: 5
+##   watches: []
+## - type: clock
+##   hour-format: 24h
+##   timezones:
+##     - timezone: Europe/Berlin
+##       label: Berlin
+## - type: calendar
+##   first-day-of-week: monday
+## - type: calendar-legacy    # Deprecated upstream, still part of the documented surface
+##   start-sunday: false
+##
+## - type: markets
+##   sort-by: change
+##   chart-link-template: https://www.tradingview.com/chart/?symbol={SYMBOL}
+##   symbol-link-template: https://finance.yahoo.com/quote/{SYMBOL}
+##   markets:
+##     - symbol: SPY
+##       name: S&P 500
+##       symbol-link: https://finance.yahoo.com/quote/SPY
+##       chart-link: https://www.tradingview.com/chart/?symbol=SPY
+## - type: twitch-channels
+##   channels: []
+##   collapse-after: 5
+##   sort-by: viewers
+## - type: twitch-top-games
+##   exclude: []
+##   limit: 10
+##   collapse-after: 5
+## - type: iframe
+##   source: https://example.com
+##   height: 300
+## - type: html
+##   source: |
+##     <p>Welcome home.</p>
+
+## @section Configuration file parameters
+config:
+  ## @param config.existingConfigMap Existing ConfigMap containing glance.yml and optional included files
+  ## Mutually exclusive with existingSecret; either external source bypasses generated glance and files.
+  ## Keep glance.server.port/assets-path aligned with the external file for ports/probes/mounts.
+  existingConfigMap: ""
+  ## @param config.existingSecret Existing Secret containing glance.yml and optional included files
+  existingSecret: ""
+  ## @param config.files [object] Additional filename-to-string entries for $include, mounted beside glance.yml
+  ## Reserved filename: glance.yml. Strings are emitted literally, without Helm tpl evaluation.
+  ## Example: set glance.pages to [{$include: home.yml}] and provide:
+  ## files:
+  ##   home.yml: |
+  ##     - name: Home
+  ##       columns:
+  ##         - size: full
+  ##           widgets:
+  ##             - type: calendar
+  files: {}
+
+## @section Asset parameters
+assets:
+  ## @param assets.files [object] Filename-to-string assets (CSS, JavaScript, SVG), mounted at glance.server.assets-path
+  files: {}
+  ## @param assets.existingConfigMap Existing assets ConfigMap (data or binaryData); mutually exclusive with files and existingClaim
+  existingConfigMap: ""
+  ## @param assets.existingClaim Existing PVC containing assets; mutually exclusive with files and existingConfigMap
+  existingClaim: ""
+  ## @param assets.readOnly Mount assets read-only
+  readOnly: true
+
+## @section Secret substitution parameters
+## @param secretFiles Existing Secrets projected together under /run/secrets for ${secret:filename}
+## Each entry models name (Secret name) and items (key/path pairs); paths must be unique.
+## Example:
+## secretFiles:
+##   - name: glance-credentials
+##     items:
+##       - key: signing-key
+##         path: auth-key
+##       - key: admin-hash
+##         path: admin-password-hash
+secretFiles: []
+
+## @param extraEnvVars Kubernetes EnvVar entries for user-defined ${NAME} or ${readFileFromEnv:NAME} substitutions
+## Glance does not prescribe names for these variables; application settings belong under glance.
+## Use valueFrom.secretKeyRef for credentials. Environment changes require a pod restart.
+extraEnvVars: []
+## @param extraEnvVarsSecret Existing Secret to expose using envFrom
+extraEnvVarsSecret: ""
+## @param extraEnvVarsConfigMap Existing ConfigMap to expose using envFrom
+extraEnvVarsConfigMap: ""
+
+## @section Docker integration parameters
+dockerSocket:
+  ## @param dockerSocket.enabled Mount a node's Docker socket for docker-containers widgets
+  ## Requires a Docker host, matching widget sock-path and appropriate socket permissions.
+  ## This widget monitors Docker containers, not Kubernetes pods on containerd/CRI-O.
+  ## Access to the Docker API grants host control even with a read-only socket mount.
+  enabled: false
+  ## @param dockerSocket.hostPath Docker socket path on the selected node
+  hostPath: /var/run/docker.sock
+  ## @param dockerSocket.mountPath Docker socket path inside Glance
+  mountPath: /var/run/docker.sock
+
+## @section ConfigMap parameters
+## @param configMap.annotations [object] Annotations for chart-managed configuration and asset ConfigMaps
+## @param configMap.labels [object] Labels for chart-managed configuration and asset ConfigMaps
+configMap:
+  annotations: {}
+  labels: {}
+
+## @section Ingress parameters
+## @param ingress.enabled Create an Ingress
+## @param ingress.className Ingress class name
+## @param ingress.whitelist Comma-separated ingress-nginx source IP allowlist
+## @param ingress.annotations [object] Ingress annotations, including controller-specific prefix rewriting
+## @param ingress.tls TLS hostnames and existing certificate Secret names
+## @param ingress.hosts Hosts with paths and pathType
+ingress:
+  enabled: false
+  className: ""
+  whitelist: ""
+  annotations: {}
+  tls: []
+  hosts: []
+  ## - host: glance.example.com
+  ##   paths:
+  ##     - path: /
+  ##       pathType: Prefix
+
+## @section Service parameters
+## @param service.type Kubernetes Service type
+## @param service.ports.http HTTP Service port; targets glance.server.port
+## @param service.nodePort HTTP node port when using NodePort or LoadBalancer
+## @param service.extraPorts Additional Service ports
+## @param service.annotations [object] Service annotations
+## @param service.labels [object] Service labels
+## @param service.externalTrafficPolicy External traffic routing policy
+## @param service.internalTrafficPolicy Internal traffic routing policy
+## @param service.clusterIP Static cluster IP; empty lets Kubernetes allocate one
+## @param service.loadBalancerIP Requested load balancer IP, if supported by the provider
+## @param service.loadBalancerClass Load balancer implementation
+## @param service.loadBalancerSourceRanges Allowed load balancer client CIDRs
+## @param service.externalIPs External IP addresses
+## @param service.sessionAffinity None or ClientIP
+## @param service.sessionAffinityConfig [object] Session affinity settings
+## @param service.ipFamilyPolicy IP family policy; empty uses the cluster default
+service:
+  type: ClusterIP
+  ports:
+    http: 8080
+  nodePort: 30080
+  extraPorts: []
+  annotations: {}
+  labels: {}
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  clusterIP: ""
+  loadBalancerIP: ""
+  loadBalancerClass: ""
+  loadBalancerSourceRanges: []
+  externalIPs: []
+  sessionAffinity: None
+  sessionAffinityConfig: {}
+  ipFamilyPolicy: ""
+
+## @section Service Account parameters
+## @param serviceAccount.create Create a ServiceAccount
+## @param serviceAccount.automount Automount Kubernetes API credentials
+## @param serviceAccount.annotations [object] ServiceAccount annotations
+## @param serviceAccount.name Existing or custom ServiceAccount name
+## @param serviceAccount.secrets ServiceAccount Secret references
+serviceAccount:
+  create: true
+  automount: false
+  annotations: {}
+  name: ""
+  secrets: []
+
+## @section Pod settings
+## @param replicaCount Deployment replicas; caches and authentication rate limits are per process
+replicaCount: 1
+## @param strategy [object] Deployment update strategy
+strategy:
+  type: RollingUpdate
+## @param resources [object] Container resource requests and limits
+resources: {}
+## @param volumes Additional pod volumes, e.g. secret files, certificates or host statistics mounts
+volumes: []
+## @param volumeMounts Additional Glance container mounts
+volumeMounts: []
+## @param initContainers Init containers, e.g. to populate an asset volume
+initContainers: []
+## @param nodeSelector [object] Node labels for pod placement
+nodeSelector: {}
+## @param tolerations Pod tolerations
+tolerations: []
+## @param affinity [object] Pod affinity and anti-affinity
+affinity: {}
+## @param podAnnotations [object] Extra pod annotations
+podAnnotations: {}
+## @param podLabels [object] Extra pod labels
+podLabels: {}
+## @param priorityClassName Existing PriorityClass name
+priorityClassName: ""
+
+## @section Security context settings
+## @param podSecurityContext [object] Pod security context; adjust for asset and Docker socket permissions
+podSecurityContext: {}
+## @param securityContext [object] Container security context
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+## @section Probe parameters
+## TCP probes use the named HTTP container port so auth and base-url do not affect them.
+## These check the listener; they do not verify that individual widgets can fetch data.
+## @param livenessProbe.enabled Enable TCP liveness checking
+## @param livenessProbe.initialDelaySeconds Initial liveness delay
+## @param livenessProbe.timeoutSeconds Liveness timeout
+## @param livenessProbe.periodSeconds Liveness interval
+## @param livenessProbe.successThreshold Successful checks required
+## @param livenessProbe.failureThreshold Failed checks before restart
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+## @param readinessProbe.enabled Enable TCP readiness checking
+## @param readinessProbe.initialDelaySeconds Initial readiness delay
+## @param readinessProbe.timeoutSeconds Readiness timeout
+## @param readinessProbe.periodSeconds Readiness interval
+## @param readinessProbe.successThreshold Successful checks required
+## @param readinessProbe.failureThreshold Failed checks before removing the pod from Service endpoints
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+## @param startupProbe.enabled Enable TCP startup checking
+## @param startupProbe.initialDelaySeconds Initial startup delay
+## @param startupProbe.timeoutSeconds Startup timeout
+## @param startupProbe.periodSeconds Startup interval
+## @param startupProbe.successThreshold Successful checks required
+## @param startupProbe.failureThreshold Failed checks allowed during startup
+startupProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 5
+  successThreshold: 1
+  failureThreshold: 30
+
+## @section PodDisruptionBudget parameters
+## @param podDisruptionBudget.enabled Create a PodDisruptionBudget
+## @param podDisruptionBudget.minAvailable [object, nullable] Minimum available pods; set null when using maxUnavailable
+## @param podDisruptionBudget.maxUnavailable [object, nullable] Maximum unavailable pods; mutually exclusive with minAvailable
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+  maxUnavailable: null

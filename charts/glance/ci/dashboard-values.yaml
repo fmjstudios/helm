@@ -1,0 +1,45 @@
+# Native widget configuration, fractional theme values and nested layouts.
+glance:
+  branding:
+    app-name: CI Dashboard
+  theme:
+    contrast-multiplier: 1.2
+    text-saturation-multiplier: 0.5
+  pages:
+    - name: Home
+      width: slim
+      head-widgets:
+        - type: search
+          search-engine: duckduckgo
+      columns:
+        - size: full
+          widgets:
+            - type: split-column
+              max-columns: 2
+              widgets:
+                - type: group
+                  widgets:
+                    - type: calendar
+                      first-day-of-week: saturday
+                    - type: clock
+                      hour-format: 24h
+                      timezones:
+                        - timezone: Europe/Berlin
+                          label: Berlin
+                - type: to-do
+                  id: ci
+            - type: bookmarks
+              groups:
+                - title: Documentation
+                  links:
+                    - title: Glance
+                      url: https://github.com/glanceapp/glance
+            - type: custom-api
+              options:
+                enabled: false
+                count: 0
+              template: |
+                <p>{{ .Options.IntOr "count" 1 }}</p>
+            - type: html
+              source: |
+                <p>Glance CI dashboard</p>

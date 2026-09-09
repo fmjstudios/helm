@@ -1,0 +1,45 @@
+# Self-contained fixture for chart-testing's install check.
+image:
+  pullPolicy: IfNotPresent
+glance:
+  theme:
+    custom-css-file: /assets/user.css
+    presets:
+      warm:
+        primary-color: "30 70 65"
+  pages:
+    - $include: home.yml
+config:
+  files:
+    home.yml: |
+      - name: Home
+        columns:
+          - size: full
+            widgets:
+              - type: split-column
+                widgets:
+                  - type: group
+                    widgets:
+                      - type: calendar
+                      - type: clock
+                  - type: custom-api
+                    title: Configuration check
+                    options:
+                      message: Ready
+                    template: |
+                      <p>{{ .Options.StringOr "message" "Loading" }}</p>
+assets:
+  files:
+    user.css: |
+      .widget-type-custom-api { min-height: 3rem; }
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  readOnlyRootFilesystem: true
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    memory: 128Mi

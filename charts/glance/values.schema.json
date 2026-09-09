@@ -1,0 +1,559 @@
+{
+  "title": "Chart Values",
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "registry": {
+          "type": "string",
+          "description": "Container image registry",
+          "default": "docker.io"
+        },
+        "repository": {
+          "type": "string",
+          "description": "Glance image repository",
+          "default": "glanceapp/glance"
+        },
+        "tag": {
+          "type": "string",
+          "description": "Image tag; empty uses Chart.appVersion",
+          "default": ""
+        },
+        "digest": {
+          "type": "string",
+          "description": "Image digest override",
+          "default": ""
+        },
+        "pullPolicy": {
+          "type": "string",
+          "description": "Kubernetes image pull policy",
+          "default": "IfNotPresent"
+        },
+        "pullSecrets": {
+          "type": "array",
+          "description": "Existing image pull secret names",
+          "default": [],
+          "items": {}
+        }
+      }
+    },
+    "nameOverride": {
+      "type": "string",
+      "description": "Partially override glance.fullname",
+      "default": ""
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "description": "Fully override glance.fullname",
+      "default": ""
+    },
+    "glance": {
+      "type": "object",
+      "properties": {
+        "server": {
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string",
+              "description": "Listen address inside the pod",
+              "default": "0.0.0.0"
+            },
+            "port": {
+              "type": "number",
+              "description": "HTTP listen port; also used for the container port and probes",
+              "default": 8080
+            },
+            "proxied": {
+              "type": "boolean",
+              "description": "Trust forwarded request headers; enable behind a correctly configured reverse proxy",
+              "default": false
+            },
+            "base-url": {
+              "type": "string",
+              "description": "External URL prefix, e.g. /glance; the reverse proxy must strip this prefix",
+              "default": ""
+            },
+            "assets-path": {
+              "type": "string",
+              "description": "Directory served at /assets/; must match the assets mount path",
+              "default": "/app/assets"
+            }
+          }
+        },
+        "auth": {
+          "type": "object",
+          "properties": {
+            "secret-key": {
+              "type": "string",
+              "description": "Session signing secret or Glance substitution; required when users are configured",
+              "default": ""
+            }
+          }
+        },
+        "document": {
+          "type": "object",
+          "properties": {
+            "head": {
+              "type": "string",
+              "description": "HTML inserted into the head of every page",
+              "default": ""
+            }
+          }
+        },
+        "branding": {
+          "type": "object",
+          "properties": {
+            "hide-footer": {
+              "type": "boolean",
+              "description": "Hide the application footer",
+              "default": false
+            },
+            "custom-footer": {
+              "type": "string",
+              "description": "Footer HTML",
+              "default": ""
+            },
+            "logo-text": {
+              "type": "string",
+              "description": "Navigation logo text",
+              "default": "G"
+            },
+            "logo-url": {
+              "type": "string",
+              "description": "Navigation logo URL; takes precedence over logo-text",
+              "default": ""
+            },
+            "favicon-url": {
+              "type": "string",
+              "description": "Browser favicon URL",
+              "default": ""
+            },
+            "app-name": {
+              "type": "string",
+              "description": "Browser and progressive web app name",
+              "default": "Glance"
+            },
+            "app-icon-url": {
+              "type": "string",
+              "description": "Progressive web app icon URL (512 by 512 PNG); empty retains upstream icon",
+              "default": ""
+            },
+            "app-background-color": {
+              "type": "string",
+              "description": "Progressive web app CSS background color; empty retains upstream color",
+              "default": ""
+            }
+          }
+        },
+        "theme": {
+          "type": "object",
+          "properties": {
+            "light": {
+              "type": "boolean",
+              "description": "Use text colors suited to a light background",
+              "default": false
+            },
+            "background-color": {
+              "type": "string",
+              "description": "Background color as space-separated HSL components",
+              "default": "240 8 9"
+            },
+            "primary-color": {
+              "type": "string",
+              "description": "Primary HSL color",
+              "default": "43 50 70"
+            },
+            "negative-color": {
+              "type": "string",
+              "description": "Negative HSL color",
+              "default": "0 70 70"
+            },
+            "contrast-multiplier": {
+              "type": "number",
+              "description": "Text contrast multiplier",
+              "default": 1
+            },
+            "text-saturation-multiplier": {
+              "type": "number",
+              "description": "Text saturation multiplier",
+              "default": 1
+            },
+            "custom-css-file": {
+              "type": "string",
+              "description": "External CSS URL or an /assets/ URL",
+              "default": ""
+            },
+            "disable-picker": {
+              "type": "boolean",
+              "description": "Disable theme switching",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "existingConfigMap": {
+          "type": "string",
+          "description": "Existing ConfigMap containing glance.yml and optional included files",
+          "default": ""
+        },
+        "existingSecret": {
+          "type": "string",
+          "description": "Existing Secret containing glance.yml and optional included files",
+          "default": ""
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "properties": {
+        "existingConfigMap": {
+          "type": "string",
+          "description": "Existing assets ConfigMap (data or binaryData); mutually exclusive with files and existingClaim",
+          "default": ""
+        },
+        "existingClaim": {
+          "type": "string",
+          "description": "Existing PVC containing assets; mutually exclusive with files and existingConfigMap",
+          "default": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": "Mount assets read-only",
+          "default": true
+        }
+      }
+    },
+    "secretFiles": {
+      "type": "array",
+      "description": "Existing Secrets projected together under /run/secrets for ${secret:filename}",
+      "default": [],
+      "items": {}
+    },
+    "extraEnvVars": {
+      "type": "array",
+      "description": "Kubernetes EnvVar entries for user-defined ${NAME} or ${readFileFromEnv:NAME} substitutions",
+      "default": [],
+      "items": {}
+    },
+    "extraEnvVarsSecret": {
+      "type": "string",
+      "description": "Existing Secret to expose using envFrom",
+      "default": ""
+    },
+    "extraEnvVarsConfigMap": {
+      "type": "string",
+      "description": "Existing ConfigMap to expose using envFrom",
+      "default": ""
+    },
+    "dockerSocket": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Mount a node's Docker socket for docker-containers widgets",
+          "default": false
+        },
+        "hostPath": {
+          "type": "string",
+          "description": "Docker socket path on the selected node",
+          "default": "/var/run/docker.sock"
+        },
+        "mountPath": {
+          "type": "string",
+          "description": "Docker socket path inside Glance",
+          "default": "/var/run/docker.sock"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Create an Ingress",
+          "default": false
+        },
+        "className": {
+          "type": "string",
+          "description": "Ingress class name",
+          "default": ""
+        },
+        "whitelist": {
+          "type": "string",
+          "description": "Comma-separated ingress-nginx source IP allowlist",
+          "default": ""
+        },
+        "tls": {
+          "type": "array",
+          "description": "TLS hostnames and existing certificate Secret names",
+          "default": [],
+          "items": {}
+        },
+        "hosts": {
+          "type": "array",
+          "description": "Hosts with paths and pathType",
+          "default": [],
+          "items": {}
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Kubernetes Service type",
+          "default": "ClusterIP"
+        },
+        "ports": {
+          "type": "object",
+          "properties": {
+            "http": {
+              "type": "number",
+              "description": "HTTP Service port; targets glance.server.port",
+              "default": 8080
+            }
+          }
+        },
+        "nodePort": {
+          "type": "number",
+          "description": "HTTP node port when using NodePort or LoadBalancer",
+          "default": 30080
+        },
+        "extraPorts": {
+          "type": "array",
+          "description": "Additional Service ports",
+          "default": [],
+          "items": {}
+        },
+        "externalTrafficPolicy": {
+          "type": "string",
+          "description": "External traffic routing policy",
+          "default": "Cluster"
+        },
+        "internalTrafficPolicy": {
+          "type": "string",
+          "description": "Internal traffic routing policy",
+          "default": "Cluster"
+        },
+        "clusterIP": {
+          "type": "string",
+          "description": "Static cluster IP; empty lets Kubernetes allocate one",
+          "default": ""
+        },
+        "loadBalancerIP": {
+          "type": "string",
+          "description": "Requested load balancer IP, if supported by the provider",
+          "default": ""
+        },
+        "loadBalancerClass": {
+          "type": "string",
+          "description": "Load balancer implementation",
+          "default": ""
+        },
+        "loadBalancerSourceRanges": {
+          "type": "array",
+          "description": "Allowed load balancer client CIDRs",
+          "default": [],
+          "items": {}
+        },
+        "externalIPs": {
+          "type": "array",
+          "description": "External IP addresses",
+          "default": [],
+          "items": {}
+        },
+        "sessionAffinity": {
+          "type": "string",
+          "description": "None or ClientIP",
+          "default": "None"
+        },
+        "ipFamilyPolicy": {
+          "type": "string",
+          "description": "IP family policy; empty uses the cluster default",
+          "default": ""
+        }
+      }
+    },
+    "serviceAccount": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "boolean",
+          "description": "Create a ServiceAccount",
+          "default": true
+        },
+        "automount": {
+          "type": "boolean",
+          "description": "Automount Kubernetes API credentials",
+          "default": false
+        },
+        "name": {
+          "type": "string",
+          "description": "Existing or custom ServiceAccount name",
+          "default": ""
+        },
+        "secrets": {
+          "type": "array",
+          "description": "ServiceAccount Secret references",
+          "default": [],
+          "items": {}
+        }
+      }
+    },
+    "replicaCount": {
+      "type": "number",
+      "description": "Deployment replicas; caches and authentication rate limits are per process",
+      "default": 1
+    },
+    "volumes": {
+      "type": "array",
+      "description": "Additional pod volumes, e.g. secret files, certificates or host statistics mounts",
+      "default": [],
+      "items": {}
+    },
+    "volumeMounts": {
+      "type": "array",
+      "description": "Additional Glance container mounts",
+      "default": [],
+      "items": {}
+    },
+    "initContainers": {
+      "type": "array",
+      "description": "Init containers, e.g. to populate an asset volume",
+      "default": [],
+      "items": {}
+    },
+    "tolerations": {
+      "type": "array",
+      "description": "Pod tolerations",
+      "default": [],
+      "items": {}
+    },
+    "priorityClassName": {
+      "type": "string",
+      "description": "Existing PriorityClass name",
+      "default": ""
+    },
+    "livenessProbe": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable TCP liveness checking",
+          "default": true
+        },
+        "initialDelaySeconds": {
+          "type": "number",
+          "description": "Initial liveness delay",
+          "default": 0
+        },
+        "timeoutSeconds": {
+          "type": "number",
+          "description": "Liveness timeout",
+          "default": 1
+        },
+        "periodSeconds": {
+          "type": "number",
+          "description": "Liveness interval",
+          "default": 10
+        },
+        "successThreshold": {
+          "type": "number",
+          "description": "Successful checks required",
+          "default": 1
+        },
+        "failureThreshold": {
+          "type": "number",
+          "description": "Failed checks before restart",
+          "default": 3
+        }
+      }
+    },
+    "readinessProbe": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable TCP readiness checking",
+          "default": true
+        },
+        "initialDelaySeconds": {
+          "type": "number",
+          "description": "Initial readiness delay",
+          "default": 0
+        },
+        "timeoutSeconds": {
+          "type": "number",
+          "description": "Readiness timeout",
+          "default": 1
+        },
+        "periodSeconds": {
+          "type": "number",
+          "description": "Readiness interval",
+          "default": 10
+        },
+        "successThreshold": {
+          "type": "number",
+          "description": "Successful checks required",
+          "default": 1
+        },
+        "failureThreshold": {
+          "type": "number",
+          "description": "Failed checks before removing the pod from Service endpoints",
+          "default": 3
+        }
+      }
+    },
+    "startupProbe": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable TCP startup checking",
+          "default": true
+        },
+        "initialDelaySeconds": {
+          "type": "number",
+          "description": "Initial startup delay",
+          "default": 0
+        },
+        "timeoutSeconds": {
+          "type": "number",
+          "description": "Startup timeout",
+          "default": 1
+        },
+        "periodSeconds": {
+          "type": "number",
+          "description": "Startup interval",
+          "default": 5
+        },
+        "successThreshold": {
+          "type": "number",
+          "description": "Successful checks required",
+          "default": 1
+        },
+        "failureThreshold": {
+          "type": "number",
+          "description": "Failed checks allowed during startup",
+          "default": 30
+        }
+      }
+    },
+    "podDisruptionBudget": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Create a PodDisruptionBudget",
+          "default": false
+        }
+      }
+    }
+  }
+}

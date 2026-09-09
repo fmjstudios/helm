@@ -1,0 +1,161 @@
+{{- include "glance.checks" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "glance.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "glance.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "glance.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "glance.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmaps.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "glance.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- range . }}
+        - name: {{ . | quote }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: glance
+          image: {{ include "glance.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/app/glance"]
+          args: ["--config", "/app/config/glance.yml"]
+          ports:
+            - name: http
+              containerPort: {{ .Values.glance.server.port }}
+              protocol: TCP
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.extraEnvVars }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.extraEnvVarsSecret .Values.extraEnvVarsConfigMap }}
+          envFrom:
+            {{- with .Values.extraEnvVarsSecret }}
+            - secretRef:
+                name: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.extraEnvVarsConfigMap }}
+            - configMapRef:
+                name: {{ . | quote }}
+            {{- end }}
+          {{- end }}
+          {{- range $name := list "livenessProbe" "readinessProbe" "startupProbe" }}
+          {{- $probe := index $.Values $name }}
+          {{- if $probe.enabled }}
+          {{ $name }}:
+            tcpSocket:
+              port: http
+            {{- omit $probe "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+            {{- if (index .Values.glance.server "assets-path") }}
+            - name: assets
+              mountPath: {{ index .Values.glance.server "assets-path" | quote }}
+              readOnly: {{ .Values.assets.readOnly }}
+            {{- end }}
+            {{- if .Values.secretFiles }}
+            - name: secret-files
+              mountPath: /run/secrets
+              readOnly: true
+            {{- end }}
+            {{- if .Values.dockerSocket.enabled }}
+            - name: docker-socket
+              mountPath: {{ .Values.dockerSocket.mountPath | quote }}
+              readOnly: true
+            {{- end }}
+            {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.config.existingSecret }}
+          secret:
+            secretName: {{ .Values.config.existingSecret }}
+          {{- else }}
+          configMap:
+            name: {{ .Values.config.existingConfigMap | default (include "glance.fullname" .) }}
+          {{- end }}
+        {{- if index .Values.glance.server "assets-path" }}
+        - name: assets
+          {{- if .Values.assets.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.assets.existingClaim }}
+          {{- else if or .Values.assets.files .Values.assets.existingConfigMap }}
+          configMap:
+            name: {{ .Values.assets.existingConfigMap | default (include "glance.assetsName" .) }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.secretFiles }}
+        - name: secret-files
+          projected:
+            defaultMode: 0444
+            sources:
+              {{- range .Values.secretFiles }}
+              - secret:
+                  name: {{ .name }}
+                  items:
+                    {{- toYaml .items | nindent 20 }}
+              {{- end }}
+        {{- end }}
+        {{- if .Values.dockerSocket.enabled }}
+        - name: docker-socket
+          hostPath:
+            path: {{ .Values.dockerSocket.hostPath | quote }}
+            type: Socket
+        {{- end }}
+        {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- range $key := list "nodeSelector" "tolerations" "affinity" }}
+      {{- with index $.Values $key }}
+      {{ $key }}:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . | quote }}
+      {{- end }}

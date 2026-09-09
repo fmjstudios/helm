@@ -1,0 +1,13 @@
+# Public test-only credentials supplied using Glance's environment substitutions.
+# Never use these fixture credentials for a real deployment.
+glance:
+  auth:
+    secret-key: ${CI_AUTH_KEY}
+    users:
+      admin:
+        password: ${CI_AUTH_PASSWORD}
+extraEnvVars:
+  - name: CI_AUTH_KEY
+    value: Y2hhcnQtdGVzdGluZy1vbmx5LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ==
+  - name: CI_AUTH_PASSWORD
+    value: chart-testing-only

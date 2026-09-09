@@ -1,0 +1,28 @@
+# Exercise optional resources without requiring a load balancer or external services.
+glance:
+  server:
+    port: 9090
+    proxied: true
+service:
+  type: NodePort
+  nodePort: 30180
+  ports:
+    http: 80
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 30
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: glance.example.test
+      paths:
+        - path: /
+          pathType: Prefix
+podDisruptionBudget:
+  enabled: true
+  minAvailable: null
+  maxUnavailable: 1
+podAnnotations:
+  example.com/purpose: chart-testing
