@@ -71,6 +71,20 @@ list.
 > it - TLS termination and certificate management are handled by the cluster's own Ingress controller
 > and [cert-manager](https://cert-manager.io/), which is why this chart has no equivalent component.
 
+## Upgrading
+
+### To 0.1.2 (Outline 1.10.0 -> 1.10.1)
+
+[Outline 1.10.1](https://github.com/outline/outline/releases/tag/v1.10.1) adds WebMCP support and Open Knowledge
+Format (OKF) export, improves document query performance, and fixes authentication, API key scope validation and
+editor behavior. The upstream environment reference and container configuration are unchanged; existing chart
+values remain compatible.
+
+Two database migrations narrow the document-search update trigger and add indexes to user-reference columns in
+`documents`, `revisions` and `events`. Outline runs these automatically during startup with this chart's default
+container command. Allow time for the index creation on larger databases when choosing the Helm upgrade timeout
+and, if enabled, the startup probe's failure threshold.
+
 ## Parameters
 
 ### Outline Image parameters
@@ -79,7 +93,7 @@ list.
 | ------------------- | ------------------------------------------------------------------- | --------------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `docker.io`           |
 | `image.repository`  | The registry repository to pull the image from                      | `outlinewiki/outline` |
-| `image.tag`         | The image tag to pull                                               | `1.10.0`              |
+| `image.tag`         | The image tag to pull                                               | `1.10.1`              |
 | `image.digest`      | The image digest to pull                                            | `""`                  |
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`        |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                  |
