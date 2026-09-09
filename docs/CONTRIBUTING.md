@@ -200,6 +200,15 @@ The content of the commit message body should contain:
 These apply to new charts going forward. Existing charts that don't yet follow them will be brought in line
 individually, in their own PRs — don't retrofit them as a side effect of unrelated work.
 
+### Mirror the existing charts
+
+Use a neighboring chart as the starting point for `.helmignore`, `Chart.yaml` and `README.md`. Preserve the existing
+field order, annotation conventions, logo presentation, installation sections and generated parameter tables;
+adapt the application-specific content instead of introducing a new layout or toolchain. Keep all chart documentation
+in its `README.md`, including detailed configuration references, so it is published on Artifact Hub. Add the chart to
+the root README's overview using the same logo, version columns and reference-style links as the surrounding entries.
+Use the existing `make gen` and chart-testing workflows, with additional `ci/*-values.yaml` fixtures where needed.
+
 ### One resource per file
 
 Each `templates/*.yaml` file should render exactly one Kubernetes resource, named after that resource's kind in
