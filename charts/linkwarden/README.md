@@ -59,6 +59,14 @@ Parameters.
 
 ## Upgrading
 
+### To 0.5.1 (Linkwarden 2.16.2 -> 2.16.3)
+
+[Linkwarden 2.16.3](https://github.com/linkwarden/linkwarden/releases/tag/v2.16.3) improves the performance of link,
+search, tag, collection and dashboard queries at scale. The container base moves from Debian Bullseye to Bookworm;
+there are no changes to the chart's environment variables, ports or volume paths, and no new database migration
+files in this release. Existing chart values remain compatible. The older migration instructions below still apply
+when upgrading from Linkwarden 2.6.0 or earlier.
+
 ### To 0.5.0 (Linkwarden 2.5.3 -> 2.16.2)
 
 > [!WARNING]
@@ -111,7 +119,7 @@ affecting your own usage.
 | ------------------- | ------------------------------------------------------------------- | ----------------------- |
 | `image.registry`    | The Docker registry to pull the image from                          | `ghcr.io`               |
 | `image.repository`  | The registry repository to pull the image from                      | `linkwarden/linkwarden` |
-| `image.tag`         | The image tag to pull                                               | `v2.16.2`               |
+| `image.tag`         | The image tag to pull                                               | `v2.16.3`               |
 | `image.digest`      | The image digest to pull                                            | `""`                    |
 | `image.pullPolicy`  | The Kubernetes image pull policy                                    | `IfNotPresent`          |
 | `image.pullSecrets` | A list of secrets to use for pulling images from private registries | `[]`                    |
